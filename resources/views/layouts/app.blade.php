@@ -8,7 +8,7 @@
 <body class="bg-gray-50 text-gray-800">
 
     {{-- Navbar --}}
-    @include('partials.navbar')
+    @include('layouts.navigation')
 
     {{-- Konten --}}
     <main class="container mx-auto px-4 py-8">
@@ -16,7 +16,7 @@
     </main>
 
     {{-- Footer --}}
-    @include('partials.footer')
+    @include('layouts.footer')
 
 </body>
 </html>

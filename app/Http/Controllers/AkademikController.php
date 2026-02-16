@@ -8,7 +8,7 @@ class AkademikController extends Controller
 {
     public function kegiatan()
     {
-        return view('akademik.kegiatan', [
+        return view('Home.akademik.kegiatan', [
             'title' => 'Kegiatan Sekolah',
             'kegiatan' => [
                 'Upacara Bendera',
@@ -21,7 +21,7 @@ class AkademikController extends Controller
 
     public function prestasi()
     {
-        return view('akademik.prestasi', [
+        return view('Home.akademik.prestasi', [
             'title' => 'Prestasi Siswa',
             'prestasi' => [
                 'Juara 1 Lomba Mewarnai Tingkat Kota',
@@ -33,7 +33,7 @@ class AkademikController extends Controller
 
     public function ekstrakurikuler()
     {
-        return view('akademik.ekstrakurikuler', [
+        return view('Home.akademik.ekstrakurikuler', [
             'title' => 'Ekstrakurikuler',
             'ekskul' => [
                 'Tari Tradisional',
@@ -46,7 +46,7 @@ class AkademikController extends Controller
 
     public function bahanAjar()
     {
-        return view('akademik.bahan-ajar', [
+        return view('Home.akademik.bahan-ajar', [
             'title' => 'Bahan Ajar',
             'materi' => [
                 'Pengenalan Huruf & Angka',

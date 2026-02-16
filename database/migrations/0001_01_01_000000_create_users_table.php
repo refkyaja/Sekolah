@@ -1,4 +1,5 @@
 <?php
+// database/migrations/2014_10_12_000000_create_users_table.php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,7 +17,31 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            
+            // Role user (tanpa super_admin)
+            $table->enum('role', [
+                'admin',           // Akses penuh ke semua fitur
+                'kepala_sekolah',  // Akses ke laporan dan monitoring
+                'operator',        // Akses untuk input data
+                'guru'             // Akses untuk absensi dan nilai
+            ])->default('guru');
+
+            $table->boolean('is_active')->default(true);
+            
             $table->string('password');
+            
+            // Profile fields
+            $table->string('foto')->nullable();
+            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan'])->nullable();
+            $table->string('tempat_lahir', 100)->nullable();
+            $table->date('tanggal_lahir')->nullable();
+            $table->string('no_telepon', 20)->nullable();
+            $table->text('alamat')->nullable();
+            
+            // Tracking fields
+            $table->timestamp('last_login_at')->nullable();
+            $table->string('last_login_ip', 45)->nullable();
+            
             $table->rememberToken();
             $table->timestamps();
         });

@@ -8,7 +8,7 @@ class ProfilController extends Controller
 {
     public function sejarah()
     {
-        return view('profil.sejarah', [
+        return view('Home.profil.sejarah', [
             'title' => 'Sejarah TK Ceria Bangsa',
             'content' => 'TK Ceria Bangsa didirikan pada tahun 2010 dengan visi memberikan pendidikan usia dini yang berkualitas...'
         ]);
@@ -16,7 +16,7 @@ class ProfilController extends Controller
 
     public function sambutan()
     {
-        return view('profil.sambutan', [
+        return view('Home.profil.sambutan', [
             'title' => 'Sambutan Kepala Sekolah',
             'kepala_sekolah' => 'Ibu Siti Nurhaliza, S.Pd',
             'sambutan' => 'Selamat datang di TK Ceria Bangsa...'
@@ -25,7 +25,7 @@ class ProfilController extends Controller
 
     public function visimisi()
     {
-        return view('profil.visimisi', [
+        return view('Home.profil.visimisi', [
             'title' => 'Visi & Misi',
             'visi' => 'Menjadi lembaga pendidikan anak usia dini terdepan...',
             'misi' => [
@@ -39,7 +39,7 @@ class ProfilController extends Controller
 
     public function program()
     {
-        return view('profil.program', [
+        return view('Home.profil.program', [
             'title' => 'Program Sekolah',
             'programs' => [
                 'Kelompok Bermain (Play Group)',
@@ -53,7 +53,7 @@ class ProfilController extends Controller
 
     public function lokasi()
     {
-        return view('profil.lokasi', [
+        return view('Home.profil.lokasi', [
             'title' => 'Lokasi Sekolah',
             'alamat' => 'Jl. Pendidikan No. 123, Bandung',
             'maps_url' => 'https://goo.gl/maps/...'

@@ -3,7 +3,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Info Sekolah -->
             <div>
-                <h3 class="text-2xl font-bold mb-4">TK Ceria Bangsa</h3>
+                <h3 class="text-2xl font-bold mb-4">TK Harapan Bangsa 1</h3>
                 <p class="text-gray-400 mb-4">
                     Membentuk generasi cerdas, kreatif, dan berakhlak mulia melalui pendidikan usia dini berkualitas.
                 </p>
@@ -20,7 +20,7 @@
                 <div class="space-y-2 text-gray-400">
                     <p class="flex items-center">
                         <i class="fas fa-map-marker-alt mr-3"></i>
-                        Jl. Pendidikan No. 123, Bandung
+                        Jl. PSM, Kebun Jayanti, Kec. Kiaracondong, Kota Bandung, Jawa Barat 40285
                     </p>
                     <p class="flex items-center">
                         <i class="fas fa-phone mr-3"></i>
@@ -28,7 +28,7 @@
                     </p>
                     <p class="flex items-center">
                         <i class="fas fa-envelope mr-3"></i>
-                        info@tkceriabangsa.sch.id
+                        info@tkharapanbangsa1.sch.id
                     </p>
                 </div>
             </div>
@@ -38,15 +38,15 @@
                 <h4 class="text-lg font-bold mb-4">Jam Operasional</h4>
                 <div class="text-gray-400">
                     <p class="mb-1"><strong>Senin - Jumat:</strong> 07:00 - 16:00</p>
-                    <p class="mb-1"><strong>Sabtu:</strong> 08:00 - 12:00</p>
-                    <p><strong>Minggu:</strong> Libur</p>
+                    <p class="mb-1"><strong>Sabtu-Minggu:</strong> Libur</p>
+                    <!-- <p><strong>Minggu:</strong> Libur</p> -->
                 </div>
             </div>
         </div>
 
         <!-- Copyright -->
         <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; {{ date('Y') }} TK Ceria Bangsa. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} TK Harapan Bangsa 1. All rights reserved.</p>
         </div>
     </div>
 </footer>

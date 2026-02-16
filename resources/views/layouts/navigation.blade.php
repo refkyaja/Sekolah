@@ -118,9 +118,9 @@
                 </div>
 
                 <!-- 8. PPDB Button (Special Highlight) -->
-                <a href="{{ route('ppdb.index') }}" 
+                <a href="{{ route('spmb.index') }}" 
                    class="ml-4 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold px-5 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center">
-                    <i class="fas fa-user-plus mr-2"></i> PPDB
+                    <i class="fas fa-user-plus mr-2"></i> SPMB
                     <span class="ml-1 text-xs bg-white text-orange-500 px-1.5 py-0.5 rounded-full">⭐</span>
                 </a>
             </div>
@@ -263,11 +263,11 @@
                 </div>
             </div>
 
-            <!-- 8. PPDB Button Mobile -->
+            <!-- 8. spmb Button Mobile -->
             <div class="pt-4">
-                <a href="{{ route('ppdb.index') }}" @click="open = false"
+                <a href="{{ route('spmb.index') }}" @click="open = false"
                    class="block w-full text-center bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center">
-                    <i class="fas fa-user-plus mr-2"></i> PENDAFTARAN (PPDB)
+                    <i class="fas fa-user-plus mr-2"></i> PENDAFTARAN (SPMB)
                     <span class="ml-2 text-xs bg-white text-orange-500 px-1.5 py-0.5 rounded-full">⭐</span>
                 </a>
             </div>
