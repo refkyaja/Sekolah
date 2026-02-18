@@ -23,9 +23,9 @@ export default defineConfig({
         }),
     ],
     server: {
-        host: '0.0.0.0',
-        hmr: {
-            host: 'polysepalous-candyce-unprohibitively.ngrok-free.dev',
-        },
+        // host: '0.0.0.0',
+        // hmr: {
+        //     host: 'polysepalous-candyce-unprohibitively.ngrok-free.dev',
+        // },
     },
 });

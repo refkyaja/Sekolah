@@ -8,7 +8,6 @@
 @endpush
 
 @section('content')
-<div class="min-h-screen bg-gray-50 p-3 sm:p-4 md:p-6">
     <div class="max-w-full mx-auto">
         
         <!-- Quick Stats -->
@@ -134,7 +133,6 @@
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 @push('styles')
