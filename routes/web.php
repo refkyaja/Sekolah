@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\BukuTamuController as AdminBukuTamuController;
 use App\Http\Controllers\Admin\SpmbDokumenController;
 use App\Http\Controllers\Admin\SpmbBuktiTransferController;
 use App\Http\Controllers\Admin\AccountController;
+use App\Http\Controllers\Admin\MateriKbmController;
 
 // ==================== ROUTES PUBLIK ====================
 
@@ -259,6 +260,21 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
     Route::post('bukutamu/{bukutamu}/verify', [AdminBukuTamuController::class, 'verify'])->name('bukutamu.verify');
     Route::get('bukutamu/export', [AdminBukuTamuController::class, 'export'])->name('bukutamu.export');
     
+    // Materi KBM
+    Route::prefix('materi-kbm')->name('materi-kbm.')->group(function () {
+        Route::get('/', [MateriKbmController::class, 'index'])->name('index');
+        Route::get('/create', [MateriKbmController::class, 'create'])->name('create');
+        Route::post('/', [MateriKbmController::class, 'store'])->name('store');
+        Route::get('/{materiKbm}', [MateriKbmController::class, 'show'])->name('show');
+        Route::get('/{materiKbm}/edit', [MateriKbmController::class, 'edit'])->name('edit');
+        Route::put('/{materiKbm}', [MateriKbmController::class, 'update'])->name('update');
+        Route::delete('/{materiKbm}', [MateriKbmController::class, 'destroy'])->name('destroy');
+        Route::get('/{materiKbm}/download', [MateriKbmController::class, 'download'])->name('download');
+    });
+
+    // Kalender Akademik
+    Route::resource('kalender-akademik', \App\Http\Controllers\Admin\KalenderAkademikController::class);
+
     // Widgets
     Route::get('/widgets/spmb-statistics', [DashboardController::class, 'getSpmbStatistics'])->name('widgets.spmb-statistics');
     Route::get('/widgets/bukutamu-statistics', [DashboardController::class, 'getBukuTamuStatistics'])->name('widgets.bukutamu-statistics');
