@@ -49,7 +49,7 @@
                         <!-- Nama Calon Siswa -->
                         <div>
                             <label for="nama_calon_siswa" class="block text-sm font-medium text-gray-700 mb-2">
-                                Nama Lengkap Calon Siswa *
+                                Nama Lengkap Calon Peserta Didik Baru *
                             </label>
                             <input type="text" 
                                    id="nama_calon_siswa"
