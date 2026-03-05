@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Exports\AbsensiExport;
 use App\Models\Absensi;
 use App\Models\Siswa;
 use App\Models\Guru;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AbsensiController extends Controller
 {
@@ -295,60 +297,22 @@ class AbsensiController extends Controller
     public function export(Request $request)
     {
         try {
-            $query = Absensi::with(['siswa', 'guru'])
-                ->orderBy('tanggal', 'desc');
+            $kelompok = $request->get('kelompok');
 
-            if ($request->has('kelompok') && $request->kelompok != '') {
-                $query->whereHas('siswa', function($q) use ($request) {
-                    $q->where('kelompok', $request->kelompok);
-                });
+            $startDate = null;
+            $endDate = null;
+
+            if ($request->filled('bulan')) {
+                $bulanCarbon = Carbon::parse($request->bulan . '-01');
+                $startDate = $bulanCarbon->copy()->startOfMonth()->toDateString();
+                $endDate = $bulanCarbon->copy()->endOfMonth()->toDateString();
+            } else {
+                $startDate = Carbon::now()->startOfMonth()->toDateString();
+                $endDate = Carbon::now()->endOfMonth()->toDateString();
             }
 
-            $absensi = $query->get();
-
-            // Create CSV file
-            $filename = 'absensi-siswa-' . date('Y-m-d') . '.csv';
-            $headers = [
-                'Content-Type' => 'text/csv',
-                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-            ];
-
-            $callback = function() use ($absensi) {
-                $file = fopen('php://output', 'w');
-                
-                // Header CSV
-                fputcsv($file, [
-                    'No',
-                    'Nama Siswa',
-                    'Kelompok',
-                    'NIS',
-                    'Tanggal',
-                    'Status',
-                    'Keterangan',
-                    'Guru Pengajar',
-                    'Waktu Input'
-                ]);
-
-                // Data CSV
-                $no = 1;
-                foreach ($absensi as $item) {
-                    fputcsv($file, [
-                        $no++,
-                        $item->siswa->nama ?? 'Tidak ditemukan',
-                        $item->siswa->kelompok ?? '-',
-                        $item->siswa->nis ?? '-',
-                        $item->tanggal,
-                        ucfirst(str_replace('_', ' ', $item->status)),
-                        $item->keterangan ?? '-',
-                        $item->guru->nama ?? '-',
-                        $item->created_at->format('d/m/Y H:i')
-                    ]);
-                }
-
-                fclose($file);
-            };
-
-            return response()->stream($callback, 200, $headers);
+            $filename = 'rekap-absensi-siswa-' . Carbon::now()->format('Y-m-d') . '.xlsx';
+            return Excel::download(new AbsensiExport($startDate, $endDate, $kelompok), $filename);
         } catch (\Exception $e) {
             \Log::error('Error in AbsensiController@export: ' . $e->getMessage());
             return back()->with('error', 'Gagal mengekspor data: ' . $e->getMessage());

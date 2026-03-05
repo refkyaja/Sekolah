@@ -24,16 +24,36 @@
     border: 1px solid #fde68a;
 }
 
-.status-diproses {
+.status-menunggu-verifikasi {
+    background-color: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.status-revisi-dokumen {
+    background-color: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.status-diproses,
+.status-dokumen-verified {
     background-color: #dbeafe;
     color: #1e40af;
     border: 1px solid #93c5fd;
 }
 
-.status-diterima {
+.status-diterima,
+.status-lulus {
     background-color: #d1fae5;
     color: #065f46;
     border: 1px solid #a7f3d0;
+}
+
+.status-tidak-lulus {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
 }
 
 .status-ditolak {

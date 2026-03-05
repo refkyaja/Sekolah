@@ -47,10 +47,10 @@ class DashboardController extends Controller
             'menunggu' => Spmb::where('status_pendaftaran', 'Menunggu Verifikasi')
                 ->when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
                 ->count(),
-            'diterima' => Spmb::where('status_pendaftaran', 'Diterima')
+            'diterima' => Spmb::where('status_pendaftaran', 'Lulus')
                 ->when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
                 ->count(),
-            'mundur' => Spmb::where('status_pendaftaran', 'Mundur')
+            'mundur' => Spmb::where('status_pendaftaran', 'Tidak Lulus')
                 ->when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
                 ->count(),
             'total' => Spmb::when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))->count(),
@@ -149,10 +149,10 @@ class DashboardController extends Controller
             'menunggu' => Spmb::where('status_pendaftaran', 'Menunggu Verifikasi')
                 ->when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
                 ->count(),
-            'diterima' => Spmb::where('status_pendaftaran', 'Diterima')
+            'diterima' => Spmb::where('status_pendaftaran', 'Lulus')
                 ->when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
                 ->count(),
-            'mundur' => Spmb::where('status_pendaftaran', 'Mundur')
+            'mundur' => Spmb::where('status_pendaftaran', 'Tidak Lulus')
                 ->when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
                 ->count(),
             'total' => Spmb::when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))->count(),
@@ -176,7 +176,7 @@ class DashboardController extends Controller
                 $statusColor = '';
                 
                 switch($spmb->status_pendaftaran) {
-                    case 'Diterima':
+                    case 'Lulus':
                         $statusIcon = 'fa-check-circle';
                         $statusColor = 'green';
                         break;
@@ -184,7 +184,7 @@ class DashboardController extends Controller
                         $statusIcon = 'fa-clock';
                         $statusColor = 'yellow';
                         break;
-                    case 'Mundur':
+                    case 'Tidak Lulus':
                         $statusIcon = 'fa-times-circle';
                         $statusColor = 'red';
                         break;

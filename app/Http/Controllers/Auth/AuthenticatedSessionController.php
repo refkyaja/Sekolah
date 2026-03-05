@@ -28,6 +28,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if (Auth::user()) {
+            Auth::user()->forceFill([
+                'last_login_at' => now(),
+                'last_login_ip' => $request->ip(),
+            ])->save();
+        }
+
         ActivityLog::create([
             'user_id' => Auth::id(),
             'action' => 'login',

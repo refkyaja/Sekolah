@@ -52,8 +52,8 @@
                 <span class="material-symbols-outlined text-green-600">check_circle</span>
             </div>
             <div>
-                <p class="text-sm text-slate-500">Diterima</p>
-                <h3 class="text-2xl font-bold text-slate-800">{{ number_format($totalDiterima) }}</h3>
+                <p class="text-sm text-slate-500">Lulus</p>
+                <h3 class="text-2xl font-bold text-slate-800">{{ number_format($totalLulus) }}</h3>
             </div>
         </div>
     </div>
@@ -63,7 +63,7 @@
                 <span class="material-symbols-outlined text-red-600">cancel</span>
             </div>
             <div>
-                <p class="text-sm text-slate-500">Ditolak</p>
+                <p class="text-sm text-slate-500">Tidak Lulus</p>
                 <h3 class="text-2xl font-bold text-slate-800">{{ number_format($totalDitolak) }}</h3>
             </div>
         </div>
@@ -92,8 +92,10 @@
             <select name="status" class="px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm text-slate-600 transition-all cursor-pointer" onchange="this.form.submit()">
                 <option value="">Semua Status</option>
                 <option value="Menunggu Verifikasi" {{ $status == 'Menunggu Verifikasi' ? 'selected' : '' }}>Menunggu Verifikasi</option>
-                <option value="Diterima" {{ $status == 'Diterima' ? 'selected' : '' }}>Diterima</option>
-                <option value="Ditolak" {{ $status == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
+                <option value="Revisi Dokumen" {{ $status == 'Revisi Dokumen' ? 'selected' : '' }}>Revisi Dokumen</option>
+                <option value="Dokumen Verified" {{ $status == 'Dokumen Verified' ? 'selected' : '' }}>Dokumen Verified</option>
+                <option value="Lulus" {{ $status == 'Lulus' ? 'selected' : '' }}>Lulus</option>
+                <option value="Tidak Lulus" {{ $status == 'Tidak Lulus' ? 'selected' : '' }}>Tidak Lulus</option>
             </select>
         </div>
         <a href="{{ route('admin.ppdb.riwayat.show', $tahunAjaran) }}" class="px-6 py-3 bg-slate-100 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all">
@@ -131,10 +133,11 @@
                     <td class="px-6 py-5">
                         @php
                         $statusColors = [
-                            'Diterima' => 'bg-green-100 text-green-700',
-                            'Ditolak' => 'bg-red-100 text-red-700',
                             'Menunggu Verifikasi' => 'bg-yellow-100 text-yellow-700',
-                            'Revisi Dokumen' => 'bg-orange-100 text-orange-700',
+                            'Revisi Dokumen' => 'bg-amber-100 text-amber-700',
+                            'Dokumen Verified' => 'bg-blue-100 text-blue-700',
+                            'Lulus' => 'bg-green-100 text-green-700',
+                            'Tidak Lulus' => 'bg-red-100 text-red-700',
                         ];
                         @endphp
                         <span class="px-2.5 py-1 text-xs font-medium rounded-full {{ $statusColors[$item->status_pendaftaran] ?? 'bg-gray-100 text-gray-700' }}">

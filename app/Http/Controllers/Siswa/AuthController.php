@@ -23,6 +23,10 @@ class AuthController extends Controller
         if (Auth::guard('siswa')->check()) {
             return redirect()->route('siswa.dashboard');
         }
+
+        if (request('redirect')) {
+            request()->session()->put('url.intended', request('redirect'));
+        }
         
         return view('siswa.auth.login');
     }
@@ -35,6 +39,10 @@ class AuthController extends Controller
         // If already logged in, redirect to dashboard
         if (Auth::guard('siswa')->check()) {
             return redirect()->route('siswa.dashboard');
+        }
+
+        if (request('redirect')) {
+            request()->session()->put('url.intended', request('redirect'));
         }
         
         return view('siswa.auth.register');
@@ -70,7 +78,7 @@ class AuthController extends Controller
         Auth::guard('siswa')->login($siswa);
         $request->session()->regenerate();
 
-        return redirect()->route('siswa.dashboard')->with('success', 'Pendaftaran berhasil! Selamat datang di TK Harapan Bangsa 2.');
+        return redirect()->intended(route('siswa.dashboard'))->with('success', 'Pendaftaran berhasil! Selamat datang di TK Harapan Bangsa 2.');
     }
 
     /**

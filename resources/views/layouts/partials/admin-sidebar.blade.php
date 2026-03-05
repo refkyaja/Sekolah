@@ -89,7 +89,7 @@
                 <span class="material-symbols-outlined text-lg">history</span>
                 <span class="text-sm nav-text whitespace-nowrap">Riwayat PPDB</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.ppdb.export') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.ppdb.export') }}" title="Export Data">
+            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.spmb.export') && request()->is('admin/spmb/export') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.spmb.export') }}" title="Export Data">
                 <span class="material-symbols-outlined text-lg">download</span>
                 <span class="text-sm nav-text whitespace-nowrap">Export Data</span>
             </a>

@@ -32,7 +32,7 @@
                         <i class="fas fa-graduation-cap text-green-600 text-2xl mr-4"></i>
                         <div>
                             <h4 class="font-bold text-green-800 text-lg">Selamat Kepada Peserta yang Lulus!</h4>
-                            <p class="text-green-700">Berikut adalah daftar peserta yang diterima melalui SPMB TK Ceria Bangsa Tahun Ajaran 2026/2027</p>
+                            <p class="text-green-700">Berikut adalah daftar peserta yang lulus melalui SPMB TK Ceria Bangsa Tahun Ajaran 2026/2027</p>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                 <!-- Participant List -->
                 <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
                     <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
-                        <h3 class="font-bold text-gray-900">Daftar Peserta yang Diterima</h3>
+                        <h3 class="font-bold text-gray-900">Daftar Peserta yang Lulus</h3>
                         <p class="text-sm text-gray-600">Diurutkan berdasarkan No. Pendaftaran</p>
                     </div>
                     
@@ -96,7 +96,7 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                <i class="fas fa-check-circle mr-1"></i> Diterima
+                                                <i class="fas fa-check-circle mr-1"></i> Lulus
                                             </span>
                                         </td>
                                     </tr>

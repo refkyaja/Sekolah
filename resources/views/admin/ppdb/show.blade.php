@@ -60,17 +60,21 @@
 $statusBadge = '';
 $statusText = $spmb->status_pendaftaran ?? 'Menunggu Verifikasi';
 switch($statusText) {
-    case 'Diterima':
+    case 'Lulus':
         $statusBadge = 'bg-green-100 text-green-700';
         $statusLabel = 'LULUS';
         break;
-    case 'Mundur':
+    case 'Tidak Lulus':
         $statusBadge = 'bg-red-100 text-red-700';
         $statusLabel = 'TIDAK LULUS';
         break;
-    case 'Diproses':
+    case 'Dokumen Verified':
         $statusBadge = 'bg-blue-100 text-blue-700';
         $statusLabel = 'DOKUMEN VERIFIED';
+        break;
+    case 'Revisi Dokumen':
+        $statusBadge = 'bg-amber-100 text-amber-700';
+        $statusLabel = 'REVISI DOKUMEN';
         break;
     default:
         $statusBadge = 'bg-orange-100 text-orange-700';
@@ -410,9 +414,10 @@ switch($statusText) {
                 <select name="status" class="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm">
                     <option value="{{ $spmb->status_pendaftaran }}" selected>{{ $spmb->status_pendaftaran }}</option>
                     <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
-                    <option value="Diproses">Diproses</option>
-                    <option value="Diterima">Diterima</option>
-                    <option value="Mundur">Mundur</option>
+                    <option value="Revisi Dokumen">Revisi Dokumen</option>
+                    <option value="Dokumen Verified">Dokumen Verified</option>
+                    <option value="Lulus">Lulus</option>
+                    <option value="Tidak Lulus">Tidak Lulus</option>
                 </select>
             </div>
             

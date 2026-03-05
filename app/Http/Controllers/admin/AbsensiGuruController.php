@@ -182,5 +182,58 @@ class AbsensiGuruController extends Controller
             'bulan' => $bulan,
         ]);
     }
+
+    public function rekapExport(Request $request)
+    {
+        $bulan = $request->get('bulan', now()->format('Y-m'));
+        $format = $request->get('format', 'pdf');
+        $bulanCarbon = Carbon::parse($bulan . '-01');
+        $bulanName = $bulanCarbon->translatedFormat('F Y');
+
+        $data = Guru::query()
+            ->leftJoin('absensi_guru', function ($join) use ($bulanCarbon) {
+                $join->on('gurus.id', '=', 'absensi_guru.guru_id')
+                    ->whereYear('absensi_guru.tanggal', $bulanCarbon->year)
+                    ->whereMonth('absensi_guru.tanggal', $bulanCarbon->month);
+            })
+            ->select(
+                'gurus.nama',
+                'gurus.nip',
+                DB::raw('COUNT(CASE WHEN absensi_guru.status = "hadir" THEN 1 END) as hadir'),
+                DB::raw('COUNT(CASE WHEN absensi_guru.status = "sakit" THEN 1 END) as sakit'),
+                DB::raw('COUNT(CASE WHEN absensi_guru.status = "izin" THEN 1 END) as izin'),
+                DB::raw('COUNT(CASE WHEN absensi_guru.status = "alpa" THEN 1 END) as alpa')
+            )
+            ->groupBy('gurus.nama', 'gurus.nip')
+            ->orderBy('gurus.nama')
+            ->get();
+
+        if ($format === 'excel') {
+            $filename = 'rekap_absensi_guru_' . $bulan . '.xlsx';
+            
+            $exportData = $data->map(function ($item, $index) {
+                return [
+                    'No' => $index + 1,
+                    'Nama Guru' => $item->nama,
+                    'NIP' => $item->nip ?? '-',
+                    'Hadir' => (int) $item->hadir,
+                    'Sakit' => (int) $item->sakit,
+                    'Izin' => (int) $item->izin,
+                    'Alpa' => (int) $item->alpa,
+                ];
+            });
+
+            return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\AbsensiGuruExport($exportData), $filename);
+        }
+
+        // PDF
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.absensi-guru.rekap-export-pdf', [
+            'data' => $data,
+            'bulan' => $bulanName,
+        ])->setPaper('a4', 'landscape');
+
+        $filename = 'rekap_absensi_guru_' . $bulan . '.pdf';
+        return $pdf->download($filename);
+    }
 }
 

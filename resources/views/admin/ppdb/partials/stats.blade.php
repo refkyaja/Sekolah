@@ -6,15 +6,15 @@
         <div class="text-2xl font-bold">{{ $statistik['total'] ?? 0 }}</div>
     </div>
     <div class="bg-white p-4 rounded-lg shadow">
-        <div class="text-sm text-gray-500">Diterima</div>
+        <div class="text-sm text-gray-500">Lulus</div>
         <div class="text-2xl font-bold text-green-600">{{ $statistik['diterima'] ?? 0 }}</div>
     </div>
     <div class="bg-white p-4 rounded-lg shadow">
-        <div class="text-sm text-gray-500">Diproses</div>
+        <div class="text-sm text-gray-500">Dokumen Verified</div>
         <div class="text-2xl font-bold text-yellow-600">{{ $statistik['diproses'] ?? 0 }}</div>
     </div>
     <div class="bg-white p-4 rounded-lg shadow">
-        <div class="text-sm text-gray-500">Ditolak</div>
+        <div class="text-sm text-gray-500">Tidak Lulus</div>
         <div class="text-2xl font-bold text-red-600">{{ $statistik['ditolak'] ?? 0 }}</div>
     </div>
 </div>

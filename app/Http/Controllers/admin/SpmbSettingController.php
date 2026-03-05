@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\SpmbSetting;
 use App\Models\Spmb;
+use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,28 +45,30 @@ class SpmbSettingController extends Controller
     public function pendaftaran()
     {
         $setting = SpmbSetting::where('tahun_ajaran', '2026/2027')->firstOrFail();
+        $ta = TahunAjaran::where('tahun_ajaran', $setting->tahun_ajaran)->first();
+        $tahunAjaranId = $ta?->id;
         
-        // Ambil data siswa diterima (hanya NIK, Nama, Status)
-        $siswaDiterima = Spmb::where('tahun_ajaran', '2026/2027')
-                            ->where('status', 'diterima')
-                            ->select('id', 'no_pendaftaran', 'nik', 'nama_calon_siswa', 'status')
-                            ->orderBy('tanggal_verifikasi', 'desc')
+        // Ambil data pendaftaran yang lulus
+        $siswaDiterima = Spmb::when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
+                            ->where('status_pendaftaran', 'Lulus')
+                            ->select('id', 'no_pendaftaran', 'nik_anak', 'nama_lengkap_anak', 'status_pendaftaran')
+                            ->latest()
                             ->paginate(10);
         
         // Total siswa diterima
-        $totalDiterima = Spmb::where('tahun_ajaran', '2026/2027')
-                            ->where('status', 'diterima')
+        $totalDiterima = Spmb::when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
+                            ->where('status_pendaftaran', 'Lulus')
                             ->count();
         
         // Total pendaftar
-        $totalPendaftar = Spmb::where('tahun_ajaran', '2026/2027')->count();
+        $totalPendaftar = Spmb::when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))->count();
         
         // Statistik per jalur
-        $statistikJalur = Spmb::where('tahun_ajaran', '2026/2027')
-                            ->where('status', 'diterima')
-                            ->selectRaw('jalur_pendaftaran, count(*) as total')
-                            ->groupBy('jalur_pendaftaran')
-                            ->pluck('total', 'jalur_pendaftaran')
+        $statistikJalur = Spmb::when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
+                            ->where('status_pendaftaran', 'Lulus')
+                            ->selectRaw('jenis_daftar, count(*) as total')
+                            ->groupBy('jenis_daftar')
+                            ->pluck('total', 'jenis_daftar')
                             ->toArray();
         
         return view('admin.spmb-settings.pendaftaran', compact(
@@ -126,35 +129,37 @@ class SpmbSettingController extends Controller
     {
         $tahunAjaran = '2026/2027';
         $setting = SpmbSetting::where('tahun_ajaran', $tahunAjaran)->firstOrFail();
+        $ta = TahunAjaran::where('tahun_ajaran', $tahunAjaran)->first();
+        $tahunAjaranId = $ta?->id;
         
         // ============ DATA SISWA LULUS ============
-        $siswaLulus = Spmb::where('tahun_ajaran', $tahunAjaran)
-                        ->where('status', 'diterima')
+        $siswaLulus = Spmb::when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
+                        ->where('status_pendaftaran', 'Lulus')
                         ->select(
                             'id',
                             'no_pendaftaran',
-                            'nik',
-                            'nama_calon_siswa',
-                            'jalur_pendaftaran',
-                            'status'
+                            'nik_anak',
+                            'nama_lengkap_anak',
+                            'jenis_daftar',
+                            'status_pendaftaran'
                         )
-                        ->orderBy('tanggal_verifikasi', 'desc')
+                        ->latest()
                         ->paginate(10);
         
         // Total siswa lulus
-        $totalLulus = Spmb::where('tahun_ajaran', $tahunAjaran)
-                        ->where('status', 'diterima')
+        $totalLulus = Spmb::when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
+                        ->where('status_pendaftaran', 'Lulus')
                         ->count();
         
         // Total pendaftar
-        $totalPendaftar = Spmb::where('tahun_ajaran', $tahunAjaran)->count();
+        $totalPendaftar = Spmb::when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))->count();
         
         // Statistik lulus per jalur
-        $statistikJalur = Spmb::where('tahun_ajaran', $tahunAjaran)
-                            ->where('status', 'diterima')
-                            ->selectRaw('jalur_pendaftaran, count(*) as total')
-                            ->groupBy('jalur_pendaftaran')
-                            ->pluck('total', 'jalur_pendaftaran')
+        $statistikJalur = Spmb::when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
+                            ->where('status_pendaftaran', 'Lulus')
+                            ->selectRaw('jenis_daftar, count(*) as total')
+                            ->groupBy('jenis_daftar')
+                            ->pluck('total', 'jenis_daftar')
                             ->toArray();
         
         return view('admin.spmb-settings.pengumuman', compact(

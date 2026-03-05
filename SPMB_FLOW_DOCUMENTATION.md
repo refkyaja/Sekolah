@@ -259,7 +259,7 @@ Schema::create('spmb', function (Blueprint $table) {
     $table->id();
     $table->string('no_pendaftaran')->unique();
     $table->string('nik', 16);
-    $table->enum('status', ['daftar', 'verifikasi', 'diterima', 'ditolak']);
+    $table->enum('status_pendaftaran', ['Menunggu Verifikasi', 'Revisi Dokumen', 'Dokumen Verified', 'Lulus', 'Tidak Lulus']);
     $table->enum('jalur_pendaftaran', ['zonasi', 'afirmasi', 'prestasi', 'mutasi']);
 
     // ... data calon siswa

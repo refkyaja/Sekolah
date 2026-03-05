@@ -78,8 +78,8 @@
             <div class="space-y-6 sm:space-y-8">
                 @forelse($recent_pendaftaran ?? [] as $item)
                 <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-2xl {{ $item->status_pendaftaran === 'Diterima' ? 'bg-blue-100 dark:bg-blue-900/30' : 'bg-lavender dark:bg-purple-900/30' }} flex-shrink-0 flex items-center justify-center">
-                        @if($item->status_pendaftaran === 'Diterima')
+                    <div class="w-10 h-10 rounded-2xl {{ $item->status_pendaftaran === 'Lulus' ? 'bg-blue-100 dark:bg-blue-900/30' : 'bg-lavender dark:bg-purple-900/30' }} flex-shrink-0 flex items-center justify-center">
+                        @if($item->status_pendaftaran === 'Lulus')
                         <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-xl">verified</span>
                         @else
                         <span class="material-symbols-outlined text-primary text-xl">person_add</span>
@@ -88,13 +88,13 @@
                     <div class="flex-1 min-w-0">
                         <p class="text-sm text-slate-700 dark:text-slate-300 leading-snug">
                             <span class="font-bold">{{ $item->nama_lengkap_anak ?? 'Calon' }}</span>
-                            {{ $item->status_pendaftaran === 'Diterima' ? ' telah diverifikasi.' : ' mengajukan pendaftaran baru.' }}
+                            {{ $item->status_pendaftaran === 'Lulus' ? ' telah diverifikasi.' : ' mengajukan pendaftaran baru.' }}
                         </p>
                         <p class="text-[10px] text-slate-400 mt-1 uppercase font-bold tracking-wider">{{ $item->created_at->diffForHumans() }}</p>
                     </div>
                     @if($item->status_pendaftaran === 'Menunggu Verifikasi')
                     <span class="text-[10px] px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-lg font-bold uppercase flex-shrink-0">Pending</span>
-                    @elseif($item->status_pendaftaran === 'Diterima')
+                    @elseif($item->status_pendaftaran === 'Lulus')
                     <span class="text-[10px] px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg font-bold uppercase flex-shrink-0">Verified</span>
                     @else
                     <span class="text-[10px] px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg font-bold uppercase flex-shrink-0">{{ $item->status_pendaftaran }}</span>

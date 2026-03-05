@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('nik_anak', 16);
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
             $table->date('tanggal_lahir_anak');
-            $table->enum('status_pendaftaran', ['Diterima', 'Menunggu Verifikasi', 'Mundur']);
+            $table->enum('status_pendaftaran', ['Menunggu Verifikasi', 'Revisi Dokumen', 'Dokumen Verified', 'Lulus', 'Tidak Lulus']);
             $table->boolean('is_aktif')->default(false);
             $table->string('nomor_induk_siswa')->nullable();
             $table->json('data_lengkap'); // Menyimpan seluruh data dalam format JSON

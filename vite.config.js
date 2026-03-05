@@ -8,6 +8,7 @@ export default defineConfig({
                 "resources/css/app.css",
                 "resources/js/app.js",
                 "resources/js/siswa-search.js",
+                "resources/js/guru-search.js",
                 "resources/css/admin/guru.css",
                 "resources/js/admin/guru.js",
                 "resources/js/guru-scroll.js",

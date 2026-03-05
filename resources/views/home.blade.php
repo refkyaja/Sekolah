@@ -12,7 +12,7 @@
                 The Trilingual Kids classroom provides a nurturing environment and diverse opportunities for children to find themselves and learn about themselves. Both online and offline formats, integrate fun activities for learners.
             </p>
             <div class="pt-4">
-                <a href="{{ route('spmb.pendaftaran') }}" class="inline-flex bg-primary text-white items-center gap-3 px-8 py-4 rounded-xl font-bold text-lg hover:translate-y-[-2px] transition-all shadow-xl">
+                <a href="{{ route('ppdb.index') }}" class="inline-flex bg-primary text-white items-center gap-3 px-8 py-4 rounded-xl font-bold text-lg hover:translate-y-[-2px] transition-all shadow-xl">
                     Enroll Now
                     <span class="material-icons">chevron_right</span>
                 </a>
@@ -212,7 +212,7 @@
             <h3 class="text-4xl font-bold text-primary dark:text-white">Come & Learn With Us</h3>
             <p class="text-lg text-slate-600 dark:text-slate-400">Join our vibrant community where every child's curiosity is nurtured and every dream is given wings. Enroll your child today for a brighter tomorrow!</p>
             <div class="flex flex-wrap gap-4">
-                <a href="{{ route('spmb.pendaftaran') }}" class="bg-primary text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-xl transition-all">Enroll Now</a>
+                <a href="{{ route('ppdb.index') }}" class="bg-primary text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-xl transition-all">Enroll Now</a>
                 <button class="bg-white dark:bg-slate-700 text-primary dark:text-white border-2 border-primary dark:border-slate-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-primary hover:text-white transition-all">Contact Us</button>
             </div>
         </div>

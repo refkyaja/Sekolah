@@ -18,6 +18,11 @@ class Spmb extends Model
         'no_pendaftaran',
         'tahun_ajaran_id',
         'status_pendaftaran',
+        'no_registrasi',
+        'nisn',
+        'catatan_daftar_ulang',
+        'tanggal_mulai_daftar_ulang',
+        'tanggal_selesai_daftar_ulang',
         
         // Data Anak (Bagian 1)
         'nama_lengkap_anak',
@@ -138,7 +143,7 @@ class Spmb extends Model
         'nomor_induk_siswa',
         'is_lulus',
         'is_mengulang',
-        'catatan_admin'
+        'catatan_admin',
     ];
 
     protected $casts = [
@@ -146,6 +151,8 @@ class Spmb extends Model
         'tanggal_lahir_ayah' => 'date',
         'tanggal_lahir_ibu' => 'date',
         'tanggal_lahir_wali' => 'date',
+        'tanggal_mulai_daftar_ulang' => 'date',
+        'tanggal_selesai_daftar_ulang' => 'date',
         'tanggal_verifikasi_akte' => 'datetime',
         'tanggal_verifikasi_kk' => 'datetime',
         'tanggal_verifikasi_ktp' => 'datetime',
@@ -296,9 +303,11 @@ class Spmb extends Model
     public function getStatusPendaftaranLabelAttribute()
     {
         $labels = [
-            'Diterima' => 'Diterima',
             'Menunggu Verifikasi' => 'Menunggu Verifikasi',
-            'Mundur' => 'Mundur'
+            'Revisi Dokumen' => 'Revisi Dokumen',
+            'Dokumen Verified' => 'Dokumen Verified',
+            'Lulus' => 'Lulus',
+            'Tidak Lulus' => 'Tidak Lulus',
         ];
         return $labels[$this->status_pendaftaran] ?? $this->status_pendaftaran;
     }
@@ -306,9 +315,11 @@ class Spmb extends Model
     public function getStatusPendaftaranColorAttribute()
     {
         $colors = [
-            'Diterima' => 'green',
             'Menunggu Verifikasi' => 'yellow',
-            'Mundur' => 'red'
+            'Revisi Dokumen' => 'orange',
+            'Dokumen Verified' => 'blue',
+            'Lulus' => 'green',
+            'Tidak Lulus' => 'red',
         ];
         return $colors[$this->status_pendaftaran] ?? 'gray';
     }
@@ -354,7 +365,7 @@ class Spmb extends Model
         return $this->verifikasi_akte && $this->verifikasi_kk && $this->verifikasi_ktp;
     }
 
-    public function getSiapDiterimaAttribute()
+    public function getSiapLulusAttribute()
     {
         return $this->dokumen_lengkap && $this->verifikasi_bukti_transfer && $this->approved_by_kepsek;
     }
@@ -473,14 +484,14 @@ class Spmb extends Model
         return $query->where('status_pendaftaran', 'Menunggu Verifikasi');
     }
 
-    public function scopeDiterima($query)
+    public function scopeLulus($query)
     {
-        return $query->where('status_pendaftaran', 'Diterima');
+        return $query->where('status_pendaftaran', 'Lulus');
     }
 
-    public function scopeMundur($query)
+    public function scopeTidakLulus($query)
     {
-        return $query->where('status_pendaftaran', 'Mundur');
+        return $query->where('status_pendaftaran', 'Tidak Lulus');
     }
 
     public function scopeDokumenLengkap($query)
@@ -554,7 +565,7 @@ class Spmb extends Model
         $this->tanggal_approval = now();
         
         if ($this->dokumen_lengkap && $this->verifikasi_bukti_transfer) {
-            $this->status_pendaftaran = 'Diterima';
+            $this->status_pendaftaran = 'Lulus';
         }
         
         $this->save();
@@ -630,8 +641,8 @@ class Spmb extends Model
         return [
             'total' => $query->count(),
             'menunggu' => (clone $query)->where('status_pendaftaran', 'Menunggu Verifikasi')->count(),
-            'diterima' => (clone $query)->where('status_pendaftaran', 'Diterima')->count(),
-            'mundur' => (clone $query)->where('status_pendaftaran', 'Mundur')->count(),
+            'diterima' => (clone $query)->where('status_pendaftaran', 'Lulus')->count(),
+            'mundur' => (clone $query)->where('status_pendaftaran', 'Tidak Lulus')->count(),
             'dokumen_lengkap' => (clone $query)->dokumenLengkap()->count(),
             'dokumen_belum_lengkap' => (clone $query)->dokumenBelumLengkap()->count(),
             'siswa_aktif' => (clone $query)->siswaAktif()->count(),
@@ -668,7 +679,7 @@ class Spmb extends Model
 
     public static function getJumlahSiswaPerKelas($tahunAjaranId = null)
     {
-        $query = self::where('status_pendaftaran', 'Diterima')
+        $query = self::where('status_pendaftaran', 'Lulus')
             ->whereNotNull('kelas')
             ->when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId));
         

@@ -11,40 +11,46 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Buat Admin
-        User::create([
-            'name' => 'Administrator',
-            'email' => 'admin@sekolah.dev',
-            'password' => Hash::make('password123'),
-            'role' => 'admin',
-            'jenis_kelamin' => 'Laki-laki',
-            'no_telepon' => '081234567890',
-            'alamat' => 'Jl. Sekolah No. 1',
-            'email_verified_at' => now(),
-        ]);
+        User::firstOrCreate(
+            ['email' => 'admin@sekolah.dev'],
+            [
+                'name' => 'Administrator',
+                'password' => Hash::make('password123'),
+                'role' => 'admin',
+                'jenis_kelamin' => 'Laki-laki',
+                'no_telepon' => '081234567890',
+                'alamat' => 'Jl. Sekolah No. 1',
+                'email_verified_at' => now(),
+            ]
+        );
 
         // Buat Kepala Sekolah
-        User::create([
-            'name' => 'Kepala Sekolah',
-            'email' => 'kepsek@sekolah.dev',
-            'password' => Hash::make('password123'),
-            'role' => 'kepala_sekolah',
-            'jenis_kelamin' => 'Laki-laki',
-            'no_telepon' => '081234567891',
-            'alamat' => 'Jl. Sekolah No. 2',
-            'email_verified_at' => now(),
-        ]);
+        User::firstOrCreate(
+            ['email' => 'kepsek@sekolah.dev'],
+            [
+                'name' => 'Kepala Sekolah',
+                'password' => Hash::make('password123'),
+                'role' => 'kepala_sekolah',
+                'jenis_kelamin' => 'Laki-laki',
+                'no_telepon' => '081234567891',
+                'alamat' => 'Jl. Sekolah No. 2',
+                'email_verified_at' => now(),
+            ]
+        );
 
         // Buat Operator
-        User::create([
-            'name' => 'Operator Sekolah',
-            'email' => 'operator@sekolah.dev',
-            'password' => Hash::make('password123'),
-            'role' => 'operator',
-            'jenis_kelamin' => 'Perempuan',
-            'no_telepon' => '081234567892',
-            'alamat' => 'Jl. Operator No. 1',
-            'email_verified_at' => now(),
-        ]);
+        User::firstOrCreate(
+            ['email' => 'operator@sekolah.dev'],
+            [
+                'name' => 'Operator Sekolah',
+                'password' => Hash::make('password123'),
+                'role' => 'operator',
+                'jenis_kelamin' => 'Perempuan',
+                'no_telepon' => '081234567892',
+                'alamat' => 'Jl. Operator No. 1',
+                'email_verified_at' => now(),
+            ]
+        );
 
         // Buat beberapa Guru (user biasa, bukan dari tabel guru)
         $guruList = [
@@ -69,16 +75,18 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($guruList as $guru) {
-            User::create([
-                'name' => $guru['name'],
-                'email' => $guru['email'],
-                'password' => Hash::make('password123'),
-                'role' => 'guru',
-                'jenis_kelamin' => $guru['jk'],
-                'no_telepon' => $guru['no_telp'],
-                'alamat' => 'Jl. Guru No. ' . rand(1, 10),
-                'email_verified_at' => now(),
-            ]);
+            User::firstOrCreate(
+                ['email' => $guru['email']],
+                [
+                    'name' => $guru['name'],
+                    'password' => Hash::make('password123'),
+                    'role' => 'guru',
+                    'jenis_kelamin' => $guru['jk'],
+                    'no_telepon' => $guru['no_telp'],
+                    'alamat' => 'Jl. Guru No. ' . rand(1, 10),
+                    'email_verified_at' => now(),
+                ]
+            );
         }
 
         // Panggil seeder lain (TANPA GuruSeeder)

@@ -48,6 +48,9 @@ Route::prefix('buku-tamu')->name('buku-tamu.')->group(function () {
 
 Route::get('/profil', [App\Http\Controllers\ProfilController::class, 'index'])->name('profil.index');
 
+Route::get('/ppdb', [HomeController::class, 'ppdb'])->name('ppdb.index');
+Route::post('/ppdb', [HomeController::class, 'storePpdb'])->name('ppdb.store');
+
 
 Route::prefix('akademik')->name('akademik.')->group(function () {
     Route::get('/kurikulum', [App\Http\Controllers\KurikulumController::class, 'index'])->name('kurikulum');
@@ -159,6 +162,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
     Route::prefix('absensi-guru')->name('absensi-guru.')->group(function () {
         Route::get('/', [AbsensiGuruController::class, 'index'])->name('index');
         Route::get('/rekap', [AbsensiGuruController::class, 'rekap'])->name('rekap');
+        Route::get('/rekap/export', [AbsensiGuruController::class, 'rekapExport'])->name('rekap.export');
         Route::get('/fill', [AbsensiGuruController::class, 'fill'])->name('fill');
         Route::post('/store-batch', [AbsensiGuruController::class, 'storeBatch'])->name('store-batch');
         Route::get('/detail', [AbsensiGuruController::class, 'detail'])->name('detail');
@@ -178,7 +182,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
     Route::prefix('spmb')->name('spmb.')->group(function () {
         // ✅ ROUTE TANPA PARAMETER (DI ATAS SEMUA)
         Route::get('/dashboard', [AdminSpmbController::class, 'dashboard'])->name('dashboard');
-        Route::get('/export', [AdminSpmbController::class, 'export'])->name('export');
+        Route::get('/export', [AdminSpmbController::class, 'exportIndex'])->name('export');
+        Route::get('/export/data', [AdminSpmbController::class, 'export'])->name('exportData');
+        Route::get('/export/all', [AdminSpmbController::class, 'exportAll'])->name('exportAll');
         Route::post('/export-selected', [AdminSpmbController::class, 'exportSelected'])->name('exportSelected');
         Route::post('/batch-action', [AdminSpmbController::class, 'batchAction'])->name('batchAction');
         Route::get('/create', [AdminSpmbController::class, 'create'])->name('create');
@@ -205,6 +211,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
         Route::post('/{spmb}/assign-kelas', [AdminSpmbController::class, 'assignKelas'])->name('assignKelas');
         Route::post('/{spmb}/konversi', [AdminSpmbController::class, 'konversiKeSiswa'])->name('konversiKeSiswa');
         Route::put('/{spmb}/update-all', [AdminSpmbController::class, 'updateAll'])->name('updateAll');
+
+        // Bulk Actions
+        Route::post('/bulk-lulus', [AdminSpmbController::class, 'bulkLulus'])->name('bulk.lulus');
+        Route::post('/bulk-delete', [AdminSpmbController::class, 'bulkDelete'])->name('bulk.delete');
 
         // ✅ ROUTE DOKUMEN (PREFIX BARU, TANPA 'spmb' LAGI) - DISABLED
         // Route::prefix('{spmb}/dokumen')->name('dokumen.')->group(function () {
@@ -356,6 +366,8 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
         Route::get('/kalender/download-pdf', [\App\Http\Controllers\Siswa\KalenderAkademikController::class, 'downloadPdf'])->name('kalender.download-pdf');
         Route::get('/materi', [\App\Http\Controllers\Siswa\MateriKbmController::class, 'index'])->name('materi.index');
         Route::get('/materi/{materiKbm}/download', [\App\Http\Controllers\Siswa\MateriKbmController::class, 'download'])->name('materi.download');
+        Route::get('/ppdb/hasil-seleksi', \App\Http\Controllers\Siswa\Ppdb\HasilSeleksiController::class)->name('ppdb.hasil-seleksi');
+        Route::get('/ppdb/hasil-seleksi/{spmb}/print', [\App\Http\Controllers\Siswa\Ppdb\HasilSeleksiController::class, 'printBukti'])->name('ppdb.hasil-seleksi.print');
     });
 });
 

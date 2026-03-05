@@ -53,6 +53,7 @@
         </div>
 
         <!-- New: Latest Materials -->
+        @if($siswa->status_siswa == 'aktif')
         <div class="space-y-4">
             <div class="flex items-center justify-between">
                 <h3 class="text-xl font-bold">Materi KBM Terbaru</h3>
@@ -94,9 +95,22 @@
                 @endforelse
             </div>
         </div>
+        @else
+        <div class="space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="text-xl font-bold">Materi KBM Terbaru</h3>
+            </div>
+            <div class="bg-amber-50 dark:bg-amber-900/20 p-6 rounded-xl border border-amber-200 dark:border-amber-800 text-center text-amber-700 dark:text-amber-400">
+                <span class="material-symbols-outlined text-4xl mb-2">lock</span>
+                <p class="font-medium">Materi Pelajaran Belum Tersedia</p>
+                <p class="text-sm mt-1">Materi pembelajaran akan ditampilkan setelah pendaftaran kamu diverifikasi dan dinyatakan lulus.</p>
+            </div>
+        </div>
+        @endif
     </div>
 
     <!-- Today's Schedule -->
+    @if($siswa->status_siswa == 'aktif')
     <div class="space-y-4">
         <div class="flex items-center justify-between">
             <h3 class="text-xl font-bold">Jadwal Hari Ini</h3>
@@ -132,6 +146,19 @@
             <span>Lihat Jadwal Lengkap</span>
         </a>
     </div>
+    @else
+    <div class="space-y-4">
+        <div class="flex items-center justify-between">
+            <h3 class="text-xl font-bold">Jadwal Hari Ini</h3>
+            <span class="text-sm font-medium text-slate-500">{{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM') }}</span>
+        </div>
+        <div class="bg-amber-50 dark:bg-amber-900/20 p-6 rounded-xl border border-amber-200 dark:border-amber-800 text-center text-amber-700 dark:text-amber-400">
+            <span class="material-symbols-outlined text-4xl mb-2">event_busy</span>
+            <p class="font-medium">Jadwal Belum Tersedia</p>
+            <p class="text-sm mt-1">Jadwal pelajaran akan muncul setelah pendaftaran kamu diverifikasi dan kamu dimasukkan ke dalam kelas.</p>
+        </div>
+    </div>
+    @endif
 </div>
 
 <!-- Quick Access / Categories -->

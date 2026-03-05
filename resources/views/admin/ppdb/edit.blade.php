@@ -335,10 +335,10 @@
                                     required
                                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                 <option value="">Pilih Status</option>
-                                <option value="menunggu" {{ old('status', $ppdb->status) == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
-                                <option value="diproses" {{ old('status', $ppdb->status) == 'diproses' ? 'selected' : '' }}>Diproses</option>
-                                <option value="diterima" {{ old('status', $ppdb->status) == 'diterima' ? 'selected' : '' }}>Diterima</option>
-                                <option value="ditolak" {{ old('status', $ppdb->status) == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                                <option value="menunggu" {{ old('status', $ppdb->status) == 'menunggu' ? 'selected' : '' }}>Menunggu Verifikasi</option>
+                                <option value="diproses" {{ old('status', $ppdb->status) == 'diproses' ? 'selected' : '' }}>Dokumen Verified</option>
+                                <option value="diterima" {{ old('status', $ppdb->status) == 'diterima' ? 'selected' : '' }}>Lulus</option>
+                                <option value="ditolak" {{ old('status', $ppdb->status) == 'ditolak' ? 'selected' : '' }}>Tidak Lulus</option>
                                 <option value="cadangan" {{ old('status', $ppdb->status) == 'cadangan' ? 'selected' : '' }}>Cadangan</option>
                             </select>
                         </div>

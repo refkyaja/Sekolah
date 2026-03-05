@@ -43,9 +43,11 @@ class SpmbRiwayatStatus extends Model
     public function getStatusSebelumnyaBadgeAttribute()
     {
         return match($this->status_sebelumnya) {
-            'Diterima' => 'bg-green-100 text-green-800',
             'Menunggu Verifikasi' => 'bg-yellow-100 text-yellow-800',
-            'Mundur' => 'bg-red-100 text-red-800',
+            'Revisi Dokumen' => 'bg-orange-100 text-orange-800',
+            'Dokumen Verified' => 'bg-blue-100 text-blue-800',
+            'Lulus' => 'bg-green-100 text-green-800',
+            'Tidak Lulus' => 'bg-red-100 text-red-800',
             default => 'bg-gray-100 text-gray-800',
         };
     }
@@ -56,9 +58,11 @@ class SpmbRiwayatStatus extends Model
     public function getStatusBaruBadgeAttribute()
     {
         return match($this->status_baru) {
-            'Diterima' => 'bg-green-100 text-green-800',
             'Menunggu Verifikasi' => 'bg-yellow-100 text-yellow-800',
-            'Mundur' => 'bg-red-100 text-red-800',
+            'Revisi Dokumen' => 'bg-orange-100 text-orange-800',
+            'Dokumen Verified' => 'bg-blue-100 text-blue-800',
+            'Lulus' => 'bg-green-100 text-green-800',
+            'Tidak Lulus' => 'bg-red-100 text-red-800',
             default => 'bg-gray-100 text-gray-800',
         };
     }

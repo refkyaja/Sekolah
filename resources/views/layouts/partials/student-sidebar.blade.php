@@ -49,8 +49,8 @@
             <span class="text-sm sidebar-text whitespace-nowrap">Materi KBM</span>
         </a>
 
-        <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors sidebar-nav-item text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" 
-           href="#" title="Hasil Seleksi PPDB">
+        <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors sidebar-nav-item {{ Route::is('siswa.ppdb.hasil-seleksi') ? 'bg-primary/10 text-primary font-semibold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}" 
+           href="{{ route('siswa.ppdb.hasil-seleksi') }}" title="Hasil Seleksi PPDB">
             <span class="material-symbols-outlined">person_add</span>
             <span class="text-sm sidebar-text whitespace-nowrap">Hasil Seleksi PPDB</span>
         </a>

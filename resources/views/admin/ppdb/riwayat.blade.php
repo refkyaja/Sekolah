@@ -61,7 +61,7 @@
                     <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider w-16 text-center">No</th>
                     <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">Tahun Ajaran</th>
                     <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">Total Pendaftar</th>
-                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">Jumlah Siswa Diterima</th>
+                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">Jumlah Siswa Lulus</th>
                     <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider text-center">Aksi</th>
                 </tr>
             </thead>
@@ -118,45 +118,35 @@
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-8">
         <div class="flex gap-4">
-            <div class="mt-1">
-                <div class="w-3 h-3 rounded-full bg-orange-500 shadow-sm shadow-orange-200"></div>
-            </div>
+            <div class="w-2 h-10 bg-yellow-500 rounded-full mt-1"></div>
             <div>
                 <h4 class="text-sm font-bold text-slate-800 uppercase tracking-tight">Menunggu Verifikasi</h4>
-                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Pendaftaran baru masuk dan perlu diperiksa.</p>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Pendaftaran baru menunggu verifikasi dokumen.</p>
             </div>
         </div>
         <div class="flex gap-4">
-            <div class="mt-1">
-                <div class="w-3 h-3 rounded-full bg-yellow-400 shadow-sm shadow-yellow-200"></div>
-            </div>
+            <div class="w-2 h-10 bg-amber-500 rounded-full mt-1"></div>
             <div>
                 <h4 class="text-sm font-bold text-slate-800 uppercase tracking-tight">Revisi Dokumen</h4>
-                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Menunggu perbaikan berkas dari orang tua.</p>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Dokumen perlu diperbaiki/diunggah ulang.</p>
             </div>
         </div>
         <div class="flex gap-4">
-            <div class="mt-1">
-                <div class="w-3 h-3 rounded-full bg-blue-500 shadow-sm shadow-blue-200"></div>
-            </div>
+            <div class="w-2 h-10 bg-blue-500 rounded-full mt-1"></div>
             <div>
                 <h4 class="text-sm font-bold text-slate-800 uppercase tracking-tight">Dokumen Verified</h4>
-                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Berkas lengkap dan valid.</p>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Dokumen lengkap dan valid.</p>
             </div>
         </div>
         <div class="flex gap-4">
-            <div class="mt-1">
-                <div class="w-3 h-3 rounded-full bg-green-500 shadow-sm shadow-green-200"></div>
-            </div>
+            <div class="w-2 h-10 bg-green-500 rounded-full mt-1"></div>
             <div>
                 <h4 class="text-sm font-bold text-slate-800 uppercase tracking-tight">Lulus</h4>
                 <p class="text-xs text-slate-500 mt-1 leading-relaxed">Calon siswa diterima.</p>
             </div>
         </div>
         <div class="flex gap-4">
-            <div class="mt-1">
-                <div class="w-3 h-3 rounded-full bg-red-500 shadow-sm shadow-red-200"></div>
-            </div>
+            <div class="w-2 h-10 bg-red-500 rounded-full mt-1"></div>
             <div>
                 <h4 class="text-sm font-bold text-slate-800 uppercase tracking-tight">Tidak Lulus</h4>
                 <p class="text-xs text-slate-500 mt-1 leading-relaxed">Calon siswa tidak diterima.</p>

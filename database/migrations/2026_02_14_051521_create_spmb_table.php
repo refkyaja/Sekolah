@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('no_pendaftaran')->unique();
             $table->unsignedBigInteger('tahun_ajaran_id');
-            $table->enum('status_pendaftaran', ['Diterima', 'Menunggu Verifikasi', 'Mundur'])->default('Menunggu Verifikasi');
+            $table->enum('status_pendaftaran', ['Menunggu Verifikasi', 'Revisi Dokumen', 'Dokumen Verified', 'Lulus', 'Tidak Lulus'])->default('Menunggu Verifikasi');
             
             // Data Anak (Bagian 1)
             $table->string('nama_lengkap_anak');

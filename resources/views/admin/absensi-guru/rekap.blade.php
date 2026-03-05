@@ -27,6 +27,23 @@
         <button type="submit" class="px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
             Tampilkan
         </button>
+        <div class="relative group">
+            <button type="button" class="px-6 py-3 bg-green-600 text-white rounded-xl font-bold text-sm hover:bg-green-700 transition-all shadow-lg flex items-center gap-2">
+                <span class="material-symbols-outlined text-lg">download</span>
+                Export
+                <span class="material-symbols-outlined text-lg">arrow_drop_down</span>
+            </button>
+            <div class="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden z-10 hidden group-hover:block">
+                <a href="{{ route('admin.absensi-guru.rekap.export', ['bulan' => $bulan, 'format' => 'pdf']) }}" class="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2 border-b border-slate-100">
+                    <span class="material-symbols-outlined text-red-500 text-lg">picture_as_pdf</span>
+                    Export as PDF
+                </a>
+                <a href="{{ route('admin.absensi-guru.rekap.export', ['bulan' => $bulan, 'format' => 'excel']) }}" class="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-green-600 text-lg">table_chart</span>
+                    Export as Excel
+                </a>
+            </div>
+        </div>
     </form>
 
     <div class="p-6 sm:p-8 overflow-x-auto">

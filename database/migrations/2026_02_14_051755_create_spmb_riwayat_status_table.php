@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('spmb_id');
             $table->string('status_sebelumnya')->nullable();
-            $table->enum('status_baru', ['Diterima', 'Menunggu Verifikasi', 'Mundur']);
+            $table->enum('status_baru', ['Menunggu Verifikasi', 'Revisi Dokumen', 'Dokumen Verified', 'Lulus', 'Tidak Lulus']);
             $table->text('keterangan')->nullable();
             $table->unsignedBigInteger('diubah_oleh');
             $table->string('role_pengubah');

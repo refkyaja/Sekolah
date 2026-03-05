@@ -77,7 +77,17 @@
                     <button class="quick-status-btn action-btn status-{{ $item->status }}"
                             data-id="{{ $item->id }}"
                             data-status="{{ $item->status }}">
-                        {{ ucfirst($item->status) }}
+                        @php
+                            $statusLabel = match($item->status) {
+                                'menunggu' => 'Menunggu Verifikasi',
+                                'diproses' => 'Dokumen Verified',
+                                'diterima' => 'Lulus',
+                                'ditolak' => 'Tidak Lulus',
+                                'cadangan' => 'Cadangan',
+                                default => ucfirst($item->status),
+                            };
+                        @endphp
+                        {{ $statusLabel }}
                     </button>
                     
                     <button class="quick-payment-btn action-btn payment-{{ $item->status_pembayaran }}"

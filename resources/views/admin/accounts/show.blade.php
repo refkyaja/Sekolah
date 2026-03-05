@@ -274,318 +274,146 @@
 @endpush
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Header with Back Button -->
-    <div class="mb-6 flex items-center justify-between">
-        <div>
-            <h2 class="text-2xl font-bold text-gray-900">Detail Akun</h2>
-            <p class="text-sm text-gray-600">Informasi lengkap akun pengguna</p>
-        </div>
-        <a href="{{ route('admin.accounts.index') }}" class="back-btn">
-            <i class="fas fa-arrow-left"></i>
-            Kembali
-        </a>
-    </div>
-
-    <!-- Main Info Card -->
-    <div class="info-card mb-6">
-        <!-- Profile Header -->
-        <div class="profile-header">
-            <div class="flex flex-col md:flex-row items-center gap-6 relative z-10">
-                <!-- Profile Photo -->
-                <div class="flex-shrink-0">
-                    @if($account->foto)
-                        <img src="{{ asset('storage/'.$account->foto) }}" 
-                             alt="Profile" 
-                             class="profile-photo-large">
-                    @else
-                        <div class="profile-photo-large bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                            <span class="text-4xl font-bold text-white">{{ strtoupper(substr($account->name, 0, 1)) }}</span>
-                        </div>
-                    @endif
-                </div>
-                
-                <!-- Basic Info -->
-                <div class="flex-1 text-center md:text-left">
-                    <div class="flex flex-col md:flex-row items-center md:items-start gap-4">
-                        <div>
-                            <h3 class="text-3xl font-bold text-white mb-2">{{ $account->name }}</h3>
-                            <div class="flex flex-wrap items-center justify-center md:justify-start gap-3">
-                                <span class="role-badge role-{{ $account->role }}">
-                                    <i class="fas fa-tag mr-2"></i>
-                                    {{ ucfirst(str_replace('_', ' ', $account->role)) }}
-                                </span>
-                                <span class="status-badge {{ $account->is_active ? 'status-active' : 'status-inactive' }}">
-                                    <i class="fas fa-{{ $account->is_active ? 'check-circle' : 'times-circle' }} mr-2"></i>
-                                    {{ $account->is_active ? 'Aktif' : 'Nonaktif' }}
-                                </span>
-                                @if($account->id === auth()->id())
-                                    <span class="self-indicator">
-                                        <i class="fas fa-user-shield mr-2"></i>
-                                        Akun Anda
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        
-                        <!-- Action Buttons -->
-                        <div class="flex flex-col sm:flex-row gap-3 md:ml-auto">
-                            <a href="{{ route('admin.accounts.edit', $account) }}" 
-                               class="action-btn btn-edit">
-                                <i class="fas fa-edit"></i>
-                                Edit Akun
-                            </a>
-                            <button onclick="resetPassword({{ $account->id }}, '{{ $account->name }}')" 
-                                    class="action-btn btn-reset">
-                                <i class="fas fa-key"></i>
-                                Reset Password
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <p class="text-white text-opacity-90 mt-4 flex items-center justify-center md:justify-start">
-                        <i class="fas fa-envelope mr-3"></i>
-                        {{ $account->email }}
-                        @if($account->email_verified_at)
-                            <i class="fas fa-check-circle text-green-300 ml-2" title="Email terverifikasi {{ $account->email_verified_at->diffForHumans() }}"></i>
-                        @endif
-                    </p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Detail Information -->
-        <div class="p-6">
-            <div class="detail-grid">
-                <!-- Left Column - Personal Info -->
-                <div>
-                    <h4 class="section-title">
-                        <i class="fas fa-user-circle"></i>
-                        Informasi Pribadi
-                    </h4>
-                    
-                    <div class="space-y-3">
-                        <div class="info-box">
-                            <div class="info-label">
-                                <i class="fas fa-user"></i>
-                                Nama Lengkap
-                            </div>
-                            <div class="info-value">{{ $account->name }}</div>
-                        </div>
-                        
-                        <div class="info-box">
-                            <div class="info-label">
-                                <i class="fas fa-venus-mars"></i>
-                                Jenis Kelamin
-                            </div>
-                            <div class="info-value">{{ $account->jenis_kelamin ?? '-' }}</div>
-                        </div>
-                        
-                        <div class="info-box">
-                            <div class="info-label">
-                                <i class="fas fa-calendar-alt"></i>
-                                Tempat, Tanggal Lahir
-                            </div>
-                            <div class="info-value">
-                                @if($account->tempat_lahir || $account->tanggal_lahir)
-                                    {{ $account->tempat_lahir ?? '-' }}{{ $account->tempat_lahir && $account->tanggal_lahir ? ', ' : '' }}
-                                    @if($account->tanggal_lahir)
-                                        {{ \Carbon\Carbon::parse($account->tanggal_lahir)->translatedFormat('d F Y') }}
-                                    @endif
-                                @else
-                                    -
-                                @endif
-                            </div>
-                        </div>
-                        
-                        <div class="info-box">
-                            <div class="info-label">
-                                <i class="fas fa-phone"></i>
-                                No. Telepon
-                            </div>
-                            <div class="info-value">{{ $account->no_telepon ?? '-' }}</div>
-                        </div>
-                        
-                        <div class="info-box">
-                            <div class="info-label">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Alamat
-                            </div>
-                            <div class="info-value">{{ $account->alamat ?? '-' }}</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Right Column - Account Info -->
-                <div>
-                    <h4 class="section-title">
-                        <i class="fas fa-lock"></i>
-                        Informasi Akun
-                    </h4>
-                    
-                    <div class="space-y-3">
-                        <div class="info-box">
-                            <div class="info-label">
-                                <i class="fas fa-envelope"></i>
-                                Email
-                            </div>
-                            <div class="info-value">{{ $account->email }}</div>
-                            <div class="text-xs text-gray-500 mt-2 flex items-center">
-                                @if($account->email_verified_at)
-                                    <i class="fas fa-check-circle text-green-500 mr-1"></i>
-                                    Terverifikasi {{ \Carbon\Carbon::parse($account->email_verified_at)->diffForHumans() }}
-                                @else
-                                    <i class="fas fa-times-circle text-red-500 mr-1"></i>
-                                    Belum terverifikasi
-                                @endif
-                            </div>
-                        </div>
-                        
-                        <div class="info-box">
-                            <div class="info-label">
-                                <i class="fas fa-clock"></i>
-                                Terakhir Login
-                            </div>
-                            <div class="info-value">
-                                @if($account->last_login_at)
-                                    {{ \Carbon\Carbon::parse($account->last_login_at)->translatedFormat('d F Y H:i') }}
-                                @else
-                                    <span class="text-gray-400">Belum pernah login</span>
-                                @endif
-                            </div>
-                            @if($account->last_login_ip)
-                                <div class="text-xs text-gray-500 mt-1">
-                                    <i class="fas fa-globe mr-1"></i> IP: {{ $account->last_login_ip }}
-                                </div>
-                            @endif
-                        </div>
-                        
-                        <div class="info-box">
-                            <div class="info-label">
-                                <i class="fas fa-calendar-plus"></i>
-                                Bergabung Sejak
-                            </div>
-                            <div class="info-value">
-                                {{ $account->created_at->translatedFormat('d F Y H:i') }}
-                            </div>
-                            <div class="text-xs text-gray-500 mt-1">
-                                <i class="fas fa-history mr-1"></i>
-                                {{ $account->created_at->diffForHumans() }}
-                            </div>
-                        </div>
-                        
-                        <div class="info-box">
-                            <div class="info-label">
-                                <i class="fas fa-pencil-alt"></i>
-                                Terakhir Diperbarui
-                            </div>
-                            <div class="info-value">
-                                {{ $account->updated_at->translatedFormat('d F Y H:i') }}
-                            </div>
-                            <div class="text-xs text-gray-500 mt-1">
-                                <i class="fas fa-history mr-1"></i>
-                                {{ $account->updated_at->diffForHumans() }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Activity Log Section -->
-    @if($account->activities && $account->activities->count() > 0)
-    <div class="info-card p-6">
-        <h4 class="section-title">
-            <i class="fas fa-history"></i>
-            Aktivitas Terbaru
-        </h4>
-        
-        <div class="space-y-3">
-            @foreach($account->activities()->latest()->limit(5)->get() as $activity)
-            <div class="activity-item">
-                <div class="flex items-start gap-3">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0
-                        @if($activity->action == 'login') bg-green-500
-                        @elseif($activity->action == 'logout') bg-gray-500
-                        @elseif($activity->action == 'update_profile') bg-blue-500
-                        @elseif($activity->action == 'change_password') bg-yellow-500
-                        @elseif($activity->action == 'update_photo') bg-purple-500
-                        @else bg-indigo-500
-                        @endif">
-                        
-                        @if($activity->action == 'login')
-                            <i class="fas fa-sign-in-alt text-white text-sm"></i>
-                        @elseif($activity->action == 'logout')
-                            <i class="fas fa-sign-out-alt text-white text-sm"></i>
-                        @elseif($activity->action == 'update_profile')
-                            <i class="fas fa-user-edit text-white text-sm"></i>
-                        @elseif($activity->action == 'change_password')
-                            <i class="fas fa-key text-white text-sm"></i>
-                        @elseif($activity->action == 'update_photo')
-                            <i class="fas fa-camera text-white text-sm"></i>
-                        @else
-                            <i class="fas fa-history text-white text-sm"></i>
-                        @endif
-                    </div>
-                    
-                    <div class="flex-1">
-                        <div class="flex items-center justify-between">
-                            <p class="text-sm font-medium text-gray-900">
-                                {{ $activity->description ?? ucfirst(str_replace('_', ' ', $activity->action)) }}
-                            </p>
-                            <span class="text-xs text-gray-500">
-                                {{ $activity->created_at->diffForHumans() }}
-                            </span>
-                        </div>
-                        @if($activity->ip_address)
-                        <div class="text-xs text-gray-500 mt-1">
-                            <i class="fas fa-globe mr-1"></i>{{ $activity->ip_address }}
-                            @if($activity->device)
-                                • <i class="fas fa-{{ strtolower($activity->device) == 'mobile' ? 'mobile-alt' : 'desktop' }} mr-1"></i>{{ $activity->device }}
-                            @endif
-                            @if($activity->browser)
-                                • <i class="fas fa-compass mr-1"></i>{{ $activity->browser }}
-                            @endif
-                        </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-        
-        @if($account->activities()->count() > 5)
-        <div class="text-center mt-4">
-            <a href="#" class="text-sm text-indigo-600 hover:text-indigo-800">
-                Lihat semua aktivitas <i class="fas fa-arrow-right ml-1"></i>
+<div class="max-w-4xl mx-auto space-y-6">
+    <div class="h-20 flex items-center justify-between bg-transparent flex-shrink-0">
+        <div class="flex items-center gap-4">
+            <a class="p-2.5 bg-white hover:bg-primary hover:text-white rounded-xl transition-all text-slate-400 shadow-sm border border-slate-100 flex items-center justify-center group" href="{{ route('admin.accounts.index') }}">
+                <span class="material-symbols-outlined group-hover:text-white">arrow_back</span>
             </a>
-        </div>
-        @endif
-    </div>
-    @endif
-
-    <!-- Danger Zone -->
-    @if($account->id !== auth()->id() && in_array(auth()->user()->role, ['admin', 'super_admin']))
-    <div class="info-card p-6 mt-6 border-2 border-red-200 bg-gradient-to-r from-red-50 to-white">
-        <h4 class="section-title text-red-600">
-            <i class="fas fa-exclamation-triangle text-red-500"></i>
-            Danger Zone
-        </h4>
-        
-        <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
             <div>
-                <p class="font-medium text-gray-900">Hapus Akun Ini</p>
-                <p class="text-sm text-gray-600">Setelah dihapus, semua data akun akan hilang permanen. Tindakan ini tidak dapat dibatalkan.</p>
+                <h1 class="text-xl font-bold text-slate-800">Detail Informasi User</h1>
+                <nav class="flex text-[10px] font-bold uppercase tracking-widest text-slate-400 gap-2">
+                    <span>Manajemen Sistem</span>
+                    <span>/</span>
+                    <span class="text-primary">User Profile</span>
+                </nav>
             </div>
-            <button onclick="deleteAccount({{ $account->id }}, '{{ $account->name }}')" 
-                    class="bg-red-600 text-white px-6 py-3 rounded-xl hover:bg-red-700 transition-all duration-200 flex items-center shadow-lg hover:shadow-xl transform hover:scale-105">
-                <i class="fas fa-trash mr-2"></i>
-                Hapus Akun
-            </button>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="{{ route('admin.accounts.edit', $account) }}" class="flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-xl font-bold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/25">
+                <span class="material-symbols-outlined text-lg">edit</span>
+                Edit User
+            </a>
+            <div class="h-8 w-px bg-slate-200 mx-2"></div>
+            <div class="flex items-center gap-3">
+                @if($account->foto)
+                    <img alt="User" class="w-10 h-10 rounded-2xl object-cover shadow-sm ring-2 ring-white" src="{{ asset('storage/'.$account->foto) }}"/>
+                @else
+                    <div class="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center shadow-sm ring-2 ring-white">
+                        <span class="text-primary font-extrabold">{{ strtoupper(substr($account->name, 0, 1)) }}</span>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
-    @endif
+
+    <div class="bg-white rounded-[2rem] shadow-xl shadow-primary/5 border border-slate-100 overflow-hidden">
+        <div class="p-8 border-b border-slate-50 bg-gradient-to-r from-slate-50 to-white">
+            <div class="flex items-center gap-5">
+                <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary text-3xl">account_circle</span>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800">Informasi Profil User</h3>
+                    <p class="text-sm text-slate-500 font-medium">Data detail akun dan akses sistem user yang bersangkutan.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-1">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Nama Lengkap</p>
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <p class="text-slate-800 font-bold">{{ $account->name }}</p>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Email</p>
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <p class="text-slate-800 font-bold">{{ $account->email }}</p>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Role Akses</p>
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-xl">admin_panel_settings</span>
+                        <p class="text-slate-800 font-bold">{{ ucfirst(str_replace('_', ' ', $account->role)) }}</p>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Jenis Kelamin</p>
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <p class="text-slate-800 font-bold">{{ $account->jenis_kelamin ?? '-' }}</p>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Tempat Tanggal Lahir</p>
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <p class="text-slate-800 font-bold">
+                            @if($account->tempat_lahir || $account->tanggal_lahir)
+                                {{ $account->tempat_lahir ?? '-' }}{{ $account->tempat_lahir && $account->tanggal_lahir ? ', ' : '' }}
+                                @if($account->tanggal_lahir)
+                                    {{ \Carbon\Carbon::parse($account->tanggal_lahir)->translatedFormat('d F Y') }}
+                                @endif
+                            @else
+                                -
+                            @endif
+                        </p>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">No. Telepon</p>
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <p class="text-slate-800 font-bold">{{ $account->no_telepon ?? '-' }}</p>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Status Akun</p>
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center">
+                        @if($account->is_active)
+                            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-[10px] font-black tracking-widest uppercase">AKTIF</span>
+                        @else
+                            <span class="px-3 py-1 bg-red-100 text-red-700 rounded-lg text-[10px] font-black tracking-widest uppercase">NONAKTIF</span>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Terakhir Login</p>
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center gap-2 text-slate-600">
+                        <span class="material-symbols-outlined text-lg">history</span>
+                        <p class="text-slate-800 font-bold">
+                            @if($account->last_login_at)
+                                {{ \Carbon\Carbon::parse($account->last_login_at)->translatedFormat('d M Y, H:i') }}
+                            @else
+                                -
+                            @endif
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex items-start gap-5 p-6 bg-primary/5 rounded-[1.5rem] border border-primary/10 relative overflow-hidden group">
+        <div class="absolute right-0 top-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 transition-transform duration-500 group-hover:scale-110"></div>
+        <div class="w-12 h-12 rounded-xl bg-white flex-shrink-0 flex items-center justify-center shadow-sm">
+            <span class="material-symbols-outlined text-primary">info</span>
+        </div>
+        <div class="relative z-10">
+            <h4 class="text-sm font-bold text-slate-800 mb-1">Catatan Penting:</h4>
+            <p class="text-xs text-slate-500 leading-relaxed max-w-2xl">
+                Akses user ini dibatasi oleh hak istimewa role <span class="text-primary font-bold">{{ ucfirst(str_replace('_', ' ', $account->role)) }}</span>.
+            </p>
+        </div>
+    </div>
 </div>
 
 <!-- Reset Password Modal -->

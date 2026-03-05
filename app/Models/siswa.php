@@ -8,14 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
 class Siswa extends Authenticatable
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
-
-class Siswa extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'siswas';
     protected $fillable = [
         // Relasi
         'spmb_id',
@@ -154,6 +149,18 @@ class Siswa extends Model
         self::STATUS_PINDAH => 'Pindah',
         self::STATUS_CUTI => 'Cuti',
     ];
+
+    /* =======================
+     | ACTIVITY LOG OPTIONS
+     ======================= */
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 
     /* =======================
      | RELATIONSHIPS

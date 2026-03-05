@@ -1,9 +1,5 @@
 @extends('layouts.admin')
 
-@section('title', 'Absensi Guru')
-
-@section('breadcrumb', 'Akademik / Absensi Guru')
-
 @section('content')
 <nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 uppercase tracking-widest">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">

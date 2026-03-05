@@ -211,9 +211,9 @@ const updateStats = (data) => {
         statsContainer.innerHTML = `
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div class="bg-white p-4 rounded-lg shadow"><div class="text-sm text-gray-500">Total</div><div class="text-2xl font-bold">${stat.total || 0}</div></div>
-                <div class="bg-white p-4 rounded-lg shadow"><div class="text-sm text-gray-500">Diterima</div><div class="text-2xl font-bold text-green-600">${stat.diterima || 0}</div></div>
-                <div class="bg-white p-4 rounded-lg shadow"><div class="text-sm text-gray-500">Diproses</div><div class="text-2xl font-bold text-yellow-600">${stat.diproses || 0}</div></div>
-                <div class="bg-white p-4 rounded-lg shadow"><div class="text-sm text-gray-500">Ditolak</div><div class="text-2xl font-bold text-red-600">${stat.ditolak || 0}</div></div>
+                <div class="bg-white p-4 rounded-lg shadow"><div class="text-sm text-gray-500">Lulus</div><div class="text-2xl font-bold text-green-600">${stat.diterima || 0}</div></div>
+                <div class="bg-white p-4 rounded-lg shadow"><div class="text-sm text-gray-500">Dokumen Verified</div><div class="text-2xl font-bold text-yellow-600">${stat.diproses || 0}</div></div>
+                <div class="bg-white p-4 rounded-lg shadow"><div class="text-sm text-gray-500">Tidak Lulus</div><div class="text-2xl font-bold text-red-600">${stat.ditolak || 0}</div></div>
             </div>
         `;
     }
