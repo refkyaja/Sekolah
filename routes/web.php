@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\SpmbDokumenController;
 use App\Http\Controllers\Admin\SpmbBuktiTransferController;
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\MateriKbmController;
+use App\Http\Controllers\Admin\ActivityLogController;
 
 // ==================== ROUTES PUBLIK ====================
 
@@ -289,6 +290,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
 
     // Kalender Akademik
     Route::resource('kalender-akademik', \App\Http\Controllers\Admin\KalenderAkademikController::class);
+
+    // Activity Log
+    Route::resource('activity-log', ActivityLogController::class)->only(['index', 'destroy']);
 
     // Widgets
     Route::get('/widgets/spmb-statistics', [DashboardController::class, 'getSpmbStatistics'])->name('widgets.spmb-statistics');
