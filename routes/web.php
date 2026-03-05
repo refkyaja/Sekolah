@@ -23,12 +23,13 @@ use App\Http\Controllers\Admin\SpmbDokumenController;
 use App\Http\Controllers\Admin\SpmbBuktiTransferController;
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\MateriKbmController;
+use App\Http\Controllers\Admin\JadwalPelajaranController as AdminJadwalPelajaranController;
 use App\Http\Controllers\Admin\ActivityLogController;
 
 // ==================== ROUTES PUBLIK ====================
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
+Route::post('/buku-tamu-home', [HomeController::class, 'storeBukuTamu'])->name('buku-tamu.home');
 Route::prefix('berita')->name('berita.')->group(function () {
     Route::get('/', [BeritaController::class, 'index'])->name('index');
     Route::get('/{slug}', [BeritaController::class, 'show'])->name('show');
@@ -45,15 +46,11 @@ Route::prefix('buku-tamu')->name('buku-tamu.')->group(function () {
     Route::get('/success', [BukuTamuController::class, 'success'])->name('success');
 });
 
-Route::prefix('profil')->name('profil.')->group(function () {
-    Route::get('/sejarah', fn() => view('Home.profil.sejarah'))->name('sejarah');
-    Route::get('/sambutan', fn() => view('Home.profil.sambutan'))->name('sambutan');
-    Route::get('/visi-misi', fn() => view('Home.profil.visimisi'))->name('visimisi');
-    Route::get('/program', fn() => view('Home.profil.program'))->name('program');
-    Route::get('/lokasi', fn() => view('Home.profil.lokasi'))->name('lokasi');
-});
+Route::get('/profil', [App\Http\Controllers\ProfilController::class, 'index'])->name('profil.index');
+
 
 Route::prefix('akademik')->name('akademik.')->group(function () {
+    Route::get('/kurikulum', [App\Http\Controllers\KurikulumController::class, 'index'])->name('kurikulum');
     Route::get('/kegiatan', fn() => view('Home.akademik.kegiatan'))->name('kegiatan');
     Route::get('/prestasi', fn() => view('Home.akademik.prestasi'))->name('prestasi');
     Route::get('/ekstrakurikuler', fn() => view('Home.akademik.ekstrakurikuler'))->name('ekstrakurikuler');
@@ -315,6 +312,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
     // Kalender Akademik
     Route::resource('kalender-akademik', \App\Http\Controllers\Admin\KalenderAkademikController::class);
 
+    // Jadwal Pelajaran
+    Route::resource('jadwal-pelajaran', AdminJadwalPelajaranController::class);
     // Activity Log
     Route::resource('activity-log', ActivityLogController::class)->only(['index', 'destroy']);
 
@@ -334,6 +333,30 @@ Route::prefix('guru')->name('guru.')->middleware(['auth', 'verified', 'guru'])->
     Route::get('/dashboard', fn() => view('guru.dashboard'))->name('dashboard');
     Route::get('/absensi', fn() => view('guru.absensi.index'))->name('absensi.index');
     Route::get('/profile', fn() => view('guru.profile'))->name('profile');
+});
+
+// ==================== ROUTES SISWA ====================
+
+Route::prefix('siswa')->name('siswa.')->group(function () {
+    Route::get('/login', [\App\Http\Controllers\Siswa\AuthController::class, 'login'])->name('login');
+    Route::post('/login', [\App\Http\Controllers\Siswa\AuthController::class, 'authenticate'])->name('authenticate');
+    Route::get('/register', [\App\Http\Controllers\Siswa\AuthController::class, 'register'])->name('register');
+    Route::post('/register', [\App\Http\Controllers\Siswa\AuthController::class, 'storeRegister'])->name('storeRegister');
+    Route::post('/logout', [\App\Http\Controllers\Siswa\AuthController::class, 'logout'])->name('logout');
+    
+    // Google Auth Routes
+    Route::get('/login/google', [\App\Http\Controllers\Siswa\AuthController::class, 'redirectToGoogle'])->name('login.google');
+    Route::get('/login/google/callback', [\App\Http\Controllers\Siswa\AuthController::class, 'handleGoogleCallback'])->name('login.google.callback');
+
+    Route::middleware(['auth:siswa'])->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\Siswa\DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/jadwal', [\App\Http\Controllers\Siswa\JadwalPelajaranController::class, 'index'])->name('jadwal.index');
+        Route::get('/jadwal/download-pdf', [\App\Http\Controllers\Siswa\JadwalPelajaranController::class, 'downloadPdf'])->name('jadwal.download-pdf');
+        Route::get('/kalender', [\App\Http\Controllers\Siswa\KalenderAkademikController::class, 'index'])->name('kalender.index');
+        Route::get('/kalender/download-pdf', [\App\Http\Controllers\Siswa\KalenderAkademikController::class, 'downloadPdf'])->name('kalender.download-pdf');
+        Route::get('/materi', [\App\Http\Controllers\Siswa\MateriKbmController::class, 'index'])->name('materi.index');
+        Route::get('/materi/{materiKbm}/download', [\App\Http\Controllers\Siswa\MateriKbmController::class, 'download'])->name('materi.download');
+    });
 });
 
 // ==================== AUTH & API ====================
