@@ -1,4 +1,4 @@
-<aside class="admin-sidebar w-72 flex-shrink-0 bg-sidebar-bg text-white flex flex-col h-full fixed lg:relative inset-y-0 left-0 -translate-x-full lg:translate-x-0 z-40 lg:z-20 transition-all duration-300">
+<aside class="admin-sidebar w-72 flex-shrink-0 bg-sidebar-bg text-white flex flex-col h-full z-40 lg:z-20 transition-all duration-300">
     <div class="p-6 flex items-center justify-between">
         <div class="flex items-center gap-3 overflow-hidden">
             <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md flex-shrink-0">
@@ -6,14 +6,19 @@
             </div>
             <h2 class="text-xl font-bold tracking-tight logo-text whitespace-nowrap">TK PGRI HARAPAN BANGSA 1</h2>
         </div>
-        <label class="cursor-pointer p-1.5 hover:bg-white/10 rounded-lg transition-colors sidebar-toggle-label" for="sidebar-toggle">
+        <button class="p-1.5 hover:bg-white/10 rounded-lg transition-colors hidden lg:flex" 
+                @click="sidebarCollapsed = !sidebarCollapsed; localStorage.setItem('adminSidebarCollapsed', sidebarCollapsed)">
             <span class="material-symbols-outlined text-white">menu</span>
-        </label>
+        </button>
+        <button class="p-1.5 hover:bg-white/10 rounded-lg transition-colors lg:hidden" 
+                @click="mobileSidebarOpen = false">
+            <span class="material-symbols-outlined text-white">close</span>
+        </button>
     </div>
 
     <div class="sidebar-scroll flex-1 overflow-y-auto px-4 space-y-6 pb-6 mt-2">
         <div>
-            <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-2xl {{ request()->routeIs('admin.dashboard') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} transition-all hover:bg-white/30" href="{{ route('admin.dashboard') }}">
+            <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-2xl {{ request()->routeIs('admin.dashboard') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} transition-all hover:bg-white/30" href="{{ route('admin.dashboard') }}" title="Dashboard Overview">
                 <span class="material-symbols-outlined text-xl">dashboard</span>
                 <span class="text-sm nav-text whitespace-nowrap">Dashboard Overview</span>
             </a>
@@ -54,6 +59,10 @@
             <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.kalender-akademik.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.kalender-akademik.index') }}" title="Kalender Akademik">
                 <span class="material-symbols-outlined text-lg">event_note</span>
                 <span class="text-sm nav-text whitespace-nowrap">Kalender Akademik</span>
+            </a>
+            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.jadwal-pelajaran.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.jadwal-pelajaran.index') }}" title="Jadwal Pelajaran">
+                <span class="material-symbols-outlined text-lg">schedule</span>
+                <span class="text-sm nav-text whitespace-nowrap">Jadwal Pelajaran</span>
             </a>
         </div>
 
@@ -125,9 +134,9 @@
 
     <form method="POST" action="{{ route('logout') }}" id="logoutForm" class="p-4 border-t border-white/10">
         @csrf
-        <button type="button" onclick="confirmLogout()" class="nav-item w-full flex items-center justify-center gap-2 px-4 py-2 text-white/80 hover:bg-white/10 rounded-xl transition-all text-sm">
+        <button type="button" onclick="confirmLogout()" class="nav-item w-full flex items-center justify-center gap-2 px-4 py-2 text-white/80 hover:bg-white/10 rounded-xl transition-all text-sm" title="Keluar">
             <span class="material-symbols-outlined text-lg">logout</span>
-            <span class="nav-text">Keluar</span>
+            <span class="nav-text whitespace-nowrap">Keluar</span>
         </button>
     </form>
 </aside>
