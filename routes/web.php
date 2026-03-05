@@ -70,8 +70,6 @@ Route::prefix('layanan')->name('layanan.')->group(function () {
 
 Route::prefix('spmb')->name('spmb.')->group(function () {
     Route::get('/', [SpmbController::class, 'index'])->name('index');
-    Route::get('/pendaftaran', [SpmbController::class, 'pendaftaran'])->name('pendaftaran');
-    Route::post('/pendaftaran', [SpmbController::class, 'store'])->name('store');
     Route::get('/countdown', [SpmbController::class, 'countdown'])->name('countdown');
     Route::get('/pengumuman', [SpmbController::class, 'pengumuman'])->name('pengumuman');
     Route::post('/cek-pengumuman', [SpmbController::class, 'cekPengumuman'])->name('cekPengumuman');
@@ -80,7 +78,26 @@ Route::prefix('spmb')->name('spmb.')->group(function () {
     Route::get('/informasi', fn() => view('Home.spmb.informasi'))->name('informasi');
     Route::get('/jadwal', fn() => view('Home.spmb.jadwal'))->name('jadwal');
     Route::get('/syarat', fn() => view('Home.spmb.syarat'))->name('syarat');
+
+    // Legacy single-step (keep for backward compat)
+    Route::get('/pendaftaran', [SpmbController::class, 'pendaftaran'])->name('pendaftaran');
+    Route::post('/pendaftaran', [SpmbController::class, 'store'])->name('store');
 });
+
+// ==================== MULTI-STEP PPDB ====================
+use App\Http\Controllers\PendaftaranController;
+
+Route::prefix('daftar')->name('pendaftaran.')->group(function () {
+    Route::get('/step/1', [PendaftaranController::class, 'step1'])->name('step1');
+    Route::post('/step/1', [PendaftaranController::class, 'step1Store'])->name('step1.store');
+    Route::get('/step/2', [PendaftaranController::class, 'step2'])->name('step2');
+    Route::post('/step/2', [PendaftaranController::class, 'step2Store'])->name('step2.store');
+    Route::get('/step/3', [PendaftaranController::class, 'step3'])->name('step3');
+    Route::post('/step/3', [PendaftaranController::class, 'step3Store'])->name('step3.store');
+    Route::get('/step/4', [PendaftaranController::class, 'step4'])->name('step4');
+    Route::post('/kirim', [PendaftaranController::class, 'submit'])->name('submit');
+});
+
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])

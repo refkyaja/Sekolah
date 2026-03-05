@@ -435,6 +435,10 @@ class SpmbController extends Controller
      */
     public function pendaftaran()
     {
+        if (!auth('siswa')->check()) {
+            return redirect()->route('siswa.login')->with('error', 'Silakan login terlebih dahulu untuk mendaftar.');
+        }
+
         $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
         
         if (!$tahunAjaranAktif) {
@@ -476,58 +480,46 @@ class SpmbController extends Controller
                 ->withInput();
         }
         
-        // Validasi data
+        // Validasi data berdasarkan field di resources/views/Home/spmb/pendaftaran.blade.php
         $validator = Validator::make($request->all(), [
-            // Data Anak (Bagian 1)
-            'nama_lengkap_anak' => 'required|string|max:255',
-            'nama_panggilan_anak' => 'nullable|string|max:100',
-            'nik_anak' => 'required|digits:16|unique:spmb,nik_anak',
-            'tempat_lahir_anak' => 'required|string|max:100',
-            'tanggal_lahir_anak' => 'required|date',
-            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'agama' => 'required|in:Islam,Kristen Protestan,Kristen Katolik,Hindu,Buddha,Konghucu,Lainnya',
-            'anak_ke' => 'required|integer|min:1',
-            'tinggal_bersama' => 'required|string|max:100',
-            'status_tempat_tinggal' => 'required|string|max:100',
-            'bahasa_sehari_hari' => 'required|string|max:100',
-            
-            // Alamat Rumah
-            'provinsi_rumah' => 'required|string|max:100',
-            'kota_kabupaten_rumah' => 'required|string|max:100',
-            'kecamatan_rumah' => 'required|string|max:100',
-            'kelurahan_rumah' => 'required|string|max:100',
-            'nama_jalan_rumah' => 'required|string|max:255',
-            
-            // Data Ayah
-            'nama_lengkap_ayah' => 'required|string|max:255',
-            'nik_ayah' => 'required|digits:16',
-            'tempat_lahir_ayah' => 'required|string|max:100',
-            'tanggal_lahir_ayah' => 'required|date',
-            'nomor_telepon_ayah' => 'required|string|max:20',
-            
-            // Data Ibu
-            'nama_lengkap_ibu' => 'required|string|max:255',
-            'nik_ibu' => 'required|digits:16',
-            'tempat_lahir_ibu' => 'required|string|max:100',
-            'tanggal_lahir_ibu' => 'required|date',
-            'nomor_telepon_ibu' => 'required|string|max:20',
-            
-            // Informasi Tambahan
-            'jenis_daftar' => 'required|in:Siswa Baru,Pindahan',
-            'punya_saudara_sekolah_tk' => 'required|in:Ya,Tidak',
-            
-            // Dokumen (WAJIB)
-            'akte_kelahiran' => 'required|file|mimes:pdf,jpeg,jpg,png|max:2048',
+            // Section 1: Data Calon Siswa
+            'nama_calon_siswa' => 'required|string|max:255',
+            'jenis_kelamin' => 'required|in:L,P',
+            'tempat_lahir' => 'required|string|max:100',
+            'tanggal_lahir' => 'required|date',
+            'agama' => 'required|string|max:50',
+            'nik' => 'required|digits:16|unique:spmb,nik_anak',
+            'alamat' => 'required|string',
+            'akta_kelahiran' => 'required|file|mimes:pdf,jpeg,jpg,png|max:2048',
             'kartu_keluarga' => 'required|file|mimes:pdf,jpeg,jpg,png|max:2048',
-            'ktp_orang_tua' => 'required|file|mimes:pdf,jpeg,jpg,png|max:2048',
+            
+            // Section 2: Data Orang Tua
+            'nama_ayah' => 'required|string|max:255',
+            'nik_ayah' => 'required|digits:16',
+            'pekerjaan_ayah' => 'nullable|string|max:100',
+            'penghasilan_ayah' => 'nullable|string|max:100',
+            'nama_ibu' => 'required|string|max:255',
+            'nik_ibu' => 'required|digits:16',
+            'pekerjaan_ibu' => 'nullable|string|max:100',
+            'no_hp_ortu' => 'required|string|max:20',
+            'email_ortu' => 'nullable|email|max:255',
+            'nama_wali' => 'nullable|string|max:255',
+            'hubungan_wali' => 'nullable|string|max:100',
+            
+            // Section 3: Jalur
+            'jalur_pendaftaran' => 'required|string|max:100',
+            'catatan_khusus' => 'nullable|string',
+            
+            // Hidden fields
+            'jenis_daftar' => 'nullable|in:Siswa Baru,Pindahan',
+            'punya_saudara_sekolah_tk' => 'nullable|in:Ya,Tidak',
         ], [
-            'nik_anak.digits' => 'NIK anak harus 16 digit angka',
-            'nik_anak.unique' => 'NIK ini sudah terdaftar',
+            'nik.digits' => 'NIK anak harus 16 digit angka',
+            'nik.unique' => 'NIK ini sudah terdaftar',
             'nik_ayah.digits' => 'NIK ayah harus 16 digit angka',
             'nik_ibu.digits' => 'NIK ibu harus 16 digit angka',
-            'akte_kelahiran.required' => 'Upload akta kelahiran',
+            'akta_kelahiran.required' => 'Upload akta kelahiran',
             'kartu_keluarga.required' => 'Upload kartu keluarga',
-            'ktp_orang_tua.required' => 'Upload KTP orang tua/wali',
         ]);
 
         if ($validator->fails()) {
@@ -540,98 +532,58 @@ class SpmbController extends Controller
         
         try {
             // Validasi usia minimal 3 tahun
-            $usia = Carbon::parse($request->tanggal_lahir_anak)->age;
+            $usia = Carbon::parse($request->tanggal_lahir)->age;
             if ($usia < 3) {
                 return redirect()->route('spmb.pendaftaran')
                     ->with('error', 'Usia calon siswa minimal 3 tahun untuk mendaftar TK')
                     ->withInput();
             }
-
+            
+            // Map jenis kelamin L/P ke Laki-laki/Perempuan
+            $jk = ($request->jenis_kelamin == 'L') ? 'Laki-laki' : 'Perempuan';
+            
             // Generate nomor pendaftaran
             $noPendaftaran = $this->generateNomorPendaftaran();
             
-            // Siapkan data untuk disimpan
+            // Siapkan data untuk disimpan (sesuai Spmb model)
             $spmbData = [
                 'no_pendaftaran' => $noPendaftaran,
                 'tahun_ajaran_id' => $tahunAjaranAktif->id,
                 'status_pendaftaran' => 'Menunggu Verifikasi',
                 
                 // Data Anak
-                'nama_lengkap_anak' => $request->nama_lengkap_anak,
-                'nama_panggilan_anak' => $request->nama_panggilan_anak,
-                'nik_anak' => $request->nik_anak,
-                'tempat_lahir_anak' => $request->tempat_lahir_anak,
-                'tanggal_lahir_anak' => $request->tanggal_lahir_anak,
-                'jenis_kelamin' => $request->jenis_kelamin,
+                'nama_lengkap_anak' => $request->nama_calon_siswa,
+                'nik_anak' => $request->nik,
+                'tempat_lahir_anak' => $request->tempat_lahir,
+                'tanggal_lahir_anak' => $request->tanggal_lahir,
+                'jenis_kelamin' => $jk,
                 'agama' => $request->agama,
-                'anak_ke' => $request->anak_ke,
-                'tinggal_bersama' => $request->tinggal_bersama,
-                'status_tempat_tinggal' => $request->status_tempat_tinggal,
-                'bahasa_sehari_hari' => $request->bahasa_sehari_hari,
-                'jarak_rumah_ke_sekolah' => $request->jarak_rumah_ke_sekolah,
-                'waktu_tempuh_ke_sekolah' => $request->waktu_tempuh_ke_sekolah,
-                'berat_badan' => $request->berat_badan,
-                'tinggi_badan' => $request->tinggi_badan,
-                'golongan_darah' => $request->golongan_darah,
-                'penyakit_pernah_diderita' => $request->penyakit_pernah_diderita,
-                'imunisasi_pernah_diterima' => $request->imunisasi_pernah_diterima,
-                
-                // Alamat Rumah
-                'provinsi_rumah' => $request->provinsi_rumah,
-                'kota_kabupaten_rumah' => $request->kota_kabupaten_rumah,
-                'kecamatan_rumah' => $request->kecamatan_rumah,
-                'kelurahan_rumah' => $request->kelurahan_rumah,
-                'nama_jalan_rumah' => $request->nama_jalan_rumah,
-                
-                // Alamat KK (optional)
-                'alamat_kk_sama' => $request->has('alamat_kk_sama'),
-                'provinsi_kk' => $request->provinsi_kk,
-                'kota_kabupaten_kk' => $request->kota_kabupaten_kk,
-                'kecamatan_kk' => $request->kecamatan_kk,
-                'kelurahan_kk' => $request->kelurahan_kk,
-                'nama_jalan_kk' => $request->nama_jalan_kk,
-                'alamat_kk' => $request->alamat_kk,
+                'nama_jalan_rumah' => $request->alamat,
                 
                 // Data Ayah
-                'nama_lengkap_ayah' => $request->nama_lengkap_ayah,
+                'nama_lengkap_ayah' => $request->nama_ayah,
                 'nik_ayah' => $request->nik_ayah,
-                'tempat_lahir_ayah' => $request->tempat_lahir_ayah,
-                'tanggal_lahir_ayah' => $request->tanggal_lahir_ayah,
-                'pendidikan_ayah' => $request->pendidikan_ayah,
                 'pekerjaan_ayah' => $request->pekerjaan_ayah,
-                'bidang_pekerjaan_ayah' => $request->bidang_pekerjaan_ayah,
-                'penghasilan_per_bulan_ayah' => $request->penghasilan_per_bulan_ayah,
-                'nomor_telepon_ayah' => $request->nomor_telepon_ayah,
-                'email_ayah' => $request->email_ayah,
+                'penghasilan_per_bulan_ayah' => $request->penghasilan_ayah,
+                'nomor_telepon_ayah' => $request->no_hp_ortu,
+                'email_ayah' => $request->email_ortu,
                 
                 // Data Ibu
-                'nama_lengkap_ibu' => $request->nama_lengkap_ibu,
+                'nama_lengkap_ibu' => $request->nama_ibu,
                 'nik_ibu' => $request->nik_ibu,
-                'tempat_lahir_ibu' => $request->tempat_lahir_ibu,
-                'tanggal_lahir_ibu' => $request->tanggal_lahir_ibu,
-                'pendidikan_ibu' => $request->pendidikan_ibu,
                 'pekerjaan_ibu' => $request->pekerjaan_ibu,
-                'bidang_pekerjaan_ibu' => $request->bidang_pekerjaan_ibu,
-                'penghasilan_per_bulan_ibu' => $request->penghasilan_per_bulan_ibu,
-                'nomor_telepon_ibu' => $request->nomor_telepon_ibu,
-                'email_ibu' => $request->email_ibu,
+                'nomor_telepon_ibu' => $request->no_hp_ortu,
                 
-                // Data Wali (optional)
-                'punya_wali' => $request->has('punya_wali'),
-                'nama_lengkap_wali' => $request->nama_lengkap_wali,
-                'hubungan_dengan_anak' => $request->hubungan_dengan_anak,
-                'nik_wali' => $request->nik_wali,
-                'tempat_lahir_wali' => $request->tempat_lahir_wali,
-                'tanggal_lahir_wali' => $request->tanggal_lahir_wali,
-                'pendidikan_wali' => $request->pendidikan_wali,
-                'pekerjaan_wali' => $request->pekerjaan_wali,
-                'nomor_telepon_wali' => $request->nomor_telepon_wali,
-                'email_wali' => $request->email_wali,
+                // Data Wali
+                'punya_wali' => !empty($request->nama_wali),
+                'nama_lengkap_wali' => $request->nama_wali,
+                'hubungan_dengan_anak' => $request->hubungan_wali,
                 
                 // Informasi Tambahan
-                'sumber_informasi_ppdb' => $request->sumber_informasi_ppdb,
-                'punya_saudara_sekolah_tk' => $request->punya_saudara_sekolah_tk,
-                'jenis_daftar' => $request->jenis_daftar,
+                'sumber_informasi_ppdb' => $request->jalur_pendaftaran,
+                'punya_saudara_sekolah_tk' => $request->punya_saudara_sekolah_tk ?? 'Tidak',
+                'jenis_daftar' => $request->jenis_daftar ?? 'Siswa Baru',
+                'catatan_admin' => $request->catatan_khusus,
                 
                 // Status Verifikasi Dokumen (default false)
                 'verifikasi_akte' => false,
@@ -670,9 +622,8 @@ class SpmbController extends Controller
     private function handleDokumenUploads(Request $request, Spmb $spmb)
     {
         $dokumenTypes = [
-            'akte' => 'akte_kelahiran',
+            'akte' => 'akta_kelahiran',
             'kk' => 'kartu_keluarga',
-            'ktp' => 'ktp_orang_tua'
         ];
         
         foreach ($dokumenTypes as $jenis => $field) {

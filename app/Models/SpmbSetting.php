@@ -35,6 +35,7 @@ class SpmbSetting extends Model
     ];
 
     protected $casts = [
+        'tahun_ajaran_id' => 'integer',
         'pendaftaran_mulai' => 'datetime',
         'pendaftaran_selesai' => 'datetime',
         'pengumuman_mulai' => 'datetime',

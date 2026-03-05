@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\SpmbSetting;
 use App\Models\Spmb;
+use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,10 +16,16 @@ class SpmbSettingController extends Controller
      */
     public function index()
     {
-        $tahunAjaran = '2026/2027'; // Bisa diambil dari session
+        $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+        
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Tahun ajaran aktif tidak ditemukan.');
+        }
+
         $setting = SpmbSetting::firstOrCreate(
-            ['tahun_ajaran' => $tahunAjaran],
+            ['tahun_ajaran_id' => $tahunAjaranAktif->id],
             [
+                'tahun_ajaran' => $tahunAjaranAktif->tahun_ajaran,
                 'gelombang' => 1,
                 'status_pendaftaran' => 'draft',
                 'status_pengumuman' => 'draft',
@@ -29,42 +36,42 @@ class SpmbSettingController extends Controller
             ]
         );
         
-        return view('admin.spmb-settings.index', compact('setting', 'tahunAjaran'));
+        return view('admin.spmb-settings.index', compact('setting'));
     }
 
     public function edit()
     {
-        $setting = SpmbSetting::where('tahun_ajaran', '2026/2027')->first();
+        $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+        
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Tahun ajaran aktif tidak ditemukan.');
+        }
+
+        $setting = SpmbSetting::where('tahun_ajaran_id', $tahunAjaranAktif->id)->first();
         
         if (!$setting) {
-            $setting = new SpmbSetting();
-            $setting->tahun_ajaran = '2026/2027';
-            $setting->gelombang = 1;
-            $setting->status_pendaftaran = 'draft';
-            $setting->status_pengumuman = 'draft';
-            $setting->is_published = false;
-            $setting->kuota_zonasi = 50;
-            $setting->kuota_afirmasi = 15;
-            $setting->kuota_prestasi = 30;
-            $setting->kuota_mutasi = 5;
-            $setting->save();
+            $setting = SpmbSetting::create([
+                'tahun_ajaran_id' => $tahunAjaranAktif->id,
+                'tahun_ajaran' => $tahunAjaranAktif->tahun_ajaran,
+                'gelombang' => 1,
+                'status_pendaftaran' => 'draft',
+                'status_pengumuman' => 'draft',
+                'is_published' => false,
+                'kuota_zonasi' => 50,
+                'kuota_afirmasi' => 15,
+                'kuota_prestasi' => 30,
+                'kuota_mutasi' => 5,
+            ]);
         }
         
         // Get status pengumuman for display
         $statusPengumuman = $setting->getStatusPengumumanHomepage();
-        
+
         // Get SPMB statistics
-        $stats = Spmb::getStatistik();
-        
-        // Extract jalur-related statistics
-        $jalur = [
-            'zonasi' => $stats['zonasi'],
-            'afirmasi' => $stats['afirmasi'],
-            'prestasi' => $stats['prestasi'],
-            'mutasi' => $stats['mutasi'],
-        ];
-        
-        return view('admin.spmb-settings.index', compact('setting', 'statusPengumuman', 'stats', 'jalur'));
+        $stats = Spmb::getStatistik($tahunAjaranAktif->id);
+
+        return view('admin.spmb-settings.index', compact('setting', 'statusPengumuman', 'stats'));
+
     }
     
     /**
@@ -72,31 +79,26 @@ class SpmbSettingController extends Controller
      */
     public function pendaftaran()
     {
-        $setting = SpmbSetting::where('tahun_ajaran', '2026/2027')->firstOrFail();
+        $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+        $setting = SpmbSetting::where('tahun_ajaran_id', $tahunAjaranAktif->id)->firstOrFail();
         
         // Ambil data siswa diterima (hanya NIK, Nama, Status)
-        $siswaDiterima = Spmb::where('tahun_ajaran', '2026/2027')
-                            ->where('status', 'diterima')
-                            ->select('id', 'no_pendaftaran', 'nik', 'nama_calon_siswa', 'status')
-                            ->orderBy('tanggal_verifikasi', 'desc')
+        $siswaDiterima = Spmb::where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                            ->where('status_pendaftaran', 'Diterima')
+                            ->select('id', 'no_pendaftaran', 'nik_anak', 'nama_lengkap_anak', 'status_pendaftaran')
+                            ->orderBy('created_at', 'desc')
                             ->paginate(10);
         
         // Total siswa diterima
-        $totalDiterima = Spmb::where('tahun_ajaran', '2026/2027')
-                            ->where('status', 'diterima')
+        $totalDiterima = Spmb::where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                            ->where('status_pendaftaran', 'Diterima')
                             ->count();
         
         // Total pendaftar
-        $totalPendaftar = Spmb::where('tahun_ajaran', '2026/2027')->count();
+        $totalPendaftar = Spmb::where('tahun_ajaran_id', $tahunAjaranAktif->id)->count();
         
-        // Statistik per jalur
-        $statistikJalur = Spmb::where('tahun_ajaran', '2026/2027')
-                            ->where('status', 'diterima')
-                            ->selectRaw('jalur_pendaftaran, count(*) as total')
-                            ->groupBy('jalur_pendaftaran')
-                            ->pluck('total', 'jalur_pendaftaran')
-                            ->toArray();
-        
+        $statistikJalur = [];
+
         return view('admin.spmb-settings.pendaftaran', compact(
             'setting',
             'siswaDiterima',
@@ -130,7 +132,8 @@ class SpmbSettingController extends Controller
                 ->withInput();
         }
         
-        $setting = SpmbSetting::where('tahun_ajaran', '2026/2027')->firstOrFail();
+        $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+        $setting = SpmbSetting::where('tahun_ajaran_id', $tahunAjaranAktif->id)->firstOrFail();
         
         $setting->pendaftaran_mulai = $request->pendaftaran_mulai;
         $setting->pendaftaran_selesai = $request->pendaftaran_selesai;
@@ -149,43 +152,37 @@ class SpmbSettingController extends Controller
     /**
      * FORM PENGATURAN PENGUMUMAN
      */
-    // app/Http/Controllers/Admin/SpmbSettingController.php
-
     public function pengumuman()
     {
-        $tahunAjaran = '2026/2027';
-        $setting = SpmbSetting::where('tahun_ajaran', $tahunAjaran)->firstOrFail();
+        $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+        $tahunAjaran = $tahunAjaranAktif->tahun_ajaran;
+        $setting = SpmbSetting::where('tahun_ajaran_id', $tahunAjaranAktif->id)->firstOrFail();
+
         
         // ============ DATA SISWA LULUS ============
-        $siswaLulus = Spmb::where('tahun_ajaran', $tahunAjaran)
-                        ->where('status', 'diterima')
+        $siswaLulus = Spmb::where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                        ->where('status_pendaftaran', 'Diterima')
                         ->select(
                             'id',
                             'no_pendaftaran',
-                            'nik',
-                            'nama_calon_siswa',
-                            'jalur_pendaftaran',
-                            'status'
+                            'nik_anak',
+                            'nama_lengkap_anak',
+                            'jenis_daftar',
+                            'status_pendaftaran'
                         )
-                        ->orderBy('tanggal_verifikasi', 'desc')
+                        ->orderBy('created_at', 'desc')
                         ->paginate(10);
         
         // Total siswa lulus
-        $totalLulus = Spmb::where('tahun_ajaran', $tahunAjaran)
-                        ->where('status', 'diterima')
+        $totalLulus = Spmb::where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                        ->where('status_pendaftaran', 'Diterima')
                         ->count();
         
         // Total pendaftar
-        $totalPendaftar = Spmb::where('tahun_ajaran', $tahunAjaran)->count();
+        $totalPendaftar = Spmb::where('tahun_ajaran_id', $tahunAjaranAktif->id)->count();
         
-        // Statistik lulus per jalur
-        $statistikJalur = Spmb::where('tahun_ajaran', $tahunAjaran)
-                            ->where('status', 'diterima')
-                            ->selectRaw('jalur_pendaftaran, count(*) as total')
-                            ->groupBy('jalur_pendaftaran')
-                            ->pluck('total', 'jalur_pendaftaran')
-                            ->toArray();
-        
+        $statistikJalur = [];
+
         return view('admin.spmb-settings.pengumuman', compact(
             'setting',
             'siswaLulus',
@@ -206,7 +203,8 @@ class SpmbSettingController extends Controller
             'status_pengumuman' => 'required|in:draft,ready,published,closed',
         ]);
         
-        $setting = SpmbSetting::where('tahun_ajaran', '2026/2027')->firstOrFail();
+        $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+        $setting = SpmbSetting::where('tahun_ajaran_id', $tahunAjaranAktif->id)->firstOrFail();
         
         $setting->pengumuman_mulai = $request->pengumuman_mulai;
         $setting->pengumuman_selesai = $request->pengumuman_selesai;
@@ -223,7 +221,8 @@ class SpmbSettingController extends Controller
      */
     public function sistem()
     {
-        $setting = SpmbSetting::where('tahun_ajaran', '2026/2027')->firstOrFail();
+        $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+        $setting = SpmbSetting::where('tahun_ajaran_id', $tahunAjaranAktif->id)->firstOrFail();
         return view('admin.spmb-settings.sistem', compact('setting'));
     }
     
@@ -237,7 +236,8 @@ class SpmbSettingController extends Controller
             'pesan_selesai' => 'nullable|string',
         ]);
         
-        $setting = SpmbSetting::where('tahun_ajaran', '2026/2027')->firstOrFail();
+        $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+        $setting = SpmbSetting::where('tahun_ajaran_id', $tahunAjaranAktif->id)->firstOrFail();
         
         $setting->pesan_tunggu = $request->pesan_tunggu;
         $setting->pesan_selesai = $request->pesan_selesai;
@@ -253,7 +253,8 @@ class SpmbSettingController extends Controller
      */
     public function publish()
     {
-        $setting = SpmbSetting::where('tahun_ajaran', '2026/2027')->firstOrFail();
+        $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+        $setting = SpmbSetting::where('tahun_ajaran_id', $tahunAjaranAktif->id)->firstOrFail();
         
         $setting->status_pengumuman = 'published';
         $setting->save();
@@ -267,7 +268,8 @@ class SpmbSettingController extends Controller
      */
     public function unpublish()
     {
-        $setting = SpmbSetting::where('tahun_ajaran', '2026/2027')->firstOrFail();
+        $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+        $setting = SpmbSetting::where('tahun_ajaran_id', $tahunAjaranAktif->id)->firstOrFail();
         
         $setting->status_pengumuman = 'draft';
         $setting->save();

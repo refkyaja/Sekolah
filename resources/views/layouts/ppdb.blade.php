@@ -45,9 +45,15 @@
                     <a href="{{ url('/') }}" class="text-gray-700 hover:text-blue-600 font-medium">
                         <i class="fas fa-home mr-2"></i>Beranda
                     </a>
-                    <a href="{{ route('ppdb.index') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium">
+                    @guest('siswa')
+                    <button onclick="showLoginModal(event)" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium">
+                        <i class="fas fa-user-plus mr-2"></i>Daftar Sekarang
+                    </button>
+                    @else
+                    <a href="{{ route('spmb.pendaftaran') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium">
                         <i class="fas fa-user-plus mr-2"></i>Daftar Sekarang
                     </a>
+                    @endguest
                 </div>
 
                 <!-- Mobile menu button -->
@@ -64,9 +70,15 @@
                     <a href="{{ url('/') }}" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded">
                         <i class="fas fa-home mr-2"></i>Beranda
                     </a>
-                    <a href="{{ route('ppdb.index') }}" class="block px-3 py-2 bg-blue-600 text-white rounded">
+                    @guest('siswa')
+                    <button onclick="showLoginModal(event)" class="block w-full text-left px-3 py-2 bg-blue-600 text-white rounded">
+                        <i class="fas fa-user-plus mr-2"></i>Daftar Sekarang
+                    </button>
+                    @else
+                    <a href="{{ route('spmb.pendaftaran') }}" class="block px-3 py-2 bg-blue-600 text-white rounded">
                         <i class="fas fa-user-plus mr-2"></i>Daftar Sekarang
                     </a>
+                    @endguest
                 </div>
             </div>
         </div>
@@ -125,10 +137,17 @@
                     <h4 class="text-lg font-bold mb-6">Tautan Cepat</h4>
                     <ul class="space-y-2">
                         <li>
-                            <a href="{{ route('ppdb.index') }}" class="text-gray-300 hover:text-white flex items-center">
+                            @guest('siswa')
+                            <button onclick="showLoginModal(event)" class="text-gray-300 hover:text-white flex items-center">
+                                <i class="fas fa-chevron-right text-xs mr-2"></i>
+                                Formulir Pendaftaran
+                            </button>
+                            @else
+                            <a href="{{ route('spmb.pendaftaran') }}" class="text-gray-300 hover:text-white flex items-center">
                                 <i class="fas fa-chevron-right text-xs mr-2"></i>
                                 Formulir Pendaftaran
                             </a>
+                            @endguest
                         </li>
                         <li>
                             <a href="#" class="text-gray-300 hover:text-white flex items-center">
@@ -179,7 +198,49 @@
         </div>
     </footer>
 
+    <!-- Login Required Modal -->
+    <div id="login-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4" style="display: none;">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-blue-600"></div>
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="text-center">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-lock text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Login Diperlukan</h3>
+                <p class="text-gray-600 mb-8 leading-relaxed">Silakan login terlebih dahulu untuk dapat melanjutkan proses pendaftaran siswa baru.</p>
+                <div class="flex flex-col gap-3">
+                    <a href="{{ route('siswa.login') }}" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-center hover:bg-blue-700 transition-colors shadow-lg">Login Sekarang</a>
+                    <button onclick="closeLoginModal()" class="w-full py-3 rounded-xl font-bold text-gray-500 hover:bg-gray-100 transition-colors">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @stack('scripts')
+    <script>
+        function showLoginModal(e) {
+            if (e) e.preventDefault();
+            console.log('Opening login modal...');
+            const modal = document.getElementById('login-modal');
+            if (modal) {
+                modal.style.setProperty('display', 'flex', 'important');
+                modal.classList.remove('hidden');
+            } else {
+                console.error('Login modal element not found!');
+            }
+        }
+
+        function closeLoginModal() {
+            const modal = document.getElementById('login-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.classList.add('hidden');
+            }
+        }
+    </script>
     
     <script>
         // Mobile menu toggle

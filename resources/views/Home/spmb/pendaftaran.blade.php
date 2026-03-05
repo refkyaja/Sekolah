@@ -197,7 +197,7 @@
 
             <!-- Form Content -->
             <div class="p-8">
-                <form action="{{ route('ppdb.store') }}" method="POST" class="space-y-8" id="ppdbForm" enctype="multipart/form-data">
+                <form action="{{ route('spmb.store') }}" method="POST" class="space-y-8" id="ppdbForm" enctype="multipart/form-data">
                     @csrf
                     
                     <!-- SECTION 1: Data Calon Siswa -->
