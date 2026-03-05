@@ -93,7 +93,7 @@
                 <span class="material-symbols-outlined text-lg">photo_library</span>
                 <span class="text-sm nav-text whitespace-nowrap">Galeri</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.berita.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.berita.index') }}" title="Kegiatan Sekolah">
+            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.kegiatan.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.kegiatan.index') }}" title="Kegiatan Sekolah">
                 <span class="material-symbols-outlined text-lg">festival</span>
                 <span class="text-sm nav-text whitespace-nowrap">Kegiatan Sekolah</span>
             </a>
@@ -115,7 +115,7 @@
                 <span class="material-symbols-outlined text-lg">verified_user</span>
                 <span class="text-sm nav-text whitespace-nowrap">Role & Permission</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 text-white/80 hover:bg-white/10 hover:text-white rounded-xl transition-all" href="#" onclick="return false;" title="Log Aktivitas">
+            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.activity-log.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.activity-log.index') }}" title="Log Aktivitas">
                 <span class="material-symbols-outlined text-lg">list_alt</span>
                 <span class="text-sm nav-text whitespace-nowrap">Log Aktivitas</span>
             </a>
