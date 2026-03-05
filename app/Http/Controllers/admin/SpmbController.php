@@ -92,7 +92,7 @@ class SpmbController extends Controller
                 ]);
             }
             
-            return view('admin.spmb.index', compact(
+            return view('admin.ppdb.index', compact(
                 'spmb', 
                 'search', 
                 'statistik', 
@@ -132,7 +132,7 @@ class SpmbController extends Controller
         $pekerjaanAyahOptions = Spmb::PEKERJAAN_AYAH_OPTIONS;
         $pekerjaanIbuOptions = Spmb::PEKERJAAN_IBU_OPTIONS;
         
-        return view('admin.spmb.create', compact(
+        return view('admin.ppdb.create', compact(
             'tahunAjaran', 
             'tahunAjaranAktif',
             'tinggalBersamaOptions',
@@ -157,7 +157,7 @@ class SpmbController extends Controller
                 'nama_panggilan_anak' => 'nullable|string|max:100',
                 'nik_anak' => 'required|digits:16|unique:spmb,nik_anak',
                 'tempat_lahir_anak' => 'required|string|max:100',
-                'tanggal_lahir_anak' => 'required|date|before_or_equal:' . now()->subYears(3)->format('Y-m-d') . '|after_or_equal:' . now()->subYears(6)->format('Y-m-d'),
+                'tanggal_lahir_anak' => 'required|date',
                 'provinsi_rumah' => 'required|string|max:100',
                 'kota_kabupaten_rumah' => 'required|string|max:100',
                 'kecamatan_rumah' => 'required|string|max:100',
@@ -189,24 +189,24 @@ class SpmbController extends Controller
                 'nama_lengkap_ayah' => 'required|string|max:255',
                 'nik_ayah' => 'required|digits:16',
                 'tempat_lahir_ayah' => 'required|string|max:100',
-                'tanggal_lahir_ayah' => 'required|date|before:today',
+                'tanggal_lahir_ayah' => 'required|date',
                 'pendidikan_ayah' => 'nullable|string|max:100',
                 'pekerjaan_ayah' => 'nullable|in:' . implode(',', Spmb::PEKERJAAN_AYAH_OPTIONS),
                 'bidang_pekerjaan_ayah' => 'nullable|string|max:100',
                 'penghasilan_per_bulan_ayah' => 'nullable|string|max:100',
-                'nomor_telepon_ayah' => 'required|string|regex:/^[0-9]{10,15}$/|max:15',
+                'nomor_telepon_ayah' => 'required|string|regex:/^[0-9]{10,16}$/|max:16',
                 'email_ayah' => 'nullable|email|max:255',
                 
                 // Data Ibu
                 'nama_lengkap_ibu' => 'required|string|max:255',
                 'nik_ibu' => 'required|digits:16',
                 'tempat_lahir_ibu' => 'required|string|max:100',
-                'tanggal_lahir_ibu' => 'required|date|before:today',
+                'tanggal_lahir_ibu' => 'required|date',
                 'pendidikan_ibu' => 'nullable|string|max:100',
                 'pekerjaan_ibu' => 'nullable|in:' . implode(',', Spmb::PEKERJAAN_IBU_OPTIONS),
                 'bidang_pekerjaan_ibu' => 'nullable|string|max:100',
                 'penghasilan_per_bulan_ibu' => 'nullable|string|max:100',
-                'nomor_telepon_ibu' => 'required|string|regex:/^[0-9]{10,15}$/|max:15',
+                'nomor_telepon_ibu' => 'required|string|regex:/^[0-9]{10,16}$/|max:16',
                 'email_ibu' => 'nullable|email|max:255',
                 
                 // Data Wali
@@ -215,12 +215,12 @@ class SpmbController extends Controller
                 'hubungan_dengan_anak' => 'nullable|required_if:punya_wali,true|in:' . implode(',', Spmb::HUBUNGAN_WALI_OPTIONS),
                 'nik_wali' => 'nullable|required_if:punya_wali,true|digits:16',
                 'tempat_lahir_wali' => 'nullable|required_if:punya_wali,true|string|max:100',
-                'tanggal_lahir_wali' => 'nullable|required_if:punya_wali,true|date|before:today',
+                'tanggal_lahir_wali' => 'nullable|required_if:punya_wali,true|date',
                 'pendidikan_wali' => 'nullable|string|max:100',
                 'pekerjaan_wali' => 'nullable|string|max:100',
                 'bidang_pekerjaan_wali' => 'nullable|string|max:100',
                 'penghasilan_per_bulan_wali' => 'nullable|string|max:100',
-                'nomor_telepon_wali' => 'nullable|string|regex:/^[0-9]{10,15}$/|max:15',
+                'nomor_telepon_wali' => 'nullable|string|regex:/^[0-9]{10,16}$/|max:16',
                 'email_wali' => 'nullable|email|max:255',
                 
                 // Informasi Tambahan
@@ -289,7 +289,7 @@ class SpmbController extends Controller
     {
         $spmb->load(['tahunAjaran', 'dokumen', 'buktiTransfer', 'riwayatStatus.user', 'siswa']);
         
-        return view('admin.spmb.show', compact('spmb'));
+        return view('admin.ppdb.show', compact('spmb'));
     }
 
     /**
@@ -330,7 +330,7 @@ class SpmbController extends Controller
                 'nama_panggilan_anak' => 'nullable|string|max:100',
                 'nik_anak' => 'required|digits:16|unique:spmb,nik_anak,' . $spmb->id,
                 'tempat_lahir_anak' => 'required|string|max:100',
-                'tanggal_lahir_anak' => 'required|date|before_or_equal:' . now()->subYears(3)->format('Y-m-d') . '|after_or_equal:' . now()->subYears(6)->format('Y-m-d'),
+                'tanggal_lahir_anak' => 'required|date',
                 'provinsi_rumah' => 'required|string|max:100',
                 'kota_kabupaten_rumah' => 'required|string|max:100',
                 'kecamatan_rumah' => 'required|string|max:100',
@@ -362,24 +362,24 @@ class SpmbController extends Controller
                 'nama_lengkap_ayah' => 'required|string|max:255',
                 'nik_ayah' => 'required|digits:16',
                 'tempat_lahir_ayah' => 'required|string|max:100',
-                'tanggal_lahir_ayah' => 'required|date|before:today',
+                'tanggal_lahir_ayah' => 'required|date',
                 'pendidikan_ayah' => 'nullable|string|max:100',
                 'pekerjaan_ayah' => 'nullable|in:' . implode(',', Spmb::PEKERJAAN_AYAH_OPTIONS),
                 'bidang_pekerjaan_ayah' => 'nullable|string|max:100',
                 'penghasilan_per_bulan_ayah' => 'nullable|string|max:100',
-                'nomor_telepon_ayah' => 'required|string|regex:/^[0-9]{10,15}$/|max:15',
+                'nomor_telepon_ayah' => 'required|string|regex:/^[0-9]{10,16}$/|max:16',
                 'email_ayah' => 'nullable|email|max:255',
                 
                 // Data Ibu
                 'nama_lengkap_ibu' => 'required|string|max:255',
                 'nik_ibu' => 'required|digits:16',
                 'tempat_lahir_ibu' => 'required|string|max:100',
-                'tanggal_lahir_ibu' => 'required|date|before:today',
+                'tanggal_lahir_ibu' => 'required|date',
                 'pendidikan_ibu' => 'nullable|string|max:100',
                 'pekerjaan_ibu' => 'nullable|in:' . implode(',', Spmb::PEKERJAAN_IBU_OPTIONS),
                 'bidang_pekerjaan_ibu' => 'nullable|string|max:100',
                 'penghasilan_per_bulan_ibu' => 'nullable|string|max:100',
-                'nomor_telepon_ibu' => 'required|string|regex:/^[0-9]{10,15}$/|max:15',
+                'nomor_telepon_ibu' => 'required|string|regex:/^[0-9]{10,16}$/|max:16',
                 'email_ibu' => 'nullable|email|max:255',
                 
                 // Data Wali
@@ -388,12 +388,12 @@ class SpmbController extends Controller
                 'hubungan_dengan_anak' => 'nullable|in:' . implode(',', Spmb::HUBUNGAN_WALI_OPTIONS),
                 'nik_wali' => 'nullable|digits:16',
                 'tempat_lahir_wali' => 'nullable|string|max:100',
-                'tanggal_lahir_wali' => 'nullable|date|before:today',
+                'tanggal_lahir_wali' => 'nullable|date',
                 'pendidikan_wali' => 'nullable|string|max:100',
                 'pekerjaan_wali' => 'nullable|string|max:100',
                 'bidang_pekerjaan_wali' => 'nullable|string|max:100',
                 'penghasilan_per_bulan_wali' => 'nullable|string|max:100',
-                'nomor_telepon_wali' => 'nullable|string|regex:/^[0-9]{10,15}$/|max:15',
+                'nomor_telepon_wali' => 'nullable|string|regex:/^[0-9]{10,16}$/|max:16',
                 'email_wali' => 'nullable|email|max:255',
                 
                 // Informasi Tambahan
@@ -732,6 +732,301 @@ class SpmbController extends Controller
         } catch (\Exception $e) {
             Log::error('SpmbController@dashboard Error: ' . $e->getMessage());
             return back()->with('error', 'Gagal memuat dashboard: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Pengaturan PPDB
+     */
+    public function pengaturan(Request $request)
+    {
+        try {
+            $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+            $tahunAjaranId = $tahunAjaranAktif ? $tahunAjaranAktif->id : null;
+            
+            $setting = SpmbSetting::where('tahun_ajaran', $tahunAjaranAktif ? $tahunAjaranAktif->tahun_ajaran : date('Y') . '/' . (date('Y') + 1))
+                ->first();
+            
+            if (!$setting) {
+                $setting = SpmbSetting::create([
+                    'tahun_ajaran' => $tahunAjaranAktif ? $tahunAjaranAktif->tahun_ajaran : date('Y') . '/' . (date('Y') + 1),
+                    'tahun_ajaran_id' => $tahunAjaranId,
+                    'gelombang' => 1,
+                ]);
+            }
+            
+            $totalPendaftaran = Spmb::when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))->count();
+            $totalLulus = Spmb::where('status_pendaftaran', 'Diterima')
+                ->when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
+                ->count();
+            $kuota = 500;
+            
+            return view('admin.ppdb.pengaturan', compact(
+                'setting',
+                'tahunAjaranAktif',
+                'totalPendaftaran',
+                'totalLulus',
+                'kuota'
+            ));
+            
+        } catch (\Exception $e) {
+            Log::error('SpmbController@pengaturan Error: ' . $e->getMessage());
+            return back()->with('error', 'Gagal memuat pengaturan: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Update Pengaturan PPDB
+     */
+    public function updatePengaturan(Request $request)
+    {
+        try {
+            $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+            $tahunAjaran = $tahunAjaranAktif ? $tahunAjaranAktif->tahun_ajaran : date('Y') . '/' . (date('Y') + 1);
+            
+            $setting = SpmbSetting::where('tahun_ajaran', $tahunAjaran)->first();
+            
+            if (!$setting) {
+                $setting = new SpmbSetting();
+                $setting->tahun_ajaran = $tahunAjaran;
+                $setting->tahun_ajaran_id = $tahunAjaranAktif ? $tahunAjaranAktif->id : null;
+            }
+            
+            $setting->pendaftaran_mulai = $request->pendaftaran_mulai;
+            $setting->pendaftaran_selesai = $request->pendaftaran_selesai;
+            $setting->pengumuman_mulai = $request->pengumuman_mulai;
+            $setting->save();
+            
+            return back()->with('success', 'Pengaturan berhasil disimpan!');
+            
+        } catch (\Exception $e) {
+            Log::error('SpmbController@updatePengaturan Error: ' . $e->getMessage());
+            return back()->with('error', 'Gagal menyimpan pengaturan: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Pengumuman Kelulusan PPDB
+     */
+    public function pengumuman(Request $request)
+    {
+        try {
+            $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+            $tahunAjaranId = $tahunAjaranAktif ? $tahunAjaranAktif->id : null;
+            
+            $tahunAjaran = $request->get('tahun_ajaran', $tahunAjaranAktif ? $tahunAjaranAktif->tahun_ajaran : date('Y') . '/' . (date('Y') + 1));
+            
+            $query = Spmb::with(['tahunAjaran'])
+                ->where('status_pendaftaran', 'Diterima');
+            
+            if ($tahunAjaranId) {
+                $query->where('tahun_ajaran_id', $tahunAjaranId);
+            }
+            
+            $search = $request->get('search', '');
+            if ($search) {
+                $query->where(function($q) use ($search) {
+                    $q->where('no_pendaftaran', 'like', "%{$search}%")
+                      ->orWhere('nama_lengkap_anak', 'like', "%{$search}%");
+                });
+            }
+            
+            $siswaLulus = $query->orderBy('nama_lengkap_anak', 'asc')->paginate(10);
+            
+            $totalLulus = Spmb::where('status_pendaftaran', 'Diterima')
+                ->when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
+                ->count();
+            
+            $totalPendaftaran = Spmb::when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))->count();
+            
+            $persentase = $totalPendaftaran > 0 ? round(($totalLulus / $totalPendaftaran) * 100, 1) : 0;
+            
+            $tahunAjaranList = TahunAjaran::orderBy('tahun_ajaran', 'desc')->get();
+            
+            return view('admin.ppdb.pengumuman', compact(
+                'siswaLulus',
+                'totalLulus',
+                'totalPendaftaran',
+                'persentase',
+                'tahunAjaranList',
+                'tahunAjaranAktif',
+                'search'
+            ));
+            
+        } catch (\Exception $e) {
+            Log::error('SpmbController@pengumuman Error: ' . $e->getMessage());
+            return back()->with('error', 'Gagal memuat pengumuman: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Publish Pengumuman
+     */
+    public function publishPengumuman(Request $request)
+    {
+        try {
+            $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+            $tahunAjaranId = $tahunAjaranAktif ? $tahunAjaranAktif->id : null;
+            
+            $siswaDiterima = Spmb::where('status_pendaftaran', 'Diterima')
+                ->when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
+                ->get();
+            
+            $jumlahDikonversi = 0;
+            
+            if ($request->has('konversi_siswa') && $request->konversi_siswa == 1) {
+                foreach ($siswaDiterima as $spmb) {
+                    if (!$spmb->siswa) {
+                        $tahunAjaran = $tahunAjaranAktif ? $tahunAjaranAktif->tahun_ajaran : date('Y');
+                        
+                        $siswaBaru = Siswa::create([
+                            'nama_lengkap' => $spmb->nama_lengkap_anak,
+                            'nama_panggilan' => $spmb->nama_panggilan_anak,
+                            'nik' => $spmb->nik_anak,
+                            'tempat_lahir' => $spmb->tempat_lahir_anak,
+                            'tanggal_lahir' => $spmb->tanggal_lahir_anak,
+                            'jenis_kelamin' => $spmb->jenis_kelamin,
+                            'agama' => $spmb->agama,
+                            'alamat' => $spmb->nama_jalan_rumah,
+                            'provinsi' => $spmb->provinsi_rumah,
+                            'kota_kabupaten' => $spmb->kota_kabupaten_rumah,
+                            'kecamatan' => $spmb->kecamatan_rumah,
+                            'kelurahan' => $spmb->kelurahan_rumah,
+                            'tahun_ajaran_id' => $tahunAjaranId,
+                            'status_siswa' => 'Aktif',
+                        ]);
+                        
+                        $spmb->update(['siswa_id' => $siswaBaru->id]);
+                        $jumlahDikonversi++;
+                    }
+                }
+            }
+            
+            $message = 'Pengumuman berhasil dipublish!';
+            if ($jumlahDikonversi > 0) {
+                $message .= " {$jumlahDikonversi} siswa telah ditambahkan ke Data Siswa.";
+            }
+            
+            return back()->with('success', $message);
+            
+        } catch (\Exception $e) {
+            Log::error('SpmbController@publishPengumuman Error: ' . $e->getMessage());
+            return back()->with('error', 'Gagal publish pengumuman: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Riwayat PPDB - List Tahun Ajaran
+     */
+    public function riwayat(Request $request)
+    {
+        try {
+            $search = $request->get('search', '');
+            $range = $request->get('range', '');
+            
+            $tahunAjaranList = TahunAjaran::orderBy('tahun_ajaran', 'desc');
+            
+            if ($range) {
+                $tahunAjaranList = $tahunAjaranList->limit((int)$range);
+            }
+            
+            $tahunAjaranList = $tahunAjaranList->get();
+            
+            $riwayatData = [];
+            $previousTotal = null;
+            
+            foreach ($tahunAjaranList as $ta) {
+                $totalPendaftar = Spmb::where('tahun_ajaran_id', $ta->id)->count();
+                $totalDiterima = Spmb::where('tahun_ajaran_id', $ta->id)
+                    ->where('status_pendaftaran', 'Diterima')
+                    ->count();
+                
+                $persentaseKelulusan = $totalPendaftar > 0 ? round(($totalDiterima / $totalPendaftar) * 100, 1) : 0;
+                $persentaseKenaikan = $previousTotal && $previousTotal > 0 
+                    ? round((($totalPendaftar - $previousTotal) / $previousTotal) * 100, 1) 
+                    : 0;
+                
+                $riwayatData[] = (object) [
+                    'tahun_ajaran' => $ta->tahun_ajaran,
+                    'total_pendaftar' => $totalPendaftar,
+                    'total_diterima' => $totalDiterima,
+                    'persentase_kelulusan' => $persentaseKelulusan,
+                    'persentase_kenaikan' => $persentaseKenaikan,
+                ];
+                
+                $previousTotal = $totalPendaftar;
+            }
+            
+            $riwayat = collect($riwayatData);
+            
+            if ($search) {
+                $riwayat = $riwayat->filter(function($item) use ($search) {
+                    return str_contains(strtolower($item->tahun_ajaran), strtolower($search));
+                });
+            }
+            
+            $riwayat = $riwayat->paginate(10);
+            
+            return view('admin.ppdb.riwayat', compact('riwayat', 'search', 'range'));
+            
+        } catch (\Exception $e) {
+            Log::error('SpmbController@riwayat Error: ' . $e->getMessage());
+            return back()->with('error', 'Gagal memuat riwayat: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Riwayat PPDB - Show Detail per Tahun Ajaran
+     */
+    public function riwayatShow(Request $request, $tahunAjaran)
+    {
+        try {
+            $tahunAjaranData = TahunAjaran::where('tahun_ajaran', $tahunAjaran)->firstOrFail();
+            
+            $query = Spmb::with(['tahunAjaran'])
+                ->where('tahun_ajaran_id', $tahunAjaranData->id);
+            
+            $status = $request->get('status', '');
+            if ($status) {
+                $query->where('status_pendaftaran', $status);
+            }
+            
+            $search = $request->get('search', '');
+            if ($search) {
+                $query->where(function($q) use ($search) {
+                    $q->where('no_pendaftaran', 'like', "%{$search}%")
+                      ->orWhere('nama_lengkap_anak', 'like', "%{$search}%");
+                });
+            }
+            
+            $siswa = $query->orderBy('nama_lengkap_anak', 'asc')->paginate(10);
+            
+            $totalPendaftar = Spmb::where('tahun_ajaran_id', $tahunAjaranData->id)->count();
+            $totalDiterima = Spmb::where('tahun_ajaran_id', $tahunAjaranData->id)
+                ->where('status_pendaftaran', 'Diterima')
+                ->count();
+            $totalDitolak = Spmb::where('tahun_ajaran_id', $tahunAjaranData->id)
+                ->where('status_pendaftaran', 'Ditolak')
+                ->count();
+            $totalMenunggu = Spmb::where('tahun_ajaran_id', $tahunAjaranData->id)
+                ->where('status_pendaftaran', 'Menunggu Verifikasi')
+                ->count();
+            
+            return view('admin.ppdb.riwayat-show', compact(
+                'siswa',
+                'tahunAjaran',
+                'tahunAjaranData',
+                'status',
+                'search',
+                'totalPendar',
+                'totalDiterima',
+                'totalDitolak',
+                'totalMenunggu'
+            ));
+            
+        } catch (\Exception $e) {
+            Log::error('SpmbController@riwayatShow Error: ' . $e->getMessage());
+            return back()->with('error', 'Gagal memuat detail riwayat: ' . $e->getMessage());
         }
     }
 

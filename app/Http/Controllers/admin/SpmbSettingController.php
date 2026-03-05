@@ -11,60 +11,31 @@ use Illuminate\Support\Facades\Auth;
 class SpmbSettingController extends Controller
 {
     /**
-     * HALAMAN UTAMA SETTINGS - Pilih menu
+     * HALAMAN UTAMA SETTINGS - Redirect to ppdb pengaturan
      */
     public function index()
     {
-        $tahunAjaran = '2026/2027'; // Bisa diambil dari session
-        $setting = SpmbSetting::firstOrCreate(
-            ['tahun_ajaran' => $tahunAjaran],
-            [
-                'gelombang' => 1,
-                'status_pendaftaran' => 'draft',
-                'status_pengumuman' => 'draft',
-                'kuota_zonasi' => 50,
-                'kuota_afirmasi' => 15,
-                'kuota_prestasi' => 30,
-                'kuota_mutasi' => 5,
-            ]
-        );
-        
-        return view('admin.spmb-settings.index', compact('setting', 'tahunAjaran'));
+        return redirect()->route('admin.ppdb.pengaturan');
     }
 
     public function edit()
     {
-        $setting = SpmbSetting::where('tahun_ajaran', '2026/2027')->first();
+        return redirect()->route('admin.ppdb.pengaturan');
+    }
+
+    /**
+     * Update Pengaturan
+     */
+    public function update(Request $request)
+    {
+        $setting = SpmbSetting::where('tahun_ajaran', '2026/2027')->firstOrFail();
         
-        if (!$setting) {
-            $setting = new SpmbSetting();
-            $setting->tahun_ajaran = '2026/2027';
-            $setting->gelombang = 1;
-            $setting->status_pendaftaran = 'draft';
-            $setting->status_pengumuman = 'draft';
-            $setting->is_published = false;
-            $setting->kuota_zonasi = 50;
-            $setting->kuota_afirmasi = 15;
-            $setting->kuota_prestasi = 30;
-            $setting->kuota_mutasi = 5;
-            $setting->save();
-        }
+        $setting->pendaftaran_mulai = $request->pendaftaran_mulai;
+        $setting->pendaftaran_selesai = $request->pendaftaran_selesai;
+        $setting->pengumuman_mulai = $request->pengumuman_mulai;
+        $setting->save();
         
-        // Get status pengumuman for display
-        $statusPengumuman = $setting->getStatusPengumumanHomepage();
-        
-        // Get SPMB statistics
-        $stats = Spmb::getStatistik();
-        
-        // Extract jalur-related statistics
-        $jalur = [
-            'zonasi' => $stats['zonasi'],
-            'afirmasi' => $stats['afirmasi'],
-            'prestasi' => $stats['prestasi'],
-            'mutasi' => $stats['mutasi'],
-        ];
-        
-        return view('admin.spmb-settings.index', compact('setting', 'statusPengumuman', 'stats', 'jalur'));
+        return redirect()->route('admin.ppdb.pengaturan')->with('success', 'Pengaturan berhasil disimpan!');
     }
     
     /**
@@ -142,7 +113,7 @@ class SpmbSettingController extends Controller
         $setting->updated_by = Auth::id();
         $setting->save();
         
-        return redirect()->route('admin.spmb-settings.index')
+        return redirect()->route('admin.ppdb.pengaturan')
             ->with('success', 'Pengaturan pendaftaran berhasil disimpan!');
     }
     
@@ -214,7 +185,7 @@ class SpmbSettingController extends Controller
         $setting->updated_by = Auth::id();
         $setting->save();
         
-        return redirect()->route('admin.spmb-settings.index')
+        return redirect()->route('admin.ppdb.pengaturan')
             ->with('success', 'Pengaturan pengumuman berhasil disimpan!');
     }
     
@@ -244,7 +215,7 @@ class SpmbSettingController extends Controller
         $setting->updated_by = Auth::id();
         $setting->save();
         
-        return redirect()->route('admin.spmb-settings.index')
+        return redirect()->route('admin.ppdb.pengaturan')
             ->with('success', 'Pengaturan sistem berhasil disimpan!');
     }
     

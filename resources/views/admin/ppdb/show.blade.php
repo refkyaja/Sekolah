@@ -1,229 +1,306 @@
-{{-- resources/views/admin/ppdb/show.blade.php --}}
 @extends('layouts.admin')
 
-@section('title', 'Detail Data PPDB')
+@section('title', 'Detail Pendaftaran - ' . ($spmb->nama_lengkap_anak ?? 'PPDB'))
 
 @push('styles')
-    <!-- PPDB Detail CSS -->
-    <link rel="stylesheet" href="{{ Vite::asset('resources/css/components/ppdb-detail.css') }}">
-@endpush
-
-@push('scripts')
-    <!-- PPDB Detail JS -->
-    <script type="module" src="{{ Vite::asset('resources/js/components/ppdb-detail.js') }}"></script>
+<style>
+    .sidebar-scroll::-webkit-scrollbar {
+        width: 4px;
+    }
+    .sidebar-scroll::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+    }
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    #sidebar-toggle:checked ~ aside {
+        width: 80px;
+    }
+    #sidebar-toggle:checked ~ aside .logo-text,
+    #sidebar-toggle:checked ~ aside .nav-text,
+    #sidebar-toggle:checked ~ aside .nav-section-title,
+    #sidebar-toggle:checked ~ aside .system-status {
+        display: none;
+    }
+    #sidebar-toggle:checked ~ aside .nav-item {
+        justify-content: center;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    #sidebar-toggle:checked ~ aside .nav-section-divider {
+        display: block;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin: 1rem 0.5rem;
+    }
+    .nav-section-divider {
+        display: none;
+    }
+    aside {
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+</style>
 @endpush
 
 @section('content')
-<div class="p-6 bg-gray-50 min-h-screen">
-    <!-- Header -->
-    <div class="mb-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <h1 class="text-2xl md:text-3xl font-bold text-gray-800">
-                    <i class="fas fa-file-alt mr-2"></i>Detail Data PPDB
-                </h1>
-                <div class="flex items-center gap-4 mt-2">
-                    <span class="text-gray-600">No. Pendaftaran:</span>
-                    <span class="font-mono bg-gray-100 px-3 py-1 rounded-lg">
-                        {{ $ppdb->no_pendaftaran }}
-                    </span>
+<nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 uppercase tracking-widest">
+    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li><a class="hover:text-primary" href="{{ route('admin.ppdb.index') }}">PPDB</a></li>
+        <li><span class="mx-2">/</span></li>
+        <li><a class="hover:text-primary" href="{{ route('admin.ppdb.index') }}">Pendaftaran</a></li>
+        <li><span class="mx-2">/</span></li>
+        <li class="text-slate-600">Detail Pendaftaran</li>
+    </ol>
+</nav>
+
+@php
+$statusBadge = '';
+$statusText = $spmb->status_pendaftaran ?? 'Menunggu Verifikasi';
+switch($statusText) {
+    case 'Diterima':
+        $statusBadge = 'bg-green-100 text-green-700';
+        $statusLabel = 'LULUS';
+        break;
+    case 'Mundur':
+        $statusBadge = 'bg-red-100 text-red-700';
+        $statusLabel = 'TIDAK LULUS';
+        break;
+    case 'Diproses':
+        $statusBadge = 'bg-blue-100 text-blue-700';
+        $statusLabel = 'DOKUMEN VERIFIED';
+        break;
+    default:
+        $statusBadge = 'bg-orange-100 text-orange-700';
+        $statusLabel = 'MENUNGGU VERIFIKASI';
+}
+@endphp
+
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+    <div class="flex items-center gap-4">
+        <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary text-3xl">account_circle</span>
+        </div>
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-3xl font-bold text-slate-900 tracking-tight">{{ $spmb->nama_lengkap_anak ?? '-' }}</h1>
+                <span class="inline-flex items-center px-4 py-1 rounded-full text-xs font-bold {{ $statusBadge }} uppercase tracking-widest">{{ $statusLabel }}</span>
+            </div>
+            <p class="text-sm font-medium text-slate-500 mt-1 flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">confirmation_number</span>
+                {{ $spmb->no_pendaftaran ?? '-' }}
+            </p>
+        </div>
+    </div>
+    <div class="flex items-center gap-3">
+        <a href="{{ route('admin.ppdb.index') }}" class="flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all shadow-sm">
+            <span class="material-symbols-outlined text-lg">arrow_back</span>
+            Kembali
+        </a>
+        <button onclick="window.print()" class="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+            <span class="material-symbols-outlined text-lg">print</span>
+            Cetak Bukti
+        </button>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2 space-y-8">
+        <!-- Data Pendaftaran -->
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">app_registration</span>
+                <h3 class="font-bold text-slate-800">Data Pendaftaran</h3>
+            </div>
+            <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Kode Pendaftaran</p>
+                    <p class="text-sm font-bold text-primary">{{ $spmb->no_pendaftaran ?? '-' }}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Tanggal Daftar</p>
+                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->created_at ? $spmb->created_at->format('d M Y, H:i') : '-' }}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Status</p>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-bold {{ $statusBadge }} uppercase tracking-wider">{{ $statusLabel }}</span>
                 </div>
             </div>
-            <div class="flex gap-3">
-                <a href="{{ route('admin.ppdb.index') }}" 
-                   class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition">
-                    <i class="fas fa-arrow-left"></i> Kembali
-                </a>
-                
-                <!-- Link ke data siswa jika sudah dikonversi -->
-                @php
-                    $existingSiswa = $ppdb->siswa ?? null;
-                @endphp
-                @if($existingSiswa)
-                <a href="{{ route('admin.siswa.show', $existingSiswa) }}" 
-                   class="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition">
-                    <i class="fas fa-user-graduate mr-2"></i>Lihat Data Siswa
-                </a>
+        </div>
+
+        <!-- Identitas Anak -->
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">child_care</span>
+                <h3 class="font-bold text-slate-800">Identitas Anak</h3>
+            </div>
+            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">NIK</p>
+                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->nik_anak ?? '-' }}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Nama Lengkap</p>
+                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->nama_lengkap_anak ?? '-' }}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Nama Panggilan</p>
+                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->nama_panggilan_anak ?? '-' }}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Tempat, Tanggal Lahir</p>
+                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->tempat_lahir_anak ?? '-' }}, {{ $spmb->tanggal_lahir_anak ? \Carbon\Carbon::parse($spmb->tanggal_lahir_anak)->format('d M Y') : '-' }}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Jenis Kelamin</p>
+                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->jenis_kelamin ?? '-' }}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Agama</p>
+                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->agama ?? '-' }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alamat Lengkap -->
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">location_on</span>
+                <h3 class="font-bold text-slate-800">Alamat Lengkap</h3>
+            </div>
+            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
+                <div class="md:col-span-2">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Alamat Lengkap</p>
+                    <p class="text-sm font-semibold text-slate-700 leading-relaxed">{{ $spmb->nama_jalan_rumah ?? '-' }}, RT {{ $spmb->rt ?? '-' }} RW {{ $spmb->rw ?? '-' }}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Provinsi</p>
+                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->provinsi_rumah ?? '-' }}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Kota/Kabupaten</p>
+                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->kota_kabupaten_rumah ?? '-' }}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Kecamatan</p>
+                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->kecamatan_rumah ?? '-' }}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Kelurahan</p>
+                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->kelurahan_rumah ?? '-' }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Catatan Pendaftaran -->
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">history_edu</span>
+                    <h3 class="font-bold text-slate-800">Catatan Pendaftaran</h3>
+                </div>
+                <button onclick="openCatatanModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-lavender/40 text-primary rounded-lg text-xs font-bold hover:bg-lavender/60 transition-all">
+                    <span class="material-symbols-outlined text-sm">add</span>
+                    Tambah Catatan
+                </button>
+            </div>
+            <div class="p-6">
+                @if($spmb->riwayatStatus && $spmb->riwayatStatus->count() > 0)
+                <div class="relative pl-8 space-y-8 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
+                    @foreach($spmb->riwayatStatus->take(5) as $riwayat)
+                    <div class="relative">
+                        <div class="absolute -left-[29px] top-1 w-5 h-5 rounded-full {{ $loop->first ? 'bg-primary' : 'bg-slate-300' }} border-4 border-white shadow-sm z-10"></div>
+                        <div class="flex flex-col gap-2">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-sm font-bold text-slate-800">{{ $riwayat->status_baru ?? 'Pendaftaran Baru' }}</h4>
+                                <span class="text-[10px] font-medium text-slate-400 uppercase tracking-widest">{{ $riwayat->created_at ? $riwayat->created_at->format('d M Y, H:i') : '-' }}</span>
+                            </div>
+                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                                <p class="text-sm text-slate-600 leading-relaxed">{{ $riwayat->keterangan ?? 'Tidak ada keterangan' }}</p>
+                            </div>
+                            @if($riwayat->user)
+                            <div class="flex items-center gap-2">
+                                <div class="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-[12px] text-primary">person</span>
+                                </div>
+                                <p class="text-[10px] font-bold text-slate-500">{{ $riwayat->user->name ?? 'Admin' }} ({{ $riwayat->role_pengubah ?? 'admin' }})</p>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                @else
+                <div class="text-center py-8">
+                    <span class="material-symbols-outlined text-4xl text-slate-300 mb-2">history</span>
+                    <p class="text-sm text-slate-500">Belum ada riwayat catatan</p>
+                </div>
                 @endif
             </div>
         </div>
     </div>
 
-    <!-- Status Banner -->
-    <div class="mb-8">
-        @php
-            $statusColors = [
-                'menunggu' => 'bg-gray-100 border-gray-300 text-gray-800',
-                'diproses' => 'bg-yellow-100 border-yellow-300 text-yellow-800',
-                'diterima' => 'bg-green-100 border-green-300 text-green-800',
-                'ditolak' => 'bg-red-100 border-red-300 text-red-800',
-                'cadangan' => 'bg-blue-100 border-blue-300 text-blue-800',
-            ];
-        @endphp
-        
-        <div class="p-4 border rounded-xl {{ $statusColors[$ppdb->status] ?? 'bg-gray-100 border-gray-300' }}">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h3 class="font-bold text-lg">Status Pendaftaran: 
-                        <span class="uppercase">{{ $ppdb->status ?? 'diproses' }}</span>
-                    </h3>
-                    <p class="text-sm mt-1">
-                        Tanggal Pendaftaran: {{ \Carbon\Carbon::parse($ppdb->tanggal_pendaftaran)->translatedFormat('d F Y') }}
-                    </p>
-                </div>
-                
-                <!-- Status Pembayaran -->
-                <div>
-                    @php
-                        $paymentColors = [
-                            'belum' => 'bg-red-100 text-red-800',
-                            'pending' => 'bg-yellow-100 text-yellow-800',
-                            'lunas' => 'bg-green-100 text-green-800',
-                        ];
-                    @endphp
-                    <span class="px-4 py-2 rounded-lg font-bold {{ $paymentColors[$ppdb->status_pembayaran] ?? 'bg-gray-100 text-gray-800' }}">
-                        <i class="fas fa-money-bill-wave mr-2"></i>
-                        {{ ucfirst($ppdb->status_pembayaran ?? 'belum') }}
-                    </span>
-                </div>
+    <div class="space-y-8">
+        <!-- Data Orang Tua -->
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">family_restroom</span>
+                <h3 class="font-bold text-slate-800">Data Orang Tua</h3>
             </div>
-        </div>
-    </div>
-
-    <!-- Data Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <!-- Kolom Kiri: Data Calon Siswa -->
-        <div class="space-y-6">
-            <!-- Data Calon Siswa Card -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="card-header bg-blue-50">
-                    <h3 class="text-lg font-medium text-gray-900 flex items-center">
-                        <i class="fas fa-child mr-3 text-blue-600"></i>
-                        Data Calon Siswa
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="info-label">Nama Lengkap</label>
-                            <p class="info-value">{{ $ppdb->nama_calon_siswa }}</p>
-                        </div>
-                        <div>
-                            <label class="info-label">Jenis Kelamin</label>
-                            <p class="mt-1">
-                                @if($ppdb->jenis_kelamin == 'L')
-                                <span class="badge badge-blue">
-                                    <i class="fas fa-mars mr-1"></i> Laki-laki
-                                </span>
-                                @else
-                                <span class="badge badge-pink">
-                                    <i class="fas fa-venus mr-1"></i> Perempuan
-                                </span>
-                                @endif
-                            </p>
-                        </div>
+            <div class="p-6 space-y-8">
+                <!-- Data Ayah -->
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-1.5 h-4 bg-primary rounded-full"></div>
+                        <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest">Data Ayah</h4>
                     </div>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="info-label">Tempat Lahir</label>
-                            <p class="info-value">{{ $ppdb->tempat_lahir }}</p>
-                        </div>
-                        <div>
-                            <label class="info-label">Tanggal Lahir</label>
-                            <p class="info-value">
-                                {{ \Carbon\Carbon::parse($ppdb->tanggal_lahir)->translatedFormat('d F Y') }}
-                                <span class="text-gray-500 ml-2">
-                                    ({{ \Carbon\Carbon::parse($ppdb->tanggal_lahir)->age }} tahun)
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <label class="info-label">Alamat</label>
-                        <p class="mt-1 whitespace-pre-line">{{ $ppdb->alamat }}</p>
-                    </div>
-                    
-                    <div>
-                        <label class="info-label">Agama</label>
-                        <p class="info-value">{{ $ppdb->agama ?? '-' }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Data Orang Tua Card -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="card-header bg-green-50">
-                    <h3 class="text-lg font-medium text-gray-900 flex items-center">
-                        <i class="fas fa-users mr-3 text-green-600"></i>
-                        Data Orang Tua
-                    </h3>
-                </div>
-                <div class="card-body space-y-6">
-                    <!-- Data Ayah -->
                     <div class="space-y-4">
-                        <h4 class="font-medium text-gray-900 border-l-4 border-blue-500 pl-3">
-                            <i class="fas fa-male text-blue-600 mr-2"></i>Data Ayah
-                        </h4>
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nama Ayah</p>
+                            <p class="text-sm font-semibold text-slate-700">{{ $spmb->nama_lengkap_ayah ?? '-' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">NIK Ayah</p>
+                            <p class="text-sm font-semibold text-slate-700">{{ $spmb->nik_ayah ?? '-' }}</p>
+                        </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="info-label">Nama Ayah</label>
-                                <p class="info-value">{{ $ppdb->nama_ayah }}</p>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pekerjaan</p>
+                                <p class="text-sm font-semibold text-slate-700">{{ $spmb->pekerjaan_ayah ?? '-' }}</p>
                             </div>
                             <div>
-                                <label class="info-label">Pekerjaan</label>
-                                <p class="info-value">{{ $ppdb->pekerjaan_ayah ?? '-' }}</p>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">No HP</p>
+                                <p class="text-sm font-semibold text-slate-700">{{ $spmb->nomor_telepon_ayah ?? '-' }}</p>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Data Ibu -->
+                </div>
+
+                <!-- Data Ibu -->
+                <div class="pt-6 border-t border-slate-100">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-1.5 h-4 bg-pink-500 rounded-full"></div>
+                        <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest">Data Ibu</h4>
+                    </div>
                     <div class="space-y-4">
-                        <h4 class="font-medium text-gray-900 border-l-4 border-pink-500 pl-3">
-                            <i class="fas fa-female text-pink-600 mr-2"></i>Data Ibu
-                        </h4>
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nama Ibu</p>
+                            <p class="text-sm font-semibold text-slate-700">{{ $spmb->nama_lengkap_ibu ?? '-' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">NIK Ibu</p>
+                            <p class="text-sm font-semibold text-slate-700">{{ $spmb->nik_ibu ?? '-' }}</p>
+                        </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="info-label">Nama Ibu</label>
-                                <p class="info-value">{{ $ppdb->nama_ibu }}</p>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pekerjaan</p>
+                                <p class="text-sm font-semibold text-slate-700">{{ $spmb->pekerjaan_ibu ?? '-' }}</p>
                             </div>
                             <div>
-                                <label class="info-label">Pekerjaan</label>
-                                <p class="info-value">{{ $ppdb->pekerjaan_ibu ?? '-' }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Kontak -->
-                    <div class="space-y-4 pt-4 border-t border-gray-200">
-                        <h4 class="font-medium text-gray-900">
-                            <i class="fas fa-phone text-green-600 mr-2"></i>Kontak Orang Tua
-                        </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="info-label">No. HP/WhatsApp</label>
-                                <p class="mt-1">
-                                    <a href="https://wa.me/62{{ substr($ppdb->no_hp_ortu, 1) }}" 
-                                       target="_blank"
-                                       class="text-green-600 hover:text-green-800 inline-flex items-center">
-                                        <i class="fab fa-whatsapp mr-2"></i>
-                                        {{ $ppdb->no_hp_ortu }}
-                                    </a>
-                                </p>
-                            </div>
-                            <div>
-                                <label class="info-label">Email</label>
-                                <p class="mt-1">
-                                    @if($ppdb->email_ortu)
-                                    <a href="mailto:{{ $ppdb->email_ortu }}" 
-                                       class="text-blue-600 hover:text-blue-800">
-                                        {{ $ppdb->email_ortu }}
-                                    </a>
-                                    @else
-                                    <span class="text-gray-500">-</span>
-                                    @endif
-                                </p>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">No HP</p>
+                                <p class="text-sm font-semibold text-slate-700">{{ $spmb->nomor_telepon_ibu ?? '-' }}</p>
                             </div>
                         </div>
                     </div>
@@ -231,213 +308,190 @@
             </div>
         </div>
 
-        <!-- Kolom Kanan: Data Pendaftaran -->
-        <div class="space-y-6">
-            <!-- Data Pendaftaran Card -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="card-header bg-purple-50">
-                    <h3 class="text-lg font-medium text-gray-900 flex items-center">
-                        <i class="fas fa-graduation-cap mr-3 text-purple-600"></i>
-                        Data Pendaftaran
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="info-label">Pilihan Kelompok</label>
-                            <p class="mt-1">
-                                <span class="badge badge-purple">
-                                    Kelompok {{ $ppdb->pilihan_kelompok ?? 'A' }}
-                                </span>
-                            </p>
-                        </div>
-                        <div>
-                            <label class="info-label">Jalur Pendaftaran</label>
-                            <p class="mt-1">
-                                @php
-                                    $jalurLabels = [
-                                        'reguler' => 'Reguler',
-                                        'prestasi' => 'Prestasi',
-                                        'afirmasi' => 'Afirmasi',
-                                    ];
-                                @endphp
-                                <span class="badge badge-yellow">
-                                    {{ $jalurLabels[$ppdb->jalur_pendaftaran] ?? 'Reguler' }}
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                    
-                    @if($ppdb->catatan_khusus)
-                    <div>
-                        <label class="info-label">Catatan Khusus</label>
-                        <div class="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                            <p class="text-yellow-800 whitespace-pre-line">{{ $ppdb->catatan_khusus }}</p>
-                        </div>
-                    </div>
-                    @endif
-                </div>
+        <!-- Dokumen Terlampir -->
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">description</span>
+                <h3 class="font-bold text-slate-800">Dokumen Terlampir</h3>
             </div>
-
-            <!-- Informasi Sistem Card -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="card-header bg-gray-50">
-                    <h3 class="text-lg font-medium text-gray-900 flex items-center">
-                        <i class="fas fa-info-circle mr-3 text-gray-600"></i>
-                        Informasi Sistem
-                    </h3>
-                </div>
-                <div class="card-body space-y-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="info-label">Tanggal Daftar</label>
-                            <p class="info-value">
-                                {{ \Carbon\Carbon::parse($ppdb->created_at)->translatedFormat('d F Y H:i') }}
-                            </p>
-                        </div>
-                        <div>
-                            <label class="info-label">Terakhir Diupdate</label>
-                            <p class="info-value">
-                                {{ \Carbon\Carbon::parse($ppdb->updated_at)->translatedFormat('d F Y H:i') }}
-                                <span class="text-gray-500 ml-1">
-                                    ({{ \Carbon\Carbon::parse($ppdb->updated_at)->diffForHumans() }})
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                    
-                    @if($ppdb->tanggal_verifikasi)
-                    <div>
-                        <label class="info-label">Tanggal Verifikasi</label>
-                        <p class="info-value">
-                            {{ \Carbon\Carbon::parse($ppdb->tanggal_verifikasi)->translatedFormat('d F Y H:i') }}
-                        </p>
-                    </div>
-                    @endif
-                    
-                    @if($ppdb->verifikator)
-                    <div>
-                        <label class="info-label">Verifikator</label>
-                        <p class="info-value">{{ $ppdb->verifikator }}</p>
-                    </div>
-                    @endif
-                    
-                    @if($ppdb->catatan_admin)
-                    <div>
-                        <label class="info-label">Catatan Admin</label>
-                        <div class="mt-2 p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                            <p class="text-gray-700 whitespace-pre-line">{{ $ppdb->catatan_admin }}</p>
-                        </div>
-                    </div>
-                    @endif
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="p-6">
-                    <div class="flex flex-wrap gap-4 mb-4">
-                        <a href="{{ route('admin.ppdb.edit', $ppdb) }}" 
-                           class="btn btn-primary flex-1">
-                            <i class="fas fa-edit mr-2"></i>Edit Data
-                        </a>
-                        
-                        @if($ppdb->status !== 'diterima' && $ppdb->status !== 'ditolak')
-                        <button onclick="showStatusModal()"
-                                class="btn btn-warning flex-1">
-                            <i class="fas fa-sync-alt mr-2"></i>Ubah Status
-                        </button>
-                        @endif
-                        
-                        @if(!$existingSiswa && $ppdb->status === 'diterima' && $ppdb->status_pembayaran === 'lunas')
-                        <form action="{{ route('admin.ppdb.konversi', $ppdb) }}" 
-                              method="POST" class="flex-1"
-                              onsubmit="return confirm('Konversi data PPDB ini ke data siswa?')">
-                            @csrf
-                            <button type="submit" 
-                                    class="w-full btn btn-success">
-                                <i class="fas fa-exchange-alt mr-2"></i>Konversi ke Siswa
-                            </button>
-                        </form>
-                        @endif
-                        
-                        <form action="{{ route('admin.ppdb.destroy', $ppdb) }}" 
-                              method="POST" 
-                              class="flex-1"
-                              onsubmit="return confirm('Hapus data PPDB ini?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" 
-                                    class="w-full btn btn-danger">
-                                <i class="fas fa-trash mr-2"></i>Hapus Data
-                            </button>
-                        </form>
-                    </div>
-                    
-                    <!-- Konversi Warning -->
-                    @if($existingSiswa)
-                    <div class="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-                        <div class="flex items-center">
-                            <i class="fas fa-check-circle text-green-600 text-xl mr-3"></i>
+            <div class="p-6 space-y-3">
+                @if($spmb->dokumen && $spmb->dokumen->count() > 0)
+                    @foreach($spmb->dokumen as $dokumen)
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl group border border-transparent hover:border-primary/20 transition-all">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                                <span class="material-symbols-outlined text-red-600">picture_as_pdf</span>
+                            </div>
                             <div>
-                                <h4 class="font-medium text-green-800">Data sudah dikonversi menjadi siswa</h4>
-                                <p class="text-sm text-green-700 mt-1">
-                                    Data ini sudah dikonversi menjadi data siswa. 
-                                    <a href="{{ route('admin.siswa.show', $existingSiswa) }}" class="font-medium underline">Lihat data siswa</a>
-                                </p>
+                                <p class="text-xs font-bold text-slate-700">{{ ucfirst($dokumen->jenis_dokumen) }}</p>
+                                <p class="text-[10px] text-slate-400">{{ $dokumen->nama_file }}</p>
                             </div>
                         </div>
+                        @if($dokumen->path_file)
+                        @php $dokumenUrl = isset($dokumen->url) ? $dokumen->url : asset('storage/' . $dokumen->path_file); @endphp
+                        <button type="button" onclick="openDokumenModal('{{ $dokumenUrl }}')" class="px-3 py-1.5 bg-white text-primary text-xs font-bold rounded-lg border border-primary/20 hover:bg-primary hover:text-white transition-all">View</button>
+                        @else
+                        <span class="text-xs text-slate-400">-</span>
+                        @endif
                     </div>
-                    @endif
+                    @endforeach
+                @else
+                <div class="text-center py-6">
+                    <span class="material-symbols-outlined text-4xl text-slate-300 mb-2">folder_open</span>
+                    <p class="text-sm text-slate-500">Belum ada dokumen</p>
                 </div>
+                @endif
             </div>
         </div>
     </div>
 </div>
 
-<!-- Status Update Modal -->
-<div id="statusModal" class="modal-overlay hidden">
-    <div class="modal-container">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-medium text-gray-900">Update Status PPDB</h3>
-            <button onclick="closeStatusModal()" class="text-gray-400 hover:text-gray-600">
-                <i class="fas fa-times"></i>
+<!-- Status Information -->
+<div class="bg-white rounded-2xl p-8 mt-8 border border-slate-100 shadow-sm">
+    <div class="flex items-center gap-2 mb-8">
+        <span class="material-symbols-outlined text-primary">info</span>
+        <h3 class="text-lg font-bold text-slate-800 tracking-tight">Status Information Definitions</h3>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="flex items-start gap-4">
+            <div class="w-2 h-10 bg-orange-400 rounded-full mt-1"></div>
+            <div>
+                <h4 class="text-sm font-bold text-slate-800">Menunggu Verifikasi</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Pendaftaran baru masuk dan perlu diperiksa.</p>
+            </div>
+        </div>
+        <div class="flex items-start gap-4">
+            <div class="w-2 h-10 bg-yellow-400 rounded-full mt-1"></div>
+            <div>
+                <h4 class="text-sm font-bold text-slate-800">Revisi Dokumen</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Menunggu perbaikan berkas dari orang tua.</p>
+            </div>
+        </div>
+        <div class="flex items-start gap-4">
+            <div class="w-2 h-10 bg-blue-500 rounded-full mt-1"></div>
+            <div>
+                <h4 class="text-sm font-bold text-slate-800">Dokumen Verified</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Berkas lengkap dan valid.</p>
+            </div>
+        </div>
+        <div class="flex items-start gap-4">
+            <div class="w-2 h-10 bg-green-500 rounded-full mt-1"></div>
+            <div>
+                <h4 class="text-sm font-bold text-slate-800">Lulus</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Calon siswa diterima.</p>
+            </div>
+        </div>
+        <div class="flex items-start gap-4">
+            <div class="w-2 h-10 bg-red-500 rounded-full mt-1"></div>
+            <div>
+                <h4 class="text-sm font-bold text-slate-800">Tidak Lulus</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Calon siswa tidak diterima.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Catatan Modal -->
+<div id="catatanModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-slate-800">Tambah Catatan</h3>
+            <button onclick="closeCatatanModal()" class="text-slate-400 hover:text-slate-600">
+                <span class="material-symbols-outlined">close</span>
             </button>
         </div>
         
-        <form id="statusForm" method="POST" action="{{ route('admin.ppdb.updateStatus', $ppdb) }}" class="space-y-4">
+        <form method="POST" action="{{ route('admin.ppdb.updateStatus', $spmb) }}">
             @csrf
-            @method('PATCH')
+            @method('PUT')
             
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Status Baru</label>
-                <select name="status" class="form-select">
-                    <option value="menunggu" {{ $ppdb->status == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
-                    <option value="diproses" {{ $ppdb->status == 'diproses' ? 'selected' : '' }}>Diproses</option>
-                    <option value="diterima" {{ $ppdb->status == 'diterima' ? 'selected' : '' }}>Diterima</option>
-                    <option value="ditolak" {{ $ppdb->status == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
-                    <option value="cadangan" {{ $ppdb->status == 'cadangan' ? 'selected' : '' }}>Cadangan</option>
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-slate-700 mb-2">Status</label>
+                <select name="status" class="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm">
+                    <option value="{{ $spmb->status_pendaftaran }}" selected>{{ $spmb->status_pendaftaran }}</option>
+                    <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
+                    <option value="Diproses">Diproses</option>
+                    <option value="Diterima">Diterima</option>
+                    <option value="Mundur">Mundur</option>
                 </select>
             </div>
             
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Catatan (Opsional)</label>
-                <textarea name="catatan" rows="3" 
-                          class="form-textarea"
-                          placeholder="Tambahkan catatan jika diperlukan..."></textarea>
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-slate-700 mb-2">Catatan</label>
+                <textarea name="catatan" rows="4" class="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm" placeholder="Tambahkan catatan..."></textarea>
             </div>
             
-            <div class="flex justify-end gap-3 pt-4">
-                <button type="button" onclick="closeStatusModal()" 
-                        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+            <div class="flex gap-3">
+                <button type="button" onclick="closeCatatanModal()" class="flex-1 px-6 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all">
                     Batal
                 </button>
-                <button type="submit" 
-                        class="btn btn-primary px-4 py-2">
-                    <i class="fas fa-save mr-2"></i>Simpan Perubahan
+                <button type="submit" class="flex-1 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all">
+                    Simpan
                 </button>
             </div>
         </form>
     </div>
 </div>
+
+<!-- Dokumen Preview Modal -->
+<div id="dokumenModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+            <h3 class="text-lg font-bold text-slate-800">Preview Dokumen</h3>
+            <button onclick="closeDokumenModal()" class="text-slate-400 hover:text-slate-600 p-1">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="p-4 overflow-auto max-h-[calc(90vh-80px)] flex items-center justify-center bg-slate-100">
+            <iframe id="dokumenFrame" src="" class="w-full h-[70vh] rounded-lg border-0"></iframe>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    function openCatatanModal() {
+        document.getElementById('catatanModal').classList.remove('hidden');
+        document.getElementById('catatanModal').classList.add('flex');
+    }
+
+    function closeCatatanModal() {
+        document.getElementById('catatanModal').classList.add('hidden');
+        document.getElementById('catatanModal').classList.remove('flex');
+    }
+
+    function openDokumenModal(url) {
+        document.getElementById('dokumenFrame').src = url;
+        document.getElementById('dokumenModal').classList.remove('hidden');
+        document.getElementById('dokumenModal').classList.add('flex');
+    }
+
+    function closeDokumenModal() {
+        document.getElementById('dokumenModal').classList.add('hidden');
+        document.getElementById('dokumenModal').classList.remove('flex');
+        document.getElementById('dokumenFrame').src = '';
+    }
+
+    // Close modal on outside click
+    document.getElementById('catatanModal')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeCatatanModal();
+        }
+    });
+
+    document.getElementById('dokumenModal')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeDokumenModal();
+        }
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeCatatanModal();
+            closeDokumenModal();
+        }
+    });
+</script>
+@endpush
 @endsection

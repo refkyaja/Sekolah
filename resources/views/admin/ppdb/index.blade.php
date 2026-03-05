@@ -1,291 +1,374 @@
-{{-- resources/views/admin/ppdb/index.blade.php --}}
 @extends('layouts.admin')
 
-@section('title', 'Kelola PPDB')
+@push('styles')
+<style>
+    .sidebar-scroll::-webkit-scrollbar {
+        width: 4px;
+    }
+    .sidebar-scroll::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+    }
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    #sidebar-toggle:checked ~ aside {
+        width: 80px;
+    }
+    #sidebar-toggle:checked ~ aside .logo-text,
+    #sidebar-toggle:checked ~ aside .nav-text,
+    #sidebar-toggle:checked ~ aside .nav-section-title,
+    #sidebar-toggle:checked ~ aside .system-status {
+        display: none;
+    }
+    #sidebar-toggle:checked ~ aside .nav-item {
+        justify-content: center;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    #sidebar-toggle:checked ~ aside .nav-section-divider {
+        display: block;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin: 1rem 0.5rem;
+    }
+    .nav-section-divider {
+        display: none;
+    }
+    aside {
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .data-table th {
+        white-space: nowrap;
+    }
+    .data-table td {
+        vertical-align: middle;
+    }
+</style>
+@endpush
 
 @section('content')
-{{-- Tambahkan Vite directive untuk load CSS dan JS khusus --}}
-@vite(['resources/css/pages/ppdb-admin.css', 'resources/js/pages/ppdb-admin.js'])
+<nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 uppercase tracking-widest">
+    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li><a class="hover:text-primary" href="#">PPDB</a></li>
+        <li><span class="mx-2">/</span></li>
+        <li class="text-slate-600">Pendaftaran</li>
+    </ol>
+</nav>
 
-<div class="p-6 bg-gray-50 min-h-screen" data-page="ppdb-admin">
-    <!-- Header -->
-    <div class="mb-8">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-800">
-            <i class="fas fa-user-graduate mr-2"></i>Kelola Pendaftaran PPDB
-        </h1>
-        <p class="text-gray-600 mt-2">Kelola seluruh pendaftaran PPDB TK Ceria Bangsa</p>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+    <div>
+        <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Pendaftaran PPDB</h1>
+        <p class="text-sm text-slate-500 mt-1">Manajemen pendaftaran calon siswa baru dengan fitur filter dan aksi massal.</p>
     </div>
+    <a href="{{ route('admin.ppdb.create') }}" class="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-2xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+        <span class="material-symbols-outlined text-lg">add</span>
+        Tambah Data PPDB
+    </a>
+</div>
 
-    <!-- Statistik Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
-            <div class="flex justify-between items-center">
-                <div>
-                    <p class="text-sm font-medium text-gray-500">Total Pendaftar</p>
-                    <p class="text-3xl font-bold text-gray-800">{{ $statistik['total'] ?? 0 }}</p>
-                </div>
-                <div class="bg-blue-100 p-3 rounded-full">
-                    <i class="fas fa-users text-blue-600 text-xl"></i>
-                </div>
-            </div>
+<form action="{{ route('admin.ppdb.index') }}" method="GET">
+    <div class="bg-white rounded-2xl p-6 mb-8 border border-slate-100 shadow-sm flex flex-wrap items-center gap-4">
+        <div class="flex-1 min-w-[250px] relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+            <input 
+                name="search" 
+                value="{{ request('search') }}"
+                class="w-full pl-12 pr-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all" 
+                placeholder="Cari Kode Pendaftaran atau Nama..." 
+                type="text"
+            />
         </div>
-
-        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
-            <div class="flex justify-between items-center">
-                <div>
-                    <p class="text-sm font-medium text-gray-500">Diterima</p>
-                    <p class="text-3xl font-bold text-gray-800">{{ $statistik['diterima'] ?? 0 }}</p>
-                </div>
-                <div class="bg-green-100 p-3 rounded-full">
-                    <i class="fas fa-check-circle text-green-600 text-xl"></i>
-                </div>
-            </div>
+        <div class="w-full md:w-48">
+            <select name="status" class="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm text-slate-600 transition-all cursor-pointer">
+                <option value="">Semua Status</option>
+                <option value="menunggu" {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu Verifikasi</option>
+                <option value="diproses" {{ request('status') == 'diproses' ? 'selected' : '' }}>Diproses</option>
+                <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
+                <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                <option value="cadangan" {{ request('status') == 'cadangan' ? 'selected' : '' }}>Cadangan</option>
+            </select>
         </div>
-
-        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-yellow-500">
-            <div class="flex justify-between items-center">
-                <div>
-                    <p class="text-sm font-medium text-gray-500">Diproses</p>
-                    <p class="text-3xl font-bold text-gray-800">{{ $statistik['diproses'] ?? 0 }}</p>
-                </div>
-                <div class="bg-yellow-100 p-3 rounded-full">
-                    <i class="fas fa-clock text-yellow-600 text-xl"></i>
-                </div>
-            </div>
+        <div class="w-full md:w-56">
+            <select class="w-full px-4 py-3 bg-primary/10 border-2 border-primary/20 rounded-xl focus:ring-2 focus:ring-primary/20 text-sm text-primary font-bold transition-all cursor-pointer outline-none">
+                <option disabled selected value="">Aksi Massal</option>
+                <option value="verify">Verifikasi Terpilih</option>
+                <option value="update_status">Update Status Terpilih</option>
+                <option value="delete">Hapus Terpilih</option>
+            </select>
         </div>
-
-        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-red-500">
-            <div class="flex justify-between items-center">
-                <div>
-                    <p class="text-sm font-medium text-gray-500">Ditolak</p>
-                    <p class="text-3xl font-bold text-gray-800">{{ $statistik['ditolak'] ?? 0 }}</p>
-                </div>
-                <div class="bg-red-100 p-3 rounded-full">
-                    <i class="fas fa-times-circle text-red-600 text-xl"></i>
-                </div>
-            </div>
-        </div>
+        <a href="{{ route('admin.ppdb.index') }}" class="px-6 py-3 bg-slate-100 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all">
+            Reset Filter
+        </a>
+        <button type="submit" class="px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all">
+            Filter
+        </button>
     </div>
+</form>
 
-    <!-- Filter & Search Card -->
-    <div class="bg-white rounded-xl shadow-md p-6 mb-8">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
-            <div class="flex-1">
-                <form id="searchForm" method="GET" class="flex gap-4">
-                    <div class="flex-1">
-                        <input type="text" 
-                               name="search" 
-                               placeholder="Cari nama calon siswa, orang tua, atau no pendaftaran..."
-                               value="{{ request('search') }}"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium">
-                        <i class="fas fa-search mr-2"></i>Cari
-                    </button>
-                </form>
-            </div>
-            <div class="flex gap-4">
-                <button id="exportBtn" class="border border-green-600 text-green-600 hover:bg-green-50 px-4 py-2 rounded-lg font-medium">
-                    <i class="fas fa-file-export mr-2"></i>Export
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mb-8">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse data-table">
+            <thead>
+                <tr class="bg-slate-50/50 border-b border-slate-100">
+                    <th class="pl-6 py-4 w-12">
+                        <input class="w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary transition-all cursor-pointer" type="checkbox" id="selectAll"/>
+                    </th>
+                    <th class="px-4 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider w-16">No</th>
+                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">Kode Pendaftaran</th>
+                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">Nama Lengkap</th>
+                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">Jenis Kelamin</th>
+                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">Tanggal & Waktu Pendaftaran</th>
+                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-50">
+                @forelse($spmb as $index => $item)
+                <tr class="hover:bg-slate-50/50 transition-colors group" data-id="{{ $item->id }}">
+                    <td class="pl-6 py-4">
+                        <input class="w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary transition-all cursor-pointer item-checkbox" type="checkbox" value="{{ $item->id }}"/>
+                    </td>
+                    <td class="px-4 py-4 text-sm font-medium text-slate-400">{{ $spmb->firstItem() + $index }}</td>
+                    <td class="px-6 py-4 text-sm font-bold text-primary">{{ $item->no_pendaftaran ?? '-' }}</td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm font-bold text-slate-800">{{ $item->nama_lengkap_anak ?? '-' }}</span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-slate-600">
+                        @if($item->jenis_kelamin == 'Laki-laki')
+                            Laki-laki
+                        @elseif($item->jenis_kelamin == 'Perempuan')
+                            Perempuan
+                        @else
+                            -
+                        @endif
+                    </td>
+                    <td class="px-6 py-4 text-sm text-slate-500">
+                        {{ $item->created_at ? $item->created_at->format('d M Y, H:i') : '-' }}
+                    </td>
+                    <td class="px-6 py-4">
+                        @switch($item->status_pendaftaran)
+                            @case('Menunggu Verifikasi')
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-orange-100 text-orange-700 uppercase tracking-wider">Menunggu Verifikasi</span>
+                                @break
+                            @case('Diterima')
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700 uppercase tracking-wider">Lulus</span>
+                                @break
+                            @case('Mundur')
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-700 uppercase tracking-wider">Tidak Lulus</span>
+                                @break
+                            @case('Diproses')
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 uppercase tracking-wider">Dokumen Verified</span>
+                                @break
+                            @default
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-yellow-100 text-yellow-700 uppercase tracking-wider">{{ $item->status_pendaftaran ?? 'Menunggu' }}</span>
+                        @endswitch
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center justify-center gap-2">
+                            <a href="{{ route('admin.ppdb.show', $item->id) }}" class="p-2 bg-slate-50 hover:bg-primary/10 text-slate-400 hover:text-primary rounded-lg transition-all" title="Show">
+                                <span class="material-symbols-outlined text-lg">visibility</span>
+                            </a>
+                            <a href="{{ route('admin.ppdb.edit', $item->id) }}" class="p-2 bg-slate-50 hover:bg-primary/10 text-slate-400 hover:text-primary rounded-lg transition-all" title="Edit">
+                                <span class="material-symbols-outlined text-lg">edit</span>
+                            </a>
+                            <button onclick="updateStatus({{ $item->id }}, '{{ $item->nama_lengkap_anak }}')" class="p-2 bg-slate-50 hover:bg-green-50 text-slate-400 hover:text-green-500 rounded-lg transition-all" title="Update Status">
+                                <span class="material-symbols-outlined text-lg">refresh</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="8" class="px-6 py-12 text-center">
+                        <div class="flex flex-col items-center">
+                            <span class="material-symbols-outlined text-5xl text-slate-300 mb-3">folder_off</span>
+                            <p class="text-slate-500 font-medium">Tidak ada data pendaftaran</p>
+                            <a href="{{ route('admin.ppdb.create') }}" class="text-primary hover:underline text-sm mt-2">Tambah data baru</a>
+                        </div>
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+    
+    @if($spmb->hasPages())
+    <div class="px-6 py-4 border-t border-slate-50 flex items-center justify-between">
+        <p class="text-xs text-slate-400 font-medium">Showing <span class="text-slate-900">{{ $spmb->firstItem() ?? 0 }}</span> to <span class="text-slate-900">{{ $spmb->lastItem() ?? 0 }}</span> of <span class="text-slate-900">{{ $spmb->total() }}</span> pendaftar</p>
+        <div class="flex gap-2">
+            @if($spmb->onFirstPage())
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 cursor-not-allowed">
+                    <span class="material-symbols-outlined text-lg">chevron_left</span>
                 </button>
-                <a href="{{ route('admin.ppdb.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium">
-                    <i class="fas fa-plus mr-2"></i>Tambah Baru
+            @else
+                <a href="{{ $spmb->previousPageUrl() }}" class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 transition-colors">
+                    <span class="material-symbols-outlined text-lg">chevron_left</span>
                 </a>
-            </div>
-        </div>
-
-        <!-- Quick Filters -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <!-- Status Filter -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                <select name="status" class="filter-select w-full px-3 py-2 border border-gray-300 rounded-lg">
-                    <option value="">Semua Status</option>
-                    <option value="menunggu" {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
-                    <option value="diproses" {{ request('status') == 'diproses' ? 'selected' : '' }}>Diproses</option>
-                    <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
-                    <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
-                    <option value="cadangan" {{ request('status') == 'cadangan' ? 'selected' : '' }}>Cadangan</option>
-                </select>
-            </div>
-
-            <!-- Kelompok Filter -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Kelompok</label>
-                <select name="kelompok" class="filter-select w-full px-3 py-2 border border-gray-300 rounded-lg">
-                    <option value="">Semua Kelompok</option>
-                    <option value="A" {{ request('kelompok') == 'A' ? 'selected' : '' }}>Kelompok A</option>
-                    <option value="B" {{ request('kelompok') == 'B' ? 'selected' : '' }}>Kelompok B</option>
-                </select>
-            </div>
-
-            <!-- Jalur Filter -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Jalur</label>
-                <select name="jalur" class="filter-select w-full px-3 py-2 border border-gray-300 rounded-lg">
-                    <option value="">Semua Jalur</option>
-                    <option value="reguler" {{ request('jalur') == 'reguler' ? 'selected' : '' }}>Reguler</option>
-                    <option value="prestasi" {{ request('jalur') == 'prestasi' ? 'selected' : '' }}>Prestasi</option>
-                    <option value="afirmasi" {{ request('jalur') == 'afirmasi' ? 'selected' : '' }}>Afirmasi</option>
-                </select>
-            </div>
-
-            <!-- Pembayaran Filter -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Pembayaran</label>
-                <select name="status_pembayaran" class="filter-select w-full px-3 py-2 border border-gray-300 rounded-lg">
-                    <option value="">Semua Status</option>
-                    <option value="belum" {{ request('status_pembayaran') == 'belum' ? 'selected' : '' }}>Belum Bayar</option>
-                    <option value="pending" {{ request('status_pembayaran') == 'pending' ? 'selected' : '' }}>Pending</option>
-                    <option value="lunas" {{ request('status_pembayaran') == 'lunas' ? 'selected' : '' }}>Lunas</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <!-- Data Table -->
-    <div class="bg-white rounded-xl shadow-md overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-            <div>
-                <h3 class="text-lg font-medium text-gray-900">Daftar Pendaftaran</h3>
-                <p class="text-sm text-gray-600">{{ $ppdb->total() }} data ditemukan</p>
-            </div>
-            <div class="flex items-center gap-4">
-                <select id="perPageSelect" class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
-                    <option value="10" {{ request('per_page', 15) == 10 ? 'selected' : '' }}>10 per halaman</option>
-                    <option value="15" {{ request('per_page', 15) == 15 ? 'selected' : '' }}>15 per halaman</option>
-                    <option value="25" {{ request('per_page', 15) == 25 ? 'selected' : '' }}>25 per halaman</option>
-                    <option value="50" {{ request('per_page', 15) == 50 ? 'selected' : '' }}>50 per halaman</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="overflow-x-auto" id="tableContainer">
-            @include('admin.ppdb.partials.table')
-        </div>
-
-        <!-- Pagination -->
-        @if($ppdb->hasPages())
-        <div class="px-6 py-4 border-t border-gray-200" id="paginationContainer">
-            {{ $ppdb->onEachSide(1)->links('vendor.pagination.tailwind') }}
-        </div>
-        @endif
-    </div>
-</div>
-
-<!-- Export Modal -->
-<div id="exportModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 ppdb-modal">
-    <div class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-xl bg-white">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-medium text-gray-900">Export Data PPDB</h3>
-            <button type="button" data-modal-close="exportModal" class="text-gray-400 hover:text-gray-600">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <form action="{{ route('admin.ppdb.export') }}" method="GET" class="space-y-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Format File</label>
-                <select name="format" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-                    <option value="csv">CSV (Excel)</option>
-                </select>
-            </div>
+            @endif
             
-            <div class="flex justify-end gap-3 pt-4">
-                <button type="button" data-modal-close="exportModal" 
-                        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
-                    Batal
+            @foreach($spmb->getUrlRange(1, $spmb->lastPage()) as $page => $url)
+                @if($page == $spmb->currentPage())
+                    <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white text-xs font-bold">{{ $page }}</button>
+                @else
+                    <a href="{{ $url }}" class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50">{{ $page }}</a>
+                @endif
+            @endforeach
+            
+            @if($spmb->hasMorePages())
+                <a href="{{ $spmb->nextPageUrl() }}" class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 transition-colors">
+                    <span class="material-symbols-outlined text-lg">chevron_right</span>
+                </a>
+            @else
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 cursor-not-allowed">
+                    <span class="material-symbols-outlined text-lg">chevron_right</span>
                 </button>
-                <button type="submit" 
-                        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-                    <i class="fas fa-download mr-2"></i>Export
-                </button>
+            @endif
+        </div>
+    </div>
+    @endif
+</div>
+
+<div class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
+    <div class="flex items-center gap-2 mb-8">
+        <span class="material-symbols-outlined text-primary">info</span>
+        <h3 class="text-lg font-bold text-slate-800 tracking-tight">Status Information</h3>
+    </div>
+    <div class="space-y-6 max-w-4xl">
+        <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 mt-1">
+                <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-[10px] font-black bg-orange-100 text-orange-700 uppercase tracking-widest min-w-[130px]">Menunggu Verifikasi</span>
             </div>
-        </form>
+            <div class="flex-1">
+                <h4 class="text-sm font-bold text-slate-800 tracking-tight">Menunggu Verifikasi</h4>
+                <p class="text-[13px] text-slate-500 mt-0.5">Pendaftaran baru masuk dan perlu diperiksa.</p>
+            </div>
+        </div>
+        <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 mt-1">
+                <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-[10px] font-black bg-yellow-100 text-yellow-700 uppercase tracking-widest min-w-[130px]">Revisi Dokumen</span>
+            </div>
+            <div class="flex-1">
+                <h4 class="text-sm font-bold text-slate-800 tracking-tight">Revisi Dokumen</h4>
+                <p class="text-[13px] text-slate-500 mt-0.5">Menunggu perbaikan berkas dari orang tua.</p>
+            </div>
+        </div>
+        <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 mt-1">
+                <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-[10px] font-black bg-blue-100 text-blue-700 uppercase tracking-widest min-w-[130px]">Dokumen Verified</span>
+            </div>
+            <div class="flex-1">
+                <h4 class="text-sm font-bold text-slate-800 tracking-tight">Dokumen Verified</h4>
+                <p class="text-[13px] text-slate-500 mt-0.5">Berkas lengkap dan valid.</p>
+            </div>
+        </div>
+        <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 mt-1">
+                <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-[10px] font-black bg-green-100 text-green-700 uppercase tracking-widest min-w-[130px]">Lulus</span>
+            </div>
+            <div class="flex-1">
+                <h4 class="text-sm font-bold text-slate-800 tracking-tight">Lulus</h4>
+                <p class="text-[13px] text-slate-500 mt-0.5">Calon siswa diterima.</p>
+            </div>
+        </div>
+        <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 mt-1">
+                <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-[10px] font-black bg-red-100 text-red-700 uppercase tracking-widest min-w-[130px]">Tidak Lulus</span>
+            </div>
+            <div class="flex-1">
+                <h4 class="text-sm font-bold text-slate-800 tracking-tight">Tidak Lulus</h4>
+                <p class="text-[13px] text-slate-500 mt-0.5">Calon siswa tidak diterima.</p>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Quick Status Update Modal -->
-<div id="statusModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 ppdb-modal">
-    <div class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-xl bg-white">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-medium text-gray-900">Update Status</h3>
-            <button type="button" data-modal-close="statusModal" class="text-gray-400 hover:text-gray-600">
-                <i class="fas fa-times"></i>
+<!-- Update Status Modal -->
+<div id="statusModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-slate-800">Update Status</h3>
+            <button onclick="closeStatusModal()" class="text-slate-400 hover:text-slate-600">
+                <span class="material-symbols-outlined">close</span>
             </button>
         </div>
         
-        <form id="statusForm" method="POST" class="space-y-4">
+        <form id="statusForm" method="POST">
             @csrf
             @method('PATCH')
-            <input type="hidden" name="ppdb_id" id="ppdbId">
+            <input type="hidden" id="ppdbId" name="ppdb_id">
             
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Status Baru</label>
-                <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-                    <option value="menunggu">Menunggu</option>
-                    <option value="diproses">Diproses</option>
-                    <option value="diterima">Diterima</option>
-                    <option value="ditolak">Ditolak</option>
-                    <option value="cadangan">Cadangan</option>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-slate-700 mb-2">Nama Siswa</label>
+                <p id="siswaName" class="text-slate-800 font-medium">-</p>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-slate-700 mb-2">Status Baru</label>
+                <select name="status" class="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm">
+                    <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
+                    <option value="Diproses">Diproses</option>
+                    <option value="Diterima">Diterima</option>
+                    <option value="Mundur">Mundur</option>
                 </select>
             </div>
             
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Catatan (Opsional)</label>
-                <textarea name="catatan" rows="3" 
-                          class="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                          placeholder="Tambahkan catatan jika diperlukan..."></textarea>
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-slate-700 mb-2">Catatan (Opsional)</label>
+                <textarea name="catatan" rows="3" class="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm" placeholder="Tambahkan catatan..."></textarea>
             </div>
             
-            <div class="flex justify-end gap-3 pt-4">
-                <button type="button" data-modal-close="statusModal" 
-                        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+            <div class="flex gap-3">
+                <button type="button" onclick="closeStatusModal()" class="flex-1 px-6 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all">
                     Batal
                 </button>
-                <button type="submit" 
-                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                    <i class="fas fa-save mr-2"></i>Simpan
+                <button type="submit" class="flex-1 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all">
+                    Simpan
                 </button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- Quick Payment Update Modal -->
-<div id="paymentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 ppdb-modal">
-    <div class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-xl bg-white">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-medium text-gray-900">Update Status Pembayaran</h3>
-            <button type="button" data-modal-close="paymentModal" class="text-gray-400 hover:text-gray-600">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <form id="paymentForm" method="POST" class="space-y-4">
-            @csrf
-            <input type="hidden" name="ppdb_id" id="paymentPpdbId">
-            
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Status Pembayaran</label>
-                <select name="status_pembayaran" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-                    <option value="belum">Belum Bayar</option>
-                    <option value="pending">Pending</option>
-                    <option value="lunas">Lunas</option>
-                </select>
-            </div>
-            
-            <div class="flex justify-end gap-3 pt-4">
-                <button type="button" data-modal-close="paymentModal" 
-                        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
-                    Batal
-                </button>
-                <button type="submit" 
-                        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-                    <i class="fas fa-save mr-2"></i>Simpan
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
+@push('scripts')
+<script>
+    // Select All Checkbox
+    document.getElementById('selectAll')?.addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.item-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+    });
+
+    // Update Status Modal
+    function updateStatus(id, name) {
+        document.getElementById('ppdbId').value = id;
+        document.getElementById('siswaName').textContent = name;
+        document.getElementById('statusForm').action = `/admin/ppdb/${id}/update-status`;
+        document.getElementById('statusModal').classList.remove('hidden');
+        document.getElementById('statusModal').classList.add('flex');
+    }
+
+    function closeStatusModal() {
+        document.getElementById('statusModal').classList.add('hidden');
+        document.getElementById('statusModal').classList.remove('flex');
+    }
+
+    // Close modal on outside click
+    document.getElementById('statusModal')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeStatusModal();
+        }
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeStatusModal();
+        }
+    });
+</script>
+@endpush
 @endsection

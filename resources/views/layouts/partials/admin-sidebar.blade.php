@@ -60,27 +60,27 @@
         <div class="space-y-1">
             <div class="nav-section-divider"></div>
             <h3 class="nav-section-title px-4 text-[10px] font-black text-white/60 uppercase tracking-widest mb-3 flex items-center gap-2 whitespace-nowrap">🏫 C. PPDB</h3>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.spmb.index') && !request()->has('status') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.spmb.index') }}" title="Pendaftaran">
+            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.ppdb.index') || request()->routeIs('admin.spmb.index') && !request()->has('status') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.ppdb.index') }}" title="Pendaftaran">
                 <span class="material-symbols-outlined text-lg">app_registration</span>
                 <span class="text-sm nav-text whitespace-nowrap">Pendaftaran</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->get('status') == 'Menunggu Verifikasi' ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.spmb.index', ['status' => 'Menunggu Verifikasi']) }}" title="Verifikasi Dokumen">
+            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->get('status') == 'Menunggu Verifikasi' || request()->routeIs('admin.ppdb.index') && request()->get('status') == 'Menunggu Verifikasi' ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.ppdb.index', ['status' => 'Menunggu Verifikasi']) }}" title="Verifikasi Dokumen">
                 <span class="material-symbols-outlined text-lg">verified</span>
                 <span class="text-sm nav-text whitespace-nowrap">Verifikasi Dokumen</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->get('status') == 'Diterima' ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.spmb.index', ['status' => 'Diterima']) }}" title="Pengumuman">
+            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.ppdb.pengumuman') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.ppdb.pengumuman') }}" title="Pengumuman">
                 <span class="material-symbols-outlined text-lg">campaign</span>
                 <span class="text-sm nav-text whitespace-nowrap">Pengumuman</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.spmb-settings.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.spmb-settings.index') }}" title="Settings PPDB">
+            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.ppdb.pengaturan') || request()->routeIs('admin.spmb-settings.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.ppdb.pengaturan') }}" title="Settings PPDB">
                 <span class="material-symbols-outlined text-lg">settings</span>
                 <span class="text-sm nav-text whitespace-nowrap">Settings PPDB</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 text-white/80 hover:bg-white/10 hover:text-white rounded-xl transition-all" href="#" onclick="return false;" title="Riwayat PPDB">
+            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.ppdb.riwayat') || request()->routeIs('admin.ppdb.riwayat.show') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.ppdb.riwayat') }}" title="Riwayat PPDB">
                 <span class="material-symbols-outlined text-lg">history</span>
                 <span class="text-sm nav-text whitespace-nowrap">Riwayat PPDB</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 text-white/80 hover:bg-white/10 hover:text-white rounded-xl transition-all" href="{{ route('admin.spmb.export') }}" title="Export Data">
+            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.ppdb.export') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.ppdb.export') }}" title="Export Data">
                 <span class="material-symbols-outlined text-lg">download</span>
                 <span class="text-sm nav-text whitespace-nowrap">Export Data</span>
             </a>

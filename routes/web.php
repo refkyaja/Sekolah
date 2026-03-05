@@ -128,21 +128,21 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
 
     Route::resource('guru', GuruController::class);
     
-    // Kelola Akun Guru
-    Route::prefix('guru-accounts')->name('guru-accounts.')->group(function () {
-        Route::post('/bulk-delete', [GuruAccountController::class, 'bulkDelete'])->name('bulk-delete');
-        Route::post('/bulk-generate', [GuruAccountController::class, 'bulkGenerateAccounts'])->name('bulk-generate');
-        Route::get('/export', [GuruAccountController::class, 'export'])->name('export');
-        Route::get('/create', [GuruAccountController::class, 'create'])->name('create');
-        Route::get('/', [GuruAccountController::class, 'index'])->name('index');
-        Route::post('/', [GuruAccountController::class, 'store'])->name('store');
-        Route::get('/{user}', [GuruAccountController::class, 'show'])->name('show');
-        Route::get('/{user}/edit', [GuruAccountController::class, 'edit'])->name('edit');
-        Route::put('/{user}', [GuruAccountController::class, 'update'])->name('update');
-        Route::delete('/{user}', [GuruAccountController::class, 'destroy'])->name('destroy');
-        Route::post('/{user}/reset-password', [GuruAccountController::class, 'resetPassword'])->name('reset-password');
-        Route::post('/{user}/generate', [GuruAccountController::class, 'generateAccount'])->name('generate');
-    });
+    // Kelola Akun Guru - Commented out, controller doesn't exist
+    // Route::prefix('guru-accounts')->name('guru-accounts.')->group(function () {
+    //     Route::post('/bulk-delete', [GuruAccountController::class, 'bulkDelete'])->name('bulk-delete');
+    //     Route::post('/bulk-generate', [GuruAccountController::class, 'bulkGenerateAccounts'])->name('bulk-generate');
+    //     Route::get('/export', [GuruAccountController::class, 'export'])->name('export');
+    //     Route::get('/create', [GuruAccountController::class, 'create'])->name('create');
+    //     Route::get('/', [GuruAccountController::class, 'index'])->name('index');
+    //     Route::post('/', [GuruAccountController::class, 'store'])->name('store');
+    //     Route::get('/{user}', [GuruAccountController::class, 'show'])->name('show');
+    //     Route::get('/{user}/edit', [GuruAccountController::class, 'edit'])->name('edit');
+    //     Route::put('/{user}', [GuruAccountController::class, 'update'])->name('update');
+    //     Route::delete('/{user}', [GuruAccountController::class, 'destroy'])->name('destroy');
+    //     Route::post('/{user}/reset-password', [GuruAccountController::class, 'resetPassword'])->name('reset-password');
+    //     Route::post('/{user}/generate', [GuruAccountController::class, 'generateAccount'])->name('generate');
+    // });
     
     // Absensi
     Route::prefix('absensi')->name('absensi.')->group(function () {
@@ -202,6 +202,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
         Route::put('/{spmb}', [AdminSpmbController::class, 'update'])->name('update');
         Route::delete('/{spmb}', [AdminSpmbController::class, 'destroy'])->name('destroy');
         Route::put('/{spmb}/status', [AdminSpmbController::class, 'updateStatus'])->name('updateStatus');
+        Route::patch('/{spmb}/update-status', [AdminSpmbController::class, 'updateStatus'])->name('updateStatusPatch');
         Route::post('/{spmb}/verifikasi-dokumen', [AdminSpmbController::class, 'verifikasiDokumen'])->name('verifikasiDokumen');
         Route::post('/{spmb}/approve-kepsek', [AdminSpmbController::class, 'approveKepsek'])->name('approveKepsek');
         Route::post('/{spmb}/assign-kelas', [AdminSpmbController::class, 'assignKelas'])->name('assignKelas');
@@ -233,6 +234,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
     // SPMB Settings
     Route::prefix('spmb-settings')->name('spmb-settings.')->group(function () {
         Route::get('/', [SpmbSettingController::class, 'edit'])->name('index');
+        Route::put('/', [SpmbSettingController::class, 'update'])->name('update');
         Route::get('/pendaftaran', [SpmbSettingController::class, 'pendaftaran'])->name('pendaftaran');
         Route::put('/pendaftaran/update', [SpmbSettingController::class, 'updatePendaftaran'])->name('pendaftaran.update');
         Route::get('/pengumuman', [SpmbSettingController::class, 'pengumuman'])->name('pengumuman');
@@ -241,6 +243,28 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
         Route::post('/sistem/update', [SpmbSettingController::class, 'updateSistem'])->name('sistem.update');
         Route::post('/publish', [SpmbSettingController::class, 'publish'])->name('publish');
         Route::post('/unpublish', [SpmbSettingController::class, 'unpublish'])->name('unpublish');
+    });
+
+    // PPDB Routes (Alias for SPMB)
+    Route::prefix('ppdb')->name('ppdb.')->group(function () {
+        Route::get('/dashboard', [AdminSpmbController::class, 'dashboard'])->name('dashboard');
+        Route::get('/export', [AdminSpmbController::class, 'export'])->name('export');
+        Route::post('/export-selected', [AdminSpmbController::class, 'exportSelected'])->name('exportSelected');
+        Route::post('/batch-action', [AdminSpmbController::class, 'batchAction'])->name('batchAction');
+        Route::get('/create', [AdminSpmbController::class, 'create'])->name('create');
+        Route::post('/', [AdminSpmbController::class, 'store'])->name('store');
+        Route::get('/pengaturan', [AdminSpmbController::class, 'pengaturan'])->name('pengaturan');
+        Route::post('/pengaturan', [AdminSpmbController::class, 'updatePengaturan'])->name('updatePengaturan');
+        Route::get('/pengumuman', [AdminSpmbController::class, 'pengumuman'])->name('pengumuman');
+        Route::get('/riwayat', [AdminSpmbController::class, 'riwayat'])->name('riwayat');
+        Route::get('/riwayat/{tahunAjaran}', [AdminSpmbController::class, 'riwayatShow'])->name('riwayat.show');
+        Route::get('/', [AdminSpmbController::class, 'index'])->name('index');
+        Route::get('/{spmb}', [AdminSpmbController::class, 'show'])->name('show');
+        Route::get('/{spmb}/edit', [AdminSpmbController::class, 'edit'])->name('edit');
+        Route::put('/{spmb}', [AdminSpmbController::class, 'update'])->name('update');
+        Route::delete('/{spmb}', [AdminSpmbController::class, 'destroy'])->name('destroy');
+        Route::put('/{spmb}/status', [AdminSpmbController::class, 'updateStatus'])->name('updateStatus');
+        Route::patch('/{spmb}/update-status', [AdminSpmbController::class, 'updateStatus'])->name('updateStatusPatch');
     });
 
     // Berita Management
