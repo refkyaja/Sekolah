@@ -10,6 +10,7 @@ class SpmbSetting extends Model
     use HasFactory;
 
     protected $fillable = [
+        'tahun_ajaran_id',
         'tahun_ajaran',
         'gelombang',
         'pendaftaran_mulai',
@@ -34,6 +35,7 @@ class SpmbSetting extends Model
     ];
 
     protected $casts = [
+        'tahun_ajaran_id' => 'integer',
         'pendaftaran_mulai' => 'datetime',
         'pendaftaran_selesai' => 'datetime',
         'pengumuman_mulai' => 'datetime',
