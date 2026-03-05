@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
-class Siswa extends Model
+class Siswa extends Authenticatable
 {
     use HasFactory, SoftDeletes;
 
@@ -19,6 +19,10 @@ class Siswa extends Model
         // Nomor Induk
         'nis',
         'nisn',
+        'username',
+        'email',
+        'password',
+        'google_id',
         
         // Data siswa
         'nik',
@@ -115,6 +119,11 @@ class Siswa extends Model
         'catatan',
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     protected $casts = [
         'tanggal_lahir' => 'date',
         'tanggal_lahir_ayah' => 'date',
@@ -125,6 +134,7 @@ class Siswa extends Model
         'punya_wali' => 'boolean',
         'berat_badan' => 'decimal:2',
         'tinggi_badan' => 'decimal:2',
+        'password' => 'hashed',
     ];
 
     // Constanta untuk status siswa

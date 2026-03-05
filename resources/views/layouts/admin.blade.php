@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" x-data="{ sidebarCollapsed: localStorage.getItem('adminSidebarCollapsed') === 'true' }" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,7 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -45,6 +46,8 @@
                 font-family: 'Lexend', sans-serif;
             }
         }
+        [x-cloak] { display: none !important; }
+        
         .sidebar-scroll::-webkit-scrollbar {
             width: 4px;
         }
@@ -58,36 +61,49 @@
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        #sidebar-toggle:checked ~ aside {
+        
+        aside {
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-collapsed aside {
             width: 80px;
         }
-        #sidebar-toggle:checked ~ aside .logo-text,
-        #sidebar-toggle:checked ~ aside .nav-text,
-        #sidebar-toggle:checked ~ aside .nav-section-title,
-        #sidebar-toggle:checked ~ aside .system-status {
+        
+        .sidebar-collapsed aside .logo-text,
+        .sidebar-collapsed aside .nav-text,
+        .sidebar-collapsed aside .nav-section-title,
+        .sidebar-collapsed aside .system-status {
             display: none;
         }
-        #sidebar-toggle:checked ~ aside .nav-item {
+        
+        .sidebar-collapsed aside .nav-item {
             justify-content: center;
             padding-left: 0;
             padding-right: 0;
         }
-        #sidebar-toggle:checked ~ aside .nav-section-divider {
+        
+        .sidebar-collapsed aside .nav-section-divider {
             display: block;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             margin: 1rem 0.5rem;
         }
+        
         .nav-section-divider {
             display: none;
         }
-        aside {
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        
         @media (max-width: 1023px) {
-            body.sidebar-open aside {
+            aside {
+                position: fixed;
+                height: 100vh;
+                z-index: 40;
+                transform: translateX(-100%);
+            }
+            .mobile-sidebar-open aside {
                 transform: translateX(0);
             }
-            body.sidebar-open {
+            .mobile-sidebar-open {
                 overflow: hidden;
             }
         }
@@ -95,7 +111,9 @@
     @livewireStyles
     @stack('styles')
 </head>
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen"
+      x-data="{ mobileSidebarOpen: false }"
+      :class="{ 'mobile-sidebar-open': mobileSidebarOpen }">
 
     <div id="loadingOverlay" class="fixed inset-0 bg-white dark:bg-slate-900 bg-opacity-90 flex items-center justify-center z-[60] hidden">
         <div class="text-center">
@@ -105,7 +123,6 @@
     </div>
 
     <div class="flex h-screen overflow-hidden">
-        <input class="hidden" id="sidebar-toggle" type="checkbox"/>
         @include('layouts.partials.admin-sidebar')
 
         <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
@@ -167,50 +184,18 @@
         </div>
     </div>
 
-    <div id="mobileBackdrop" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden" aria-hidden="true"></div>
+    <div x-show="mobileSidebarOpen" 
+         @click="mobileSidebarOpen = false"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 bg-black/50 z-30 lg:hidden" x-cloak></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var mobileMenuButton = document.getElementById('mobileMenuButton');
-            var sidebar = document.querySelector('aside');
-            var mobileBackdrop = document.getElementById('mobileBackdrop');
-
-            function toggleMobileMenu() {
-                var isOpen = document.body.classList.contains('sidebar-open');
-                if (isOpen) {
-                    document.body.classList.remove('sidebar-open');
-                    if (mobileBackdrop) mobileBackdrop.classList.add('hidden');
-                } else {
-                    document.body.classList.add('sidebar-open');
-                    if (mobileBackdrop) mobileBackdrop.classList.remove('hidden');
-                }
-            }
-
-            if (mobileMenuButton) {
-                mobileMenuButton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    toggleMobileMenu();
-                });
-            }
-            if (mobileBackdrop) {
-                mobileBackdrop.addEventListener('click', toggleMobileMenu);
-            }
-            var sidebarToggleLabel = document.querySelector('.sidebar-toggle-label');
-            if (sidebarToggleLabel) {
-                sidebarToggleLabel.addEventListener('click', function(e) {
-                    if (window.innerWidth < 1024 && document.body.classList.contains('sidebar-open')) {
-                        e.preventDefault();
-                        toggleMobileMenu();
-                    }
-                });
-            }
-            document.querySelectorAll('aside a[href]').forEach(function(el) {
-                el.addEventListener('click', function() {
-                    if (window.innerWidth < 1024) toggleMobileMenu();
-                });
-            });
-
             function updateTime() {
                 var now = new Date();
                 var h = now.getHours().toString().padStart(2, '0');
@@ -229,15 +214,6 @@
                 var el = document.getElementById('loadingOverlay');
                 if (el) el.classList.add('hidden');
             };
-
-            function handleResize() {
-                if (window.innerWidth >= 1024) {
-                    document.body.classList.remove('sidebar-open');
-                    if (mobileBackdrop) mobileBackdrop.classList.add('hidden');
-                }
-            }
-            handleResize();
-            window.addEventListener('resize', handleResize);
         });
 
         function confirmLogout() {
@@ -271,10 +247,8 @@
         });
 
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && window.innerWidth < 1024) {
-                document.body.classList.remove('sidebar-open');
-                var b = document.getElementById('mobileBackdrop');
-                if (b) b.classList.add('hidden');
+            if (e.key === 'Escape') {
+                document.dispatchEvent(new CustomEvent('close-all-menus'));
             }
         });
     </script>
