@@ -12,15 +12,7 @@ use Spatie\Activitylog\LogOptions;
 
 class Siswa extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logFillable()
-            ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
-    }
+    use HasFactory, SoftDeletes;
 
     protected $table = 'siswas';
     protected $fillable = [

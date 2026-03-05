@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\ActivityLog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create()
     {
         return view('auth.login');
     }
@@ -28,14 +28,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // LOG ACTIVITY: Login berhasil
-        $user = Auth::user();
-        $user->last_login_at = now();
-        $user->last_login_ip = $request->ip();
-        $user->save();
-        
-        // Log activity menggunakan trait yang sudah dibuat
-        $user->logActivity('login', 'Berhasil login ke sistem');
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'login',
+            'description' => 'Login ke sistem',
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
 
         return redirect()->intended(route('dashboard', absolute: false));
     }
@@ -45,17 +44,23 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        // LOG ACTIVITY: Logout (ambil user sebelum logout)
-        $user = Auth::user();
-        if ($user) {
-            $user->logActivity('logout', 'Berhasil logout dari sistem');
-        }
-
+        $userId = Auth::id();
+        
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
+        if ($userId) {
+            ActivityLog::create([
+                'user_id' => $userId,
+                'action' => 'logout',
+                'description' => 'Logout dari sistem',
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+        }
 
         return redirect('/');
     }

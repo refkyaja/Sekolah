@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GaleriController;
-use App\Http\Controllers\SpmbController;
 use App\Http\Controllers\BukuTamuController;
 
 // Admin Controllers
@@ -72,17 +71,17 @@ Route::prefix('layanan')->name('layanan.')->group(function () {
 });
 
 Route::prefix('spmb')->name('spmb.')->group(function () {
-    Route::get('/', [SpmbController::class, 'index'])->name('index');
-    Route::get('/pendaftaran', [SpmbController::class, 'pendaftaran'])->name('pendaftaran');
-    Route::post('/pendaftaran', [SpmbController::class, 'store'])->name('store');
-    Route::get('/countdown', [SpmbController::class, 'countdown'])->name('countdown');
-    Route::get('/pengumuman', [SpmbController::class, 'pengumuman'])->name('pengumuman');
-    Route::post('/cek-pengumuman', [SpmbController::class, 'cekPengumuman'])->name('cekPengumuman');
-    Route::get('/hasil-pengumuman', [SpmbController::class, 'hasilPengumuman'])->name('hasilPengumuman');
-    Route::get('/success/{no_pendaftaran}', [SpmbController::class, 'success'])->name('success');
-    Route::get('/informasi', fn() => view('Home.spmb.informasi'))->name('informasi');
-    Route::get('/jadwal', fn() => view('Home.spmb.jadwal'))->name('jadwal');
-    Route::get('/syarat', fn() => view('Home.spmb.syarat'))->name('syarat');
+    Route::get('/', fn() => redirect()->route('home'))->name('index');
+    Route::get('/pendaftaran', fn() => redirect()->route('home'))->name('pendaftaran');
+    Route::post('/pendaftaran', fn() => redirect()->route('home'))->name('store');
+    Route::get('/countdown', fn() => redirect()->route('home'))->name('countdown');
+    Route::get('/pengumuman', fn() => redirect()->route('home'))->name('pengumuman');
+    Route::post('/cek-pengumuman', fn() => redirect()->route('home'))->name('cekPengumuman');
+    Route::get('/hasil-pengumuman', fn() => redirect()->route('home'))->name('hasilPengumuman');
+    Route::get('/success/{no_pendaftaran}', fn() => redirect()->route('home'))->name('success');
+    Route::get('/informasi', fn() => redirect()->route('home'))->name('informasi');
+    Route::get('/jadwal', fn() => redirect()->route('home'))->name('jadwal');
+    Route::get('/syarat', fn() => redirect()->route('home'))->name('syarat');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -210,26 +209,26 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
         Route::post('/{spmb}/konversi', [AdminSpmbController::class, 'konversiKeSiswa'])->name('konversiKeSiswa');
         Route::put('/{spmb}/update-all', [AdminSpmbController::class, 'updateAll'])->name('updateAll');
 
-        // ✅ ROUTE DOKUMEN (PREFIX BARU, TANPA 'spmb' LAGI)
-        Route::prefix('{spmb}/dokumen')->name('dokumen.')->group(function () {
-            Route::get('/', [SpmbDokumenController::class, 'index'])->name('index');
-            Route::post('/', [SpmbDokumenController::class, 'store'])->name('store');
-            Route::delete('{dokumen}', [SpmbDokumenController::class, 'destroy'])->name('destroy');
-            Route::get('{dokumen}/download', [SpmbDokumenController::class, 'download'])->name('download');
-        });
+        // ✅ ROUTE DOKUMEN (PREFIX BARU, TANPA 'spmb' LAGI) - DISABLED
+        // Route::prefix('{spmb}/dokumen')->name('dokumen.')->group(function () {
+        //     Route::get('/', [SpmbDokumenController::class, 'index'])->name('index');
+        //     Route::post('/', [SpmbDokumenController::class, 'store'])->name('store');
+        //     Route::delete('{dokumen}', [SpmbDokumenController::class, 'destroy'])->name('destroy');
+        //     Route::get('{dokumen}/download', [SpmbDokumenController::class, 'download'])->name('download');
+        // });
         
-        // ✅ ROUTE BUKTI TRANSFER (TANPA NESTED PREFIX BERLEBIH)
-        Route::prefix('bukti-transfer')->name('bukti-transfer.')->group(function () {
-            Route::get('/', [SpmbBuktiTransferController::class, 'index'])->name('index');
-            Route::get('{buktiTransfer}', [SpmbBuktiTransferController::class, 'show'])->name('show');
-            Route::post('{buktiTransfer}/verifikasi', [SpmbBuktiTransferController::class, 'verifikasi'])->name('verifikasi');
-            Route::post('{buktiTransfer}/tolak', [SpmbBuktiTransferController::class, 'tolak'])->name('tolak');
-            Route::get('{buktiTransfer}/download', [SpmbBuktiTransferController::class, 'download'])->name('download');
-            Route::delete('{buktiTransfer}', [SpmbBuktiTransferController::class, 'destroy'])->name('destroy');
-        });
+        // ✅ ROUTE BUKTI TRANSFER (TANPA NESTED PREFIX BERLEBIH) - DISABLED
+        // Route::prefix('bukti-transfer')->name('bukti-transfer.')->group(function () {
+        //     Route::get('/', [SpmbBuktiTransferController::class, 'index'])->name('index');
+        //     Route::get('{buktiTransfer}', [SpmbBuktiTransferController::class, 'show'])->name('show');
+        //     Route::post('{buktiTransfer}/verifikasi', [SpmbBuktiTransferController::class, 'verifikasi'])->name('verifikasi');
+        //     Route::post('{buktiTransfer}/tolak', [SpmbBuktiTransferController::class, 'tolak'])->name('tolak');
+        //     Route::get('{buktiTransfer}/download', [SpmbBuktiTransferController::class, 'download'])->name('download');
+        //     Route::delete('{buktiTransfer}', [SpmbBuktiTransferController::class, 'destroy'])->name('destroy');
+        // });
         
-        // ✅ ROUTE UPLOAD BUKTI TRANSFER DARI HALAMAN DETAIL
-        Route::post('{spmb}/upload-bukti-transfer', [SpmbBuktiTransferController::class, 'store'])->name('upload-bukti-transfer');
+        // ✅ ROUTE UPLOAD BUKTI TRANSFER DARI HALAMAN DETAIL - DISABLED
+        // Route::post('{spmb}/upload-bukti-transfer', [SpmbBuktiTransferController::class, 'store'])->name('upload-bukti-transfer');
     });
 
     // SPMB Settings
@@ -257,8 +256,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
         Route::get('/pengaturan', [AdminSpmbController::class, 'pengaturan'])->name('pengaturan');
         Route::post('/pengaturan', [AdminSpmbController::class, 'updatePengaturan'])->name('updatePengaturan');
         Route::get('/pengumuman', [AdminSpmbController::class, 'pengumuman'])->name('pengumuman');
+        Route::post('/pengumuman/publish', [AdminSpmbController::class, 'publishPengumuman'])->name('pengumuman.publish');
         Route::get('/riwayat', [AdminSpmbController::class, 'riwayat'])->name('riwayat');
-        Route::get('/riwayat/{tahunAjaran}', [AdminSpmbController::class, 'riwayatShow'])->name('riwayat.show');
+        Route::get('/riwayat/{tahunAjaran}', [AdminSpmbController::class, 'riwayatShow'])->name('riwayat.show')->where('tahunAjaran', '.*');
         Route::get('/', [AdminSpmbController::class, 'index'])->name('index');
         Route::get('/{spmb}', [AdminSpmbController::class, 'show'])->name('show');
         Route::get('/{spmb}/edit', [AdminSpmbController::class, 'edit'])->name('edit');
@@ -342,8 +342,8 @@ require __DIR__.'/auth.php';
 
 Route::prefix('api')->name('api.')->group(function () {
     Route::prefix('spmb')->name('spmb.')->group(function () {
-        Route::get('/status', [SpmbController::class, 'getStatus'])->name('status');
-        Route::post('/validate-nik', [SpmbController::class, 'validateNik'])->name('validateNik');
+        Route::get('/status', fn() => response()->json(['error' => 'Not implemented']))->name('status');
+        Route::post('/validate-nik', fn() => response()->json(['error' => 'Not implemented']))->name('validateNik');
     });
 
     Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin'])->group(function () {

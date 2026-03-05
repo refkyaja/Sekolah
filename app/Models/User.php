@@ -6,12 +6,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, LogsActivity;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
@@ -151,36 +149,5 @@ class User extends Authenticatable
         }
         
         return $username;
-    }
-
-    // Relasi ke activity logs
-    public function activities()
-    {
-        return $this->morphMany(\Spatie\Activitylog\Models\Activity::class, 'causer');
-    }
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logFillable()
-            ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
-    }
-
-    /**
-     * Legacy wrapper for activity logging
-     */
-    public function logActivity($action, $description = null, $oldData = null, $newData = null, $status = 'success')
-    {
-        $activity = activity()
-            ->performedOn($this)
-            ->causedBy(auth()->user() ?? $this)
-            ->withProperty('action', $action)
-            ->withProperty('status', $status);
-
-        if ($oldData) $activity->withProperty('old', $oldData);
-        if ($newData) $activity->withProperty('new', $newData);
-
-        return $activity->log($description ?? $action);
     }
 }

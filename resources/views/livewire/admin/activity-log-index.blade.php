@@ -38,7 +38,13 @@
                     <option value="operator">Operator</option>
                 </select>
             </div>
-            @if($search || $date || $role)
+            <div class="w-full md:w-40">
+                <select wire:model.live="sort" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-slate-600 dark:text-slate-300">
+                    <option value="terbaru">Terbaru</option>
+                    <option value="terlama">Terlama</option>
+                </select>
+            </div>
+            @if($search || $date || $role || $sort !== 'terbaru')
                 <button wire:click="resetFilters" class="px-6 py-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 transition-all font-medium">
                     Reset
                 </button>
@@ -62,7 +68,6 @@
                         <th class="px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Role</th>
                         <th class="px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Deskripsi Aktivitas</th>
                         <th class="px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Alamat IP</th>
-                        <th class="px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-300 text-right">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
@@ -77,16 +82,16 @@
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-primary">
-                                    {{ $activity->causer ? strtoupper(substr($activity->causer->name, 0, 1)) : 'S' }}
+                                    {{ $activity->user ? strtoupper(substr($activity->user->name, 0, 1)) : 'S' }}
                                 </div>
                                 <span class="text-sm font-medium text-slate-700 dark:text-slate-200">
-                                    {{ $activity->causer ? $activity->causer->name : 'System' }}
+                                    {{ $activity->user ? $activity->user->name : 'System' }}
                                 </span>
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="px-2.5 py-1 text-xs font-medium rounded-full {{ $activity->causer && $activity->causer->role === 'admin' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' }}">
-                                {{ $activity->causer ? ucfirst($activity->causer->role) : 'System' }}
+                            <span class="px-2.5 py-1 text-xs font-medium rounded-full {{ $activity->user && $activity->user->role === 'admin' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' }}">
+                                {{ $activity->user ? ucfirst($activity->user->role) : 'System' }}
                             </span>
                         </td>
                         <td class="px-6 py-4">
@@ -100,17 +105,10 @@
                                 {{ $activity->ip_address ?? '-' }}
                             </div>
                         </td>
-                        <td class="px-6 py-4 text-right">
-                            <button wire:click="deleteLog({{ $activity->id }})" 
-                                wire:confirm="Apakah Anda yakin ingin menghapus log ini?"
-                                class="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
-                                <span class="material-symbols-outlined">delete</span>
-                            </button>
-                        </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
+                        <td colspan="6" class="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
                             <span class="material-symbols-outlined text-4xl mb-2">history</span>
                             <p>Tidak ada log aktivitas ditemukan</p>
                         </td>

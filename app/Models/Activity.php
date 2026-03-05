@@ -2,16 +2,30 @@
 
 namespace App\Models;
 
-use Spatie\Activitylog\Models\Activity as SpatieActivity;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Database\Eloquent\Model;
 
-class Activity extends SpatieActivity
+class Activity extends Model
 {
-    protected static function booted()
+    protected $table = 'activity_log';
+
+    protected $fillable = [
+        'log_name',
+        'description',
+        'subject_type',
+        'subject_id',
+        'causer_type',
+        'causer_id',
+        'properties',
+        'ip_address',
+        'user_agent',
+    ];
+
+    protected $casts = [
+        'properties' => 'array',
+    ];
+
+    public function causer()
     {
-        static::creating(function (Activity $activity) {
-            $activity->ip_address = Request::ip();
-            $activity->user_agent = Request::userAgent();
-        });
+        return $this->belongsTo(User::class, 'causer_id');
     }
 }

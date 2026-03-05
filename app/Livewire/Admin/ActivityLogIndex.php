@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\Activity;
+use App\Models\ActivityLog;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,11 +13,13 @@ class ActivityLogIndex extends Component
     public $search = '';
     public $date = '';
     public $role = '';
+    public $sort = 'terbaru';
 
     protected $queryString = [
         'search' => ['except' => ''],
         'date' => ['except' => ''],
         'role' => ['except' => ''],
+        'sort' => ['except' => 'terbaru'],
     ];
 
     public function updatingSearch()
@@ -35,27 +37,32 @@ class ActivityLogIndex extends Component
         $this->resetPage();
     }
 
+    public function updatingSort()
+    {
+        $this->resetPage();
+    }
+
     public function resetFilters()
     {
-        $this->reset(['search', 'date', 'role']);
+        $this->reset(['search', 'date', 'role', 'sort']);
         $this->resetPage();
     }
 
     public function deleteLog($id)
     {
-        Activity::findOrFail($id)->delete();
+        ActivityLog::findOrFail($id)->delete();
         session()->flash('success', 'Log aktivitas berhasil dihapus');
     }
 
     public function render()
     {
-        $query = Activity::with('causer')->latest();
+        $query = ActivityLog::with('user');
 
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('description', 'like', '%' . $this->search . '%')
                     ->orWhere('ip_address', 'like', '%' . $this->search . '%')
-                    ->orWhereHas('causer', function ($uq) {
+                    ->orWhereHas('user', function ($uq) {
                         $uq->where('name', 'like', '%' . $this->search . '%');
                     });
             });
@@ -66,9 +73,15 @@ class ActivityLogIndex extends Component
         }
 
         if ($this->role) {
-            $query->whereHas('causer', function ($uq) {
+            $query->whereHas('user', function ($uq) {
                 $uq->where('role', $this->role);
             });
+        }
+
+        if ($this->sort === 'terbaru') {
+            $query->latest();
+        } else {
+            $query->oldest();
         }
 
         $activities = $query->paginate(10);

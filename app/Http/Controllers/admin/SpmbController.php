@@ -12,6 +12,8 @@ use App\Models\SpmbBuktiTransfer;
 use App\Models\SpmbRiwayatStatus;
 use App\Models\SpmbSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +34,8 @@ class SpmbController extends Controller
             if (!empty($search)) {
                 $query->search($search);
             }
+
+            $query->whereNotIn('status_pendaftaran', ['Selesai']);
             
             if ($request->filled('status_pendaftaran')) {
                 $query->byStatus($request->status_pendaftaran);
@@ -868,17 +872,18 @@ class SpmbController extends Controller
             $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
             $tahunAjaranId = $tahunAjaranAktif ? $tahunAjaranAktif->id : null;
             
-            $siswaDiterima = Spmb::where('status_pendaftaran', 'Diterima')
-                ->when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
-                ->get();
+            if (!$tahunAjaranAktif) {
+                return back()->with('error', 'Tidak ada tahun ajaran aktif!');
+            }
+            
+            $semuaSiswa = Spmb::where('tahun_ajaran_id', $tahunAjaranId)->get();
             
             $jumlahDikonversi = 0;
+            $jumlahDiarsipkan = 0;
             
-            if ($request->has('konversi_siswa') && $request->konversi_siswa == 1) {
-                foreach ($siswaDiterima as $spmb) {
-                    if (!$spmb->siswa) {
-                        $tahunAjaran = $tahunAjaranAktif ? $tahunAjaranAktif->tahun_ajaran : date('Y');
-                        
+            foreach ($semuaSiswa as $spmb) {
+                if ($spmb->status_pendaftaran === 'Diterima') {
+                    if (!$spmb->siswa && $request->has('konversi_siswa') && $request->konversi_siswa == 1) {
                         $siswaBaru = Siswa::create([
                             'nama_lengkap' => $spmb->nama_lengkap_anak,
                             'nama_panggilan' => $spmb->nama_panggilan_anak,
@@ -900,12 +905,25 @@ class SpmbController extends Controller
                         $jumlahDikonversi++;
                     }
                 }
+                
+                $spmb->update(['status_pendaftaran' => 'Selesai']);
+                $jumlahDiarsipkan++;
+            }
+            
+            $setting = SpmbSetting::where('tahun_ajaran', $tahunAjaranAktif->tahun_ajaran)->first();
+            if ($setting) {
+                $setting->update([
+                    'status_pengumuman' => 'published',
+                    'published_at' => now(),
+                    'published_by' => auth()->id(),
+                ]);
             }
             
             $message = 'Pengumuman berhasil dipublish!';
             if ($jumlahDikonversi > 0) {
                 $message .= " {$jumlahDikonversi} siswa telah ditambahkan ke Data Siswa.";
             }
+            $message .= " {$jumlahDiarsipkan} data pendaftaran telah diarsipkan ke Riwayat PPDB.";
             
             return back()->with('success', $message);
             
@@ -924,37 +942,37 @@ class SpmbController extends Controller
             $search = $request->get('search', '');
             $range = $request->get('range', '');
             
-            $tahunAjaranList = TahunAjaran::orderBy('tahun_ajaran', 'desc');
+            $query = TahunAjaran::query()->orderBy('tahun_ajaran', 'desc');
             
             if ($range) {
-                $tahunAjaranList = $tahunAjaranList->limit((int)$range);
+                $query->limit((int)$range);
             }
             
-            $tahunAjaranList = $tahunAjaranList->get();
+            $tahunAjaranList = $query->get();
             
             $riwayatData = [];
             $previousTotal = null;
             
             foreach ($tahunAjaranList as $ta) {
-                $totalPendaftar = Spmb::where('tahun_ajaran_id', $ta->id)->count();
+                $totalPendar = Spmb::where('tahun_ajaran_id', $ta->id)->count();
                 $totalDiterima = Spmb::where('tahun_ajaran_id', $ta->id)
                     ->where('status_pendaftaran', 'Diterima')
                     ->count();
                 
-                $persentaseKelulusan = $totalPendaftar > 0 ? round(($totalDiterima / $totalPendaftar) * 100, 1) : 0;
+                $persentaseKelulusan = $totalPendar > 0 ? round(($totalDiterima / $totalPendar) * 100, 1) : 0;
                 $persentaseKenaikan = $previousTotal && $previousTotal > 0 
-                    ? round((($totalPendaftar - $previousTotal) / $previousTotal) * 100, 1) 
+                    ? round((($totalPendar - $previousTotal) / $previousTotal) * 100, 1) 
                     : 0;
                 
                 $riwayatData[] = (object) [
                     'tahun_ajaran' => $ta->tahun_ajaran,
-                    'total_pendaftar' => $totalPendaftar,
+                    'total_pendaftar' => $totalPendar,
                     'total_diterima' => $totalDiterima,
                     'persentase_kelulusan' => $persentaseKelulusan,
                     'persentase_kenaikan' => $persentaseKenaikan,
                 ];
                 
-                $previousTotal = $totalPendaftar;
+                $previousTotal = $totalPendar;
             }
             
             $riwayat = collect($riwayatData);
@@ -965,7 +983,15 @@ class SpmbController extends Controller
                 });
             }
             
-            $riwayat = $riwayat->paginate(10);
+            $page = request()->get('page', 1);
+            $perPage = 10;
+            $riwayat = new LengthAwarePaginator(
+                $riwayat->forPage($page, $perPage),
+                $riwayat->count(),
+                $perPage,
+                $page,
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
             
             return view('admin.ppdb.riwayat', compact('riwayat', 'search', 'range'));
             
@@ -1001,7 +1027,7 @@ class SpmbController extends Controller
             
             $siswa = $query->orderBy('nama_lengkap_anak', 'asc')->paginate(10);
             
-            $totalPendaftar = Spmb::where('tahun_ajaran_id', $tahunAjaranData->id)->count();
+            $totalPendar = Spmb::where('tahun_ajaran_id', $tahunAjaranData->id)->count();
             $totalDiterima = Spmb::where('tahun_ajaran_id', $tahunAjaranData->id)
                 ->where('status_pendaftaran', 'Diterima')
                 ->count();
@@ -1011,18 +1037,18 @@ class SpmbController extends Controller
             $totalMenunggu = Spmb::where('tahun_ajaran_id', $tahunAjaranData->id)
                 ->where('status_pendaftaran', 'Menunggu Verifikasi')
                 ->count();
-            
-            return view('admin.ppdb.riwayat-show', compact(
-                'siswa',
-                'tahunAjaran',
-                'tahunAjaranData',
-                'status',
-                'search',
-                'totalPendar',
-                'totalDiterima',
-                'totalDitolak',
-                'totalMenunggu'
-            ));
+
+            return view('admin.ppdb.riwayat-show', [
+                'siswa' => $siswa,
+                'tahunAjaran' => $tahunAjaran,
+                'tahunAjaranData' => $tahunAjaranData,
+                'status' => $status,
+                'search' => $search,
+                'totalPendar' => $totalPendar,
+                'totalDiterima' => $totalDiterima,
+                'totalDitolak' => $totalDitolak,
+                'totalMenunggu' => $totalMenunggu,
+            ]);
             
         } catch (\Exception $e) {
             Log::error('SpmbController@riwayatShow Error: ' . $e->getMessage());
