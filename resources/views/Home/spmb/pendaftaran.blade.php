@@ -45,7 +45,7 @@
         <div class="text-center mb-16">
             <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-primary mb-4 block">Pendaftaran Siswa Baru</span>
             <h1 class="text-5xl font-extrabold tracking-tight text-brand-dark mb-4">FORMULIR ONLINE</h1>
-            <p class="text-stone-400 font-medium text-sm">Harapan Bangsa 2 — Tahun Ajaran 2026/2027</p>
+            <p class="text-stone-400 font-medium text-sm">Harapan Bangsa 1 — Tahun Ajaran 2026/2027</p>
         </div>
 
         <!-- Form Container -->

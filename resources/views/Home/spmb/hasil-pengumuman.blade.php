@@ -1,6 +1,6 @@
 @extends('layouts.ppdb')
 
-@section('title', 'Hasil Seleksi - Harapan Bangsa 2')
+@section('title', 'Hasil Seleksi - Harapan Bangsa 1')
 
 @section('content')
 <div class="min-h-screen bg-brand-soft py-20 px-6 flex items-center justify-center">
@@ -36,7 +36,7 @@
                         </div>
                         <h3 class="text-4xl font-extrabold text-brand-dark uppercase tracking-tight mb-4">SELAMAT! ANDA DINYATAKAN LULUS</h3>
                         <p class="text-stone-500 font-medium leading-relaxed max-w-md mx-auto">
-                            Selamat bergabung dengan keluarga besar Harapan Bangsa 2. Silakan lakukan pendaftaran ulang sesuai jadwal yang ditentukan.
+                            Selamat bergabung dengan keluarga besar Harapan Bangsa 1. Silakan lakukan pendaftaran ulang sesuai jadwal yang ditentukan.
                         </p>
                     @elseif($spmb->status_pendaftaran === 'Tidak Lulus')
                         <div class="w-20 h-20 bg-stone-200 text-stone-400 rounded-3xl flex items-center justify-center mx-auto mb-8">
@@ -98,7 +98,7 @@
         </div>
 
         <div class="mt-16 text-center">
-            <p class="text-[10px] font-bold text-stone-300 uppercase tracking-[0.25em]">Harapan Bangsa 2 — Timeless Education</p>
+            <p class="text-[10px] font-bold text-stone-300 uppercase tracking-[0.25em]">Harapan Bangsa 1 — Timeless Education</p>
         </div>
     </div>
 </div>

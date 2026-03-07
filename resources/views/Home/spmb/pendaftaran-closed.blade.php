@@ -1,6 +1,6 @@
 @extends('layouts.ppdb')
 
-@section('title', 'Pendaftaran Ditutup - Harapan Bangsa 2')
+@section('title', 'Pendaftaran Ditutup - Harapan Bangsa 1')
 
 @section('content')
 <div class="min-h-screen bg-brand-soft py-20 px-6 flex items-center justify-center">
@@ -64,7 +64,7 @@
             </a>
         </div>
 
-        <p class="mt-20 text-[10px] font-bold text-stone-300 uppercase tracking-[0.25em]">Harapan Bangsa 2 — Timeless Education</p>
+        <p class="mt-20 text-[10px] font-bold text-stone-300 uppercase tracking-[0.25em]">Harapan Bangsa 1 — Timeless Education</p>
     </div>
 </div>
 @endsection

@@ -8,7 +8,7 @@
                 <span class="material-symbols-outlined text-primary text-2xl">school</span>
             </div>
             <div class="flex flex-col sidebar-header-text">
-                <h1 class="text-slate-900 dark:text-slate-100 text-base font-bold leading-tight">Harapan Bangsa 2</h1>
+                <h1 class="text-slate-900 dark:text-slate-100 text-base font-bold leading-tight">Harapan Bangsa 1</h1>
                 <p class="text-slate-500 dark:text-slate-400 text-xs font-medium">Taman Kanak-Kanak</p>
             </div>
         </div>

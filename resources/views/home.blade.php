@@ -12,21 +12,24 @@
             <!-- Right: Hero Text -->
             <div class="lg:col-span-5 space-y-6 lg:pl-12">
                 <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-brand-dark dark:text-white">
-                    Timeless learning for <span class="text-brand-primary">little steps.</span>
+                    Selamat Datang di <span class="text-brand-primary">TK Harapan Bangsa 1</span>
                 </h1>
                 <p class="text-lg text-stone-600 dark:text-stone-400 font-medium leading-relaxed">
-                    Nurturing curiosity and character, every single day. Built with purpose, crafted for the energy of childhood.
+                    Tempat Anak Belajar, Bermain, dan Berkembang dengan Bahagia.
                 </p>
-                <div class="pt-4">
+                <div class="flex flex-wrap gap-4 pt-4">
                     @guest('siswa')
                     <button onclick="showLoginModal(event)" class="inline-block bg-brand-dark dark:bg-brand-primary text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-brand-primary transition-all transform hover:-translate-y-1">
-                        Enroll Now
+                        Daftar PPDB
                     </button>
                     @else
                     <a href="{{ route('spmb.pendaftaran') }}" class="inline-block bg-brand-dark dark:bg-brand-primary text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-brand-primary transition-all transform hover:-translate-y-1">
-                        Enroll Now
+                        Daftar PPDB
                     </a>
                     @endguest
+                    <a href="#about-section" class="inline-block bg-white dark:bg-stone-800 text-brand-dark dark:text-stone-300 border-2 border-brand-dark dark:border-stone-700 px-8 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-brand-dark hover:text-white transition-all transform hover:-translate-y-1">
+                        Pelajari Lebih Lanjut
+                    </a>
                 </div>
             </div>
         </div>
@@ -152,11 +155,11 @@
     </div>
 </section>
 
-<!-- Brand Philosophy -->
-<section class="py-12 md:py-24 bg-brand-soft dark:bg-stone-900">
+<!-- Brand Philosophy (About School) -->
+<section id="about-section" class="py-12 md:py-24 bg-brand-soft dark:bg-stone-900">
     <div class="container mx-auto px-4 text-center mb-16">
-         <h2 class="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-brand-dark dark:text-white">Our Philosophy</h2>
-         <p class="text-stone-500 mt-2">Built for the dreamers of tomorrow.</p>
+         <h2 class="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-brand-dark dark:text-white">Tentang Sekolah</h2>
+         <p class="text-stone-500 mt-2">Membentuk landasan masa depan sejak dini.</p>
     </div>
     <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-2">
@@ -165,12 +168,16 @@
             </div>
             <div class="space-y-8 px-4 md:px-12">
                 <div class="w-12 h-1 bg-brand-primary"></div>
-                <h3 class="text-3xl md:text-4xl font-extrabold leading-tight text-brand-dark dark:text-white uppercase">Nurturing the Leaders of tomorrow.</h3>
+                <h3 class="text-3xl md:text-4xl font-extrabold leading-tight text-brand-dark dark:text-white uppercase">TK Harapan Bangsa 1</h3>
+                <p class="text-[10px] font-bold text-brand-primary uppercase tracking-[0.2em]">Berdiri Sejak Tahun 2010</p>
                 <p class="text-stone-600 dark:text-stone-400 text-lg leading-relaxed">
-                    At our core, we focus on the things even the eye can't see, to build better foundations for children. We create an environment where growing feet and active bodies can thrive with purpose and grace.
+                    TK Harapan Bangsa 1 adalah tempat di mana anak-anak dapat belajar, bermain, dan berkembang dengan bahagia. Kami fokus pada pembentukan karakter dan kreativitas anak melalui metode pembelajaran yang menyenangkan dan interaktif.
+                </p>
+                <p class="text-stone-600 dark:text-stone-400 text-lg leading-relaxed">
+                    Dengan fasilitas yang lengkap dan tenaga pengajar profesional, kami berkomitmen untuk memberikan pendidikan terbaik bagi buah hati Anda di masa emas pertumbuhan mereka.
                 </p>
                 <a class="inline-block bg-white dark:bg-brand-dark text-brand-dark dark:text-stone-300 border-2 border-brand-dark dark:border-stone-700 px-10 py-3 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-brand-dark hover:text-white dark:hover:bg-brand-primary transition-all" href="{{ route('profil.index') }}">
-                    Discover Our Vision
+                    Lihat Visi & Misi Kami
                 </a>
             </div>
         </div>
@@ -241,23 +248,70 @@
     </div>
 </section>
 
-<!-- Gallery Section (Simplified Grid) -->
-<section class="py-24 px-6 max-w-7xl mx-auto">
-    <h2 class="text-3xl font-extrabold text-brand-dark dark:text-white mb-12 uppercase tracking-tight">Our Gallery</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        @forelse($galeris as $index => $galeri)
-            <div class="rounded-2xl overflow-hidden hover-zoom shadow-sm">
-                <img alt="{{ $galeri->judul }}" src="{{ asset('storage/' . $galeri->gambar) }}" class="w-full h-64 object-cover"/>
+<!-- Location & Contact Section -->
+<section id="location-section" class="py-24 bg-white dark:bg-brand-dark">
+    <div class="container mx-auto px-6">
+        <div class="flex flex-col lg:flex-row gap-12 items-start">
+            <!-- Left: Contact Details -->
+            <div class="lg:w-1/3 space-y-8">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-brand-dark dark:text-white uppercase tracking-tight">Hubungi Kami</h2>
+                    <p class="text-stone-500 mt-2">Kami siap menjawab pertanyaan Anda.</p>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-brand-soft dark:bg-stone-800 rounded-xl flex items-center justify-center text-brand-primary flex-shrink-0">
+                            <span class="material-icons">location_on</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-brand-dark dark:text-white text-sm uppercase">Alamat Lengkap</h4>
+                            <p class="text-stone-600 dark:text-stone-400 text-sm mt-1 leading-relaxed">
+                                Jl. Pendidikan No. 123, Jakarta Pusat 10110
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-brand-soft dark:bg-stone-800 rounded-xl flex items-center justify-center text-brand-primary flex-shrink-0">
+                            <span class="material-icons">whatsapp</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-brand-dark dark:text-white text-sm uppercase">Nomor WhatsApp</h4>
+                            <p class="text-stone-600 dark:text-stone-400 text-sm mt-1">
+                                +62 812-3456-7890
+                            </p>
+                            <a href="https://wa.me/6281234567890" target="_blank" class="inline-block mt-3 text-brand-primary font-bold text-xs uppercase tracking-widest border-b border-brand-primary pb-0.5">Chat Sekarang</a>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-brand-soft dark:bg-stone-800 rounded-xl flex items-center justify-center text-brand-primary flex-shrink-0">
+                            <span class="material-icons">schedule</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-brand-dark dark:text-white text-sm uppercase">Jam Operasional</h4>
+                            <p class="text-stone-600 dark:text-stone-400 text-sm mt-1">
+                                Senin - Jumat: 07.30 - 15.00 WIB
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            @if($index >= 7) @break @endif
-        @empty
-            <!-- Static Fallback -->
-            @for($i=1; $i<=4; $i++)
-            <div class="rounded-2xl overflow-hidden hover-zoom shadow-sm">
-                <img class="w-full h-64 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBq1C9x7KGfqIdz2IQwsDaAsvf7c4NlB-l9XMWN6VJ0g-weVIGurDRuuhK0k1B98p_h75ivnNVoxs5NbmEibpZ7lbxW_gnHN-jX1xHV5twWOGGQnpeynQ80h4TnfVh5ybdPsZ88zMxK2Gar8tnNeYMlLL7XFYMnkOQj1b4O9q5LKNE8vNuLRcc6an_-Ma2E2pvZe2mqnMRItJ-LD7rrd3fcwuf7xx31ZgJ88fBRnavYhQGUalaPkEqvzWP7RgqIEvBEvwKgoKfZcOQ" alt="Gallery"/>
+
+            <!-- Right: Google Maps -->
+            <div class="lg:w-2/3 w-full h-[450px] rounded-[2rem] overflow-hidden shadow-2xl border border-stone-100 dark:border-stone-800">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126935.91899147285!2d106.759477!3d-6.17511!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6a1ed444310507%3A0xe54d63ea352be57!2sJakarta%20Pusat%2C%20Kota%20Jakarta%20Pusat%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1709850000000!5m2!1sid!2sid" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
-            @endfor
-        @endforelse
+        </div>
     </div>
 </section>
 
@@ -287,7 +341,7 @@
     <div class="container mx-auto px-4 max-w-4xl">
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-extrabold mb-4 uppercase tracking-tight">Our Guestbook</h2>
-            <p class="text-stone-400 text-lg">Leave a mark on our journey. Share your thoughts or messages about TK Harapan Bangsa 2.</p>
+            <p class="text-stone-400 text-lg">Leave a mark on our journey. Share your thoughts or messages about TK Harapan Bangsa 1.</p>
         </div>
         
         @if(session('success'))

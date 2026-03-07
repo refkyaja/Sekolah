@@ -65,7 +65,7 @@
                 <span class="material-symbols-outlined block">school</span>
             </div>
             <a href="{{ url('/') }}">
-                <h2 class="text-sm font-extrabold tracking-widest text-brand-dark dark:text-white uppercase">Harapan Bangsa 2</h2>
+                <h2 class="text-sm font-extrabold tracking-widest text-brand-dark dark:text-white uppercase">Harapan Bangsa 1</h2>
             </a>
         </div>
         <nav class="hidden md:flex items-center gap-8">
@@ -136,7 +136,7 @@
                     <div class="bg-brand-primary p-2 rounded-xl text-white">
                         <span class="material-symbols-outlined block">school</span>
                     </div>
-                    <h2 class="text-sm font-extrabold uppercase tracking-widest text-brand-dark dark:text-white">Harapan Bangsa 2</h2>
+                    <h2 class="text-sm font-extrabold uppercase tracking-widest text-brand-dark dark:text-white">Harapan Bangsa 1</h2>
                 </div>
                 <p class="text-stone-500 dark:text-stone-400 max-w-sm text-xs leading-relaxed mb-6 font-medium">
                     Membentuk landasan yang kokoh untuk masa depan cerah anak Anda melalui pendidikan yang penuh kasih dan inovatif.
@@ -181,7 +181,7 @@
             </div>
         </div>
         <div class="border-t border-stone-100 dark:border-stone-800 pt-8 text-center text-[10px] font-bold uppercase tracking-widest text-stone-300">
-            <p>© 2026 Harapan Bangsa 2. All rights reserved.</p>
+            <p>© 2026 Harapan Bangsa 1. All rights reserved.</p>
         </div>
     </div>
 </footer>

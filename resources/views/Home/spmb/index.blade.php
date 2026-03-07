@@ -1,6 +1,6 @@
 @extends('layouts.nav-spmb')
 
-@section('title', 'PPDB Vidya Mandir')
+@section('title', 'PPDB Harapan Bangsa 1')
 
 @section('content')
 @php

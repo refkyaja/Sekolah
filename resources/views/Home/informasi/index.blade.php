@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title', 'Informasi Sekolah - Harapan Bangsa 2')
+@section('title', 'Informasi Sekolah - Harapan Bangsa 1')
 
 @section('content')
 <!-- Hero Section -->
@@ -12,7 +12,7 @@
                 Informasi<br>Sekolah
             </h1>
             <p class="text-sm font-medium leading-relaxed text-stone-500 max-w-lg">
-                Temukan berbagai kegiatan seru, pengumuman penting, dan dokumentasi keceriaan belajar mengajar di lingkungan Harapan Bangsa 2.
+                Temukan berbagai kegiatan seru, pengumuman penting, dan dokumentasi keceriaan belajar mengajar di lingkungan Harapan Bangsa 1.
             </p>
         </div>
     </div>
@@ -123,7 +123,7 @@
                     </button>
                     <span class="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-primary mb-4 block">Eksklusif</span>
                     <h2 class="mb-4 text-4xl font-extrabold tracking-tight text-white uppercase">Satu Hari di Sekolah</h2>
-                    <p class="text-white/60 text-[11px] font-bold uppercase tracking-widest max-w-sm">Lihat keseharian anak-anak belajar dan bermain dengan ceria di Harapan Bangsa 2</p>
+                    <p class="text-white/60 text-[11px] font-bold uppercase tracking-widest max-w-sm">Lihat keseharian anak-anak belajar dan bermain dengan ceria di Harapan Bangsa 1</p>
                 </div>
             </div>
             <!-- Decorative corner -->

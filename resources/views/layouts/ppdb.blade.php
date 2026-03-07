@@ -48,7 +48,7 @@
                     <i class="fas fa-school text-lg"></i>
                 </div>
                 <div class="hidden sm:block">
-                    <h1 class="text-sm font-extrabold uppercase tracking-widest leading-none">Harapan Bangsa 2</h1>
+                    <h1 class="text-sm font-extrabold uppercase tracking-widest leading-none">Harapan Bangsa 1</h1>
                     <p class="text-[10px] font-bold text-stone-400 uppercase tracking-tighter mt-1">Quality Education</p>
                 </div>
             </a>
@@ -106,7 +106,7 @@
                         <div class="w-10 h-10 bg-brand-primary rounded-xl flex items-center justify-center text-white">
                             <i class="fas fa-school"></i>
                         </div>
-                        <h3 class="text-sm font-extrabold uppercase tracking-widest text-brand-dark">Harapan Bangsa 2</h3>
+                        <h3 class="text-sm font-extrabold uppercase tracking-widest text-brand-dark">Harapan Bangsa 1</h3>
                     </div>
                     <p class="text-xs font-medium leading-relaxed max-w-sm">Membentuk landasan yang kokoh untuk masa depan cerah anak Anda melalui pendidikan yang penuh kasih dan inovatif.</p>
                 </div>
@@ -128,7 +128,7 @@
                 </div>
             </div>
             <div class="border-t border-stone-200 pt-10 text-center">
-                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400">© {{ date('Y') }} Harapan Bangsa 2. All rights reserved.</p>
+                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400">© {{ date('Y') }} Harapan Bangsa 1. All rights reserved.</p>
             </div>
         </div>
     </footer>

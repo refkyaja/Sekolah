@@ -1,6 +1,6 @@
 @extends('layouts.ppdb')
 
-@section('title', 'Pendaftaran Berhasil - Harapan Bangsa 2')
+@section('title', 'Pendaftaran Berhasil - Harapan Bangsa 1')
 
 @section('content')
 <div class="min-h-screen bg-brand-soft py-20 px-6 flex items-center justify-center">
@@ -14,7 +14,7 @@
         <h1 class="text-5xl font-extrabold tracking-tight text-brand-dark mb-8 uppercase">PENDAFTARAN<br>BERHASIL DIKIRIM!</h1>
         
         <p class="text-stone-500 font-medium leading-relaxed mb-12 max-w-lg mx-auto">
-            Terima kasih telah mendaftarkan putra/putri Anda di Harapan Bangsa 2. Data Anda telah kami terima dengan nomor pendaftaran:
+            Terima kasih telah mendaftarkan putra/putri Anda di Harapan Bangsa 1. Data Anda telah kami terima dengan nomor pendaftaran:
         </p>
 
         <!-- Ticket Style Info -->
@@ -56,7 +56,7 @@
             </a>
         </div>
 
-        <p class="mt-20 text-[10px] font-bold text-stone-300 uppercase tracking-[0.25em]">Harapan Bangsa 2 — Timeless Education</p>
+        <p class="mt-20 text-[10px] font-bold text-stone-300 uppercase tracking-[0.25em]">Harapan Bangsa 1 — Timeless Education</p>
     </div>
 </div>
 @endsection

@@ -3,8 +3,8 @@
         ['name' => 'Beranda', 'route' => 'home'],
         ['name' => 'Profil', 'route' => 'profil.index'],
         ['name' => 'Kurikulum', 'route' => 'akademik.kurikulum'],
-        ['name' => 'PPDB', 'route' => 'spmb.index'],
         ['name' => 'Informasi', 'route' => 'informasi.index'],
+        ['name' => 'PPDB', 'route' => 'spmb.index']
     ];
 @endphp
 
@@ -20,7 +20,7 @@
         <!-- Center: Logo -->
         <div class="absolute left-1/2 -translate-x-1/2 text-center">
             <a class="text-xl font-extrabold tracking-tighter text-brand-dark dark:text-white" href="{{ route('home') }}">
-                TK<span class="text-brand-primary">.</span><span class="text-[10px] font-medium tracking-normal ml-1">HARAPAN BANGSA 2</span>
+                TK<span class="text-brand-primary">.</span><span class="text-[10px] font-medium tracking-normal ml-1">HARAPAN BANGSA 1</span>
             </a>
         </div>
 
@@ -67,7 +67,7 @@
         
         <div class="p-6 border-b border-stone-100 dark:border-stone-800 flex items-center justify-between">
             <span class="text-xl font-extrabold tracking-tighter text-brand-dark dark:text-white">
-                TK<span class="text-brand-primary">.</span><span class="text-xs font-medium tracking-normal ml-1">HARAPAN BANGSA 2</span>
+                TK<span class="text-brand-primary">.</span><span class="text-xs font-medium tracking-normal ml-1">HARAPAN BANGSA 1</span>
             </span>
             <button class="p-2 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-full" @click="mobileMenuOpen = false">
                 <svg class="w-6 h-6 text-brand-dark dark:text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24">

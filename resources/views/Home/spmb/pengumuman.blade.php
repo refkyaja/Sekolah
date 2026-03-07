@@ -1,6 +1,6 @@
 @extends('layouts.ppdb')
 
-@section('title', 'Pengumuman PPDB - Harapan Bangsa 2')
+@section('title', 'Pengumuman PPDB - Harapan Bangsa 1')
 
 @section('content')
 <div class="min-h-screen bg-brand-soft py-20 px-6">

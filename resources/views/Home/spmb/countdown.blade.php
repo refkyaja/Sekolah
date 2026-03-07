@@ -1,6 +1,6 @@
 @extends('layouts.ppdb')
 
-@section('title', 'Menunggu Pengumuman - Harapan Bangsa 2')
+@section('title', 'Menunggu Pengumuman - Harapan Bangsa 1')
 
 @section('content')
 <div class="min-h-screen bg-brand-soft py-20 px-6 flex items-center justify-center">
@@ -49,7 +49,7 @@
                 <h1 class="text-6xl font-extrabold tracking-tighter text-brand-dark mb-8 uppercase">SIAPKAN<br>DIRI ANDA.</h1>
                 
                 <p class="text-stone-500 font-medium leading-relaxed mb-12 max-w-lg mx-auto">
-                    Hasil seleksi PPDB Harapan Bangsa 2 akan segera ditampilkan secara otomatis dalam:
+                    Hasil seleksi PPDB Harapan Bangsa 1 akan segera ditampilkan secara otomatis dalam:
                 </p>
 
                 <!-- Countdown Timer -->
@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="pt-20">
-                    <p class="text-[10px] font-bold text-stone-300 uppercase tracking-[0.25em]">Harapan Bangsa 2 — Timeless Education</p>
+                    <p class="text-[10px] font-bold text-stone-300 uppercase tracking-[0.25em]">Harapan Bangsa 1 — Timeless Education</p>
                 </div>
             </div>
 

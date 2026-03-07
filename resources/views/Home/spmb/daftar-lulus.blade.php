@@ -1,6 +1,6 @@
 @extends('layouts.ppdb')
 
-@section('title', 'Daftar Kelulusan - Harapan Bangsa 2')
+@section('title', 'Daftar Kelulusan - Harapan Bangsa 1')
 
 @section('content')
 <div class="min-h-screen bg-brand-soft py-20 px-6">
@@ -90,7 +90,7 @@
                     <div class="flex-1 text-center md:text-left">
                         <h4 class="text-[10px] font-extrabold uppercase tracking-widest text-brand-dark mb-2">Pemberitahuan Penting</h4>
                         <p class="text-[10px] font-bold text-stone-400 uppercase tracking-tight leading-relaxed">
-                            Bagi orang tua peserta yang dinyatakan lulus, diimbau untuk segera melakukan pendaftaran ulang di kantor sekretariat Harapan Bangsa 2 pada jam operasional kerja. Keputusan panitia adalah mutlak dan tidak dapat diganggu gugat.
+                            Bagi orang tua peserta yang dinyatakan lulus, diimbau untuk segera melakukan pendaftaran ulang di kantor sekretariat Harapan Bangsa 1 pada jam operasional kerja. Keputusan panitia adalah mutlak dan tidak dapat diganggu gugat.
                         </p>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
@@ -108,7 +108,7 @@
                 <span class="material-symbols-outlined text-sm mr-2">arrow_back</span>
                 Kembali ke Halaman PPDB
             </a>
-            <p class="mt-12 text-[10px] font-bold text-stone-300 uppercase tracking-[0.25em]">Harapan Bangsa 2 — Timeless Education</p>
+            <p class="mt-12 text-[10px] font-bold text-stone-300 uppercase tracking-[0.25em]">Harapan Bangsa 1 — Timeless Education</p>
         </div>
     </div>
 </div>

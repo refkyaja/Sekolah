@@ -15,7 +15,7 @@
             Halo, <br> {{ explode(' ', $siswa->nama_lengkap)[0] }}!
         </h2>
         <p class="text-stone-400 text-xs font-bold uppercase tracking-widest leading-relaxed max-w-md">
-            Senang melihatmu kembali hari ini di TK Harapan Bangsa 2. Mari kita belajar hal baru bersama-sama!
+            Senang melihatmu kembali hari ini di TK Harapan Bangsa 1. Mari kita belajar hal baru bersama-sama!
         </p>
         
         @if(session('success'))

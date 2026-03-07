@@ -6,6 +6,7 @@ use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\SpmbController;
 use App\Http\Controllers\BukuTamuController;
+use App\Http\Controllers\Auth\SocialiteController;
 
 // Admin Controllers
 use App\Http\Controllers\Admin\DashboardController;
@@ -339,7 +340,11 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
     Route::post('/register', [\App\Http\Controllers\Siswa\AuthController::class, 'storeRegister'])->name('storeRegister');
     Route::post('/logout', [\App\Http\Controllers\Siswa\AuthController::class, 'logout'])->name('logout');
     
-    // Google Auth Routes
+    // Google Auth Routes (Generic/Admin/Guru)
+    Route::get('login/google', [SocialiteController::class, 'redirectToGoogle'])->name('login.google');
+    Route::get('login/google/callback', [SocialiteController::class, 'handleCallback'])->name('login.google.callback');
+    
+    // Google Auth Routes (Siswa)
     Route::get('/login/google', [\App\Http\Controllers\Siswa\AuthController::class, 'redirectToGoogle'])->name('login.google');
     Route::get('/login/google/callback', [\App\Http\Controllers\Siswa\AuthController::class, 'handleGoogleCallback'])->name('login.google.callback');
 

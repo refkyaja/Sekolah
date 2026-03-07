@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Pendaftaran Siswa Baru - TK Harapan Bangsa 2</title>
+    <title>Pendaftaran Siswa Baru - TK Harapan Bangsa 1</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
@@ -34,7 +34,7 @@
             <div class="size-8 bg-primary text-white rounded-lg flex items-center justify-center">
                 <span class="material-symbols-outlined">school</span>
             </div>
-            <h2 class="text-xl font-bold tracking-tight">TK Harapan Bangsa 2</h2>
+            <h2 class="text-xl font-bold tracking-tight">TK Harapan Bangsa 1</h2>
         </div>
         <div class="relative z-10 text-center max-w-md">
             <div class="mb-8 rounded-xl overflow-hidden shadow-2xl rotate-2">
@@ -58,7 +58,7 @@
                 <div class="size-8 bg-primary text-white rounded-lg flex items-center justify-center">
                     <span class="material-symbols-outlined">school</span>
                 </div>
-                <h2 class="text-xl font-bold tracking-tight">TK Harapan Bangsa 2</h2>
+                <h2 class="text-xl font-bold tracking-tight">TK Harapan Bangsa 1</h2>
             </div>
             <div class="mb-8">
                 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">Daftar Akun Baru</h2>
