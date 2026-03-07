@@ -7,14 +7,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
+// use Spatie\Activitylog\Traits\LogsActivity;
+// use Spatie\Activitylog\LogOptions;
+
 class Siswa extends Authenticatable
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
-
-class Siswa extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, SoftDeletes; //, LogsActivity;
 
+    /*
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -22,6 +22,7 @@ class Siswa extends Model
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
+    */
 
     protected $table = 'siswas';
     protected $fillable = [

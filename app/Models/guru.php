@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
+// use Spatie\Activitylog\Traits\LogsActivity;
+// use Spatie\Activitylog\LogOptions;
 
 class Guru extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory; //, LogsActivity;
 
+    /*
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -21,6 +22,7 @@ class Guru extends Model
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
+    */
 
     // Tentukan nama tabel (jika tidak menggunakan konvensi plural)
     protected $table = 'gurus';

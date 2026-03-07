@@ -1,7 +1,4 @@
-<?php
-
-namespace App\Models;
-
+/*
 use Spatie\Activitylog\Models\Activity as SpatieActivity;
 use Illuminate\Support\Facades\Request;
 
@@ -15,3 +12,4 @@ class Activity extends SpatieActivity
         });
     }
 }
+*/

@@ -1,90 +1,70 @@
-@extends('layouts.nav-spmb')
+@extends('layouts.ppdb')
 
-@section('title', 'PPDB - Pendaftaran Ditutup')
+@section('title', 'Pendaftaran Ditutup - Harapan Bangsa 1')
 
 @section('content')
-<div class="max-w-[640px] mx-auto min-h-[60vh] flex flex-col items-center justify-center px-4 py-16 text-center">
+<div class="min-h-screen bg-brand-soft py-20 px-6 flex items-center justify-center">
+    <div class="max-w-2xl w-full text-center">
+        <!-- Icon -->
+        <div class="w-24 h-24 bg-white text-stone-300 rounded-[2rem] flex items-center justify-center mx-auto mb-12 shadow-sm">
+            <span class="material-symbols-outlined text-5xl">event_busy</span>
+        </div>
+        
+        <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-stone-400 mb-4 block">Informasi PPDB</span>
+        <h1 class="text-5xl font-extrabold tracking-tight text-brand-dark mb-8 uppercase">PENDAFTARAN<br>BELUM DIBUKA.</h1>
+        
+        <p class="text-stone-500 font-medium leading-relaxed mb-12 max-w-lg mx-auto">
+            Periode pendaftaran PPDB untuk tahun ajaran ini belum dimulai atau sudah berakhir. Silakan periksa jadwal resmi di bawah ini.
+        </p>
 
-    {{-- Icon --}}
-    <div class="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-8 shadow-lg shadow-primary/10">
-        <span class="material-symbols-outlined text-primary" style="font-size: 48px;">event_busy</span>
-    </div>
+        <!-- Schedule Info -->
+        @if(isset($setting) && $setting && ($setting->pendaftaran_mulai || $setting->pendaftaran_selesai))
+        <div class="bg-white rounded-[3rem] p-12 mb-16 shadow-xl border border-stone-100">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-12 text-left">
+                @if($setting->pendaftaran_mulai)
+                <div>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2 block">Pendaftaran Buka</span>
+                    <div class="text-xl font-extrabold text-brand-dark">{{ $setting->pendaftaran_mulai->translatedFormat('d F Y') }}</div>
+                    <div class="text-[10px] font-bold text-brand-primary uppercase mt-1">Pukul 08:00 WIB</div>
+                </div>
+                @endif
 
-    {{-- Title --}}
-    <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 mb-3">
-        Pendaftaran Belum Dibuka
-    </h1>
-    <p class="text-slate-500 dark:text-slate-400 text-base leading-relaxed max-w-md mb-8">
-        Periode pendaftaran PPDB untuk tahun ajaran ini belum dimulai atau sudah berakhir. Periksa jadwal di bawah ini.
-    </p>
-
-    {{-- Schedule Card --}}
-    @if(isset($setting) && $setting && ($setting->pendaftaran_mulai || $setting->pendaftaran_selesai))
-    <div class="w-full bg-white dark:bg-dark-card rounded-2xl border border-white/5 shadow-sm p-6 mb-8 space-y-4">
-
-        @if($setting->pendaftaran_mulai)
-        <div class="flex items-center justify-between py-3 border-b border-slate-100 dark:border-slate-800">
-            <div class="flex items-center gap-3 text-slate-600 dark:text-slate-400">
-                <span class="material-symbols-outlined text-primary">event</span>
-                <span class="text-sm font-semibold">Tanggal Buka</span>
+                @if($setting->pendaftaran_selesai)
+                <div>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2 block">Pendaftaran Tutup</span>
+                    <div class="text-xl font-extrabold text-brand-dark">{{ $setting->pendaftaran_selesai->translatedFormat('d F Y') }}</div>
+                    <div class="text-[10px] font-bold text-rose-400 uppercase mt-1">Sistem Ditutup Otomatis</div>
+                </div>
+                @endif
             </div>
-            <span class="font-bold text-slate-900 dark:text-slate-100 text-sm">
-                {{ $setting->pendaftaran_mulai->translatedFormat('d F Y') }}
-            </span>
+            
+            {{-- Status Banner --}}
+            @if(isset($now) && $setting->pendaftaran_mulai && $now < $setting->pendaftaran_mulai)
+            <div class="mt-12 p-6 bg-brand-soft rounded-2xl flex items-center gap-4 text-left">
+                <span class="material-symbols-outlined text-brand-primary">schedule</span>
+                <div>
+                    <p class="text-[10px] font-extrabold uppercase tracking-widest text-brand-dark">Akan segera dibuka</p>
+                    <p class="text-[10px] font-bold text-stone-400 uppercase tracking-tight mt-0.5">Persiapkan dokumen Anda sekarang.</p>
+                </div>
+            </div>
+            @endif
         </div>
         @endif
-
-        @if($setting->pendaftaran_selesai)
-        <div class="flex items-center justify-between py-3">
-            <div class="flex items-center gap-3 text-slate-600 dark:text-slate-400">
-                <span class="material-symbols-outlined text-primary">event_available</span>
-                <span class="text-sm font-semibold">Tanggal Tutup</span>
-            </div>
-            <span class="font-bold text-slate-900 dark:text-slate-100 text-sm">
-                {{ $setting->pendaftaran_selesai->translatedFormat('d F Y') }}
-            </span>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-6 justify-center">
+            <a href="{{ route('spmb.index') }}" 
+               class="bg-brand-dark text-white font-extrabold py-5 px-10 rounded-full text-[10px] uppercase tracking-[0.2em] transition-all hover:bg-brand-primary shadow-xl">
+                Halaman Utama
+            </a>
+            
+            <a href="https://wa.me/6281234567890" target="_blank"
+               class="border-2 border-stone-200 text-brand-dark font-extrabold py-5 px-10 rounded-full text-[10px] uppercase tracking-[0.2em] transition-all hover:bg-white hover:border-brand-primary">
+                Tanya WhatsApp
+            </a>
         </div>
-        @endif
-    </div>
-    @endif
 
-    {{-- Status Indicator --}}
-    @if(isset($now) && isset($setting) && $setting && $setting->pendaftaran_mulai && $now < $setting->pendaftaran_mulai)
-    <div class="w-full mb-8 p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 flex items-center gap-3">
-        <span class="material-symbols-outlined text-blue-500">schedule</span>
-        <div class="text-left">
-            <p class="text-sm font-bold text-blue-700 dark:text-blue-400">Pendaftaran belum dimulai</p>
-            <p class="text-xs text-blue-600 dark:text-blue-500">Akan dibuka pada {{ $setting->pendaftaran_mulai->translatedFormat('d F Y, H:i') }} WIB</p>
-        </div>
+        <p class="mt-20 text-[10px] font-bold text-stone-300 uppercase tracking-[0.25em]">Harapan Bangsa 1 — Timeless Education</p>
     </div>
-    @elseif(isset($now) && isset($setting) && $setting && $setting->pendaftaran_selesai && $now > $setting->pendaftaran_selesai)
-    <div class="w-full mb-8 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-center gap-3">
-        <span class="material-symbols-outlined text-red-500">block</span>
-        <div class="text-left">
-            <p class="text-sm font-bold text-red-700 dark:text-red-400">Pendaftaran sudah ditutup</p>
-            <p class="text-xs text-red-600 dark:text-red-500">Hubungi pihak sekolah untuk informasi lebih lanjut.</p>
-        </div>
-    </div>
-    @endif
-
-    {{-- Action Buttons --}}
-    <div class="flex flex-col sm:flex-row gap-4 w-full">
-        <a href="{{ route('spmb.index') }}"
-            class="flex-1 flex items-center justify-center gap-2 h-12 rounded-xl bg-primary text-white font-bold hover:bg-primary/90 transition-all shadow-md shadow-primary/20">
-            <span class="material-symbols-outlined">home</span>
-            Halaman PPDB
-        </a>
-        <a href="{{ route('spmb.pengumuman') }}"
-            class="flex-1 flex items-center justify-center gap-2 h-12 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
-            <span class="material-symbols-outlined">campaign</span>
-            Pengumuman
-        </a>
-    </div>
-
-    {{-- Help Text --}}
-    <p class="mt-8 text-xs text-slate-400 dark:text-slate-600">
-        Butuh bantuan? Hubungi kami di &nbsp;
-        <a href="https://wa.me/6281234567890" class="text-primary hover:underline font-semibold">WhatsApp</a>
-    </p>
 </div>
 @endsection

@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
+// use Spatie\Activitylog\Traits\LogsActivity;
+// use Spatie\Activitylog\LogOptions;
 
 class Kegiatan extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory; //, LogsActivity;
 
+    /*
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -20,6 +21,7 @@ class Kegiatan extends Model
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
+    */
 
     protected $fillable = [
         'nama_kegiatan',

@@ -4,18 +4,20 @@
 @section('title', 'Pendaftaran PPDB - TK Ceria Bangsa')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-b from-blue-50 to-gray-50 py-8">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-brand-soft py-20 px-6">
+    <div class="max-w-4xl mx-auto">
         <!-- Success/Error Messages -->
         @if(session('success'))
-        <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-            <div class="flex items-center">
-                <i class="fas fa-check-circle text-green-600 mr-3"></i>
+        <div class="mb-12 p-8 bg-white border border-stone-100 rounded-[2rem] shadow-xl">
+            <div class="flex items-center gap-6">
+                <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center">
+                    <i class="fas fa-check"></i>
+                </div>
                 <div>
-                    <p class="font-medium text-green-800">{{ session('success') }}</p>
+                    <p class="text-sm font-extrabold uppercase tracking-widest text-brand-dark">{{ session('success') }}</p>
                     @if(session('no_pendaftaran'))
-                    <p class="text-sm text-green-700 mt-1">
-                        <strong>Simpan nomor pendaftaran Anda:</strong> {{ session('no_pendaftaran') }}
+                    <p class="text-[10px] font-bold text-stone-400 mt-2 uppercase tracking-tight">
+                        Simpan nomor pendaftaran: {{ session('no_pendaftaran') }}
                     </p>
                     @endif
                 </div>
@@ -24,215 +26,78 @@
         @endif
 
         @if($errors->any())
-        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <div class="flex items-center">
-                <i class="fas fa-exclamation-circle text-red-600 mr-3"></i>
-                <div>
-                    <h4 class="font-medium text-red-800">Terjadi kesalahan:</h4>
-                    <ul class="text-sm text-red-700 mt-1 list-disc list-inside">
-                        @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+        <div class="mb-12 p-8 bg-white border border-stone-100 rounded-[2rem] shadow-xl">
+            <div class="flex items-center gap-6 mb-4">
+                <div class="w-12 h-12 bg-rose-500 text-white rounded-full flex items-center justify-center">
+                    <i class="fas fa-exclamation"></i>
                 </div>
+                <h4 class="text-sm font-extrabold uppercase tracking-widest text-brand-dark">Terjadi kesalahan:</h4>
             </div>
+            <ul class="text-[10px] font-bold text-rose-500 uppercase tracking-tight list-none ml-18">
+                @foreach($errors->all() as $error)
+                <li>— {{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
         @endif
 
         <!-- Page Header -->
-        <div class="text-center mb-10">
-            <div class="inline-flex items-center justify-center p-6 bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl mb-6 shadow-lg">
-                <i class="fas fa-user-graduate text-white text-4xl"></i>
-            </div>
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-                Pendaftaran Peserta Didik Baru
-            </h1>
-            <p class="text-gray-600 text-lg">TK Ceria Bangsa - Tahun Ajaran 2026/2027</p>
-            <div class="flex items-center justify-center mt-4">
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 mr-3">
-                    <i class="fas fa-building mr-1"></i> SPMB Jabar
-                </span>
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                    <i class="fas fa-calendar-check mr-1"></i> 2026/2027
-                </span>
-            </div>
-            <div class="w-32 h-1 bg-gradient-to-r from-blue-500 to-blue-700 mx-auto mt-4 rounded-full"></div>
-        </div>
-
-        <!-- Information Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500 hover:shadow-lg transition">
-                <div class="flex items-start">
-                    <div class="p-3 bg-blue-100 rounded-lg">
-                        <i class="fas fa-calendar-alt text-blue-600 text-xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <h3 class="font-bold text-gray-900">Periode Pendaftaran</h3>
-                        <p class="text-gray-600 text-sm mt-1">Mei - Juni 2026</p>
-                        <p class="text-xs text-gray-500 mt-1">Menunggu juknis Februari 2026</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500 hover:shadow-lg transition">
-                <div class="flex items-start">
-                    <div class="p-3 bg-green-100 rounded-lg">
-                        <i class="fas fa-users text-green-600 text-xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <h3 class="font-bold text-gray-900">Kuota Terbatas</h3>
-                        <p class="text-gray-600 text-sm mt-1">30 siswa per kelas</p>
-                        <p class="text-xs text-gray-500 mt-1">Berdasarkan daya tampung</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500 hover:shadow-lg transition">
-                <div class="flex items-start">
-                    <div class="p-3 bg-purple-100 rounded-lg">
-                        <i class="fas fa-graduation-cap text-purple-600 text-xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <h3 class="font-bold text-gray-900">Jalur Pendaftaran</h3>
-                        <p class="text-gray-600 text-sm mt-1">4 Jalur SPMB</p>
-                        <p class="text-xs text-gray-500 mt-1">Zonasi, Afirmasi, Prestasi, Mutasi</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-orange-500 hover:shadow-lg transition">
-                <div class="flex items-start">
-                    <div class="p-3 bg-orange-100 rounded-lg">
-                        <i class="fas fa-file-alt text-orange-600 text-xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <h3 class="font-bold text-gray-900">Penyelenggara</h3>
-                        <p class="text-gray-600 text-sm mt-1">Kemendikdasmen</p>
-                        <p class="text-xs text-gray-500 mt-1">Provinsi Jawa Barat</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Jalur Info Cards -->
-        <div class="mb-10">
-            <h3 class="text-xl font-bold text-gray-900 mb-4 text-center">Jalur Pendaftaran SPMB Jabar 2026/2027</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-5">
-                    <div class="flex items-center mb-3">
-                        <div class="p-2 bg-blue-600 rounded-lg mr-3">
-                            <i class="fas fa-map-marker-alt text-white"></i>
-                        </div>
-                        <h4 class="font-bold text-blue-800">Jalur Zonasi</h4>
-                    </div>
-                    <p class="text-sm text-gray-700">Berdasarkan domisili sesuai ketentuan zonasi sekolah</p>
-                    <p class="text-xs text-gray-500 mt-2">Kuota minimal 50%</p>
-                </div>
-                
-                <div class="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-xl p-5">
-                    <div class="flex items-center mb-3">
-                        <div class="p-2 bg-green-600 rounded-lg mr-3">
-                            <i class="fas fa-hands-helping text-white"></i>
-                        </div>
-                        <h4 class="font-bold text-green-800">Jalur Afirmasi</h4>
-                    </div>
-                    <p class="text-sm text-gray-700">Untuk keluarga kurang mampu dengan bukti valid</p>
-                    <p class="text-xs text-gray-500 mt-2">Kuota minimal 15%</p>
-                </div>
-                
-                <div class="bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-xl p-5">
-                    <div class="flex items-center mb-3">
-                        <div class="p-2 bg-purple-600 rounded-lg mr-3">
-                            <i class="fas fa-trophy text-white"></i>
-                        </div>
-                        <h4 class="font-bold text-purple-800">Jalur Prestasi</h4>
-                    </div>
-                    <p class="text-sm text-gray-700">Berdasarkan prestasi akademik/non-akademik</p>
-                    <p class="text-xs text-gray-500 mt-2">Kuota maksimal 30%</p>
-                </div>
-                
-                <div class="bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200 rounded-xl p-5">
-                    <div class="flex items-center mb-3">
-                        <div class="p-2 bg-orange-600 rounded-lg mr-3">
-                            <i class="fas fa-exchange-alt text-white"></i>
-                        </div>
-                        <h4 class="font-bold text-orange-800">Jalur Mutasi</h4>
-                    </div>
-                    <p class="text-sm text-gray-700">Untuk orang tua siswa yang pindah tugas</p>
-                    <p class="text-xs text-gray-500 mt-2">Kuota maksimal 5%</p>
-                </div>
-            </div>
+        <div class="text-center mb-16">
+            <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-primary mb-4 block">Pendaftaran Siswa Baru</span>
+            <h1 class="text-5xl font-extrabold tracking-tight text-brand-dark mb-4">FORMULIR ONLINE</h1>
+            <p class="text-stone-400 font-medium text-sm">Harapan Bangsa 1 — Tahun Ajaran 2026/2027</p>
         </div>
 
         <!-- Form Container -->
-        <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
-            <!-- Form Header -->
-            <div class="bg-gradient-to-r from-blue-600 to-blue-800 px-8 py-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="text-2xl font-bold text-white">Formulir Pendaftaran Online SPMB</h2>
-                        <p class="text-blue-100 mt-1">Isi data dengan benar dan lengkap sesuai SPMB Jabar</p>
-                    </div>
-                    <div class="hidden md:block">
-                        <div class="px-4 py-2 bg-blue-500 bg-opacity-30 rounded-lg">
-                            <p class="text-white text-sm">
-                                <i class="fas fa-clock mr-2"></i>
-                                Waktu pengisian: ±15 menit
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+        <div class="bg-white rounded-[3rem] shadow-2xl shadow-stone-200 overflow-hidden mb-12 border border-stone-50">
             <!-- Progress Bar -->
-            <div class="px-8 pt-6">
-                <div class="mb-2 flex justify-between">
-                    <span class="text-sm font-medium text-gray-700">Langkah 1 dari 3</span>
-                    <span class="text-sm font-medium text-blue-600">33%</span>
+            <div class="p-12 pb-0">
+                <div class="mb-4 flex justify-between items-end">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400">Langkah 1 dari 3</span>
+                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-brand-primary">Data Calon Siswa</span>
                 </div>
-                <div class="w-full bg-gray-200 rounded-full h-2">
-                    <div class="bg-blue-600 h-2 rounded-full" style="width: 33%"></div>
+                <div class="w-full bg-stone-100 rounded-full h-1.5 overflow-hidden">
+                    <div class="bg-brand-primary h-full rounded-full transition-all duration-1000" style="width: 33%"></div>
                 </div>
             </div>
 
             <!-- Form Content -->
-            <div class="p-8">
-                <form action="{{ route('spmb.store') }}" method="POST" class="space-y-8" id="ppdbForm" enctype="multipart/form-data">
+            <div class="p-12">
+                <form action="{{ route('spmb.store') }}" method="POST" class="space-y-12" id="ppdbForm" enctype="multipart/form-data">
                     @csrf
                     
                     <!-- SECTION 1: Data Calon Siswa -->
-                    <div class="border-b pb-8">
-                        <div class="flex items-center mb-6">
-                            <div class="h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                                <span class="font-bold text-blue-600">1</span>
+                    <div class="space-y-12">
+                        <div class="flex items-center gap-6">
+                            <div class="w-14 h-14 bg-brand-soft text-brand-primary rounded-2xl flex items-center justify-center font-extrabold text-lg">
+                                01
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold text-gray-900">Data Calon Siswa</h3>
-                                <p class="text-gray-600">Informasi pribadi calon peserta didik</p>
+                                <h3 class="text-sm font-extrabold uppercase tracking-widest text-brand-dark">Data Calon Siswa</h3>
+                                <p class="text-[10px] font-bold text-stone-400 uppercase tracking-tight mt-1">Informasi pribadi calon peserta didik</p>
                             </div>
                         </div>
                         
-                        <div class="grid md:grid-cols-2 gap-6">
+                        <div class="grid md:grid-cols-2 gap-10">
                             <!-- Nama Lengkap -->
                             <div>
-                                <label class="block text-gray-700 font-medium mb-2 required">
-                                    Nama Lengkap Calon Siswa
+                                <label class="block text-[10px] font-extrabold uppercase tracking-widest text-brand-dark mb-4">
+                                    Nama Lengkap <span class="text-brand-primary">*</span>
                                 </label>
                                 <input type="text" name="nama_calon_siswa" required 
                                        value="{{ old('nama_calon_siswa') }}"
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 form-input"
-                                       placeholder="Contoh: Andi Pratama">
-                                <p class="text-xs text-gray-500 mt-1">Sesuai akta kelahiran</p>
+                                       class="w-full px-6 py-5 bg-stone-50 border border-stone-100 rounded-2xl focus:ring-1 focus:ring-brand-primary focus:border-brand-primary text-sm font-medium outline-none transition-all"
+                                       placeholder="Nama Sesuai Akta Kelahiran">
                             </div>
                             
                             <!-- Jenis Kelamin -->
                             <div>
-                                <label class="block text-gray-700 font-medium mb-2 required">
-                                    Jenis Kelamin
+                                <label class="block text-[10px] font-extrabold uppercase tracking-widest text-brand-dark mb-4">
+                                    Jenis Kelamin <span class="text-brand-primary">*</span>
                                 </label>
                                 <select name="jenis_kelamin" required 
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 form-input">
-                                    <option value="">Pilih Jenis Kelamin</option>
+                                        class="w-full px-6 py-5 bg-stone-50 border border-stone-100 rounded-2xl focus:ring-1 focus:ring-brand-primary focus:border-brand-primary text-sm font-medium outline-none transition-all appearance-none">
+                                    <option value="">Pilih</option>
                                     <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
                                     <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
                                 </select>
@@ -240,26 +105,26 @@
                             
                             <!-- Tempat Lahir -->
                             <div>
-                                <label class="block text-gray-700 font-medium mb-2 required">
-                                    Tempat Lahir
+                                <label class="block text-[10px] font-extrabold uppercase tracking-widest text-brand-dark mb-4">
+                                    Tempat Lahir <span class="text-brand-primary">*</span>
                                 </label>
                                 <input type="text" name="tempat_lahir" required 
                                        value="{{ old('tempat_lahir') }}"
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 form-input"
+                                       class="w-full px-6 py-5 bg-stone-50 border border-stone-100 rounded-2xl focus:ring-1 focus:ring-brand-primary focus:border-brand-primary text-sm font-medium outline-none transition-all"
                                        placeholder="Contoh: Bandung">
                             </div>
                             
                             <!-- Tanggal Lahir -->
                             <div>
-                                <label class="block text-gray-700 font-medium mb-2 required">
-                                    Tanggal Lahir
+                                <label class="block text-[10px] font-extrabold uppercase tracking-widest text-brand-dark mb-4">
+                                    Tanggal Lahir <span class="text-brand-primary">*</span>
                                 </label>
                                 <input type="date" name="tanggal_lahir" required 
                                        id="tanggal_lahir_public"
                                        value="{{ old('tanggal_lahir') }}"
                                        max="{{ date('Y-m-d') }}"
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 form-input">
-                                <div id="ageDisplayPublic" class="mt-2 text-sm">
+                                       class="w-full px-6 py-5 bg-stone-50 border border-stone-100 rounded-2xl focus:ring-1 focus:ring-brand-primary focus:border-brand-primary text-sm font-medium outline-none transition-all">
+                                <div id="ageDisplayPublic" class="mt-4 text-[10px] font-bold uppercase tracking-tight text-stone-400">
                                     @if(old('tanggal_lahir'))
                                         <script>
                                             document.addEventListener('DOMContentLoaded', function() {
@@ -268,16 +133,15 @@
                                         </script>
                                     @endif
                                 </div>
-                                <div id="kelompokSuggestionPublic" class="mt-1 text-sm hidden"></div>
                             </div>
 
                             <!-- Agama -->
                             <div>
-                                <label class="block text-gray-700 font-medium mb-2 required">
-                                    Agama
+                                <label class="block text-[10px] font-extrabold uppercase tracking-widest text-brand-dark mb-4">
+                                    Agama <span class="text-brand-primary">*</span>
                                 </label>
                                 <select name="agama" required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 form-input">
+                                        class="w-full px-6 py-5 bg-stone-50 border border-stone-100 rounded-2xl focus:ring-1 focus:ring-brand-primary focus:border-brand-primary text-sm font-medium outline-none transition-all appearance-none">
                                     <option value="">Pilih Agama</option>
                                     <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
                                     <option value="Kristen" {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen</option>
@@ -290,88 +154,106 @@
 
                             <!-- NIK (Untuk SPMB) -->
                             <div>
-                                <label class="block text-gray-700 font-medium mb-2 required">
-                                    NIK Calon Siswa
+                                <label class="block text-[10px] font-extrabold uppercase tracking-widest text-brand-dark mb-4">
+                                    NIK Calon Siswa <span class="text-brand-primary">*</span>
                                 </label>
                                 <input type="text" name="nik" required 
                                        value="{{ old('nik') }}"
                                        pattern="[0-9]{16}"
                                        maxlength="16"
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 form-input"
-                                       placeholder="16 digit NIK">
-                                <p class="text-xs text-gray-500 mt-1">Nomor Induk Kependudukan</p>
+                                       class="w-full px-6 py-5 bg-stone-50 border border-stone-100 rounded-2xl focus:ring-1 focus:ring-brand-primary focus:border-brand-primary text-sm font-medium outline-none transition-all"
+                                       placeholder="16 Digit NIK">
                             </div>
                         </div>
 
                         <!-- Alamat -->
-                        <div class="mt-6">
-                            <label class="block text-gray-700 font-medium mb-2 required">
-                                Alamat Lengkap
+                        <div>
+                            <label class="block text-[10px] font-extrabold uppercase tracking-widest text-brand-dark mb-4">
+                                Alamat Lengkap <span class="text-brand-primary">*</span>
                             </label>
-                            <textarea name="alamat" rows="3" required 
-                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 form-input"
+                            <textarea name="alamat" rows="4" required 
+                                      class="w-full px-6 py-5 bg-stone-50 border border-stone-100 rounded-2xl focus:ring-1 focus:ring-brand-primary focus:border-brand-primary text-sm font-medium outline-none transition-all"
                                       placeholder="Tulis alamat lengkap beserta RT/RW, Kelurahan, Kecamatan, dan Kode Pos">{{ old('alamat') }}</textarea>
                         </div>
 
                         <!-- Dokumen Upload -->
-                        <div class="mt-6">
-                            <label class="block text-gray-700 font-medium mb-2">
-                                Upload Dokumen Pendukung
-                            </label>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm text-gray-600 mb-1">Akta Kelahiran (PDF/Image)</label>
-                                    <input type="file" name="akta_kelahiran" 
-                                           accept=".pdf,.jpg,.jpeg,.png"
-                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                </div>
-                                <div>
-                                    <label class="block text-sm text-gray-600 mb-1">Kartu Keluarga (PDF/Image)</label>
-                                    <input type="file" name="kartu_keluarga" 
-                                           accept=".pdf,.jpg,.jpeg,.png"
-                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                </div>
+                        <div class="grid md:grid-cols-2 gap-10">
+                            <div>
+                                <label class="block text-[10px] font-extrabold uppercase tracking-widest text-brand-dark mb-4">Akta Kelahiran (PDF/IMG)</label>
+                                <input type="file" name="akta_kelahiran" 
+                                       accept=".pdf,.jpg,.jpeg,.png"
+                                       class="w-full px-6 py-4 bg-stone-50 border border-stone-100 rounded-2xl focus:ring-1 focus:ring-brand-primary text-[10px] font-bold uppercase tracking-widest file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-bold file:bg-brand-soft file:text-brand-primary hover:file:bg-brand-primary hover:file:text-white file:transition-all">
                             </div>
-                            <p class="text-xs text-gray-500 mt-2">Maksimal 2MB per file. Format: PDF, JPG, PNG</p>
+                            <div>
+                                <label class="block text-[10px] font-extrabold uppercase tracking-widest text-brand-dark mb-4">Kartu Keluarga (PDF/IMG)</label>
+                                <input type="file" name="kartu_keluarga" 
+                                       accept=".pdf,.jpg,.jpeg,.png"
+                                       class="w-full px-6 py-4 bg-stone-50 border border-stone-100 rounded-2xl focus:ring-1 focus:ring-brand-primary text-[10px] font-bold uppercase tracking-widest file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-bold file:bg-brand-soft file:text-brand-primary hover:file:bg-brand-primary hover:file:text-white file:transition-all">
+                            </div>
                         </div>
                     </div>
 
                     <!-- SECTION 2: Data Orang Tua -->
-                    <div class="border-b pb-8">
-                        <div class="flex items-center mb-6">
-                            <div class="h-10 w-10 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                                <span class="font-bold text-green-600">2</span>
+                    <div class="space-y-12">
+                        <div class="flex items-center gap-6">
+                            <div class="w-14 h-14 bg-brand-soft text-brand-primary rounded-2xl flex items-center justify-center font-extrabold text-lg">
+                                02
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold text-gray-900">Data Orang Tua</h3>
-                                <p class="text-gray-600">Informasi ayah dan ibu calon peserta didik</p>
+                                <h3 class="text-sm font-extrabold uppercase tracking-widest text-brand-dark">Data Orang Tua</h3>
+                                <p class="text-[10px] font-bold text-stone-400 uppercase tracking-tight mt-1">Informasi ayah dan ibu kandung</p>
                             </div>
                         </div>
                         
-                        <div class="grid md:grid-cols-2 gap-6">
+                        <div class="grid md:grid-cols-2 gap-10">
                             <!-- Nama Ayah -->
                             <div>
-                                <label class="block text-gray-700 font-medium mb-2 required">
-                                    Nama Ayah
+                                <label class="block text-[10px] font-extrabold uppercase tracking-widest text-brand-dark mb-4">
+                                    Nama Ayah <span class="text-brand-primary">*</span>
                                 </label>
                                 <input type="text" name="nama_ayah" required 
                                        value="{{ old('nama_ayah') }}"
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 form-input"
-                                       placeholder="Nama lengkap ayah">
+                                       class="w-full px-6 py-5 bg-stone-50 border border-stone-100 rounded-2xl focus:ring-1 focus:ring-brand-primary text-sm font-medium outline-none transition-all"
+                                       placeholder="Nama Lengkap Ayah">
                             </div>
                             
                             <!-- NIK Ayah -->
                             <div>
-                                <label class="block text-gray-700 font-medium mb-2 required">
-                                    NIK Ayah
+                                <label class="block text-[10px] font-extrabold uppercase tracking-widest text-brand-dark mb-4">
+                                    NIK Ayah <span class="text-brand-primary">*</span>
                                 </label>
                                 <input type="text" name="nik_ayah" required 
                                        value="{{ old('nik_ayah') }}"
                                        pattern="[0-9]{16}"
                                        maxlength="16"
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 form-input"
-                                       placeholder="16 digit NIK ayah">
+                                       class="w-full px-6 py-5 bg-stone-50 border border-stone-100 rounded-2xl focus:ring-1 focus:ring-brand-primary text-sm font-medium outline-none transition-all"
+                                       placeholder="16 Digit NIK Ayah">
                             </div>
+                            
+                            <!-- Nama Ibu -->
+                            <div>
+                                <label class="block text-[10px] font-extrabold uppercase tracking-widest text-brand-dark mb-4">
+                                    Nama Ibu <span class="text-brand-primary">*</span>
+                                </label>
+                                <input type="text" name="nama_ibu" required 
+                                       value="{{ old('nama_ibu') }}"
+                                       class="w-full px-6 py-5 bg-stone-50 border border-stone-100 rounded-2xl focus:ring-1 focus:ring-brand-primary text-sm font-medium outline-none transition-all"
+                                       placeholder="Nama Lengkap Ibu">
+                            </div>
+                            
+                            <!-- No HP -->
+                            <div>
+                                <label class="block text-[10px] font-extrabold uppercase tracking-widest text-brand-dark mb-4">
+                                    Nomor WhatsApp <span class="text-brand-primary">*</span>
+                                </label>
+                                <input type="tel" name="no_hp_ortu" required 
+                                       pattern="[0-9]{10,15}"
+                                       placeholder="081234567890"
+                                       value="{{ old('no_hp_ortu') }}"
+                                       class="w-full px-6 py-5 bg-stone-50 border border-stone-100 rounded-2xl focus:ring-1 focus:ring-brand-primary text-sm font-medium outline-none transition-all">
+                            </div>
+                        </div>
+                    </div>
                             
                             <!-- Pekerjaan Ayah -->
                             <div>
@@ -635,91 +517,28 @@
                     <input type="hidden" name="status" value="menunggu">
                     <input type="hidden" name="tahun_ajaran" value="2026/2027">
 
-                    <!-- Form Footer -->
-                    <div class="bg-gray-50 rounded-xl p-6 mt-8">
-                        <div class="flex items-center mb-4">
-                            <i class="fas fa-shield-alt text-green-600 text-xl mr-3"></i>
-                            <div>
-                                <h4 class="font-bold text-gray-900">Keamanan Data</h4>
-                                <p class="text-sm text-gray-600">Data Anda dilindungi UU No. 19 Tahun 2016 dan hanya digunakan untuk keperluan pendaftaran SPMB</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start">
-                            <input type="checkbox" id="agreeTerms" required 
-                                   class="mt-1 mr-3 h-5 w-5 text-blue-600 rounded focus:ring-blue-500">
-                            <label for="agreeTerms" class="text-sm text-gray-700">
-                                Saya menyatakan bahwa data yang saya berikan adalah benar dan sah. 
-                                Saya setuju dengan 
-                                <a href="#" class="text-blue-600 hover:underline">syarat dan ketentuan SPMB Jabar 2026/2027</a> 
-                                yang berlaku.
-                            </label>
-                        </div>
-                    </div>
-
                     <!-- Submit Buttons -->
-                    <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                    <div class="bg-stone-50 -mx-12 -mb-12 p-12 mt-12 flex flex-col sm:flex-row gap-6">
                         <button type="submit" 
-                                class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-6 rounded-lg transition duration-300 flex items-center justify-center shadow-lg">
-                            <i class="fas fa-paper-plane mr-3"></i>
-                            Kirim Pendaftaran SPMB
+                                class="flex-1 bg-brand-dark text-white font-extrabold py-6 px-10 rounded-full text-[10px] uppercase tracking-[0.2em] transition-all hover:bg-brand-primary shadow-2xl">
+                            Kirim Pendaftaran
                         </button>
                         
                         <button type="button" id="resetButton"
-                                class="flex-1 border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-bold py-4 px-6 rounded-lg transition duration-300 flex items-center justify-center">
-                            <i class="fas fa-redo mr-3"></i>
-                            Reset Form
+                                class="flex-1 border-2 border-stone-200 text-brand-dark font-extrabold py-6 px-10 rounded-full text-[10px] uppercase tracking-[0.2em] transition-all hover:bg-stone-100">
+                            Reset Formulir
                         </button>
-                    </div>
-                    
-                    <div class="text-center mt-6">
-                        <p class="text-gray-600 text-sm">
-                            <i class="fas fa-info-circle mr-2"></i>
-                            Pendaftaran akan diproses sesuai jadwal SPMB Jabar 2026/2027. Status dapat dicek via WhatsApp atau portal SPMB.
-                        </p>
                     </div>
                 </form>
             </div>
         </div>
 
-        <!-- WhatsApp Help -->
-        <div class="mt-8 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl shadow-lg overflow-hidden">
-            <div class="p-6">
-                <div class="flex flex-col md:flex-row items-center justify-between">
-                    <div class="mb-4 md:mb-0">
-                        <div class="flex items-center">
-                            <i class="fab fa-whatsapp text-white text-3xl mr-4"></i>
-                            <div>
-                                <h3 class="text-xl font-bold text-white">Butuh Bantuan?</h3>
-                                <p class="text-green-100">Tim SPMB siap membantu via WhatsApp</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="https://wa.me/6281234567890?text=Halo%20Admin%20TK%20Ceria%20Bangsa,%20saya%20ingin%20bertanya%20tentang%20SPMB%202026/2027" 
-                       target="_blank"
-                       class="bg-white text-green-600 hover:bg-green-50 font-bold py-3 px-6 rounded-lg transition duration-300 flex items-center">
-                        <i class="fab fa-whatsapp mr-3 text-xl"></i>
-                        Chat Sekarang
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- SPMB Info Footer -->
-        <div class="mt-8 bg-gray-800 rounded-xl p-6 text-white">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div>
-                    <h4 class="font-bold text-lg mb-2">SPMB Jabar 2026/2027</h4>
-                    <p class="text-gray-300 text-sm">Sistem Penerimaan Peserta Didik Baru Jawa Barat</p>
-                    <p class="text-gray-400 text-xs mt-2">Diselenggarakan oleh Kemendikdasmen Provinsi Jawa Barat</p>
-                </div>
-                <div class="mt-4 md:mt-0">
-                    <a href="#" class="text-blue-300 hover:text-white text-sm flex items-center">
-                        <i class="fas fa-download mr-2"></i>
-                        Download Juknis SPMB 2026
-                    </a>
-                </div>
-            </div>
+        <!-- Help Info -->
+        <div class="text-center">
+            <p class="text-stone-400 text-[10px] font-bold uppercase tracking-widest leading-loose">
+                Butuh Bantuan? Hubungi kami di <a href="#" class="text-brand-dark hover:text-brand-primary transition-colors">info@harapanbangsa.sch.id</a><br>
+                Senin - Jumat: 08:00 — 15:00
+            </p>
         </div>
     </div>
 </div>

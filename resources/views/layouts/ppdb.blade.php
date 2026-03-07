@@ -4,57 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Pendaftaran PPDB - TK Ceria Bangsa')</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#f49d25',
+                            soft: '#fff7ed',
+                            cream: '#fafaf9',
+                            dark: '#1c1917',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     @stack('styles')
     <style>
-        /* Custom styling untuk form PPDB */
-        .form-input:focus {
-            border-color: #3b82f6;
-            ring-color: #3b82f6;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-        }
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-        }
+        body { font-family: 'Plus Jakarta Sans', 'sans-serif'; }
+        .hover-zoom img { transition: transform 0.5s ease; }
+        .hover-zoom:hover img { transform: scale(1.05); }
     </style>
 </head>
-<body class="font-sans bg-gray-50">
+<body class="bg-brand-cream text-brand-dark transition-colors duration-300">
 
-    <!-- Navigation Bar -->
-    <nav class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo & Brand -->
-                <div class="flex items-center space-x-3">
-                    <div class="flex-shrink-0">
-                        <div class="h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-school text-blue-600 text-xl"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <h1 class="text-lg font-bold text-gray-900">TK Ceria Bangsa</h1>
-                        <p class="text-xs text-gray-600">Pendaftaran PPDB Online</p>
-                    </div>
+    <!-- Navigation Bar (Minimalist) -->
+    <nav class="bg-white/80 backdrop-blur-md border-b border-stone-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Brand -->
+            <a href="{{ url('/') }}" class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-brand-primary rounded-xl flex items-center justify-center text-white">
+                    <i class="fas fa-school text-lg"></i>
                 </div>
+                <div class="hidden sm:block">
+                    <h1 class="text-sm font-extrabold uppercase tracking-widest leading-none">Harapan Bangsa 1</h1>
+                    <p class="text-[10px] font-bold text-stone-400 uppercase tracking-tighter mt-1">Quality Education</p>
+                </div>
+            </a>
 
-                <!-- Navigation Links -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="{{ url('/') }}" class="text-gray-700 hover:text-blue-600 font-medium">
-                        <i class="fas fa-home mr-2"></i>Beranda
-                    </a>
-                    @guest('siswa')
-                    <button onclick="showLoginModal(event)" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium">
-                        <i class="fas fa-user-plus mr-2"></i>Daftar Sekarang
-                    </button>
-                    @else
-                    <a href="{{ route('spmb.pendaftaran') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium">
-                        <i class="fas fa-user-plus mr-2"></i>Daftar Sekarang
-                    </a>
-                    @endguest
-                </div>
+            <!-- Nav Links -->
+            <div class="hidden md:flex items-center gap-10">
+                <a href="{{ url('/') }}" class="text-[10px] font-bold uppercase tracking-widest hover:text-brand-primary transition-colors">Beranda</a>
+                <a href="{{ route('spmb.index') }}" class="text-[10px] font-bold uppercase tracking-widest text-brand-primary">PPDB Online</a>
+                @guest('siswa')
+                <button onclick="showLoginModal(event)" class="bg-brand-dark text-white px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-brand-primary transition-all shadow-lg shadow-stone-200">Daftar</button>
+                @else
+                <a href="{{ route('spmb.pendaftaran') }}" class="bg-brand-dark text-white px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-brand-primary transition-all shadow-lg shadow-stone-200">Daftar</a>
+                @endguest
+            </div>
 
                 <!-- Mobile menu button -->
                 <div class="md:hidden">
@@ -89,111 +97,38 @@
         @yield('content')
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Brand Info -->
-                <div>
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-school text-blue-600 text-xl"></i>
+    <!-- Footer (Minimalist) -->
+    <footer class="bg-brand-cream py-20 text-stone-600">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 mb-20 px-4">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 bg-brand-primary rounded-xl flex items-center justify-center text-white">
+                            <i class="fas fa-school"></i>
                         </div>
-                        <div>
-                            <h3 class="text-xl font-bold">TK Ceria Bangsa</h3>
-                            <p class="text-gray-400 text-sm">Mendidik dengan Cinta</p>
-                        </div>
+                        <h3 class="text-sm font-extrabold uppercase tracking-widest text-brand-dark">Harapan Bangsa 1</h3>
                     </div>
-                    <p class="text-gray-300">
-                        Lembaga pendidikan anak usia dini yang berkomitmen membentuk generasi cerdas, kreatif, dan berakhlak mulia.
-                    </p>
+                    <p class="text-xs font-medium leading-relaxed max-w-sm">Membentuk landasan yang kokoh untuk masa depan cerah anak Anda melalui pendidikan yang penuh kasih dan inovatif.</p>
                 </div>
-
-                <!-- Contact Info -->
                 <div>
-                    <h4 class="text-lg font-bold mb-6">Kontak Kami</h4>
-                    <div class="space-y-3">
-                        <div class="flex items-start">
-                            <i class="fas fa-map-marker-alt text-blue-400 mt-1 mr-3"></i>
-                            <span class="text-gray-300">Jl. Pendidikan No. 123, Jakarta Pusat 10110</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-phone text-blue-400 mr-3"></i>
-                            <span class="text-gray-300">(021) 1234-5678</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-envelope text-blue-400 mr-3"></i>
-                            <span class="text-gray-300">info@tkceriabangsa.sch.id</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-clock text-blue-400 mr-3"></i>
-                            <span class="text-gray-300">Senin - Jumat: 07:00 - 16:00</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Links -->
-                <div>
-                    <h4 class="text-lg font-bold mb-6">Tautan Cepat</h4>
-                    <ul class="space-y-2">
-                        <li>
-                            @guest('siswa')
-                            <button onclick="showLoginModal(event)" class="text-gray-300 hover:text-white flex items-center">
-                                <i class="fas fa-chevron-right text-xs mr-2"></i>
-                                Formulir Pendaftaran
-                            </button>
-                            @else
-                            <a href="{{ route('spmb.pendaftaran') }}" class="text-gray-300 hover:text-white flex items-center">
-                                <i class="fas fa-chevron-right text-xs mr-2"></i>
-                                Formulir Pendaftaran
-                            </a>
-                            @endguest
-                        </li>
-                        <li>
-                            <a href="#" class="text-gray-300 hover:text-white flex items-center">
-                                <i class="fas fa-chevron-right text-xs mr-2"></i>
-                                Persyaratan Pendaftaran
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-gray-300 hover:text-white flex items-center">
-                                <i class="fas fa-chevron-right text-xs mr-2"></i>
-                                Biaya Pendidikan
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-gray-300 hover:text-white flex items-center">
-                                <i class="fas fa-chevron-right text-xs mr-2"></i>
-                                FAQ
-                            </a>
-                        </li>
+                    <h4 class="text-[10px] font-bold uppercase tracking-widest text-brand-dark mb-6">Tautan Cepat</h4>
+                    <ul class="space-y-4 text-[10px] font-bold uppercase tracking-wider">
+                        <li><a href="{{ url('/') }}" class="hover:text-brand-primary">Beranda</a></li>
+                        <li><a href="{{ route('spmb.index') }}" class="hover:text-brand-primary">PPDB Online</a></li>
+                        <li><a href="#" class="hover:text-brand-primary">Kontak</a></li>
                     </ul>
                 </div>
-            </div>
-
-            <!-- Social Media & Copyright -->
-            <div class="border-t border-gray-700 mt-12 pt-8">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <div class="mb-4 md:mb-0">
-                        <p class="text-gray-400 text-sm">
-                            &copy; {{ date('Y') }} TK Ceria Bangsa. Semua hak dilindungi.
-                        </p>
-                    </div>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i class="fab fa-facebook text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i class="fab fa-instagram text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i class="fab fa-youtube text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i class="fab fa-whatsapp text-xl"></i>
-                        </a>
-                    </div>
+                <div>
+                    <h4 class="text-[10px] font-bold uppercase tracking-widest text-brand-dark mb-6">Hubungi Kami</h4>
+                    <p class="text-[10px] font-bold uppercase tracking-widest leading-loose">
+                        Jl. Pendidikan No. 123<br>
+                        Jakarta Pusat 10110<br>
+                        (021) 1234-5678
+                    </p>
                 </div>
+            </div>
+            <div class="border-t border-stone-200 pt-10 text-center">
+                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400">© {{ date('Y') }} Harapan Bangsa 1. All rights reserved.</p>
             </div>
         </div>
     </footer>

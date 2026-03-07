@@ -109,7 +109,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>TK Harapan Bangsa 2</h1>
+        <h1>TK Harapan Bangsa 1</h1>
         <p>Jadwal Pelajaran Kelompok {{ $studentKelompok }} - {{ $ta->tahun_ajaran }} ({{ $ta->semester }})</p>
     </div>
 
@@ -125,7 +125,7 @@
                 <td><strong>Dicetak pada</strong></td>
                 <td>: {{ now()->translatedFormat('d F Y H:i') }}</td>
                 <td><strong>Lokasi Utama</strong></td>
-                <td>: Gedung Utama, TK Harapan Bangsa 2</td>
+                <td>: Gedung Utama, TK Harapan Bangsa 1</td>
             </tr>
         </table>
     </div>
@@ -209,7 +209,7 @@
     </table>
 
     <div class="footer">
-        Dokumen ini diterbitkan secara otomatis oleh Sistem Informasi Akademik TK Harapan Bangsa 2.
+        Dokumen ini diterbitkan secara otomatis oleh Sistem Informasi Akademik TK Harapan Bangsa 1.
     </div>
 </body>
 </html>
