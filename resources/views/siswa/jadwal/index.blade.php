@@ -5,38 +5,46 @@
 
 @section('content')
 <!-- Page Title & Filters -->
-<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
     <div>
-        <h1 class="text-3xl font-bold mb-2">Jadwal Pelajaran</h1>
-        <div class="flex items-center gap-4 text-slate-500">
-            <div class="flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-sm">calendar_today</span>
-                <p class="text-sm font-medium">{{ $ta->tahun_ajaran ?? '-' }} ({{ $ta->semester ?? '-' }})</p>
+        <span class="text-[9px] font-extrabold uppercase tracking-[.3em] text-brand-primary mb-2 block">Akademik</span>
+        <h1 class="text-4xl font-extrabold text-brand-dark uppercase tracking-tighter leading-none mb-4">Jadwal Pelajaran</h1>
+        <div class="flex items-center gap-6 text-stone-300">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-base">calendar_today</span>
+                <p class="text-[10px] font-extrabold uppercase tracking-widest">{{ $ta->tahun_ajaran ?? '-' }} ({{ $ta->semester ?? '-' }})</p>
             </div>
             <div class="flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-sm">location_on</span>
-                <p class="text-sm">Gedung Utama, TK Harapan Bangsa 1</p>
+                <p class="text-sm">Gedung Utama, TK Harapan Bangsa 2</p>
             </div>
         </div>
     </div>
-    <div class="flex gap-3">
-        <button class="size-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-primary hover:text-white transition-all">
-            <span class="material-symbols-outlined">notifications</span>
-        </button>
-        <a href="{{ route('siswa.jadwal.download-pdf') }}" class="px-4 py-2 flex items-center gap-2 rounded-xl bg-primary text-white font-bold text-sm shadow-lg shadow-primary/20 hover:scale-105 transition-transform active:scale-95">
-            <span class="material-symbols-outlined text-[20px]">download</span>
+    <div class="flex gap-4">
+        <a href="{{ route('siswa.jadwal.download-pdf') }}" class="px-8 py-4 flex items-center gap-3 rounded-[2rem] bg-brand-dark text-white font-extrabold text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-brand-dark/10 hover:bg-brand-primary transition-all active:scale-95">
+            <span class="material-symbols-outlined text-xl">download</span>
             <span>Download PDF</span>
         </a>
     </div>
 </div>
 
 <!-- Schedule Table Tabs -->
-<div class="flex border-b border-slate-200 dark:border-slate-800 mb-6 gap-8">
-    <button onclick="switchTab('A')" class="tab-btn px-4 py-2 text-sm {{ $studentKelompok == 'A' ? 'font-bold text-primary border-b-2 border-primary' : 'font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200' }} transition-colors" id="tab-a">
+<div class="flex border-b border-stone-100 mb-10 gap-12">
+    <button onclick="switchTab('A')" class="tab-btn px-4 py-4 text-[10px] uppercase font-extrabold tracking-[0.2em] transition-all relative {{ $studentKelompok == 'A' ? 'text-brand-primary' : 'text-stone-300 hover:text-stone-500' }}" id="tab-a">
         Kelompok A
+        @if($studentKelompok == 'A')
+            <div class="absolute bottom-0 left-0 right-0 h-1 bg-brand-primary rounded-full transition-all" id="indicator-a"></div>
+        @else
+            <div class="absolute bottom-0 left-0 right-0 h-1 bg-brand-primary rounded-full opacity-0 transition-all" id="indicator-a"></div>
+        @endif
     </button>
-    <button onclick="switchTab('B')" class="tab-btn px-4 py-2 text-sm {{ $studentKelompok == 'B' ? 'font-bold text-primary border-b-2 border-primary' : 'font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200' }} transition-colors" id="tab-b">
+    <button onclick="switchTab('B')" class="tab-btn px-4 py-4 text-[10px] uppercase font-extrabold tracking-[0.2em] transition-all relative {{ $studentKelompok == 'B' ? 'text-brand-primary' : 'text-stone-300 hover:text-stone-500' }}" id="tab-b">
         Kelompok B
+        @if($studentKelompok == 'B')
+            <div class="absolute bottom-0 left-0 right-0 h-1 bg-brand-primary rounded-full transition-all" id="indicator-b"></div>
+        @else
+            <div class="absolute bottom-0 left-0 right-0 h-1 bg-brand-primary rounded-full opacity-0 transition-all" id="indicator-b"></div>
+        @endif
     </button>
 </div>
 

@@ -5,8 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+<<<<<<< HEAD
 class BukuTamu extends Model
 {
+=======
+// use Spatie\Activitylog\Traits\LogsActivity;
+// use Spatie\Activitylog\LogOptions;
+
+class BukuTamu extends Model
+{
+    // use LogsActivity;
+
+    /*
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+    */
+>>>>>>> 9a49cb3ed1b84f3600c4e18b848e92f6d9c17047
     protected $table = 'buku_tamu';
     
     protected $fillable = [

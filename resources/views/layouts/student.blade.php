@@ -7,8 +7,9 @@
     <title>@yield('title') - {{ config('app.name', 'TK Harapan Bangsa 1') }}</title>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
     <script id="tailwind-config">
@@ -17,20 +18,27 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#4c99e6",
-                        "background-light": "#f6f7f8",
-                        "background-dark": "#111921",
+                        brand: {
+                            primary: '#f49d25',
+                            soft: '#fff7ed',
+                            cream: '#fafaf9',
+                            dark: '#1c1917',
+                        },
+                        "primary": "#f49d25", // Backward compatibility for existing components
+                        "background-light": "#fafaf9",
+                        "background-dark": "#1c1917",
                     },
                     fontFamily: {
-                        "display": ["Inter"]
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "sans": ["Plus Jakarta Sans", "sans-serif"]
                     },
-                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                    borderRadius: {"DEFAULT": "1rem", "lg": "1.5rem", "xl": "2rem", "full": "9999px"},
                 },
             },
         }
     </script>
     <style>
-        [x-cloak] { display: none !important; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
         
         aside {
             transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -105,29 +113,27 @@
         <!-- Main Content -->
         <div class="flex-1 flex flex-col h-screen overflow-hidden">
             <!-- Header -->
-            <header class="sticky top-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-8 py-4 flex items-center justify-between">
+            <header class="sticky top-0 z-10 bg-white/80 dark:bg-brand-dark/80 backdrop-blur-md border-b border-stone-100 dark:border-stone-800 px-8 py-6 flex items-center justify-between">
                 <div class="flex items-center gap-4">
-                    <button @click="mobileSidebarOpen = true" class="lg:hidden p-2 -ml-2 text-slate-500">
+                    <button @click="mobileSidebarOpen = true" class="lg:hidden p-2 -ml-2 text-stone-300">
                         <span class="material-symbols-outlined">menu</span>
                     </button>
                     <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100">@yield('header_title', 'Dashboard Siswa')</h2>
-                    <a href="{{ url('/') }}" class="flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-lg text-sm font-medium transition-colors">
-                        <span class="material-symbols-outlined text-lg">home</span>
-                        <span class="hidden sm:inline">Beranda</span>
-                    </a>
                 </div>
                 
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-6">
                     <div class="relative hidden md:block">
-                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                        <input class="pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary w-64 text-sm" placeholder="Cari informasi..." type="text"/>
+                        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-300 text-lg">search</span>
+                        <input class="pl-12 pr-6 py-2.5 bg-stone-50 dark:bg-stone-800 border-none rounded-xl focus:ring-1 focus:ring-brand-primary/20 w-80 text-[10px] uppercase font-bold tracking-widest placeholder:text-stone-300 transition-all" placeholder="Cari Informasi..." type="text"/>
                     </div>
-                    <button class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-                        <span class="material-symbols-outlined">notifications</span>
-                    </button>
-                    <button class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-                        <span class="material-symbols-outlined">settings</span>
-                    </button>
+                    <div class="flex items-center gap-3">
+                        <button class="size-10 rounded-xl bg-stone-50 dark:bg-stone-800 text-stone-300 hover:text-brand-primary transition-colors flex items-center justify-center">
+                            <span class="material-symbols-outlined text-xl">notifications</span>
+                        </button>
+                        <button class="size-10 rounded-xl bg-stone-50 dark:bg-stone-800 text-stone-300 hover:text-brand-primary transition-colors flex items-center justify-center">
+                            <span class="material-symbols-outlined text-xl">settings</span>
+                        </button>
+                    </div>
                 </div>
             </header>
 

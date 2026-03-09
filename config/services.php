@@ -45,4 +45,10 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URL', 'http://localhost:8000/siswa/login/google/callback'),
     ],
+
+    'google_admin' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_ADMIN_REDIRECT_URL', 'http://localhost:8000/login/google/callback'),
+    ],
 ];

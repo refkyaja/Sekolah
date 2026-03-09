@@ -44,19 +44,22 @@ href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wg
     </script>
     
     <style>
-        body { font-family: 'Nunito', sans-serif; }
-        h1, h2, h3, h4 { font-family: 'Fredoka', sans-serif; }
-        .wavy-bg {
-            border-bottom-left-radius: 50% 10%;
-            border-bottom-right-radius: 50% 10%;
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .hover-zoom img {
+            transition: transform 0.5s ease;
         }
-        .bubble-float {
-            animation: float 6s ease-in-out infinite;
+        .hover-zoom:hover img {
+            transform: scale(1.05);
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+        /* Hide scrollbar for carousels */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .selection\:bg-brand-primary::selection { background-color: #f49d25; color: white; }
     </style>
 
     <!-- Alpine.js -->

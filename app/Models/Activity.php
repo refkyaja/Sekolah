@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Models\Activity as SpatieActivity;
+use Illuminate\Support\Facades\Request;
 
 class Activity extends Model
 {
@@ -29,3 +30,4 @@ class Activity extends Model
         return $this->belongsTo(User::class, 'causer_id');
     }
 }
+*/
