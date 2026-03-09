@@ -5,7 +5,7 @@
                 <div class="w-8 h-8 bg-yellow-400 rounded flex items-center justify-center">
                     <span class="material-icons text-white text-sm">school</span>
                 </div>
-                <span class="text-xl font-bold text-white font-display">TK HARAPAN BANGSA 2</span>
+                <span class="text-xl font-bold text-white font-display">TK HARAPAN BANGSA 1</span>
             </div>
             <p class="text-sm">Providing excellence in early childhood education since 2010. Nurturing the leaders of tomorrow.</p>
         </div>
@@ -39,5 +39,5 @@
         </div>
     </div>
     <div class="max-w-7xl mx-auto border-t border-slate-800 mt-12 pt-8 text-center text-xs">
-        © {{ date('Y') }} TK HARAPAN BANGSA 2. All rights reserved.    </div>
+        © {{ date('Y') }} TK HARAPAN BANGSA 1. All rights reserved.    </div>
 </footer>

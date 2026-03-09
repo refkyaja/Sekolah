@@ -30,13 +30,41 @@
         <p class="text-sm text-slate-500 mt-1">Daftar calon siswa yang dinyatakan lolos seleksi penerimaan siswa baru.</p>
     </div>
     <div class="flex items-center gap-3">
-        <button type="button" onclick="openPublishModal()" class="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-2xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
-            <span class="material-symbols-outlined text-lg">campaign</span>
-            Publish Pengumuman
-        </button>
+        @if($isPengumumanPublished)
+            <div class="flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-xl text-sm font-medium">
+                <span class="material-symbols-outlined text-lg">check_circle</span>
+                Sudah Dipublish
+            </div>
+            <a href="{{ route('admin.ppdb.riwayat') }}" class="flex items-center gap-2 px-6 py-3 bg-slate-100 text-slate-700 rounded-2xl font-bold text-sm hover:bg-slate-200 transition-all">
+                <span class="material-symbols-outlined text-lg">history</span>
+                Lihat Riwayat
+            </a>
+        @else
+            <button type="button" onclick="openPublishModal()" class="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-2xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+                <span class="material-symbols-outlined text-lg">campaign</span>
+                Publish Pengumuman
+            </button>
+        @endif
     </div>
 </div>
 
+@if($isPengumumanPublished)
+<div class="bg-green-50 border border-green-200 rounded-2xl p-8 mb-8">
+    <div class="flex items-center gap-4">
+        <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center">
+            <span class="material-symbols-outlined text-green-600 text-4xl">check_circle</span>
+        </div>
+        <div>
+            <h3 class="text-xl font-bold text-green-800 mb-1">Pengumuman Sudah Dipublish</h3>
+            <p class="text-green-700 text-sm">Data siswa telah dipindahkan ke Riwayat PPDB dan Data Siswa (Master Data).</p>
+            <a href="{{ route('admin.ppdb.riwayat') }}" class="inline-flex items-center gap-1 mt-3 px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
+                <span class="material-symbols-outlined text-lg">folder_open</span>
+                Lihat Riwayat PPDB
+            </a>
+        </div>
+    </div>
+</div>
+@else
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mb-8">
     <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
@@ -91,7 +119,9 @@
     </div>
     @endif
 </div>
+@endif
 
+@if(!$isPengumumanPublished)
 <!-- Publish Modal -->
 <div id="publishModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-md w-full p-8 relative overflow-hidden animate-in fade-in zoom-in duration-300">
@@ -131,6 +161,7 @@
         </div>
     </div>
 </div>
+@endif
 
 @push('scripts')
 <script>

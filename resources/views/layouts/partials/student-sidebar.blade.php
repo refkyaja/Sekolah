@@ -8,7 +8,7 @@
                 <span class="material-symbols-outlined text-primary text-2xl">school</span>
             </div>
             <div class="flex flex-col sidebar-header-text whitespace-nowrap">
-                <h1 class="text-slate-900 dark:text-slate-100 text-base font-bold leading-tight">Harapan Bangsa 2</h1>
+                <h1 class="text-slate-900 dark:text-slate-100 text-base font-bold leading-tight">Harapan Bangsa 1</h1>
                 <p class="text-slate-500 dark:text-slate-400 text-xs font-medium">Taman Kanak-Kanak</p>
             </div>
         </div>
@@ -48,6 +48,14 @@
             <span class="material-symbols-outlined">menu_book</span>
             <span class="text-sm sidebar-text whitespace-nowrap">Materi KBM</span>
         </a>
+
+        @if($siswa->spmb_id)
+        <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors sidebar-nav-item {{ Route::is('siswa.ppdb.data') ? 'bg-primary/10 text-primary font-semibold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}" 
+           href="{{ route('siswa.ppdb.data') }}" title="Data PPDB">
+            <span class="material-symbols-outlined">description</span>
+            <span class="text-sm sidebar-text whitespace-nowrap">Data PPDB</span>
+        </a>
+        @endif
 
         <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors sidebar-nav-item {{ Route::is('siswa.ppdb.hasil-seleksi') ? 'bg-primary/10 text-primary font-semibold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}" 
            href="{{ route('siswa.ppdb.hasil-seleksi') }}" title="Hasil Seleksi PPDB">

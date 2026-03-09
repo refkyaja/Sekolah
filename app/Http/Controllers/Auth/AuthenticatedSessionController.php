@@ -16,6 +16,14 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
+        if (Auth::guard('siswa')->check()) {
+            return redirect()->route('siswa.dashboard');
+        }
+
+        if (Auth::guard('web')->check()) {
+            return redirect()->route('dashboard');
+        }
+
         return view('auth.login');
     }
 

@@ -144,6 +144,7 @@ class Spmb extends Model
         'is_lulus',
         'is_mengulang',
         'catatan_admin',
+        'foto_calon_siswa',
     ];
 
     protected $casts = [
@@ -222,7 +223,17 @@ class Spmb extends Model
         static::creating(function ($model) {
             if (empty($model->no_pendaftaran)) {
                 $tahun = date('Y');
-                $urutan = self::whereYear('created_at', $tahun)->count() + 1;
+                $latest = self::withTrashed()
+                    ->whereYear('created_at', $tahun)
+                    ->orderBy('id', 'desc')
+                    ->first();
+                
+                if ($latest && preg_match('/PPDB-\d{4}-(\d+)/', $latest->no_pendaftaran, $matches)) {
+                    $urutan = (int)$matches[1] + 1;
+                } else {
+                    $urutan = 1;
+                }
+                
                 $model->no_pendaftaran = "PPDB-{$tahun}-" . str_pad($urutan, 4, '0', STR_PAD_LEFT);
             }
         });

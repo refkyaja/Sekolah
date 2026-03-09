@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\BukuTamuController;
+use App\Http\Controllers\SpmbController;
 
 // Admin Controllers
 use App\Http\Controllers\Admin\DashboardController;
@@ -19,12 +20,21 @@ use App\Http\Controllers\Admin\SpmbSettingController;
 use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
 use App\Http\Controllers\Admin\GaleriController as AdminGaleriController;
 use App\Http\Controllers\Admin\BukuTamuController as AdminBukuTamuController;
-use App\Http\Controllers\Admin\SpmbDokumenController;
-use App\Http\Controllers\Admin\SpmbBuktiTransferController;
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\MateriKbmController;
 use App\Http\Controllers\Admin\JadwalPelajaranController as AdminJadwalPelajaranController;
 use App\Http\Controllers\Admin\ActivityLogController;
+use App\Http\Controllers\Admin\KegiatanController;
+use App\Http\Controllers\Admin\KalenderAkademikController;
+
+// ==================== TEST ROUTES ====================
+Route::get('/livewire-test', function () {
+    return view('livewire-test');
+})->name('livewire.test');
+
+Route::get('/test-livewire', function () {
+    return view('livewire.test-component');
+})->name('test.livewire');
 
 // ==================== ROUTES PUBLIK ====================
 
@@ -71,26 +81,26 @@ Route::prefix('layanan')->name('layanan.')->group(function () {
 });
 
 Route::prefix('spmb')->name('spmb.')->group(function () {
-    Route::get('/', fn() => redirect()->route('home'))->name('index');
-    Route::get('/pendaftaran', fn() => redirect()->route('home'))->name('pendaftaran');
-    Route::post('/pendaftaran', fn() => redirect()->route('home'))->name('store');
-    Route::get('/countdown', fn() => redirect()->route('home'))->name('countdown');
-    Route::get('/pengumuman', fn() => redirect()->route('home'))->name('pengumuman');
-    Route::post('/cek-pengumuman', fn() => redirect()->route('home'))->name('cekPengumuman');
-    Route::get('/hasil-pengumuman', fn() => redirect()->route('home'))->name('hasilPengumuman');
-    Route::get('/success/{no_pendaftaran}', fn() => redirect()->route('home'))->name('success');
-    Route::get('/informasi', fn() => redirect()->route('home'))->name('informasi');
-    Route::get('/jadwal', fn() => redirect()->route('home'))->name('jadwal');
-    Route::get('/syarat', fn() => redirect()->route('home'))->name('syarat');
+    Route::get('/', [\App\Http\Controllers\SpmbController::class, 'index'])->name('index');
+    Route::get('/pendaftaran', [\App\Http\Controllers\SpmbController::class, 'pendaftaran'])->name('pendaftaran');
+    Route::post('/pendaftaran', [\App\Http\Controllers\SpmbController::class, 'store'])->name('store');
+    Route::get('/countdown', [\App\Http\Controllers\SpmbController::class, 'countdown'])->name('countdown');
+    Route::get('/pengumuman', [\App\Http\Controllers\SpmbController::class, 'pengumuman'])->name('pengumuman');
+    Route::post('/cek-pengumuman', [\App\Http\Controllers\SpmbController::class, 'cekPengumuman'])->name('cekPengumuman');
+    Route::get('/hasil-pengumuman', [\App\Http\Controllers\SpmbController::class, 'hasilPengumuman'])->name('hasilPengumuman');
+    Route::get('/success/{no_pendaftaran}', [\App\Http\Controllers\SpmbController::class, 'success'])->name('success');
+    Route::get('/informasi', fn() => view('Home.spmb.informasi'))->name('informasi');
+    Route::get('/jadwal', fn() => view('Home.spmb.jadwal'))->name('jadwal');
+    Route::get('/syarat', fn() => view('Home.spmb.syarat'))->name('syarat');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'active'])
     ->name('dashboard');
 
 // ==================== ROUTES ADMIN (HANYA ADMIN) ====================
 
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'active', 'admin'])->group(function () {
     
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -330,6 +340,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
     // Widgets
     Route::get('/widgets/spmb-statistics', [DashboardController::class, 'getSpmbStatistics'])->name('widgets.spmb-statistics');
     Route::get('/widgets/bukutamu-statistics', [DashboardController::class, 'getBukuTamuStatistics'])->name('widgets.bukutamu-statistics');
+    Route::get('/widgets/recent-registrations', [DashboardController::class, 'getRecentRegistrations'])->name('widgets.recent-registrations');
+    Route::get('/widgets/spmb-statistics-year/{year?}', [DashboardController::class, 'getSpmbStatisticsByYear'])->name('widgets.spmb-statistics-year');
+    Route::get('/widgets/recent-konversi', [DashboardController::class, 'getRecentKonversi'])->name('widgets.recent-konversi');
+    
+    // Cache Management
+    Route::post('/dashboard/clear-cache', [DashboardController::class, 'clearDashboardCache'])->name('dashboard.clear-cache');
 
     Route::resource('accounts', App\Http\Controllers\Admin\AccountController::class);
     Route::patch('accounts/{account}/toggle-status', [App\Http\Controllers\Admin\AccountController::class, 'toggleStatus'])->name('accounts.toggle-status');
@@ -337,9 +353,63 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
     Route::post('accounts/bulk-action', [App\Http\Controllers\Admin\AccountController::class, 'bulkAction'])->name('accounts.bulk-action');
 }); // <--- PENUTUP GROUP ADMIN PINDAH KE SINI
 
+// ==================== ROUTES OPERATOR ====================
+
+Route::prefix('operator')->name('operator.')->middleware(['auth', 'verified', 'active', 'operator'])->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\Operator\DashboardController::class, 'index'])->name('dashboard');
+    
+    // SPMB Routes for Operator
+    Route::prefix('spmb')->name('spmb.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\SpmbController::class, 'index'])->name('index');
+        Route::get('/{spmb}', [App\Http\Controllers\Admin\SpmbController::class, 'show'])->name('show');
+    });
+    
+    // Siswa Routes for Operator (Read-only)
+    Route::prefix('siswa')->name('siswa.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\SiswaController::class, 'indexAktif'])->name('index');
+        Route::get('/{siswa}', [App\Http\Controllers\Admin\SiswaController::class, 'showAktif'])->name('show');
+    });
+    
+    // Materi KBM Routes for Operator (Read-only)
+    Route::prefix('materi-kbm')->name('materi-kbm.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\MateriKbmController::class, 'index'])->name('index');
+        Route::get('/{materiKbm}', [App\Http\Controllers\Admin\MateriKbmController::class, 'show'])->name('show');
+    });
+    
+    // Kalender Akademik Routes for Operator (Read-only)
+    Route::prefix('kalender-akademik')->name('kalender-akademik.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\KalenderAkademikController::class, 'index'])->name('index');
+        Route::get('/{kalenderAkademik}', [App\Http\Controllers\Admin\KalenderAkademikController::class, 'show'])->name('show');
+    });
+    
+    // Jadwal Pelajaran Routes for Operator (Read-only)
+    Route::prefix('jadwal-pelajaran')->name('jadwal-pelajaran.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\JadwalPelajaranController::class, 'index'])->name('index');
+        Route::get('/{jadwalPelajaran}', [App\Http\Controllers\Admin\JadwalPelajaranController::class, 'show'])->name('show');
+    });
+    
+    // Berita Routes for Operator (Read-only)
+    Route::prefix('berita')->name('berita.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\BeritaController::class, 'index'])->name('index');
+        Route::get('/{berita}', [App\Http\Controllers\Admin\BeritaController::class, 'show'])->name('show');
+    });
+    
+    // Tahun Ajaran Routes for Operator (Read-only)
+    Route::prefix('tahun-ajaran')->name('tahun-ajaran.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\TahunAjaranController::class, 'index'])->name('index');
+        Route::get('/{tahunAjaran}', [App\Http\Controllers\Admin\TahunAjaranController::class, 'show'])->name('show');
+    });
+    
+    // API Routes for AJAX
+    Route::prefix('api')->name('api.')->group(function () {
+        Route::get('/spmb-statistics', [App\Http\Controllers\Operator\DashboardController::class, 'getSpmbStatistics'])->name('spmb-statistics');
+        Route::get('/recent-registrations', [App\Http\Controllers\Operator\DashboardController::class, 'getRecentRegistrations'])->name('recent-registrations');
+    });
+});
+
 // ==================== ROUTES GURU ====================
 
-Route::prefix('guru')->name('guru.')->middleware(['auth', 'verified', 'guru'])->group(function () {
+Route::prefix('guru')->name('guru.')->middleware(['auth', 'verified', 'active', 'guru'])->group(function () {
     Route::get('/dashboard', fn() => view('guru.dashboard'))->name('dashboard');
     Route::get('/absensi', fn() => view('guru.absensi.index'))->name('absensi.index');
     Route::get('/profile', fn() => view('guru.profile'))->name('profile');
@@ -366,8 +436,10 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
         Route::get('/kalender/download-pdf', [\App\Http\Controllers\Siswa\KalenderAkademikController::class, 'downloadPdf'])->name('kalender.download-pdf');
         Route::get('/materi', [\App\Http\Controllers\Siswa\MateriKbmController::class, 'index'])->name('materi.index');
         Route::get('/materi/{materiKbm}/download', [\App\Http\Controllers\Siswa\MateriKbmController::class, 'download'])->name('materi.download');
+        Route::get('/ppdb/data', \App\Http\Controllers\Siswa\Ppdb\HasilSeleksiController::class)->name('ppdb.data');
         Route::get('/ppdb/hasil-seleksi', \App\Http\Controllers\Siswa\Ppdb\HasilSeleksiController::class)->name('ppdb.hasil-seleksi');
         Route::get('/ppdb/hasil-seleksi/{spmb}/print', [\App\Http\Controllers\Siswa\Ppdb\HasilSeleksiController::class, 'printBukti'])->name('ppdb.hasil-seleksi.print');
+        Route::post('/ppdb/upload-foto', [\App\Http\Controllers\Siswa\Ppdb\HasilSeleksiController::class, 'uploadFoto'])->name('ppdb.upload-foto');
     });
 });
 

@@ -15,6 +15,30 @@ class DashboardController extends Controller
         $siswa = auth('siswa')->user();
         $pengumuman = \App\Models\Berita::published()->latestPublished(3)->get();
         
+        // Cek status kelulusan dari SPMB
+        $spmb = \App\Models\Spmb::where('nik_anak', $siswa->nik)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        
+        $isLulus = false;
+        $showPengumumanLulus = false;
+        
+        if ($spmb) {
+            $isLulus = $spmb->status_pendaftaran === 'Lulus';
+            
+            // Cek apakah waktu pengumuman sudah selesai
+            $setting = \App\Models\SpmbSetting::where('tahun_ajaran', $spmb->tahunAjaran->tahun_ajaran ?? date('Y'))->first();
+            if ($setting && $setting->status_pengumuman === 'published') {
+                $now = now();
+                $pengumumanSelesai = $setting->pengumuman_selesai;
+                
+                // Tampilkan notifikasi lulus jika waktu pengumuman sudah selesai
+                if ($pengumumanSelesai && $now->gte($pengumumanSelesai)) {
+                    $showPengumumanLulus = true;
+                }
+            }
+        }
+        
         // Fetch latest materials for this student
         $kelompokFull = "Kelompok " . ($siswa->kelompok ?? 'A');
         
@@ -51,6 +75,6 @@ class DashboardController extends Controller
                 ->get();
         }
         
-        return view('siswa.dashboard', compact('siswa', 'pengumuman', 'materiTerbaru', 'todaySchedule'));
+        return view('siswa.dashboard', compact('siswa', 'pengumuman', 'materiTerbaru', 'todaySchedule', 'spmb', 'isLulus', 'showPengumumanLulus'));
     }
 }

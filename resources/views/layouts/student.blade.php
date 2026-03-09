@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title') - {{ config('app.name', 'TK Harapan Bangsa 2') }}</title>
+    <title>@yield('title') - {{ config('app.name', 'TK Harapan Bangsa 1') }}</title>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
@@ -111,6 +111,10 @@
                         <span class="material-symbols-outlined">menu</span>
                     </button>
                     <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100">@yield('header_title', 'Dashboard Siswa')</h2>
+                    <a href="{{ url('/') }}" class="flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-lg text-sm font-medium transition-colors">
+                        <span class="material-symbols-outlined text-lg">home</span>
+                        <span class="hidden sm:inline">Beranda</span>
+                    </a>
                 </div>
                 
                 <div class="flex items-center gap-4">

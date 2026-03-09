@@ -19,6 +19,10 @@ class AuthController extends Controller
      */
     public function login()
     {
+        if (Auth::guard('web')->check()) {
+            return redirect()->route('dashboard');
+        }
+
         // If already logged in, redirect to dashboard
         if (Auth::guard('siswa')->check()) {
             return redirect()->route('siswa.dashboard');
@@ -36,6 +40,10 @@ class AuthController extends Controller
      */
     public function register()
     {
+        if (Auth::guard('web')->check()) {
+            return redirect()->route('dashboard');
+        }
+
         // If already logged in, redirect to dashboard
         if (Auth::guard('siswa')->check()) {
             return redirect()->route('siswa.dashboard');
@@ -78,7 +86,7 @@ class AuthController extends Controller
         Auth::guard('siswa')->login($siswa);
         $request->session()->regenerate();
 
-        return redirect()->intended(route('siswa.dashboard'))->with('success', 'Pendaftaran berhasil! Selamat datang di TK Harapan Bangsa 2.');
+        return redirect()->intended(route('siswa.dashboard'))->with('success', 'Pendaftaran berhasil! Selamat datang di TK Harapan Bangsa 1.');
     }
 
     /**
@@ -87,15 +95,12 @@ class AuthController extends Controller
     public function authenticate(Request $request)
     {
         $request->validate([
-            'username' => ['required', 'string'],
+            'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
         ]);
 
-        // Determine if username is an email
-        $loginType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        
         $credentials = [
-            $loginType => $request->username,
+            'email' => $request->email,
             'password' => $request->password,
         ];
 
@@ -106,8 +111,8 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'username' => 'Informasi login yang diberikan tidak cocok dengan data kami.',
-        ])->onlyInput('username');
+            'email' => 'Informasi login yang diberikan tidak cocok dengan data kami.',
+        ])->onlyInput('email');
     }
 
     /**

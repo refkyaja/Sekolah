@@ -117,7 +117,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>TK Harapan Bangsa 2</h1>
+        <h1>TK Harapan Bangsa 1</h1>
         <p>Kalender Akademik Periode {{ $currentMonth->translatedFormat('F Y') }}</p>
     </div>
 
@@ -220,7 +220,7 @@
     </div>
 
     <div class="footer">
-        Dokumen ini diterbitkan secara otomatis oleh Sistem Informasi Akademik TK Harapan Bangsa 2.
+        Dokumen ini diterbitkan secara otomatis oleh Sistem Informasi Akademik TK Harapan Bangsa 1.
     </div>
 </body>
 </html>

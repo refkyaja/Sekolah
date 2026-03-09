@@ -215,7 +215,7 @@
     </div>
     <h3 class="text-xl font-bold text-slate-800 mb-2">Tidak Ada Siswa</h3>
     <p class="text-slate-400 text-sm max-w-sm mx-auto mb-8">Belum ada siswa yang terdaftar di Kelompok {{ $kelompok }} untuk saat ini.</p>
-    <a href="{{ route('admin.siswa-aktif.create') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+    <a href="{{ route('admin.siswa.siswa-aktif.create') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
         <span class="material-symbols-outlined text-lg">person_add</span>
         Tambah Siswa
     </a>

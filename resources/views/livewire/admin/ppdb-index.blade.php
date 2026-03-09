@@ -27,19 +27,19 @@
         </button>
         @endif
 
-        @if(count($selectedIds) > 0)
+        @if(!empty($selectedIds))
         <div class="w-full md:w-56" x-data="{ open: false }">
             <div class="relative">
-                <button type="button" @click="open = !open" class="w-full px-4 py-3 bg-primary/10 border-2 border-primary/20 rounded-xl focus:ring-2 focus:ring-primary/20 text-sm text-primary font-bold transition-all cursor-pointer outline-none flex items-center justify-between">
+                <button type="button" @click="open = !open" class="w-full px-4 py-3 bg-primary text-white rounded-xl font-bold text-sm flex items-center justify-between">
                     <span>Aksi Massal ({{ count($selectedIds) }})</span>
                     <span class="material-symbols-outlined text-base">expand_more</span>
                 </button>
                 <div x-show="open" @click.away="open = false" class="absolute z-10 w-full mt-2 bg-white border border-slate-100 rounded-xl shadow-xl overflow-hidden">
-                    <button type="button" @click="if(confirm('Ubah status Lulus untuk {{ count($selectedIds) }} data?')) { $wire.bulkLulus(); open = false; }" class="w-full px-4 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2">
+                    <button type="button" onclick="confirm('Ubah status Lulus untuk {{ count($selectedIds) }} data?') && @this.bulkLulus()" class="w-full px-4 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2">
                         <span class="material-symbols-outlined text-[20px] text-green-600">check_circle</span>
                         Lulus Terpilih
                     </button>
-                    <button type="button" @click="if(confirm('Hapus {{ count($selectedIds) }} data terpilih? Tindakan ini tidak dapat dibatalkan.')) { $wire.bulkDelete(); open = false; }" class="w-full px-4 py-3 text-left text-sm font-semibold text-rose-600 hover:bg-rose-50 transition-all flex items-center gap-2">
+                    <button type="button" onclick="confirm('Hapus {{ count($selectedIds) }} data terpilih? Tindakan ini tidak dapat dibatalkan.') && @this.bulkDelete()" class="w-full px-4 py-3 text-left text-sm font-semibold text-rose-600 hover:bg-rose-50 transition-all flex items-center gap-2">
                         <span class="material-symbols-outlined text-[20px]">delete</span>
                         Hapus Terpilih
                     </button>

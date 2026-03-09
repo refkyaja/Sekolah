@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }} - Login</title>
+    <title>{{ config('app.name', 'Laravel') }} - Login Admin</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -171,7 +171,7 @@
                         </div>
                     </div>
                     
-                    <h1 class="text-5xl font-bold mb-4">Dashboard Manajemen</h1>
+                    <h1 class="text-5xl font-bold mb-4">Login Admin</h1>
                     <p class="text-xl text-white/80 mb-8">Satu pintu untuk mengelola data, memantau kemajuan, dan mengambil keputusan berbasis informasi yang valid.</p>
                     
                     Features
@@ -212,7 +212,7 @@
                                 <img src="/images/logo.png" alt="Logo" class="w-20 h-20 object-contain">
                                 <!-- <img src="https://placehold.co/200x200/4f46e5/white?text=LOGO" alt="Logo" class="w-20 h-20"> -->
                             </div>
-                            <h2 class="text-2xl font-bold text-white">Login to Your Account</h2>
+                            <h2 class="text-2xl font-bold text-white">Login Admin</h2>
                         </div>
 
                         <!-- Session Status -->

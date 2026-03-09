@@ -74,7 +74,7 @@
             </select>
         </div>
 
-        @if(count($selectedIds) > 0)
+        @if(!empty($selectedIds))
         <div class="w-full sm:w-48 md:w-56" x-data="{ open: false }">
             <div class="relative">
                 <button type="button" @click="open = !open" class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-primary text-white rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm flex items-center justify-between transition-all">
@@ -82,18 +82,18 @@
                     <span class="material-symbols-outlined text-sm">expand_more</span>
                 </button>
                 <div x-show="open" @click.away="open = false" class="absolute z-10 w-full mt-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl overflow-hidden">
-                    <button type="button" @click="if(confirm('Hapus {{ count($selectedIds) }} siswa?')) { $wire.deleteSelected(); open = false; }" class="w-full px-4 py-2 text-left text-xs sm:text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2">
+                    <button type="button" onclick="confirm('Hapus {{ count($selectedIds) }} siswa?') && @this.deleteSelected()" class="w-full px-4 py-2 text-left text-xs sm:text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2">
                         <span class="material-symbols-outlined text-sm">delete</span> Hapus Terpilih
                     </button>
                     <hr class="border-slate-100 dark:border-slate-700">
-                    <button type="button" @click="if(confirm('Set status LULUS untuk {{ count($selectedIds) }} siswa?')) { $wire.updateStatusSelected('lulus'); open = false; }" class="w-full px-4 py-2 text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2">
+                    <button type="button" onclick="confirm('Set status LULUS untuk {{ count($selectedIds) }} siswa?') && @this.updateStatusSelected('lulus')" class="w-full px-4 py-2 text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2">
                         <span class="material-symbols-outlined text-sm">school</span> Set Lulus
                     </button>
-                    <button type="button" @click="if(confirm('Set status PINDAH untuk {{ count($selectedIds) }} siswa?')) { $wire.updateStatusSelected('pindah'); open = false; }" class="w-full px-4 py-2 text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2">
+                    <button type="button" onclick="confirm('Set status PINDAH untuk {{ count($selectedIds) }} siswa?') && @this.updateStatusSelected('pindah')" class="w-full px-4 py-2 text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2">
                         <span class="material-symbols-outlined text-sm">logout</span> Set Pindah
                     </button>
                     <hr class="border-slate-100 dark:border-slate-700">
-                    <button type="button" @click="if(confirm('Pindahkan {{ count($selectedIds) }} siswa ke Kelompok B?')) { $wire.updateKelompokSelected('B'); open = false; }" class="w-full px-4 py-2 text-left text-xs sm:text-sm text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 flex items-center gap-2">
+                    <button type="button" onclick="confirm('Pindahkan {{ count($selectedIds) }} siswa ke Kelompok B?') && @this.updateKelompokSelected('B')" class="w-full px-4 py-2 text-left text-xs sm:text-sm text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 flex items-center gap-2">
                         <span class="material-symbols-outlined text-sm">swap_horiz</span> Pindah Kelompok B
                     </button>
                 </div>

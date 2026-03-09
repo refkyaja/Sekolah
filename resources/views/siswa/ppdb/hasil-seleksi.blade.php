@@ -102,10 +102,17 @@
                             <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">{{ $adminCatatan }}</p>
                         </div>
                     </div>
-                    <button class="flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold text-sm transition-all shadow-lg shadow-amber-200" type="button">
-                        <span class="material-symbols-outlined text-lg">upload_file</span>
-                        Re-upload Dokumen
-                    </button>
+                    <div class="flex flex-col gap-3 w-full md:w-auto">
+                        <label class="flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold text-sm transition-all shadow-lg shadow-amber-200 cursor-pointer">
+                            <span class="material-symbols-outlined text-lg">upload_file</span>
+                            Pilih Foto
+                            <input type="file" id="fotoInput" class="hidden" accept="image/*" />
+                        </label>
+                        <button type="button" id="kirimBtn" class="hidden flex-shrink-0 items-center justify-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold text-sm transition-all shadow-lg">
+                            <span class="material-symbols-outlined text-lg">send</span>
+                            Kirim
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -113,8 +120,19 @@
 
     <div class="bg-white dark:bg-slate-900 rounded-[2rem] shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden">
         <div class="p-10 flex flex-col md:flex-row items-center gap-10">
-            <div class="w-24 h-24 bg-primary/5 rounded-3xl flex items-center justify-center flex-shrink-0">
-                <span class="material-symbols-outlined text-primary text-5xl">person</span>
+            <div class="relative">
+                <div class="w-24 h-24 bg-primary/5 rounded-3xl flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    @if($spmb?->foto_calon_siswa)
+                        <img src="{{ asset('storage/' . $spmb->foto_calon_siswa) }}" alt="Foto" class="w-full h-full object-cover" />
+                    @else
+                        <span class="material-symbols-outlined text-primary text-5xl">person</span>
+                    @endif
+                </div>
+                @if($adminCatatan)
+                <label for="fotoInput" class="absolute -bottom-2 -right-2 w-8 h-8 bg-amber-500 hover:bg-amber-600 rounded-full flex items-center justify-center cursor-pointer shadow-lg">
+                    <span class="material-symbols-outlined text-white text-lg">camera_alt</span>
+                </label>
+                @endif
             </div>
             <div class="flex-1 text-center md:text-left">
                 <div class="flex flex-col md:flex-row md:items-center gap-4">
@@ -222,3 +240,85 @@
     </div>
 @endif
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fotoInput = document.getElementById('fotoInput');
+    const kirimBtn = document.getElementById('kirimBtn');
+    const spmbId = {{ $spmb?->id ?? 'null' }};
+    let selectedFile = null;
+    
+    if (fotoInput && spmbId) {
+        fotoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            // Validate file
+            if (file.size > 2 * 1024 * 1024) {
+                alert('Ukuran file maksimal 2MB');
+                fotoInput.value = '';
+                return;
+            }
+            
+            selectedFile = file;
+            
+            // Show Kirim button
+            if (kirimBtn) {
+                kirimBtn.classList.remove('hidden');
+            }
+        });
+        
+        if (kirimBtn) {
+            kirimBtn.addEventListener('click', function() {
+                if (!selectedFile) {
+                    alert('Pilih foto terlebih dahulu');
+                    return;
+                }
+                
+                const formData = new FormData();
+                formData.append('foto', selectedFile);
+                formData.append('spmb_id', spmbId);
+                
+                // Show loading
+                const originalContent = kirimBtn.innerHTML;
+                kirimBtn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">progress_activity</span> Mengirim...';
+                kirimBtn.disabled = true;
+                
+                fetch('{{ route("siswa.ppdb.upload-foto") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update photo display
+                        const photoContainer = document.querySelector('.w-24.h-24.rounded-3xl');
+                        if (photoContainer) {
+                            photoContainer.innerHTML = '<img src="' + data.foto_url + '" alt="Foto" class="w-full h-full object-cover" />';
+                        }
+                        alert('Foto berhasil dikirim!');
+                        kirimBtn.classList.add('hidden');
+                        fotoInput.value = '';
+                        selectedFile = null;
+                    } else {
+                        alert(data.message || 'Gagal upload foto');
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('Terjadi kesalahan saat upload');
+                })
+                .finally(() => {
+                    kirimBtn.innerHTML = originalContent;
+                    kirimBtn.disabled = false;
+                });
+            });
+        }
+    }
+});
+</script>
+@endpush

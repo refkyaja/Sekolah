@@ -98,11 +98,12 @@
                 height: 100vh;
                 z-index: 40;
                 transform: translateX(-100%);
+                transition: transform 0.3s ease;
             }
-            .mobile-sidebar-open aside {
+            body.mobile-sidebar-open aside {
                 transform: translateX(0);
             }
-            .mobile-sidebar-open {
+            body.mobile-sidebar-open {
                 overflow: hidden;
             }
         }
@@ -110,9 +111,7 @@
     @livewireStyles
     @stack('styles')
 </head>
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen"
-      x-data="{ mobileSidebarOpen: false }"
-      :class="{ 'mobile-sidebar-open': mobileSidebarOpen }">
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
 
     <div id="loadingOverlay" class="fixed inset-0 bg-white dark:bg-slate-900 bg-opacity-90 flex items-center justify-center z-[60] hidden">
         <div class="text-center">
@@ -181,15 +180,9 @@
         </div>
     </div>
 
-    <div x-show="mobileSidebarOpen" 
-         @click="mobileSidebarOpen = false"
-         x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100"
-         x-transition:leave="transition ease-in duration-200"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0"
-         class="fixed inset-0 bg-black/50 z-30 lg:hidden" x-cloak></div>
+    <div id="mobileSidebarOverlay"
+         class="fixed inset-0 bg-black/50 z-30 lg:hidden hidden"
+         onclick="this.classList.add('hidden'); document.body.classList.remove('mobile-sidebar-open')"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -246,6 +239,18 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 document.dispatchEvent(new CustomEvent('close-all-menus'));
+                document.body.classList.remove('mobile-sidebar-open');
+                var overlay = document.getElementById('mobileSidebarOverlay');
+                if (overlay) overlay.classList.add('hidden');
+            }
+        });
+
+        // Mobile sidebar toggle
+        document.getElementById('mobileMenuButton')?.addEventListener('click', function() {
+            document.body.classList.toggle('mobile-sidebar-open');
+            const overlay = document.getElementById('mobileSidebarOverlay');
+            if (overlay) {
+                overlay.classList.toggle('hidden', !document.body.classList.contains('mobile-sidebar-open'));
             }
         });
     </script>

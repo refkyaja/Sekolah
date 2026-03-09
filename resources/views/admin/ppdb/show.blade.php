@@ -82,10 +82,28 @@ switch($statusText) {
 }
 @endphp
 
+@if($spmb->catatan_admin)
+<div class="bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-8">
+    <div class="flex items-start gap-4">
+        <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-amber-600">info</span>
+        </div>
+        <div class="flex-1">
+            <h4 class="font-bold text-slate-800 mb-1">Catatan untuk Siswa</h4>
+            <p class="text-slate-600 text-sm">{{ $spmb->catatan_admin }}</p>
+        </div>
+    </div>
+</div>
+@endif
+
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
     <div class="flex items-center gap-4">
-        <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center">
-            <span class="material-symbols-outlined text-primary text-3xl">account_circle</span>
+        <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center overflow-hidden">
+            @if($spmb->foto_calon_siswa)
+                <img src="{{ asset('storage/' . $spmb->foto_calon_siswa) }}" alt="Foto" class="w-full h-full object-cover">
+            @else
+                <span class="material-symbols-outlined text-primary text-3xl">account_circle</span>
+            @endif
         </div>
         <div>
             <div class="flex items-center gap-3">
@@ -405,7 +423,7 @@ switch($statusText) {
             </button>
         </div>
         
-        <form method="POST" action="{{ route('admin.ppdb.updateStatus', $spmb) }}">
+        <form method="POST" action="{{ route('admin.ppdb.updateStatus', $spmb) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             
@@ -422,8 +440,25 @@ switch($statusText) {
             </div>
             
             <div class="mb-6">
-                <label class="block text-sm font-medium text-slate-700 mb-2">Catatan</label>
-                <textarea name="catatan" rows="4" class="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm" placeholder="Tambahkan catatan..."></textarea>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Catatan untuk Siswa</label>
+                <textarea name="catatan_admin" rows="3" class="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm" placeholder="Catatan ini akan dilihat oleh siswa...">{{ $spmb->catatan_admin ?? '' }}</textarea>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-slate-700 mb-2">Upload Foto Siswa</label>
+                <div class="flex items-center gap-4">
+                    @if($spmb->foto_calon_siswa)
+                    <div class="w-16 h-16 rounded-xl overflow-hidden bg-slate-100">
+                        <img src="{{ asset('storage/' . $spmb->foto_calon_siswa) }}" alt="Foto" class="w-full h-full object-cover">
+                    </div>
+                    @endif
+                    <input type="file" name="foto" accept="image/*" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"/>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-slate-700 mb-2">Catatan (Riwayat)</label>
+                <textarea name="catatan" rows="3" class="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm" placeholder="Tambahkan catatan untuk riwayat..."></textarea>
             </div>
             
             <div class="flex gap-3">

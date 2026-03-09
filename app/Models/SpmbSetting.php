@@ -35,6 +35,7 @@ class SpmbSetting extends Model
     ];
 
     protected $casts = [
+        'tahun_ajaran_id' => 'integer',
         'pendaftaran_mulai' => 'datetime',
         'pendaftaran_selesai' => 'datetime',
         'pengumuman_mulai' => 'datetime',
@@ -96,6 +97,99 @@ class SpmbSetting extends Model
 
         $now = now();
         return $now->diffInSeconds($this->pengumuman_mulai, false);
+    }
+
+    /**
+     * CEK APAKAH PENDAFTARAN DIBUKA
+     */
+    public function isPendaftaranDibuka()
+    {
+        if (!$this->pendaftaran_mulai || !$this->pendaftaran_selesai) {
+            return false;
+        }
+
+        $now = now();
+        return $now->between($this->pendaftaran_mulai, $this->pendaftaran_selesai);
+    }
+
+    /**
+     * CEK APAKAH PENDAFTARAN AKAN DIBUKA
+     */
+    public function isPendaftaranAkanDibuka()
+    {
+        if (!$this->pendaftaran_mulai) {
+            return false;
+        }
+
+        $now = now();
+        return $now->lessThan($this->pendaftaran_mulai);
+    }
+
+    /**
+     * CEK APAKAH PENDAFTARAN SUDAH DITUTUP
+     */
+    public function isPendaftaranDitutup()
+    {
+        if (!$this->pendaftaran_selesai) {
+            return false;
+        }
+
+        $now = now();
+        return $now->greaterThan($this->pendaftaran_selesai);
+    }
+
+    /**
+     * GET STATUS PENDAFTARAN UNTUK HOMEPAGE
+     */
+    public function getStatusPendaftaranHomepage()
+    {
+        $now = now();
+
+        // 1. Belum ada setting pendaftaran
+        if (!$this->pendaftaran_mulai || !$this->pendaftaran_selesai) {
+            return [
+                'is_dibuka' => false,
+                'pesan_status' => 'Pendaftaran belum tersedia',
+                'tanggal_mulai' => null,
+                'tanggal_selesai' => null,
+                'status_class' => 'gray',
+                'icon' => 'schedule'
+            ];
+        }
+
+        // 2. Pendaftaran akan dibuka
+        if ($now->lessThan($this->pendaftaran_mulai)) {
+            return [
+                'is_dibuka' => false,
+                'pesan_status' => 'Pendaftaran Akan Dibuka',
+                'tanggal_mulai' => $this->pendaftaran_mulai,
+                'tanggal_selesai' => $this->pendaftaran_selesai,
+                'status_class' => 'blue',
+                'icon' => 'schedule'
+            ];
+        }
+
+        // 3. Pendaftaran dibuka
+        if ($now->between($this->pendaftaran_mulai, $this->pendaftaran_selesai)) {
+            return [
+                'is_dibuka' => true,
+                'pesan_status' => 'Pendaftaran Dibuka',
+                'tanggal_mulai' => $this->pendaftaran_mulai,
+                'tanggal_selesai' => $this->pendaftaran_selesai,
+                'status_class' => 'green',
+                'icon' => 'event_available'
+            ];
+        }
+
+        // 4. Pendaftaran ditutup
+        return [
+            'is_dibuka' => false,
+            'pesan_status' => 'Pendaftaran Ditutup',
+            'tanggal_mulai' => $this->pendaftaran_mulai,
+            'tanggal_selesai' => $this->pendaftaran_selesai,
+            'status_class' => 'red',
+            'icon' => 'event_busy'
+        ];
     }
 
     /**

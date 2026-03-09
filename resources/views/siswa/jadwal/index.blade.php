@@ -15,7 +15,7 @@
             </div>
             <div class="flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-sm">location_on</span>
-                <p class="text-sm">Gedung Utama, TK Harapan Bangsa 2</p>
+                <p class="text-sm">Gedung Utama, TK Harapan Bangsa 1</p>
             </div>
         </div>
     </div>

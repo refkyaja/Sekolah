@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('spmb_dokumen', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('spmb_id');
-            $table->enum('jenis_dokumen', ['akte', 'kk', 'ktp', 'bukti_transfer']);
+            $table->string('jenis_dokumen', 50);
             $table->string('nama_file');
             $table->string('path_file');
             $table->string('mime_type');

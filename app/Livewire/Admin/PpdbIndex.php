@@ -94,6 +94,30 @@ class PpdbIndex extends Component
         $this->resetPage();
     }
 
+    public function confirmBulkLulus()
+    {
+        $this->dispatch('show-confirm', [
+            'title' => 'Konfirmasi',
+            'text' => 'Ubah status Lulus untuk ' . count($this->selectedIds) . ' data?',
+            'icon' => 'question',
+            'confirmButtonText' => 'Ya, Lulus',
+            'cancelButtonText' => 'Batal',
+            'method' => 'bulkLulus'
+        ]);
+    }
+
+    public function confirmBulkDelete()
+    {
+        $this->dispatch('show-confirm', [
+            'title' => 'Konfirmasi Hapus',
+            'text' => 'Hapus ' . count($this->selectedIds) . ' data? Tindakan ini tidak dapat dibatalkan.',
+            'icon' => 'warning',
+            'confirmButtonText' => 'Ya, Hapus',
+            'cancelButtonText' => 'Batal',
+            'method' => 'bulkDelete'
+        ]);
+    }
+
     public function getSpmbQuery()
     {
         $query = Spmb::query()->latest();

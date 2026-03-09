@@ -1,7 +1,5 @@
 @extends('layouts.admin')
 
-@section('title', 'Riwayat PPDB')
-
 @push('styles')
 <style>
     .sidebar-scroll::-webkit-scrollbar { width: 4px; }

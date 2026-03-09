@@ -11,7 +11,7 @@
             <span class="material-symbols-outlined text-white">menu</span>
         </button>
         <button class="p-1.5 hover:bg-white/10 rounded-lg transition-colors lg:hidden" 
-                @click="mobileSidebarOpen = false">
+                onclick="document.body.classList.remove('mobile-sidebar-open'); document.getElementById('mobileSidebarOverlay')?.classList.add('hidden')">
             <span class="material-symbols-outlined text-white">close</span>
         </button>
     </div>

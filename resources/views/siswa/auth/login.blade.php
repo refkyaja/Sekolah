@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Login Siswa - TK Harapan Bangsa 2</title>
+    <title>Login Orang Tua - TK Harapan Bangsa 1</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
@@ -36,7 +36,7 @@
             <div class="w-full aspect-square rounded-xl bg-white shadow-xl mb-10 overflow-hidden" data-alt="Friendly illustration of happy children playing in a school garden">
                 <img alt="Happy Children" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACVV_hDmgPEnNf0KAKZAqIfF1kMOJhtIjn424Ma-D-SZqQMeXvA5RFYb5qvNacY4T9I3RFe50hJG8l6cCx55RLfYKcMl4cIHsqaINdk2vNGGhdzERQ3ctA6gtnVg7vZgLhSwN_uIDDADx5E7r0rFEPHQ4KHpsb77tpQ95hImThEqxTg6EsTo39Jcf7GLGCuG8W2_2OYuB5AFKKLdT_hQZyU1LXkAs8ICn7tC_5AHVw18zM8QSQv9i_Kkzntrj6Cyf461sh8Ag70Zk"/>
             </div>
-            <h1 class="text-4xl font-black text-slate-900 mb-4">Welcome to TK Harapan Bangsa 2</h1>
+            <h1 class="text-4xl font-black text-slate-900 mb-4">Welcome to TK Harapan Bangsa 1</h1>
             <p class="text-lg text-slate-600 font-medium leading-relaxed">Join our community of happy learners and bright futures. We're excited to see you today!</p>
         </div>
     </div>
@@ -49,11 +49,11 @@
                 <div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
                     <span class="material-symbols-outlined">school</span>
                 </div>
-                <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">TK Harapan Bangsa 2</h2>
+                <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">TK Harapan Bangsa 1</h2>
             </div>
             
             <div class="mb-8">
-                <h3 class="text-3xl font-black text-slate-900 dark:text-white leading-tight">Welcome Back!</h3>
+                <h3 class="text-3xl font-black text-slate-900 dark:text-white leading-tight">Login Orang Tua</h3>
                 <p class="mt-2 text-base text-slate-500 dark:text-slate-400">Please login to your account to continue</p>
             </div>
             
@@ -90,12 +90,12 @@
                     </div>
                 @endif
 
-                <!-- Email/Username Form -->
+                <!-- Email Login Form -->
                 <form action="{{ route('siswa.authenticate') }}" class="space-y-5" method="POST">
                     @csrf
                     <div>
-                        <label class="block text-sm font-semibold leading-6 text-slate-900 dark:text-slate-100 mb-2" for="username">NISN/Username</label>
-                        <input autocomplete="username" class="block w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-3 text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" id="username" name="username" placeholder="Masukkan NISN atau Username" required type="text" value="{{ old('username') }}"/>
+                        <label class="block text-sm font-semibold leading-6 text-slate-900 dark:text-slate-100 mb-2" for="email">Email</label>
+                        <input autocomplete="email" class="block w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-3 text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-all" id="email" name="email" placeholder="Masukkan email" required type="email" value="{{ old('email') }}"/>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold leading-6 text-slate-900 dark:text-slate-100 mb-2" for="password">Password</label>
@@ -131,7 +131,7 @@
         
         <!-- Footer Small -->
         <div class="mt-auto pt-10 text-center">
-            <p class="text-xs text-slate-400">&copy; {{ date('Y') }} TK Harapan Bangsa 2. All rights reserved.</p>
+            <p class="text-xs text-slate-400">&copy; {{ date('Y') }} TK Harapan Bangsa 1. All rights reserved.</p>
         </div>
     </div>
 </div>

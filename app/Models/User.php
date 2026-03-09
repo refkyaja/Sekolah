@@ -43,6 +43,12 @@ class User extends Authenticatable
 
     // ==================== RELASI ====================
     
+    // Relasi ke activity logs
+    public function activities()
+    {
+        return $this->morphMany(Activity::class, 'causer');
+    }
+    
     // Relasi ke data guru
     public function guru()
     {

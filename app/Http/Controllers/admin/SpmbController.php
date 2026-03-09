@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Spmb;
 use App\Models\Siswa;
+use App\Models\SpmbArsip;
 use App\Models\TahunAjaran;
 use App\Models\SpmbDokumen;
 use App\Models\SpmbBuktiTransfer;
@@ -628,6 +629,8 @@ class SpmbController extends Controller
         $request->validate([
             'status' => 'required|in:Menunggu Verifikasi,Revisi Dokumen,Dokumen Verified,Lulus,Tidak Lulus',
             'catatan' => 'nullable|string',
+            'catatan_admin' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         try {
@@ -637,6 +640,19 @@ class SpmbController extends Controller
             $newStatus = $request->status;
 
             $spmb->setStatus($newStatus, auth()->id(), $request->catatan);
+
+            if ($request->has('catatan_admin')) {
+                $spmb->catatan_admin = $request->catatan_admin;
+            }
+
+            if ($request->hasFile('foto')) {
+                $file = $request->file('foto');
+                $filename = 'foto_' . $spmb->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+                $path = $file->storeAs('spmb/foto', $filename, 'public');
+                $spmb->foto_calon_siswa = $path;
+            }
+
+            $spmb->save();
 
             if ($newStatus === 'Lulus' && $oldStatus !== 'Lulus' && !$spmb->siswa()->exists()) {
                 try {
@@ -956,6 +972,9 @@ class SpmbController extends Controller
             
             $tahunAjaran = $request->get('tahun_ajaran', $tahunAjaranAktif ? $tahunAjaranAktif->tahun_ajaran : date('Y') . '/' . (date('Y') + 1));
             
+            $setting = SpmbSetting::where('tahun_ajaran', $tahunAjaran)->first();
+            $isPengumumanPublished = $setting && $setting->is_published;
+            
             $query = Spmb::with(['tahunAjaran'])
                 ->where('status_pendaftaran', 'Lulus');
             
@@ -983,6 +1002,9 @@ class SpmbController extends Controller
             
             $tahunAjaranList = TahunAjaran::orderBy('tahun_ajaran', 'desc')->get();
             
+            $setting = SpmbSetting::where('tahun_ajaran', $tahunAjaran)->first();
+            $isPengumumanPublished = $setting && $setting->is_published;
+            
             return view('admin.ppdb.pengumuman', compact(
                 'siswaLulus',
                 'totalLulus',
@@ -990,7 +1012,9 @@ class SpmbController extends Controller
                 'persentase',
                 'tahunAjaranList',
                 'tahunAjaranAktif',
-                'search'
+                'tahunAjaran',
+                'search',
+                'isPengumumanPublished'
             ));
             
         } catch (\Exception $e) {
@@ -1012,14 +1036,38 @@ class SpmbController extends Controller
                 return back()->with('error', 'Tidak ada tahun ajaran aktif!');
             }
             
+            $konversiSiswa = $request->has('konversi_siswa') && $request->konversi_siswa == 1;
+            
             $semuaSiswa = Spmb::where('tahun_ajaran_id', $tahunAjaranId)->get();
             
             $jumlahDikonversi = 0;
             $jumlahDiarsipkan = 0;
             
             foreach ($semuaSiswa as $spmb) {
-                if ($spmb->status_pendaftaran === 'Lulus') {
-                    if (!$spmb->siswa && $request->has('konversi_siswa') && $request->konversi_siswa == 1) {
+                $oldStatus = $spmb->status_pendaftaran;
+                
+                // Arsipkan ke tabel riwayat terlebih dahulu
+                SpmbArsip::create([
+                    'spmb_asli_id' => $spmb->id,
+                    'no_pendaftaran' => $spmb->no_pendaftaran,
+                    'tahun_ajaran_id' => $spmb->tahun_ajaran_id,
+                    'nama_lengkap_anak' => $spmb->nama_lengkap_anak,
+                    'nik_anak' => $spmb->nik_anak,
+                    'jenis_kelamin' => $spmb->jenis_kelamin,
+                    'tanggal_lahir_anak' => $spmb->tanggal_lahir_anak,
+                    'status_pendaftaran' => $oldStatus,
+                    'is_aktif' => false,
+                    'data_lengkap' => $spmb->toArray(),
+                ]);
+                
+                $jumlahDiarsipkan++;
+                
+                if ($oldStatus === 'Lulus') {
+                    // Update status dengan riwayat
+                    $spmb->setStatus('Lulus', auth()->id(), 'Pengumuman kelulusan dipublish');
+                    
+                    // Konversi ke siswa jika checkbox dicentang
+                    if ($konversiSiswa && !$spmb->siswa) {
                         $existingSiswa = Siswa::where('nik', $spmb->nik_anak)->first();
                         if (!$existingSiswa) {
                             $tahunAjaran = $tahunAjaranAktif ? $tahunAjaranAktif->tahun_ajaran : date('Y');
@@ -1041,6 +1089,7 @@ class SpmbController extends Controller
                                 'tahun_ajaran' => $tahunAjaran,
                                 'tahun_ajaran_id' => $tahunAjaranId,
                                 'status_siswa' => 'Aktif',
+                                'spmb_id' => $spmb->id,
                             ]);
                             
                             $spmb->update(['siswa_id' => $siswaBaru->id]);
@@ -1048,10 +1097,12 @@ class SpmbController extends Controller
                         }
                     }
                 } else {
-                    // Hanya siswa yang TIDAK Lulus yang diupdate statusnya
-                    $spmb->update(['status_pendaftaran' => 'Tidak Lulus']);
-                    $jumlahDiarsipkan++;
+                    // Update status Tidak Lulus dengan riwayat
+                    $spmb->setStatus('Tidak Lulus', auth()->id(), 'Pengumuman kelulusan dipublish - Tidak Lulus');
                 }
+                
+                // Hapus data SPMB asli setelah diarsipkan
+                $spmb->delete();
             }
             
             $setting = SpmbSetting::where('tahun_ajaran', $tahunAjaranAktif->tahun_ajaran)->first();
@@ -1064,10 +1115,14 @@ class SpmbController extends Controller
             }
             
             $message = 'Pengumuman berhasil dipublish!';
-            if ($jumlahDikonversi > 0) {
-                $message .= " {$jumlahDikonversi} siswa telah ditambahkan ke Data Siswa.";
+            if ($konversiSiswa) {
+                if ($jumlahDikonversi > 0) {
+                    $message .= " {$jumlahDikonversi} siswa telah ditambahkan ke Data Siswa.";
+                } else {
+                    $message .= " Semua siswa lulus sudah ada di Data Siswa.";
+                }
             }
-            $message .= " {$jumlahDiarsipkan} data pendaftaran telah diarsipkan ke Riwayat PPDB.";
+            $message .= " {$jumlahDiarsipkan} data pendaftaran telah dicatat di Riwayat.";
             
             return back()->with('success', $message);
             

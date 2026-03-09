@@ -36,7 +36,7 @@
                     <span class="material-symbols-outlined text-primary text-4xl">school</span>
                 </div>
                 <div class="text-left">
-                    <h1 class="text-xl font-bold text-slate-800">Harapan Bangsa 2</h1>
+                    <h1 class="text-xl font-bold text-slate-800">Harapan Bangsa 1</h1>
                     <p class="text-xs text-slate-400 font-medium">Taman Kanak-Kanak</p>
                 </div>
             </div>
