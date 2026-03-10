@@ -1,4 +1,4 @@
-@extends('layouts.nav-spmb')
+@extends('layouts.student')
 
 @section('title', 'PPDB - Data Orang Tua')
 
@@ -33,7 +33,7 @@
 
     {{-- Form Card --}}
     <div class="bg-white dark:bg-dark-card rounded-xl shadow-sm border border-white/5 p-6 md:p-8 flex flex-col gap-10">
-        <form action="{{ route('pendaftaran.step2.store') }}" method="POST">
+        <form action="{{ route('siswa.pendaftaran.step2.store') }}" method="POST">
             @csrf
 
             {{-- Section: Ayah --}}
@@ -152,7 +152,7 @@
 
             {{-- Navigation Buttons --}}
             <div class="flex flex-col-reverse md:flex-row justify-between gap-4 pt-4">
-                <a href="{{ route('pendaftaran.step1') }}" class="flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
+                <a href="{{ route('siswa.pendaftaran.step1') }}" class="flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
                     <span class="material-symbols-outlined">arrow_back</span>
                     Sebelumnya
                 </a>

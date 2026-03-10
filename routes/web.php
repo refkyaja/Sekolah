@@ -87,19 +87,6 @@ Route::prefix('spmb')->name('spmb.')->group(function () {
     Route::post('/pendaftaran', [SpmbController::class, 'store'])->name('store');
 });
 
-// ==================== MULTI-STEP PPDB ====================
-use App\Http\Controllers\PendaftaranController;
-
-Route::prefix('daftar')->name('pendaftaran.')->group(function () {
-    Route::get('/step/1', [PendaftaranController::class, 'step1'])->name('step1');
-    Route::post('/step/1', [PendaftaranController::class, 'step1Store'])->name('step1.store');
-    Route::get('/step/2', [PendaftaranController::class, 'step2'])->name('step2');
-    Route::post('/step/2', [PendaftaranController::class, 'step2Store'])->name('step2.store');
-    Route::get('/step/3', [PendaftaranController::class, 'step3'])->name('step3');
-    Route::post('/step/3', [PendaftaranController::class, 'step3Store'])->name('step3.store');
-    Route::get('/step/4', [PendaftaranController::class, 'step4'])->name('step4');
-    Route::post('/kirim', [PendaftaranController::class, 'submit'])->name('submit');
-});
 
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -356,6 +343,18 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
         Route::get('/kalender/download-pdf', [\App\Http\Controllers\Siswa\KalenderAkademikController::class, 'downloadPdf'])->name('kalender.download-pdf');
         Route::get('/materi', [\App\Http\Controllers\Siswa\MateriKbmController::class, 'index'])->name('materi.index');
         Route::get('/materi/{materiKbm}/download', [\App\Http\Controllers\Siswa\MateriKbmController::class, 'download'])->name('materi.download');
+
+        // ==================== MULTI-STEP PPDB ====================
+        Route::prefix('pendaftaran')->name('pendaftaran.')->group(function () {
+            Route::get('/step/1', [\App\Http\Controllers\PendaftaranController::class, 'step1'])->name('step1');
+            Route::post('/step/1', [\App\Http\Controllers\PendaftaranController::class, 'step1Store'])->name('step1.store');
+            Route::get('/step/2', [\App\Http\Controllers\PendaftaranController::class, 'step2'])->name('step2');
+            Route::post('/step/2', [\App\Http\Controllers\PendaftaranController::class, 'step2Store'])->name('step2.store');
+            Route::get('/step/3', [\App\Http\Controllers\PendaftaranController::class, 'step3'])->name('step3');
+            Route::post('/step/3', [\App\Http\Controllers\PendaftaranController::class, 'step3Store'])->name('step3.store');
+            Route::get('/step/4', [\App\Http\Controllers\PendaftaranController::class, 'step4'])->name('step4');
+            Route::post('/kirim', [\App\Http\Controllers\PendaftaranController::class, 'submit'])->name('submit');
+        });
     });
 });
 

@@ -116,41 +116,6 @@
 
     {{-- Right Column: Calendar + Profile --}}
     <div class="col-span-12 lg:col-span-4 space-y-6 sm:space-y-8">
-        {{-- Calendar --}}
-        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-5 sm:p-6 border border-slate-100 dark:border-slate-700">
-            <div class="flex items-center justify-between mb-5 sm:mb-6">
-                <h2 class="text-sm font-bold text-slate-800 dark:text-slate-100">{{ now()->translatedFormat('F Y') }}</h2>
-                <div class="flex gap-2">
-                    <button type="button" class="w-8 h-8 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center justify-center text-slate-400" aria-label="Bulan sebelumnya">
-                        <span class="material-symbols-outlined text-lg">chevron_left</span>
-                    </button>
-                    <button type="button" class="w-8 h-8 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center justify-center text-slate-400" aria-label="Bulan berikutnya">
-                        <span class="material-symbols-outlined text-lg">chevron_right</span>
-                    </button>
-                </div>
-            </div>
-            <div class="grid grid-cols-7 gap-1 text-center mb-4">
-                @foreach(['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'] as $day)
-                <div class="text-[10px] font-black text-slate-400 uppercase">{{ $day }}</div>
-                @endforeach
-            </div>
-            <div class="grid grid-cols-7 gap-1">
-                @php
-                    $calStart = \Carbon\Carbon::now()->startOfMonth()->startOfWeek(\Carbon\Carbon::SUNDAY);
-                    $today = \Carbon\Carbon::now();
-                @endphp
-                @for($i = 0; $i < 42; $i++)
-                @php
-                    $cell = $calStart->copy()->addDays($i);
-                    $isCurrentMonth = $cell->month === $today->month;
-                    $isToday = $cell->isSameDay($today);
-                @endphp
-                <div class="aspect-square flex items-center justify-center text-xs {{ $isCurrentMonth ? 'text-slate-700 dark:text-slate-300' : 'text-slate-300 dark:text-slate-600' }} {{ $isToday ? 'bg-primary text-white rounded-xl shadow-lg shadow-primary/30 font-bold' : '' }}">
-                    {{ $cell->day }}
-                </div>
-                @endfor
-            </div>
-        </div>
 
         {{-- Profile Card --}}
         <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-5 sm:p-6 border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center">
