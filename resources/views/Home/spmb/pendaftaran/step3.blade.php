@@ -1,4 +1,4 @@
-@extends('layouts.nav-spmb')
+@extends('layouts.student')
 
 @section('title', 'PPDB - Upload Berkas')
 
@@ -32,7 +32,7 @@
     @endif
 
     {{-- Upload Form --}}
-    <form action="{{ route('pendaftaran.step3.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+    <form action="{{ route('siswa.pendaftaran.step3.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
         @csrf
 
         {{-- Upload Grid --}}
@@ -153,7 +153,7 @@
 
         {{-- Navigation --}}
         <div class="flex items-center justify-between">
-            <a href="{{ route('pendaftaran.step2') }}" class="flex items-center gap-2 px-6 py-3 rounded-full font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+            <a href="{{ route('siswa.pendaftaran.step2') }}" class="flex items-center gap-2 px-6 py-3 rounded-full font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                 <span class="material-symbols-outlined">arrow_back</span>
                 Kembali
             </a>

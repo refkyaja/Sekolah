@@ -21,22 +21,9 @@
             <span class="material-symbols-outlined">home</span>
             <span class="text-sm sidebar-text">Beranda</span>
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 rounded-xl {{ Route::is('siswa.jadwal.index') ? 'bg-primary/10 text-primary font-semibold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' }} transition-colors sidebar-nav-item" href="{{ route('siswa.jadwal.index') }}">
-            <span class="material-symbols-outlined">calendar_month</span>
-            <span class="text-sm sidebar-text">Jadwal Pelajaran</span>
-        </a>
-        <a href="{{ route('siswa.kalender.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ Route::is('siswa.kalender.*') ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800' }}">
-            <span class="material-symbols-outlined">calendar_month</span>
-            <span class="font-bold text-sm">Tanggal Akademik</span>
-        </a>
-
-        <a href="{{ route('siswa.materi.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ Route::is('siswa.materi.*') ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800' }}">
-            <span class="material-symbols-outlined">menu_book</span>
-            <span class="font-bold text-sm">Materi KBM</span>
-        </a>
-        <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors sidebar-nav-item" href="#">
-            <span class="material-symbols-outlined">person_add</span>
-            <span class="text-sm font-medium sidebar-text">Hasil Seleksi PPDB</span>
+        <a href="{{ route('siswa.pendaftaran.step1') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ Route::is('siswa.pendaftaran.*') ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' }} sidebar-nav-item">
+            <span class="material-symbols-outlined">app_registration</span>
+            <span class="text-sm font-medium sidebar-text">Pendaftaran PPDB</span>
         </a>
     </nav>
     <div class="p-4 border-t border-slate-100 dark:border-slate-800">

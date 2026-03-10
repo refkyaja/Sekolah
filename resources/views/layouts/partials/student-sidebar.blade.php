@@ -29,30 +29,10 @@
             <span class="text-[10px] uppercase tracking-[0.2em] sidebar-text whitespace-nowrap">Dashboard</span>
         </a>
         
-        <a class="flex items-center gap-3 px-6 py-3.5 rounded-xl transition-all sidebar-nav-item {{ Route::is('siswa.jadwal.index') ? 'bg-brand-soft text-brand-primary font-bold border border-brand-primary/10 shadow-sm shadow-brand-primary/5' : 'text-stone-400 dark:text-stone-500 hover:bg-stone-50 dark:hover:bg-stone-800 font-bold' }}" 
-           href="{{ route('siswa.jadwal.index') }}" title="Jadwal Pelajaran">
-            <span class="material-symbols-outlined text-xl">calendar_month</span>
-            <span class="text-[10px] uppercase tracking-[0.2em] sidebar-text whitespace-nowrap">Jadwal</span>
-        </a>
-
-        <a href="{{ route('siswa.kalender.index') }}" 
-           class="flex items-center gap-3 px-6 py-3.5 rounded-xl transition-all sidebar-nav-item {{ Route::is('siswa.kalender.*') ? 'bg-brand-soft text-brand-primary font-bold border border-brand-primary/10 shadow-sm shadow-brand-primary/5' : 'text-stone-400 dark:text-stone-500 hover:bg-stone-50 dark:hover:bg-stone-800 font-bold' }}"
-           title="Tanggal Akademik">
-            <span class="material-symbols-outlined text-xl">calendar_today</span>
-            <span class="text-[10px] uppercase tracking-[0.2em] sidebar-text whitespace-nowrap">Akademik</span>
-        </a>
-
-        <a href="{{ route('siswa.materi.index') }}" 
-           class="flex items-center gap-3 px-6 py-3.5 rounded-xl transition-all sidebar-nav-item {{ Route::is('siswa.materi.*') ? 'bg-brand-soft text-brand-primary font-bold border border-brand-primary/10 shadow-sm shadow-brand-primary/5' : 'text-stone-400 dark:text-stone-500 hover:bg-stone-50 dark:hover:bg-stone-800 font-bold' }}"
-           title="Materi KBM">
-            <span class="material-symbols-outlined text-xl">menu_book</span>
-            <span class="text-[10px] uppercase tracking-[0.2em] sidebar-text whitespace-nowrap">Materi</span>
-        </a>
-
-        <a class="flex items-center gap-3 px-6 py-3.5 rounded-xl transition-all sidebar-nav-item text-stone-400 dark:text-stone-500 hover:bg-stone-50 dark:hover:bg-stone-800 font-bold" 
-           href="#" title="Hasil Seleksi PPDB">
-            <span class="material-symbols-outlined text-xl">person_add</span>
-            <span class="text-[10px] uppercase tracking-[0.2em] sidebar-text whitespace-nowrap">Seleksi</span>
+        <a class="flex items-center gap-3 px-6 py-3.5 rounded-xl transition-all sidebar-nav-item {{ Route::is('siswa.pendaftaran.*') ? 'bg-brand-soft text-brand-primary font-bold border border-brand-primary/10 shadow-sm shadow-brand-primary/5' : 'text-stone-400 dark:text-stone-500 hover:bg-stone-50 dark:hover:bg-stone-800 font-bold' }}" 
+           href="{{ route('siswa.pendaftaran.step1') }}" title="Pendaftaran PPDB">
+            <span class="material-symbols-outlined text-xl">app_registration</span>
+            <span class="text-[10px] uppercase tracking-[0.2em] sidebar-text whitespace-nowrap">Pendaftaran</span>
         </a>
     </nav>
 

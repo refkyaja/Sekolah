@@ -1,4 +1,4 @@
-@extends('layouts.nav-spmb')
+@extends('layouts.student')
 
 @section('title', 'PPDB - Data Pribadi')
 
@@ -39,7 +39,7 @@
 
     {{-- Form Card --}}
     <div class="bg-white dark:bg-dark-card rounded-xl shadow-sm border border-white/5 p-6 md:p-8">
-        <form action="{{ route('pendaftaran.step1.store') }}" method="POST" class="space-y-6">
+        <form action="{{ route('siswa.pendaftaran.step1.store') }}" method="POST" class="space-y-6">
             @csrf
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -114,7 +114,7 @@
 
             {{-- Footer Buttons --}}
             <div class="flex flex-col md:flex-row gap-4 pt-6 border-t border-primary/5">
-                <a href="{{ route('spmb.index') }}" class="flex-1 h-14 rounded-xl font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center justify-center">
+                <a href="{{ route('siswa.dashboard') }}" class="flex-1 h-14 rounded-xl font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center justify-center">
                     Batal
                 </a>
                 <button type="submit" class="flex-[2] h-14 rounded-xl bg-primary text-white font-bold flex items-center justify-center gap-2 hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all">

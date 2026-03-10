@@ -1,4 +1,4 @@
-@extends('layouts.nav-spmb')
+@extends('layouts.student')
 
 @section('title', 'PPDB - Periksa Data')
 
@@ -36,7 +36,7 @@
                 <span class="material-symbols-outlined text-primary">person</span>
                 <h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold">1. Data Pribadi Siswa</h3>
             </div>
-            <a href="{{ route('pendaftaran.step1') }}" class="text-xs text-primary font-semibold hover:underline flex items-center gap-1">
+            <a href="{{ route('siswa.pendaftaran.step1') }}" class="text-xs text-primary font-semibold hover:underline flex items-center gap-1">
                 <span class="material-symbols-outlined text-sm">edit</span> Ubah
             </a>
         </div>
@@ -67,7 +67,7 @@
                 <span class="material-symbols-outlined text-primary">family_restroom</span>
                 <h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold">2. Data Orang Tua / Wali</h3>
             </div>
-            <a href="{{ route('pendaftaran.step2') }}" class="text-xs text-primary font-semibold hover:underline flex items-center gap-1">
+            <a href="{{ route('siswa.pendaftaran.step2') }}" class="text-xs text-primary font-semibold hover:underline flex items-center gap-1">
                 <span class="material-symbols-outlined text-sm">edit</span> Ubah
             </a>
         </div>
@@ -133,7 +133,7 @@
                 <span class="material-symbols-outlined text-primary">cloud_done</span>
                 <h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold">3. Dokumen Terunggah</h3>
             </div>
-            <a href="{{ route('pendaftaran.step3') }}" class="text-xs text-primary font-semibold hover:underline flex items-center gap-1">
+            <a href="{{ route('siswa.pendaftaran.step3') }}" class="text-xs text-primary font-semibold hover:underline flex items-center gap-1">
                 <span class="material-symbols-outlined text-sm">edit</span> Ubah
             </a>
         </div>
@@ -163,7 +163,7 @@
     </section>
 
     {{-- Terms & Conditions --}}
-    <form action="{{ route('pendaftaran.submit') }}" method="POST">
+    <form action="{{ route('siswa.pendaftaran.submit') }}" method="POST">
         @csrf
         @if($errors->has('konfirmasi'))
         <div class="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 rounded-xl text-sm text-red-600">
@@ -185,7 +185,7 @@
 
         {{-- Action Buttons --}}
         <div class="flex flex-col sm:flex-row gap-4 mb-16">
-            <a href="{{ route('pendaftaran.step3') }}" class="flex-1 flex items-center justify-center gap-2 h-14 rounded-xl border-2 border-primary/20 text-slate-600 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+            <a href="{{ route('siswa.pendaftaran.step3') }}" class="flex-1 flex items-center justify-center gap-2 h-14 rounded-xl border-2 border-primary/20 text-slate-600 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
                 <span class="material-symbols-outlined">arrow_back</span>
                 Kembali Ke Tahap 3
             </a>

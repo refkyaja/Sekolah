@@ -30,7 +30,7 @@ class PendaftaranController extends Controller
 
         $setting = $this->getActiveSetting();
         if ($this->isPendaftaranClosed($setting)) {
-            return redirect()->route('spmb.index')->with('error', 'Periode pendaftaran belum/sudah dibuka.');
+            return redirect()->route('siswa.dashboard')->with('error', 'Periode pendaftaran belum/sudah dibuka.');
         }
 
         $data = session('pendaftaran.step1', []);
@@ -59,7 +59,7 @@ class PendaftaranController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('pendaftaran.step1')
+            return redirect()->route('siswa.pendaftaran.step1')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -67,7 +67,7 @@ class PendaftaranController extends Controller
         // Validate minimum age (3 years)
         $usia = Carbon::parse($request->tanggal_lahir_anak)->age;
         if ($usia < 3) {
-            return redirect()->route('pendaftaran.step1')
+            return redirect()->route('siswa.pendaftaran.step1')
                 ->with('error', 'Usia calon siswa minimal 3 tahun.')
                 ->withInput();
         }
@@ -77,7 +77,7 @@ class PendaftaranController extends Controller
             'tempat_lahir_anak', 'tanggal_lahir_anak', 'agama', 'alamat_lengkap',
         ])]);
 
-        return redirect()->route('pendaftaran.step2');
+        return redirect()->route('siswa.pendaftaran.step2');
     }
 
     // ==================== STEP 2: DATA ORANG TUA ====================
@@ -87,7 +87,7 @@ class PendaftaranController extends Controller
         if ($redirect = $this->checkAuth()) return $redirect;
 
         if (!session('pendaftaran.step1')) {
-            return redirect()->route('pendaftaran.step1')->with('error', 'Silakan lengkapi data pribadi terlebih dahulu.');
+            return redirect()->route('siswa.pendaftaran.step1')->with('error', 'Silakan lengkapi data pribadi terlebih dahulu.');
         }
 
         $data = session('pendaftaran.step2', []);
@@ -99,7 +99,7 @@ class PendaftaranController extends Controller
         if ($redirect = $this->checkAuth()) return $redirect;
 
         if (!session('pendaftaran.step1')) {
-            return redirect()->route('pendaftaran.step1');
+            return redirect()->route('siswa.pendaftaran.step1');
         }
 
         $validator = Validator::make($request->all(), [
@@ -125,7 +125,7 @@ class PendaftaranController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('pendaftaran.step2')
+            return redirect()->route('siswa.pendaftaran.step2')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -136,7 +136,7 @@ class PendaftaranController extends Controller
             'nomor_telepon', 'email', 'penghasilan_gabungan',
         ])]);
 
-        return redirect()->route('pendaftaran.step3');
+        return redirect()->route('siswa.pendaftaran.step3');
     }
 
     // ==================== STEP 3: UPLOAD BERKAS ====================
@@ -146,7 +146,7 @@ class PendaftaranController extends Controller
         if ($redirect = $this->checkAuth()) return $redirect;
 
         if (!session('pendaftaran.step1') || !session('pendaftaran.step2')) {
-            return redirect()->route('pendaftaran.step1')->with('error', 'Silakan lengkapi langkah sebelumnya.');
+            return redirect()->route('siswa.pendaftaran.step1')->with('error', 'Silakan lengkapi langkah sebelumnya.');
         }
 
         $uploadedFiles = session('pendaftaran.step3.files', []);
@@ -158,7 +158,7 @@ class PendaftaranController extends Controller
         if ($redirect = $this->checkAuth()) return $redirect;
 
         if (!session('pendaftaran.step1') || !session('pendaftaran.step2')) {
-            return redirect()->route('pendaftaran.step1');
+            return redirect()->route('siswa.pendaftaran.step1');
         }
 
         $validator = Validator::make($request->all(), [
@@ -176,7 +176,7 @@ class PendaftaranController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('pendaftaran.step3')
+            return redirect()->route('siswa.pendaftaran.step3')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -200,7 +200,7 @@ class PendaftaranController extends Controller
 
         session(['pendaftaran.step3.files' => $files]);
 
-        return redirect()->route('pendaftaran.step4');
+        return redirect()->route('siswa.pendaftaran.step4');
     }
 
     // ==================== STEP 4: REVIEW & SUBMIT ====================
@@ -214,7 +214,7 @@ class PendaftaranController extends Controller
         $step3 = session('pendaftaran.step3.files');
 
         if (!$step1 || !$step2 || !$step3) {
-            return redirect()->route('pendaftaran.step1')->with('error', 'Silakan lengkapi semua langkah pendaftaran.');
+            return redirect()->route('siswa.pendaftaran.step1')->with('error', 'Silakan lengkapi semua langkah pendaftaran.');
         }
 
         return view('Home.spmb.pendaftaran.step4', compact('step1', 'step2', 'step3'));
@@ -229,7 +229,7 @@ class PendaftaranController extends Controller
         $step3Files = session('pendaftaran.step3.files');
 
         if (!$step1 || !$step2 || !$step3Files) {
-            return redirect()->route('pendaftaran.step1')->with('error', 'Data pendaftaran tidak lengkap. Silakan ulangi proses pendaftaran.');
+            return redirect()->route('siswa.pendaftaran.step1')->with('error', 'Data pendaftaran tidak lengkap. Silakan ulangi proses pendaftaran.');
         }
 
         // Check if confirmed
@@ -246,7 +246,7 @@ class PendaftaranController extends Controller
             $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
 
             if (!$tahunAjaranAktif) {
-                return redirect()->route('spmb.index')->with('error', 'Tahun ajaran belum aktif. Hubungi administrator.');
+                return redirect()->route('siswa.dashboard')->with('error', 'Tahun ajaran belum aktif. Hubungi administrator.');
             }
 
             // Build the SPMB data from session
@@ -327,7 +327,7 @@ class PendaftaranController extends Controller
             // Clear all session data
             session()->forget(['pendaftaran.step1', 'pendaftaran.step2', 'pendaftaran.step3.files']);
 
-            return redirect()->route('spmb.success', $noPendaftaran)
+            return redirect()->route('siswa.dashboard')
                 ->with('success', 'Pendaftaran berhasil dikirim! Nomor Pendaftaran Anda: ' . $noPendaftaran);
 
         } catch (\Exception $e) {
@@ -335,7 +335,7 @@ class PendaftaranController extends Controller
             Log::error('Pendaftaran Submit Error: ' . $e->getMessage());
             Log::error('Trace: ' . $e->getTraceAsString());
 
-            return redirect()->route('pendaftaran.step4')
+            return redirect()->route('siswa.pendaftaran.step4')
                 ->with('error', 'Terjadi kesalahan sistem: ' . $e->getMessage());
         }
     }
