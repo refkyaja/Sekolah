@@ -1,4 +1,19 @@
 <div>
+    @php
+        $role = auth()->user()->role;
+        $user = auth()->user();
+        $routePrefix = match ($role) {
+            'admin' => 'admin',
+            'operator' => 'operator',
+            'kepala_sekolah' => 'kepala-sekolah',
+            'guru' => 'guru',
+            default => 'admin',
+        };
+        $canCreateGaleri = $user->canAccessModule('galeri', 'create');
+        $canUpdateGaleri = $user->canAccessModule('galeri', 'update');
+        $canDeleteGaleri = $user->canAccessModule('galeri', 'delete');
+    @endphp
+
     {{-- Toolbar: Search, Filter, Add --}}
     <div class="bg-white rounded-2xl p-4 shadow-sm mb-8 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 border border-slate-100">
         <div class="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-4 flex-1">
@@ -47,11 +62,13 @@
         </div>
 
         {{-- Add Button --}}
-        <a href="{{ route('admin.galeri.create') }}"
+        @if($canCreateGaleri)
+        <a href="{{ route($routePrefix . '.galeri.create') }}"
            class="w-full md:w-auto flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 whitespace-nowrap">
             <span class="material-symbols-outlined text-lg">add_circle</span>
             Tambah Album
         </a>
+        @endif
     </div>
 
     {{-- Gallery Grid --}}
@@ -110,19 +127,22 @@
                 <div class="flex items-center justify-between pt-4 border-t border-slate-50">
                     <div class="flex gap-1">
                         {{-- View --}}
-                        <a href="{{ route('admin.galeri.show', $item) }}"
+                        <a href="{{ route($routePrefix . '.galeri.show', $item) }}"
                            class="p-2 text-slate-400 hover:text-primary hover:bg-lavender rounded-lg transition-all"
                            title="Lihat Detail">
                             <span class="material-symbols-outlined text-xl">visibility</span>
                         </a>
                         {{-- Edit --}}
-                        <a href="{{ route('admin.galeri.edit', $item) }}"
+                        @if($canUpdateGaleri)
+                        <a href="{{ route($routePrefix . '.galeri.edit', $item) }}"
                            class="p-2 text-slate-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-all"
                            title="Edit">
                             <span class="material-symbols-outlined text-xl">edit</span>
                         </a>
+                        @endif
                         {{-- Toggle Publish --}}
-                        <form action="{{ route('admin.galeri.toggle-publish', $item) }}" method="POST" class="inline">
+                        @if($canUpdateGaleri)
+                        <form action="{{ route($routePrefix . '.galeri.toggle-publish', $item) }}" method="POST" class="inline">
                             @csrf
                             @method('PATCH')
                             <button type="submit"
@@ -131,22 +151,26 @@
                                 <span class="material-symbols-outlined text-xl">{{ $item->is_published ? 'unpublished' : 'publish' }}</span>
                             </button>
                         </form>
+                        @endif
                     </div>
 
                     {{-- Delete --}}
+                    @if($canDeleteGaleri)
                     <button type="button"
                             onclick="confirmDelete({{ $item->id }})"
                             class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
                             title="Hapus">
                         <span class="material-symbols-outlined text-xl">delete</span>
                     </button>
+                    @endif
                 </div>
             </div>
         </div>
         @endforeach
 
         {{-- Add New Card --}}
-        <a href="{{ route('admin.galeri.create') }}"
+        @if($canCreateGaleri)
+        <a href="{{ route($routePrefix . '.galeri.create') }}"
            class="bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center p-8 hover:bg-lavender hover:border-primary/30 transition-all group min-h-[320px]">
             <div class="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-sm mb-4 group-hover:bg-primary group-hover:text-white transition-all">
                 <span class="material-symbols-outlined text-3xl">add</span>
@@ -154,6 +178,7 @@
             <p class="font-bold text-slate-500 group-hover:text-primary">Buat Album Baru</p>
             <p class="text-xs text-slate-400 mt-1">Foto atau Video Kegiatan</p>
         </a>
+        @endif
     </div>
 
     {{-- Pagination --}}
@@ -171,11 +196,13 @@
         </div>
         <h3 class="text-xl font-bold text-slate-700 mb-2">Belum Ada Galeri</h3>
         <p class="text-slate-400 text-sm mb-6">Mulai dengan menambahkan galeri pertama Anda.</p>
-        <a href="{{ route('admin.galeri.create') }}"
+        @if($canCreateGaleri)
+        <a href="{{ route($routePrefix . '.galeri.create') }}"
            class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
             <span class="material-symbols-outlined text-lg">add_circle</span>
             Tambah Galeri
         </a>
+        @endif
     </div>
     @endif
 </div>

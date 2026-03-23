@@ -17,7 +17,7 @@ class KurikulumController extends Controller
         $status = $kurikulums->where('tipe', 'status')->first();
         $alasan = $kurikulums->where('tipe', 'alasan')->first();
 
-        return view('Home.kurikulum.index', compact(
+        return view('Home.kurikulum', compact(
             'utama', 
             'pendekatan', 
             'layanan', 

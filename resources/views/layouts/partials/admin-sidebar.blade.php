@@ -1,130 +1,223 @@
-<aside class="admin-sidebar w-72 flex-shrink-0 bg-sidebar-bg text-white flex flex-col h-full z-40 lg:z-20 transition-all duration-300">
+@php
+    $role = auth()->user()->role;
+
+    $prefixMap = [
+        'admin' => 'admin',
+        'kepala_sekolah' => 'kepala-sekolah',
+        'guru' => 'guru',
+        'operator' => 'operator',
+    ];
+
+    $rolePrefix = $prefixMap[$role] ?? 'guest';
+
+    $isAdmin = $role === 'admin';
+    $isKepsek = $role == 'kepala_sekolah';
+    $isGuru = $role == 'guru';
+    $isOperator = $role == 'operator';
+
+    $navBaseClass = 'nav-item flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all';
+    $navDefaultClass = 'text-white/80 dark:text-slate-400 hover:bg-white/10 dark:hover:bg-slate-800 hover:text-white dark:hover:text-slate-100';
+    $navActiveClass = 'bg-white/20 dark:bg-slate-800 text-white dark:text-slate-100 font-medium shadow-sm';
+@endphp
+
+<aside class="admin-sidebar w-72 flex-shrink-0 bg-sidebar-bg dark:bg-slate-950 text-white dark:text-slate-100 flex flex-col h-full z-40 lg:z-20 transition-all duration-300 border-r border-transparent dark:border-slate-800">
     <div class="p-6 flex items-center justify-between">
-        <div class="flex items-center gap-3 overflow-hidden">
-            <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md flex-shrink-0">
-                <span class="material-symbols-outlined text-white text-2xl">school</span>
+        <div class="flex min-w-0 flex-1 items-center gap-3 overflow-hidden">
+            <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-white/20 dark:bg-slate-800/90 backdrop-blur-md">
+                <span class="material-symbols-outlined text-white dark:text-slate-100 text-2xl">school</span>
             </div>
-            <h2 class="text-xl font-bold tracking-tight logo-text whitespace-nowrap">TK PGRI HARAPAN BANGSA 1</h2>
+            <div class="logo-text min-w-0 flex-1 leading-tight text-white dark:text-slate-100">
+                <p class="text-sm font-black uppercase tracking-[0.18em]">TK PGRI</p>
+                <p class="text-[11px] font-semibold uppercase tracking-[0.08em] text-white/80 dark:text-slate-300">Harapan Bangsa 1</p>
+            </div>
         </div>
-        <button class="p-1.5 hover:bg-white/10 rounded-lg transition-colors hidden lg:flex" 
+        <button class="p-1.5 hover:bg-white/10 dark:hover:bg-slate-800 rounded-lg transition-colors hidden lg:flex"
                 @click="sidebarCollapsed = !sidebarCollapsed; localStorage.setItem('adminSidebarCollapsed', sidebarCollapsed)">
-            <span class="material-symbols-outlined text-white">menu</span>
+            <span class="material-symbols-outlined text-white dark:text-slate-100">menu</span>
         </button>
-        <button class="p-1.5 hover:bg-white/10 rounded-lg transition-colors lg:hidden" 
-                onclick="document.body.classList.remove('mobile-sidebar-open'); document.getElementById('mobileSidebarOverlay')?.classList.add('hidden')">
-            <span class="material-symbols-outlined text-white">close</span>
+        <button class="p-1.5 hover:bg-white/10 dark:hover:bg-slate-800 rounded-lg transition-colors lg:hidden"
+                @click="mobileSidebarOpen = false">
+            <span class="material-symbols-outlined text-white dark:text-slate-100">close</span>
         </button>
     </div>
 
     <div class="sidebar-scroll flex-1 overflow-y-auto px-4 space-y-6 pb-6 mt-2">
         <div>
-            <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-2xl {{ request()->routeIs('admin.dashboard') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} transition-all hover:bg-white/30" href="{{ route('admin.dashboard') }}" title="Dashboard Overview">
+            <a class="{{ $navBaseClass }} rounded-2xl {{ request()->routeIs($rolePrefix.'.dashboard') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.dashboard') }}"
+               title="Dashboard Overview">
                 <span class="material-symbols-outlined text-xl">dashboard</span>
                 <span class="text-sm nav-text whitespace-nowrap">Dashboard Overview</span>
             </a>
         </div>
 
+        @if($role != 'guru')
         <div class="space-y-1">
             <div class="nav-section-divider"></div>
-            <h3 class="nav-section-title px-4 text-[10px] font-black text-white/60 uppercase tracking-widest mb-3 flex items-center gap-2 whitespace-nowrap">📂 A. Master Data</h3>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.siswa.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all group" href="{{ route('admin.siswa.siswa-aktif.index') }}" title="Data Siswa">
+            <h3 class="nav-section-title px-4 text-[10px] font-black text-white/60 dark:text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2 whitespace-nowrap">A. Master Data</h3>
+
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.siswa.*') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.siswa.siswa-aktif.index') }}"
+               title="Data Siswa">
                 <span class="material-symbols-outlined text-lg">group</span>
                 <span class="text-sm nav-text whitespace-nowrap">Data Siswa</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.guru.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all group" href="{{ route('admin.guru.index') }}" title="Data Guru">
+
+            @if($isAdmin || $isKepsek)
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.guru.*') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.guru.index') }}"
+               title="Data Guru">
                 <span class="material-symbols-outlined text-lg">person_pin_circle</span>
                 <span class="text-sm nav-text whitespace-nowrap">Data Guru</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.tahun-ajaran.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all group" href="{{ route('admin.tahun-ajaran.index') }}" title="Tahun Ajaran">
+            @endif
+
+            @if($isAdmin || $isKepsek || $isOperator)
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.tahun-ajaran.*') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.tahun-ajaran.index') }}"
+               title="Tahun Ajaran">
                 <span class="material-symbols-outlined text-lg">calendar_month</span>
                 <span class="text-sm nav-text whitespace-nowrap">Tahun Ajaran</span>
             </a>
+            @endif
         </div>
+        @endif
 
         <div class="space-y-1">
             <div class="nav-section-divider"></div>
-            <h3 class="nav-section-title px-4 text-[10px] font-black text-white/60 uppercase tracking-widest mb-3 flex items-center gap-2 whitespace-nowrap">📚 B. Akademik</h3>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.absensi.index') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.absensi.index') }}" title="Absensi Siswa">
+            <h3 class="nav-section-title px-4 text-[10px] font-black text-white/60 dark:text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2 whitespace-nowrap">B. Akademik</h3>
+
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.absensi.index') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.absensi.index') }}"
+               title="Absensi Siswa">
                 <span class="material-symbols-outlined text-lg">how_to_reg</span>
                 <span class="text-sm nav-text whitespace-nowrap">Absensi Siswa</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.absensi-guru.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.absensi-guru.index') }}" title="Absensi Guru">
+
+            @if($isAdmin || $isKepsek || $isOperator)
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.absensi-guru.*') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.absensi-guru.index') }}"
+               title="Absensi Guru">
                 <span class="material-symbols-outlined text-lg">badge</span>
                 <span class="text-sm nav-text whitespace-nowrap">Absensi Guru</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.materi-kbm.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.materi-kbm.index') }}" title="Materi KBM">
+
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.materi-kbm.*') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.materi-kbm.index') }}"
+               title="Materi KBM">
                 <span class="material-symbols-outlined text-lg">auto_stories</span>
                 <span class="text-sm nav-text whitespace-nowrap">Materi KBM</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.kalender-akademik.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.kalender-akademik.index') }}" title="Kalender Akademik">
+            @endif
+
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.kalender-akademik.*') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.kalender-akademik.index') }}"
+               title="Kalender Akademik">
                 <span class="material-symbols-outlined text-lg">event_note</span>
                 <span class="text-sm nav-text whitespace-nowrap">Kalender Akademik</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.jadwal-pelajaran.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.jadwal-pelajaran.index') }}" title="Jadwal Pelajaran">
+
+            @if($isAdmin || $isKepsek || $isOperator)
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.jadwal-pelajaran.*') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.jadwal-pelajaran.index') }}"
+               title="Jadwal Pelajaran">
                 <span class="material-symbols-outlined text-lg">schedule</span>
                 <span class="text-sm nav-text whitespace-nowrap">Jadwal Pelajaran</span>
             </a>
+            @endif
         </div>
 
+        @if($isAdmin || $isKepsek || $isOperator)
         <div class="space-y-1">
             <div class="nav-section-divider"></div>
-            <h3 class="nav-section-title px-4 text-[10px] font-black text-white/60 uppercase tracking-widest mb-3 flex items-center gap-2 whitespace-nowrap">🏫 C. PPDB</h3>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.ppdb.index') || request()->routeIs('admin.spmb.index') && !request()->has('status') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.ppdb.index') }}" title="Pendaftaran">
+            <h3 class="nav-section-title px-4 text-[10px] font-black text-white/60 dark:text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2 whitespace-nowrap">C. PPDB</h3>
+
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.ppdb.index') && !request()->has('status') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.ppdb.index') }}"
+               title="Pendaftaran">
                 <span class="material-symbols-outlined text-lg">app_registration</span>
                 <span class="text-sm nav-text whitespace-nowrap">Pendaftaran</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->get('status') == 'Menunggu Verifikasi' || request()->routeIs('admin.ppdb.index') && request()->get('status') == 'Menunggu Verifikasi' ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.ppdb.index', ['status' => 'Menunggu Verifikasi']) }}" title="Verifikasi Dokumen">
-                <span class="material-symbols-outlined text-lg">verified</span>
-                <span class="text-sm nav-text whitespace-nowrap">Verifikasi Dokumen</span>
-            </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.ppdb.pengumuman') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.ppdb.pengumuman') }}" title="Pengumuman">
+
+            <a class="{{ $navBaseClass }} {{ request()->get('status') == 'Diterima' ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.ppdb.index', ['status' => 'Diterima']) }}"
+               title="Pengumuman">
                 <span class="material-symbols-outlined text-lg">campaign</span>
                 <span class="text-sm nav-text whitespace-nowrap">Pengumuman</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.ppdb.pengaturan') || request()->routeIs('admin.spmb-settings.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.ppdb.pengaturan') }}" title="Settings PPDB">
+
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.ppdb.pengaturan') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.ppdb.pengaturan') }}"
+               title="Settings PPDB">
                 <span class="material-symbols-outlined text-lg">settings</span>
                 <span class="text-sm nav-text whitespace-nowrap">Settings PPDB</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.ppdb.riwayat') || request()->routeIs('admin.ppdb.riwayat.show') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.ppdb.riwayat') }}" title="Riwayat PPDB">
+
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.ppdb.riwayat') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.ppdb.riwayat') }}"
+               title="Riwayat PPDB">
                 <span class="material-symbols-outlined text-lg">history</span>
                 <span class="text-sm nav-text whitespace-nowrap">Riwayat PPDB</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.spmb.export') && request()->is('admin/spmb/export') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.spmb.export') }}" title="Export Data">
+
+            <a class="{{ $navBaseClass }} {{ $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.ppdb.export') }}"
+               title="Export Data">
                 <span class="material-symbols-outlined text-lg">download</span>
                 <span class="text-sm nav-text whitespace-nowrap">Export Data</span>
             </a>
         </div>
+        @endif
 
         <div class="space-y-1">
             <div class="nav-section-divider"></div>
-            <h3 class="nav-section-title px-4 text-[10px] font-black text-white/60 uppercase tracking-widest mb-3 flex items-center gap-2 whitespace-nowrap">🌐 D. Informasi Publik</h3>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.galeri.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.galeri.index') }}" title="Galeri">
+            <h3 class="nav-section-title px-4 text-[10px] font-black text-white/60 dark:text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2 whitespace-nowrap">D. Informasi Publik</h3>
+
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.galeri.*') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.galeri.index') }}"
+               title="Galeri">
                 <span class="material-symbols-outlined text-lg">photo_library</span>
                 <span class="text-sm nav-text whitespace-nowrap">Galeri</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.kegiatan.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.kegiatan.index') }}" title="Kegiatan Sekolah">
+
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.kegiatan.*') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.kegiatan.index') }}"
+               title="Kegiatan Sekolah">
                 <span class="material-symbols-outlined text-lg">festival</span>
                 <span class="text-sm nav-text whitespace-nowrap">Kegiatan Sekolah</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.bukutamu.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.bukutamu.index') }}" title="Buku Tamu">
+
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.bukutamu.*') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.bukutamu.index') }}"
+               title="Buku Tamu">
                 <span class="material-symbols-outlined text-lg">book</span>
                 <span class="text-sm nav-text whitespace-nowrap">Buku Tamu</span>
             </a>
         </div>
 
-        @if(auth()->user() && in_array(auth()->user()->role, ['admin', 'super_admin']))
+        @if($isAdmin)
         <div class="space-y-1">
             <div class="nav-section-divider"></div>
-            <h3 class="nav-section-title px-4 text-[10px] font-black text-white/60 uppercase tracking-widest mb-3 flex items-center gap-2 whitespace-nowrap">⚙ E. Manajemen Sistem (Admin Only)</h3>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.accounts.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.accounts.index') }}" title="Kelola User">
+            <h3 class="nav-section-title px-4 text-[10px] font-black text-white/60 dark:text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2 whitespace-nowrap">E. Manajemen Sistem</h3>
+
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.accounts.*') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.accounts.index') }}"
+               title="Kelola User">
                 <span class="material-symbols-outlined text-lg">manage_accounts</span>
                 <span class="text-sm nav-text whitespace-nowrap">Kelola User</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 text-white/80 hover:bg-white/10 hover:text-white rounded-xl transition-all" href="#" onclick="return false;" title="Role & Permission">
+
+            <a class="{{ $navBaseClass }} {{ $navDefaultClass }}"
+               href="#"
+               onclick="return false;"
+               title="Role & Permission">
                 <span class="material-symbols-outlined text-lg">verified_user</span>
                 <span class="text-sm nav-text whitespace-nowrap">Role & Permission</span>
             </a>
-            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('admin.activity-log.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('admin.activity-log.index') }}" title="Log Aktivitas">
+
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.activity-log.*') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.activity-log.index') }}"
+               title="Log Aktivitas">
                 <span class="material-symbols-outlined text-lg">list_alt</span>
                 <span class="text-sm nav-text whitespace-nowrap">Log Aktivitas</span>
             </a>
@@ -132,9 +225,12 @@
         @endif
     </div>
 
-    <form method="POST" action="{{ route('logout') }}" id="logoutForm" class="p-4 border-t border-white/10">
+    <form method="POST" action="{{ route('logout') }}" id="logoutForm" class="p-4 border-t border-white/10 dark:border-slate-800">
         @csrf
-        <button type="button" onclick="confirmLogout()" class="nav-item w-full flex items-center justify-center gap-2 px-4 py-2 text-white/80 hover:bg-white/10 rounded-xl transition-all text-sm" title="Keluar">
+        <button type="button"
+                onclick="confirmLogout()"
+                class="nav-item w-full flex items-center justify-center gap-2 px-4 py-2 text-white/80 dark:text-slate-300 hover:bg-white/10 dark:hover:bg-slate-800 rounded-xl transition-all text-sm"
+                title="Keluar">
             <span class="material-symbols-outlined text-lg">logout</span>
             <span class="nav-text whitespace-nowrap">Keluar</span>
         </button>

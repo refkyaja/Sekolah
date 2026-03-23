@@ -321,8 +321,8 @@
                                         </button>
                                         
                                         @if($siswa->spmb_id)
-                                        <a href="{{ route('admin.spmb.show', $siswa->spmb_id) }}" 
-                                           class="text-purple-600 hover:text-purple-900 p-2 hover:bg-purple-50 rounded-lg transition-all duration-150 hover:scale-110 hidden lg:inline-flex" 
+                                        <a href="{{ route('admin.ppdb.show', $siswa->spmb_id) }}"
+                                             class="text-purple-600 hover:text-purple-900 p-2 hover:bg-purple-50 rounded-lg transition-all duration-150 hover:scale-110 hidden lg:inline-flex" 
                                            title="Lihat Data SPMB">
                                             <i class="fas fa-file-alt text-sm sm:text-base"></i>
                                         </a>

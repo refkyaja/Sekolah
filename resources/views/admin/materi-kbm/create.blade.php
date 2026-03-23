@@ -1,4 +1,22 @@
-@extends('layouts.admin')
+@php
+    $role = auth()->user()->role;
+    $layout = match ($role) {
+        'admin' => 'layouts.admin',
+        'operator' => 'layouts.operator',
+        'kepala_sekolah' => 'layouts.kepala-sekolah',
+        'guru' => 'layouts.guru',
+        default => 'layouts.app',
+    };
+    $routePrefix = match ($role) {
+        'admin' => 'admin',
+        'operator' => 'operator',
+        'kepala_sekolah' => 'kepala-sekolah',
+        'guru' => 'guru',
+        default => 'admin',
+    };
+@endphp
+
+@extends($layout)
 
 @section('title', 'Tambah Materi KBM')
 @section('breadcrumb', 'Materi KBM / Tambah')
@@ -6,7 +24,7 @@
 @section('content')
 <div class="max-w-2xl mx-auto">
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 sm:p-8">
-        <form method="POST" action="{{ route('admin.materi-kbm.store') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route($routePrefix . '.materi-kbm.store') }}" enctype="multipart/form-data">
             @csrf
 
             {{-- Mata Pelajaran --}}
@@ -124,7 +142,7 @@
                     <span class="material-symbols-outlined text-xl">save</span>
                     Simpan Materi
                 </button>
-                <a href="{{ route('admin.materi-kbm.index') }}"
+                <a href="{{ route($routePrefix . '.materi-kbm.index') }}"
                     class="flex items-center justify-center px-6 py-2.5 border border-slate-200 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all w-full sm:w-auto">
                     Batal
                 </a>

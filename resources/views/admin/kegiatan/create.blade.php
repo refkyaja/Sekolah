@@ -1,4 +1,22 @@
-@extends('layouts.admin')
+@php
+    $role = auth()->user()->role;
+    $layout = match ($role) {
+        'admin' => 'layouts.admin',
+        'operator' => 'layouts.operator',
+        'kepala_sekolah' => 'layouts.kepala-sekolah',
+        'guru' => 'layouts.guru',
+        default => 'layouts.app',
+    };
+    $routePrefix = match ($role) {
+        'admin' => 'admin',
+        'operator' => 'operator',
+        'kepala_sekolah' => 'kepala-sekolah',
+        'guru' => 'guru',
+        default => 'admin',
+    };
+@endphp
+
+@extends($layout)
 
 @section('title', 'Tambah Kegiatan Sekolah Baru')
 @section('breadcrumb', 'Kegiatan Sekolah / Tambah')
@@ -19,7 +37,7 @@
 @section('content')
 <div class="max-w-5xl mx-auto space-y-6">
     <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-        <form action="{{ route('admin.kegiatan.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route($routePrefix . '.kegiatan.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             
             <div class="p-8">
@@ -139,7 +157,7 @@
             <div class="h-24 md:hidden"></div>
 
             <div class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg px-6 py-4 flex items-center justify-between gap-4 border-t border-slate-100 md:relative md:bg-slate-50/50 md:px-8 md:py-6 md:justify-end md:gap-4 z-30">
-                <a href="{{ route('admin.kegiatan.index') }}" 
+                <a href="{{ route($routePrefix . '.kegiatan.index') }}" 
                    class="flex-1 md:flex-none text-center px-8 py-3.5 text-slate-600 font-bold text-sm hover:bg-slate-100 rounded-2xl transition-all">
                     Batal
                 </a>

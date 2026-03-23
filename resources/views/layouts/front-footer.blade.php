@@ -11,8 +11,8 @@
             <div class="space-y-4">
                 <h4 class="text-brand-dark dark:text-white font-extrabold text-sm uppercase tracking-widest">Informasi</h4>
                 <ul class="text-xs space-y-2 font-medium">
-                    <li><a class="hover:text-brand-primary transition-colors" href="{{ route('akademik.kurikulum') }}">Kurikulum</a></li>
-                    <li><a class="hover:text-brand-primary transition-colors" href="{{ route('informasi.index') }}">Berita & Acara</a></li>
+                    <li><a class="hover:text-brand-primary transition-colors" href="{{ route('kurikulum') }}">Kurikulum</a></li>
+                    <li><a class="hover:text-brand-primary transition-colors" href="{{ route('informasi') }}">Pusat Informasi</a></li>
                     <li><a class="hover:text-brand-primary transition-colors" href="#">Syarat & Ketentuan</a></li>
                 </ul>
             </div>

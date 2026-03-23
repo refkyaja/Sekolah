@@ -70,7 +70,7 @@
         </div>
         <nav class="hidden md:flex items-center gap-8">
             <a class="text-[10px] font-bold uppercase tracking-widest hover:text-brand-primary transition-colors" href="{{ url('/') }}">Beranda</a>
-            <a class="text-[10px] font-bold uppercase tracking-widest text-brand-primary" href="{{ route('spmb.index') }}">PPDB Online</a>
+            <a class="text-[10px] font-bold uppercase tracking-widest text-brand-primary" href="{{ route('ppdb.index') }}">PPDB Online</a>
         </nav>
         <div class="flex items-center gap-4">
             @php
@@ -85,7 +85,7 @@
                     Daftar
                 </button>
                 @else
-                <a href="{{ route('spmb.pendaftaran') }}" class="bg-brand-dark dark:bg-brand-primary text-white px-8 py-2.5 rounded-full font-bold text-[10px] uppercase tracking-widest transition-all shadow-lg">
+                <a href="{{ route('ppdb.index') }}" class="bg-brand-dark dark:bg-brand-primary text-white px-8 py-2.5 rounded-full font-bold text-[10px] uppercase tracking-widest transition-all shadow-lg">
                     Daftar
                 </a>
                 @endguest

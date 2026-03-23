@@ -56,7 +56,7 @@
                 <p class="text-[10px] text-slate-400 font-bold mt-2">Hari ini: {{ $stats['absensi_hari_ini'] ?? 0 }} absen</p>
             </a>
 
-            <a href="{{ route('admin.spmb.index') }}" class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-sm hover:shadow-md transition-all border border-slate-100 dark:border-slate-700">
+            <a href="{{ route('admin.ppdb.index') }}" class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-sm hover:shadow-md transition-all border border-slate-100 dark:border-slate-700">
                 <div class="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-900/30 text-primary flex items-center justify-center mb-4">
                     <span class="material-symbols-outlined">verified</span>
                 </div>
@@ -73,7 +73,7 @@
         <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-6 sm:p-8 border border-slate-100 dark:border-slate-700">
             <div class="flex items-center justify-between mb-6 sm:mb-8">
                 <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100">Aktivitas Terbaru</h2>
-                <a href="{{ route('admin.spmb.index') }}" class="text-primary text-xs font-bold hover:underline">Lihat Semua</a>
+                <a href="{{ route('admin.ppdb.index') }}" class="text-primary text-xs font-bold hover:underline">Lihat Semua</a>
             </div>
             <div class="space-y-6 sm:space-y-8">
                 @forelse($recent_pendaftaran ?? [] as $item)

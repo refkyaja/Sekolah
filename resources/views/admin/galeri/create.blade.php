@@ -1,11 +1,29 @@
 {{-- resources/views/admin/galeri/create.blade.php --}}
-@extends('layouts.admin')
+@php
+    $role = auth()->user()->role;
+    $layout = match ($role) {
+        'admin' => 'layouts.admin',
+        'operator' => 'layouts.operator',
+        'kepala_sekolah' => 'layouts.kepala-sekolah',
+        'guru' => 'layouts.guru',
+        default => 'layouts.app',
+    };
+    $routePrefix = match ($role) {
+        'admin' => 'admin',
+        'operator' => 'operator',
+        'kepala_sekolah' => 'kepala-sekolah',
+        'guru' => 'guru',
+        default => 'admin',
+    };
+@endphp
+
+@extends($layout)
 
 @section('title', 'Tambah Album Galeri')
 
 @section('content')
 {{-- novalidate: matikan validasi native browser agar hidden file input tidak diblok --}}
-<form action="{{ route('admin.galeri.store') }}"
+<form action="{{ route($routePrefix . '.galeri.store') }}"
       method="POST"
       enctype="multipart/form-data"
       id="formGaleri"
@@ -14,7 +32,7 @@
 
     {{-- Sub-header: Back + Judul --}}
     <div class="flex items-center gap-4 mb-6">
-        <a href="{{ route('admin.galeri.index') }}"
+        <a href="{{ route($routePrefix . '.galeri.index') }}"
            class="flex items-center gap-2 text-slate-500 hover:text-primary transition-colors">
             <span class="material-symbols-outlined">arrow_back</span>
             <span class="text-sm font-medium">Kembali ke Galeri</span>
@@ -258,7 +276,7 @@
                             <span class="material-symbols-outlined text-lg">save</span>
                             Simpan Album
                         </button>
-                        <a href="{{ route('admin.galeri.index') }}"
+                        <a href="{{ route($routePrefix . '.galeri.index') }}"
                            class="w-full flex items-center justify-center px-6 py-3 lg:py-2.5 text-sm font-bold text-slate-500 hover:text-primary border border-slate-200 rounded-xl bg-slate-50 hover:bg-lavender transition-all order-2 sm:order-1 lg:order-2">
                             Batal
                         </a>

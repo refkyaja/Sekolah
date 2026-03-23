@@ -5,9 +5,13 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\BukuTamuController;
-
-// Admin Controllers
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\KurikulumController;
+use App\Http\Controllers\InformasiController;
+use App\Http\Controllers\KegiatanController as PublicKegiatanController;
+use App\Http\Controllers\PpdbController;
+use App\Http\Controllers\DashboardController as BaseDashboardController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\Admin\GuruAccountController;
@@ -26,19 +30,13 @@ use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\KegiatanController;
 use App\Http\Controllers\Admin\KalenderAkademikController;
 
-// ==================== TEST ROUTES ====================
-Route::get('/livewire-test', function () {
-    return view('livewire-test');
-})->name('livewire.test');
-
-Route::get('/test-livewire', function () {
-    return view('livewire.test-component');
-})->name('test.livewire');
-
-// ==================== ROUTES PUBLIK ====================
-
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::post('/buku-tamu-home', [HomeController::class, 'storeBukuTamu'])->name('buku-tamu.home');
+Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
+Route::get('/kurikulum', [KurikulumController::class, 'index'])->name('kurikulum');
+Route::get('/ppdb', [PpdbController::class, 'index'])->name('ppdb.index');
+Route::post('/ppdb', [PpdbController::class, 'store'])->name('ppdb.store');
+Route::get('/informasi', [InformasiController::class, 'index'])->name('informasi');
+
 Route::prefix('berita')->name('berita.')->group(function () {
     Route::get('/', [BeritaController::class, 'index'])->name('index');
     Route::get('/{slug}', [BeritaController::class, 'show'])->name('show');
@@ -49,64 +47,27 @@ Route::prefix('galeri')->name('galeri.')->group(function () {
     Route::get('/{slug}', [GaleriController::class, 'show'])->name('show');
 });
 
+Route::prefix('kegiatan')->name('kegiatan.')->group(function () {
+    Route::get('/', [PublicKegiatanController::class, 'index'])->name('index');
+    Route::get('/{slug}', [PublicKegiatanController::class, 'show'])->name('show');
+});
+
+// Buku Tamu Routes
 Route::prefix('buku-tamu')->name('buku-tamu.')->group(function () {
     Route::get('/', [BukuTamuController::class, 'index'])->name('index');
     Route::post('/', [BukuTamuController::class, 'store'])->name('store');
     Route::get('/success', [BukuTamuController::class, 'success'])->name('success');
 });
 
-Route::get('/informasi', [App\Http\Controllers\InformasiController::class, 'index'])->name('informasi.index');
-
-Route::get('/profil', [App\Http\Controllers\ProfilController::class, 'index'])->name('profil.index');
-
-Route::get('/ppdb', [HomeController::class, 'ppdb'])->name('ppdb.index');
-Route::post('/ppdb', [HomeController::class, 'storePpdb'])->name('ppdb.store');
-
-
-Route::prefix('akademik')->name('akademik.')->group(function () {
-    Route::get('/kurikulum', [App\Http\Controllers\KurikulumController::class, 'index'])->name('kurikulum');
-    Route::get('/kegiatan', fn() => view('Home.akademik.kegiatan'))->name('kegiatan');
-    Route::get('/prestasi', fn() => view('Home.akademik.prestasi'))->name('prestasi');
-    Route::get('/ekstrakurikuler', fn() => view('Home.akademik.ekstrakurikuler'))->name('ekstrakurikuler');
-    Route::get('/bahan-ajar', fn() => view('Home.akademik.bahan-ajar'))->name('bahan-ajar');
-});
-
-Route::prefix('sarana')->name('sarana.')->group(function () {
-    Route::get('/infrastruktur', fn() => view('Home.sarana.infrastruktur'))->name('infrastruktur');
-    Route::get('/pembelajaran', fn() => view('Home.sarana.pembelajaran'))->name('pembelajaran');
-});
-
-Route::prefix('layanan')->name('layanan.')->group(function () {
-    Route::get('/buku-tamu', fn() => view('Home.buku-tamu.index'))->name('buku-tamu');
-    Route::get('/kontak', fn() => view('Home.layanan.kontak'))->name('kontak');
-});
-
-Route::prefix('spmb')->name('spmb.')->group(function () {
-    Route::get('/', [\App\Http\Controllers\SpmbController::class, 'index'])->name('index');
-    Route::get('/pendaftaran', [\App\Http\Controllers\SpmbController::class, 'pendaftaran'])->name('pendaftaran');
-    Route::post('/pendaftaran', [\App\Http\Controllers\SpmbController::class, 'store'])->name('store');
-    Route::get('/countdown', [\App\Http\Controllers\SpmbController::class, 'countdown'])->name('countdown');
-    Route::get('/pengumuman', [\App\Http\Controllers\SpmbController::class, 'pengumuman'])->name('pengumuman');
-    Route::post('/cek-pengumuman', [\App\Http\Controllers\SpmbController::class, 'cekPengumuman'])->name('cekPengumuman');
-    Route::get('/hasil-pengumuman', [\App\Http\Controllers\SpmbController::class, 'hasilPengumuman'])->name('hasilPengumuman');
-    Route::get('/success/{no_pendaftaran}', [\App\Http\Controllers\SpmbController::class, 'success'])->name('success');
-    Route::get('/informasi', fn() => view('Home.spmb.informasi'))->name('informasi');
-    Route::get('/jadwal', fn() => view('Home.spmb.jadwal'))->name('jadwal');
-    Route::get('/syarat', fn() => view('Home.spmb.syarat'))->name('syarat');
-});
-
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified', 'active'])
-    ->name('dashboard');
-
 // ==================== ROUTES ADMIN (HANYA ADMIN) ====================
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'active', 'admin'])->group(function () {
     
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\ProfileController::class, 'index'])->name('index');
+        Route::get('/settings', [App\Http\Controllers\Admin\ProfileController::class, 'settings'])->name('settings');
         Route::put('/update', [App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('update');
         Route::post('/update-photo', [App\Http\Controllers\Admin\ProfileController::class, 'updatePhoto'])->name('update-photo');
         Route::put('/change-password', [App\Http\Controllers\Admin\ProfileController::class, 'changePassword'])->name('change-password');
@@ -217,6 +178,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'active'
         Route::delete('/{spmb}', [AdminSpmbController::class, 'destroy'])->name('destroy');
         Route::put('/{spmb}/status', [AdminSpmbController::class, 'updateStatus'])->name('updateStatus');
         Route::patch('/{spmb}/update-status', [AdminSpmbController::class, 'updateStatus'])->name('updateStatusPatch');
+        Route::post('/{spmb}/catatan', [AdminSpmbController::class, 'tambahCatatan'])->name('catatan');
         Route::post('/{spmb}/verifikasi-dokumen', [AdminSpmbController::class, 'verifikasiDokumen'])->name('verifikasiDokumen');
         Route::post('/{spmb}/approve-kepsek', [AdminSpmbController::class, 'approveKepsek'])->name('approveKepsek');
         Route::post('/{spmb}/assign-kelas', [AdminSpmbController::class, 'assignKelas'])->name('assignKelas');
@@ -284,6 +246,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'active'
         Route::delete('/{spmb}', [AdminSpmbController::class, 'destroy'])->name('destroy');
         Route::put('/{spmb}/status', [AdminSpmbController::class, 'updateStatus'])->name('updateStatus');
         Route::patch('/{spmb}/update-status', [AdminSpmbController::class, 'updateStatus'])->name('updateStatusPatch');
+        Route::post('/{spmb}/catatan', [AdminSpmbController::class, 'tambahCatatan'])->name('catatan');
+        Route::post('/{spmb}/verifikasi-dokumen', [AdminSpmbController::class, 'verifikasiDokumen'])->name('verifikasiDokumen');
+        Route::post('/{spmb}/approve-kepsek', [AdminSpmbController::class, 'approveKepsek'])->name('approveKepsek');
+        Route::post('/{spmb}/assign-kelas', [AdminSpmbController::class, 'assignKelas'])->name('assignKelas');
+        Route::post('/{spmb}/konversi', [AdminSpmbController::class, 'konversiKeSiswa'])->name('konversiKeSiswa');
+        Route::put('/{spmb}/update-all', [AdminSpmbController::class, 'updateAll'])->name('updateAll');
     });
 
     // Berita Management
@@ -339,14 +307,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'active'
     Route::resource('activity-log', ActivityLogController::class)->only(['index', 'destroy']);
 
     // Widgets
-    Route::get('/widgets/spmb-statistics', [DashboardController::class, 'getSpmbStatistics'])->name('widgets.spmb-statistics');
-    Route::get('/widgets/bukutamu-statistics', [DashboardController::class, 'getBukuTamuStatistics'])->name('widgets.bukutamu-statistics');
-    Route::get('/widgets/recent-registrations', [DashboardController::class, 'getRecentRegistrations'])->name('widgets.recent-registrations');
-    Route::get('/widgets/spmb-statistics-year/{year?}', [DashboardController::class, 'getSpmbStatisticsByYear'])->name('widgets.spmb-statistics-year');
-    Route::get('/widgets/recent-konversi', [DashboardController::class, 'getRecentKonversi'])->name('widgets.recent-konversi');
+    Route::get('/widgets/spmb-statistics', [AdminDashboardController::class, 'getSpmbStatistics'])->name('widgets.spmb-statistics');
+    Route::get('/widgets/bukutamu-statistics', [AdminDashboardController::class, 'getBukuTamuStatistics'])->name('widgets.bukutamu-statistics');
+    Route::get('/widgets/recent-registrations', [AdminDashboardController::class, 'getRecentRegistrations'])->name('widgets.recent-registrations');
+    Route::get('/widgets/spmb-statistics-year/{year?}', [AdminDashboardController::class, 'getSpmbStatisticsByYear'])->name('widgets.spmb-statistics-year');
+    Route::get('/widgets/recent-konversi', [AdminDashboardController::class, 'getRecentKonversi'])->name('widgets.recent-konversi');
     
     // Cache Management
-    Route::post('/dashboard/clear-cache', [DashboardController::class, 'clearDashboardCache'])->name('dashboard.clear-cache');
+    Route::post('/dashboard/clear-cache', [AdminDashboardController::class, 'clearDashboardCache'])->name('dashboard.clear-cache');
 
     Route::resource('accounts', App\Http\Controllers\Admin\AccountController::class);
     Route::patch('accounts/{account}/toggle-status', [App\Http\Controllers\Admin\AccountController::class, 'toggleStatus'])->name('accounts.toggle-status');
@@ -359,46 +327,80 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'active'
 Route::prefix('operator')->name('operator.')->middleware(['auth', 'verified', 'active', 'operator'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Operator\DashboardController::class, 'index'])->name('dashboard');
     
-    // SPMB Routes for Operator
-    Route::prefix('spmb')->name('spmb.')->group(function () {
-        Route::get('/', [App\Http\Controllers\Admin\SpmbController::class, 'index'])->name('index');
-        Route::get('/{spmb}', [App\Http\Controllers\Admin\SpmbController::class, 'show'])->name('show');
+    // Profile Routes
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Operator\ProfileController::class, 'index'])->name('index');
+        Route::put('/update', [App\Http\Controllers\Operator\ProfileController::class, 'update'])->name('update');
+        Route::post('/update-photo', [App\Http\Controllers\Operator\ProfileController::class, 'updatePhoto'])->name('update-photo');
+        Route::put('/change-password', [App\Http\Controllers\Operator\ProfileController::class, 'changePassword'])->name('change-password');
     });
     
-    // Siswa Routes for Operator (Read-only)
+    // Siswa Routes (Read-only)
     Route::prefix('siswa')->name('siswa.')->group(function () {
-        Route::get('/', [App\Http\Controllers\Admin\SiswaController::class, 'indexAktif'])->name('index');
-        Route::get('/{siswa}', [App\Http\Controllers\Admin\SiswaController::class, 'showAktif'])->name('show');
+        Route::get('/siswa-aktif', [App\Http\Controllers\Admin\SiswaController::class, 'indexAktif'])->name('siswa-aktif.index');
+        Route::get('/siswa-aktif/{siswa}', [App\Http\Controllers\Admin\SiswaController::class, 'showAktif'])->name('siswa-aktif.show');
     });
     
-    // Materi KBM Routes for Operator (Read-only)
+    // Tahun Ajaran Routes (Read-only)
+    Route::prefix('tahun-ajaran')->name('tahun-ajaran.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\TahunAjaranController::class, 'index'])->name('index');
+        Route::get('/{tahunAjaran}', [App\Http\Controllers\Admin\TahunAjaranController::class, 'show'])->name('show');
+    });
+    
+    // Absensi Routes (Read-only)
+    Route::prefix('absensi')->name('absensi.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\AbsensiController::class, 'index'])->name('index');
+        Route::get('/{id}/edit', [App\Http\Controllers\Admin\AbsensiController::class, 'edit'])->name('edit');
+    });
+    
+    // Absensi Guru Routes (Read-only)
+    Route::prefix('absensi-guru')->name('absensi-guru.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\AbsensiGuruController::class, 'index'])->name('index');
+    });
+    
+    // Materi KBM Routes (Read-only)
     Route::prefix('materi-kbm')->name('materi-kbm.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\MateriKbmController::class, 'index'])->name('index');
         Route::get('/{materiKbm}', [App\Http\Controllers\Admin\MateriKbmController::class, 'show'])->name('show');
     });
     
-    // Kalender Akademik Routes for Operator (Read-only)
+    // Kalender Akademik Routes (Read-only)
     Route::prefix('kalender-akademik')->name('kalender-akademik.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\KalenderAkademikController::class, 'index'])->name('index');
         Route::get('/{kalenderAkademik}', [App\Http\Controllers\Admin\KalenderAkademikController::class, 'show'])->name('show');
     });
     
-    // Jadwal Pelajaran Routes for Operator (Read-only)
+    // Jadwal Pelajaran Routes (Read-only)
     Route::prefix('jadwal-pelajaran')->name('jadwal-pelajaran.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\JadwalPelajaranController::class, 'index'])->name('index');
         Route::get('/{jadwalPelajaran}', [App\Http\Controllers\Admin\JadwalPelajaranController::class, 'show'])->name('show');
     });
     
-    // Berita Routes for Operator (Read-only)
-    Route::prefix('berita')->name('berita.')->group(function () {
-        Route::get('/', [App\Http\Controllers\Admin\BeritaController::class, 'index'])->name('index');
-        Route::get('/{berita}', [App\Http\Controllers\Admin\BeritaController::class, 'show'])->name('show');
+    // PPDB Routes (Read-only)
+    Route::prefix('ppdb')->name('ppdb.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\SpmbController::class, 'index'])->name('index');
+        Route::get('/{spmb}', [App\Http\Controllers\Admin\SpmbController::class, 'show'])->name('show');
+        Route::get('/pengaturan', [App\Http\Controllers\Admin\SpmbController::class, 'pengaturan'])->name('pengaturan');
+        Route::get('/riwayat', [App\Http\Controllers\Admin\SpmbController::class, 'riwayat'])->name('riwayat');
+        Route::get('/export', [App\Http\Controllers\Admin\SpmbController::class, 'export'])->name('export');
     });
     
-    // Tahun Ajaran Routes for Operator (Read-only)
-    Route::prefix('tahun-ajaran')->name('tahun-ajaran.')->group(function () {
-        Route::get('/', [App\Http\Controllers\Admin\TahunAjaranController::class, 'index'])->name('index');
-        Route::get('/{tahunAjaran}', [App\Http\Controllers\Admin\TahunAjaranController::class, 'show'])->name('show');
+    // Galeri Routes (Read-only)
+    Route::prefix('galeri')->name('galeri.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\GaleriController::class, 'index'])->name('index');
+        Route::get('/{galeri}', [App\Http\Controllers\Admin\GaleriController::class, 'show'])->name('show');
+    });
+    
+    // Kegiatan Routes (Read-only)
+    Route::prefix('kegiatan')->name('kegiatan.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\KegiatanController::class, 'index'])->name('index');
+        Route::get('/{kegiatan}', [App\Http\Controllers\Admin\KegiatanController::class, 'show'])->name('show');
+    });
+    
+    // Buku Tamu Routes (Read-only)
+    Route::prefix('bukutamu')->name('bukutamu.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\BukuTamuController::class, 'index'])->name('index');
+        Route::get('/{bukutamu}', [App\Http\Controllers\Admin\BukuTamuController::class, 'show'])->name('show');
     });
     
     // API Routes for AJAX
@@ -408,43 +410,166 @@ Route::prefix('operator')->name('operator.')->middleware(['auth', 'verified', 'a
     });
 });
 
+// ==================== ROUTES KEPALA SEKOLAH ====================
+
+Route::prefix('kepala-sekolah')->name('kepala-sekolah.')->middleware(['auth', 'verified', 'active', 'kepala_sekolah'])->group(function () {
+    Route::get('/dashboard', fn() => view('kepala-sekolah.dashboard'))->name('dashboard');
+    
+    // Profile Routes
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [App\Http\Controllers\KepalaSekolah\ProfileController::class, 'index'])->name('index');
+        Route::put('/update', [App\Http\Controllers\KepalaSekolah\ProfileController::class, 'update'])->name('update');
+        Route::post('/update-photo', [App\Http\Controllers\KepalaSekolah\ProfileController::class, 'updatePhoto'])->name('update-photo');
+        Route::put('/change-password', [App\Http\Controllers\KepalaSekolah\ProfileController::class, 'changePassword'])->name('change-password');
+    });
+    
+    // Siswa Routes (Read-only)
+    Route::prefix('siswa')->name('siswa.')->group(function () {
+        Route::get('/siswa-aktif', [App\Http\Controllers\Admin\SiswaController::class, 'indexAktif'])->name('siswa-aktif.index');
+        Route::get('/siswa-aktif/{siswa}', [App\Http\Controllers\Admin\SiswaController::class, 'showAktif'])->name('siswa-aktif.show');
+    });
+    
+    // Guru Routes (Read-only)
+    Route::prefix('guru')->name('guru.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\GuruController::class, 'index'])->name('index');
+        Route::get('/{guru}', [App\Http\Controllers\Admin\GuruController::class, 'show'])->name('show');
+    });
+    
+    // Tahun Ajaran Routes (Read-only)
+    Route::prefix('tahun-ajaran')->name('tahun-ajaran.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\TahunAjaranController::class, 'index'])->name('index');
+        Route::get('/{tahunAjaran}', [App\Http\Controllers\Admin\TahunAjaranController::class, 'show'])->name('show');
+    });
+    
+    // Absensi Routes (Read-only)
+    Route::prefix('absensi')->name('absensi.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\AbsensiController::class, 'index'])->name('index');
+        Route::get('/{id}/edit', [App\Http\Controllers\Admin\AbsensiController::class, 'edit'])->name('edit');
+    });
+    
+    // Absensi Guru Routes (Read-only)
+    Route::prefix('absensi-guru')->name('absensi-guru.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\AbsensiGuruController::class, 'index'])->name('index');
+    });
+    
+    // Materi KBM Routes (Read-only)
+    Route::prefix('materi-kbm')->name('materi-kbm.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\MateriKbmController::class, 'index'])->name('index');
+        Route::get('/{materiKbm}', [App\Http\Controllers\Admin\MateriKbmController::class, 'show'])->name('show');
+    });
+    
+    // Kalender Akademik Routes (Read-only)
+    Route::prefix('kalender-akademik')->name('kalender-akademik.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\KalenderAkademikController::class, 'index'])->name('index');
+        Route::get('/{kalenderAkademik}', [App\Http\Controllers\Admin\KalenderAkademikController::class, 'show'])->name('show');
+    });
+    
+    // Jadwal Pelajaran Routes (Read-only)
+    Route::prefix('jadwal-pelajaran')->name('jadwal-pelajaran.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\JadwalPelajaranController::class, 'index'])->name('index');
+        Route::get('/{jadwalPelajaran}', [App\Http\Controllers\Admin\JadwalPelajaranController::class, 'show'])->name('show');
+    });
+    
+    // PPDB Routes (Read-only)
+    Route::prefix('ppdb')->name('ppdb.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\SpmbController::class, 'index'])->name('index');
+        Route::get('/{spmb}', [App\Http\Controllers\Admin\SpmbController::class, 'show'])->name('show');
+        Route::get('/pengaturan', [App\Http\Controllers\Admin\SpmbController::class, 'pengaturan'])->name('pengaturan');
+        Route::get('/riwayat', [App\Http\Controllers\Admin\SpmbController::class, 'riwayat'])->name('riwayat');
+        Route::get('/export', [App\Http\Controllers\Admin\SpmbController::class, 'export'])->name('export');
+    });
+    
+    // Galeri Routes (Read-only)
+    Route::prefix('galeri')->name('galeri.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\GaleriController::class, 'index'])->name('index');
+        Route::get('/{galeri}', [App\Http\Controllers\Admin\GaleriController::class, 'show'])->name('show');
+    });
+    
+    // Kegiatan Routes (Read-only)
+    Route::prefix('kegiatan')->name('kegiatan.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\KegiatanController::class, 'index'])->name('index');
+        Route::get('/{kegiatan}', [App\Http\Controllers\Admin\KegiatanController::class, 'show'])->name('show');
+    });
+    
+    // Buku Tamu Routes (Read-only)
+    Route::prefix('bukutamu')->name('bukutamu.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\BukuTamuController::class, 'index'])->name('index');
+        Route::get('/{bukutamu}', [App\Http\Controllers\Admin\BukuTamuController::class, 'show'])->name('show');
+    });
+});
+
 // ==================== ROUTES GURU ====================
 
 Route::prefix('guru')->name('guru.')->middleware(['auth', 'verified', 'active', 'guru'])->group(function () {
     Route::get('/dashboard', fn() => view('guru.dashboard'))->name('dashboard');
-    Route::get('/absensi', fn() => view('guru.absensi.index'))->name('absensi.index');
-    Route::get('/profile', fn() => view('guru.profile'))->name('profile');
+    
+    // Profile Routes
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Guru\ProfileController::class, 'index'])->name('index');
+        Route::put('/update', [App\Http\Controllers\Guru\ProfileController::class, 'update'])->name('update');
+        Route::post('/update-photo', [App\Http\Controllers\Guru\ProfileController::class, 'updatePhoto'])->name('update-photo');
+        Route::put('/change-password', [App\Http\Controllers\Guru\ProfileController::class, 'changePassword'])->name('change-password');
+    });
+    
+    // Siswa Routes (Read-only)
+    Route::prefix('siswa')->name('siswa.')->group(function () {
+        Route::get('/siswa-aktif', [App\Http\Controllers\Admin\SiswaController::class, 'indexAktif'])->name('siswa-aktif.index');
+        Route::get('/siswa-aktif/{siswa}', [App\Http\Controllers\Admin\SiswaController::class, 'showAktif'])->name('siswa-aktif.show');
+    });
+    
+    // Absensi Routes (Read-only)
+    Route::prefix('absensi')->name('absensi.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\AbsensiController::class, 'index'])->name('index');
+        Route::get('/{id}/edit', [App\Http\Controllers\Admin\AbsensiController::class, 'edit'])->name('edit');
+    });
+    
+    // Kalender Akademik Routes (Read-only)
+    Route::prefix('kalender-akademik')->name('kalender-akademik.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\KalenderAkademikController::class, 'index'])->name('index');
+        Route::get('/{kalenderAkademik}', [App\Http\Controllers\Admin\KalenderAkademikController::class, 'show'])->name('show');
+    });
+    
+    // Galeri Routes (Read-only)
+    Route::prefix('galeri')->name('galeri.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\GaleriController::class, 'index'])->name('index');
+        Route::get('/{galeri}', [App\Http\Controllers\Admin\GaleriController::class, 'show'])->name('show');
+    });
+    
+    // Kegiatan Routes (Read-only)
+    Route::prefix('kegiatan')->name('kegiatan.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\KegiatanController::class, 'index'])->name('index');
+        Route::get('/{kegiatan}', [App\Http\Controllers\Admin\KegiatanController::class, 'show'])->name('show');
+    });
+    
+    // Buku Tamu Routes (Read-only)
+    Route::prefix('bukutamu')->name('bukutamu.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\BukuTamuController::class, 'index'])->name('index');
+        Route::get('/{bukutamu}', [App\Http\Controllers\Admin\BukuTamuController::class, 'show'])->name('show');
+    });
 });
 
 // ==================== ROUTES SISWA ====================
 
+// Public routes for siswa authentication (outside prefix)
 Route::prefix('siswa')->name('siswa.')->group(function () {
+    Route::get('/login/google', [\App\Http\Controllers\Siswa\AuthController::class, 'redirectToGoogle'])->name('login.google');
+    Route::get('/login/google/callback', [\App\Http\Controllers\Siswa\AuthController::class, 'handleGoogleCallback'])->name('login.google.callback');
+
     Route::get('/login', [\App\Http\Controllers\Siswa\AuthController::class, 'login'])->name('login');
     Route::post('/login', [\App\Http\Controllers\Siswa\AuthController::class, 'authenticate'])->name('authenticate');
     Route::get('/register', [\App\Http\Controllers\Siswa\AuthController::class, 'register'])->name('register');
     Route::post('/register', [\App\Http\Controllers\Siswa\AuthController::class, 'storeRegister'])->name('storeRegister');
     Route::post('/logout', [\App\Http\Controllers\Siswa\AuthController::class, 'logout'])->name('logout');
     
-    // Google Auth Routes (Generic/Admin/Guru)
-    Route::get('login/google', [SocialiteController::class, 'redirectToGoogle'])->name('login.google');
-    Route::get('login/google/callback', [SocialiteController::class, 'handleCallback'])->name('login.google.callback');
-    
-    // Google Auth Routes (Siswa)
-    Route::get('/login/google', [\App\Http\Controllers\Siswa\AuthController::class, 'redirectToGoogle'])->name('login.google');
-    Route::get('/login/google/callback', [\App\Http\Controllers\Siswa\AuthController::class, 'handleGoogleCallback'])->name('login.google.callback');
-
     Route::middleware(['auth:siswa'])->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\Siswa\DashboardController::class, 'index'])->name('dashboard');
-        Route::get('/jadwal', [\App\Http\Controllers\Siswa\JadwalPelajaranController::class, 'index'])->name('jadwal.index');
-        Route::get('/jadwal/download-pdf', [\App\Http\Controllers\Siswa\JadwalPelajaranController::class, 'downloadPdf'])->name('jadwal.download-pdf');
-        Route::get('/kalender', [\App\Http\Controllers\Siswa\KalenderAkademikController::class, 'index'])->name('kalender.index');
-        Route::get('/kalender/download-pdf', [\App\Http\Controllers\Siswa\KalenderAkademikController::class, 'downloadPdf'])->name('kalender.download-pdf');
-        Route::get('/materi', [\App\Http\Controllers\Siswa\MateriKbmController::class, 'index'])->name('materi.index');
-        Route::get('/materi/{materiKbm}/download', [\App\Http\Controllers\Siswa\MateriKbmController::class, 'download'])->name('materi.download');
-        Route::get('/ppdb/data', \App\Http\Controllers\Siswa\Ppdb\HasilSeleksiController::class)->name('ppdb.data');
-        Route::get('/ppdb/hasil-seleksi', \App\Http\Controllers\Siswa\Ppdb\HasilSeleksiController::class)->name('ppdb.hasil-seleksi');
-        Route::get('/ppdb/hasil-seleksi/{spmb}/print', [\App\Http\Controllers\Siswa\Ppdb\HasilSeleksiController::class, 'printBukti'])->name('ppdb.hasil-seleksi.print');
-        Route::post('/ppdb/upload-foto', [\App\Http\Controllers\Siswa\Ppdb\HasilSeleksiController::class, 'uploadFoto'])->name('ppdb.upload-foto');
+        Route::get('/profile', [\App\Http\Controllers\Siswa\DashboardController::class, 'profile'])->name('profile');
+        Route::get('/formulir', [\App\Http\Controllers\Siswa\DashboardController::class, 'formulir'])->name('formulir');
+        Route::get('/dokumen', [\App\Http\Controllers\Siswa\DashboardController::class, 'dokumen'])->name('dokumen');
+        Route::post('/dokumen/upload', [\App\Http\Controllers\Siswa\DashboardController::class, 'storeDokumen'])->name('dokumen.upload');
+        Route::post('/dokumen/submit', [\App\Http\Controllers\Siswa\DashboardController::class, 'submitPendaftaran'])->name('dokumen.submit');
+        Route::get('/pengumuman', [\App\Http\Controllers\Siswa\DashboardController::class, 'pengumuman'])->name('pengumuman');
+        Route::get('/success', [\App\Http\Controllers\Siswa\DashboardController::class, 'success'])->name('success');
     });
 });
 
@@ -463,7 +588,16 @@ Route::prefix('api')->name('api.')->group(function () {
             Route::get('/statistics', [AdminBukuTamuController::class, 'getStatistics'])->name('statistics');
         });
     });
+
+    // ==================== ROUTES NOTIFIKASI (semua role authenticated) ====================
+    Route::prefix('notifications')->name('notifications.')->middleware(['auth'])->group(function () {
+        Route::get('/', [\App\Http\Controllers\NotificationController::class, 'index'])->name('index');
+        Route::post('/{id}/read', [\App\Http\Controllers\NotificationController::class, 'markRead'])->name('read');
+        Route::post('/read-all', [\App\Http\Controllers\NotificationController::class, 'markAllRead'])->name('read-all');
+    });
 });
+
+Route::get('/dashboard', [BaseDashboardController::class, 'index'])->name('dashboard');
 
 Route::fallback(function () {
     return response('<h1>404 - Halaman Tidak Ditemukan</h1>', 404);

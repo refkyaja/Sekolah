@@ -1,4 +1,24 @@
-@extends('layouts.admin')
+@php
+    $role = auth()->user()->role;
+    $user = auth()->user();
+    $layout = match ($role) {
+        'admin' => 'layouts.admin',
+        'operator' => 'layouts.operator',
+        'kepala_sekolah' => 'layouts.kepala-sekolah',
+        'guru' => 'layouts.guru',
+        default => 'layouts.app',
+    };
+    $routePrefix = match ($role) {
+        'admin' => 'admin',
+        'operator' => 'operator',
+        'kepala_sekolah' => 'kepala-sekolah',
+        'guru' => 'guru',
+        default => 'admin',
+    };
+    $canUpdateKegiatan = $user->canAccessModule('kegiatan', 'update');
+@endphp
+
+@extends($layout)
 
 @section('title', 'Detail Kegiatan Sekolah')
 @section('breadcrumb', 'Kegiatan Sekolah / Detail')
@@ -21,14 +41,16 @@
             @endif
         </div>
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
-            <a href="{{ route('admin.kegiatan.index') }}" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-white text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-50 transition-all border border-slate-200 shadow-sm">
+            <a href="{{ route($routePrefix . '.kegiatan.index') }}" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-white text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-50 transition-all border border-slate-200 shadow-sm">
                 <span class="material-symbols-outlined text-lg">arrow_back</span>
                 Kembali
             </a>
-            <a href="{{ route('admin.kegiatan.edit', $kegiatan) }}" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-2xl font-bold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20">
+            @if($canUpdateKegiatan)
+            <a href="{{ route($routePrefix . '.kegiatan.edit', $kegiatan) }}" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-2xl font-bold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20">
                 <span class="material-symbols-outlined text-lg">edit</span>
                 Edit Kegiatan
             </a>
+            @endif
         </div>
     </div>
 
@@ -148,16 +170,20 @@
                         <h4 class="text-sm font-bold text-primary mb-2">Informasi Publikasi</h4>
                         @if($kegiatan->is_published)
                             <p class="text-xs text-slate-500 leading-relaxed mb-4">Kegiatan ini sudah dipublikasikan dan dapat dilihat oleh publik di website sekolah.</p>
-                            <form action="{{ route('admin.kegiatan.toggle-publish', $kegiatan) }}" method="POST">
+                            @if($canUpdateKegiatan)
+                            <form action="{{ route($routePrefix . '.kegiatan.toggle-publish', $kegiatan) }}" method="POST">
                                 @csrf @method('PATCH')
                                 <button type="submit" class="w-full py-2.5 bg-slate-200 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-300 transition-all">Sembunyikan (Set Draft)</button>
                             </form>
+                            @endif
                         @else
                             <p class="text-xs text-slate-500 leading-relaxed mb-4">Kegiatan ini saat ini berstatus Draft dan tidak akan muncul di website publik sampai Anda mengubah statusnya menjadi Public.</p>
-                            <form action="{{ route('admin.kegiatan.toggle-publish', $kegiatan) }}" method="POST">
+                            @if($canUpdateKegiatan)
+                            <form action="{{ route($routePrefix . '.kegiatan.toggle-publish', $kegiatan) }}" method="POST">
                                 @csrf @method('PATCH')
                                 <button type="submit" class="w-full py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:bg-primary/90 transition-all">Publish Sekarang</button>
                             </form>
+                            @endif
                         @endif
                     </div>
                 </div>

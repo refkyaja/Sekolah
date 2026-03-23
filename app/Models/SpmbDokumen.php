@@ -20,7 +20,6 @@ class SpmbDokumen extends Model
         'mime_type',
         'ukuran_file',
         'keterangan',
-        'uploaded_by',
     ];
 
     protected $casts = [
@@ -35,13 +34,6 @@ class SpmbDokumen extends Model
         return $this->belongsTo(Spmb::class, 'spmb_id');
     }
 
-    /**
-     * Relasi ke user yang upload
-     */
-    public function uploader()
-    {
-        return $this->belongsTo(User::class, 'uploaded_by');
-    }
 
     /**
      * Scope untuk filter jenis dokumen
@@ -79,8 +71,6 @@ class SpmbDokumen extends Model
             'kk' => 'Kartu Keluarga',
             'ktp' => 'KTP Orang Tua',
             'bukti_transfer' => 'Bukti Transfer',
-            'sertifikat_prestasi' => 'Sertifikat Prestasi',
-            'surat_mutasi' => 'Surat Mutasi',
             'kartu_bantuan' => 'Kartu Bantuan',
         ];
 

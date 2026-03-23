@@ -1,4 +1,23 @@
-@extends('layouts.admin')
+@php
+    $role = auth()->user()->role;
+    $layout = match ($role) {
+        'admin' => 'layouts.admin',
+        'operator' => 'layouts.operator',
+        'kepala_sekolah' => 'layouts.kepala-sekolah',
+        'guru' => 'layouts.guru',
+        default => 'layouts.app',
+    };
+    $routePrefix = match ($role) {
+        'admin' => 'admin',
+        'operator' => 'operator',
+        'kepala_sekolah' => 'kepala-sekolah',
+        'guru' => 'guru',
+        default => 'admin',
+    };
+    $isReadOnlyRole = $role !== 'admin';
+@endphp
+
+@extends($layout)
 
 @push('styles')
 <style>
@@ -22,7 +41,7 @@
 @section('content')
 <nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 uppercase tracking-widest">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
-        <li><a class="hover:text-primary" href="{{ route('admin.ppdb.index') }}">PPDB</a></li>
+        <li><a class="hover:text-primary" href="{{ route($routePrefix . '.ppdb.index') }}">PPDB</a></li>
         <li><span class="mx-2">/</span></li>
         <li class="text-slate-600">Pengaturan Jadwal & Statistik</li>
     </ol>
@@ -68,7 +87,7 @@ $diff = $now->diff($countdownDate);
     </div>
 </div>
 
-<form action="{{ route('admin.ppdb.updatePengaturan') }}" method="POST">
+<form action="{{ $isReadOnlyRole ? '#' : route('admin.ppdb.updatePengaturan') }}" method="POST">
     @csrf
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
         <div class="xl:col-span-2 space-y-8">
@@ -172,13 +191,20 @@ $diff = $now->diff($countdownDate);
             <p class="text-xs text-slate-500">Terakhir diperbarui: {{ $setting->updated_at ? $setting->updated_at->format('d M Y, H:i') : '-' }}</p>
         </div>
         <div class="flex items-center gap-3 w-full sm:w-auto">
-            <a href="{{ route('admin.ppdb.pengaturan') }}" class="flex-1 sm:flex-none px-8 py-3.5 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-200 transition-all">
+            <a href="{{ route($routePrefix . '.ppdb.pengaturan') }}" class="flex-1 sm:flex-none px-8 py-3.5 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-200 transition-all">
                 Reset Jadwal
             </a>
-            <button type="submit" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-10 py-3.5 bg-primary text-white rounded-2xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
-                <span class="material-symbols-outlined text-lg">save</span>
-                Simpan Perubahan
-            </button>
+            @if(!$isReadOnlyRole)
+                <button type="submit" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-10 py-3.5 bg-primary text-white rounded-2xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+                    <span class="material-symbols-outlined text-lg">save</span>
+                    Simpan Perubahan
+                </button>
+            @else
+                <div class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-100 text-slate-500 rounded-2xl font-bold text-sm">
+                    <span class="material-symbols-outlined text-lg">visibility</span>
+                    Mode Lihat Saja
+                </div>
+            @endif
         </div>
     </div>
 </form>

@@ -59,7 +59,7 @@ class JadwalPelajaranController extends Controller
 
         JadwalPelajaran::create($validated);
 
-        return redirect()->route('admin.jadwal-pelajaran.index', [
+        return redirect()->route('admin.jadwal.index', [
             'kelompok' => $request->kelompok,
             'tahun_ajaran_id' => $request->tahun_ajaran_id,
             'semester' => $request->semester
@@ -89,7 +89,7 @@ class JadwalPelajaranController extends Controller
 
         $jadwalPelajaran->update($validated);
 
-        return redirect()->route('admin.jadwal-pelajaran.index', [
+        return redirect()->route('admin.jadwal.index', [
             'kelompok' => $request->kelompok,
             'tahun_ajaran_id' => $request->tahun_ajaran_id,
             'semester' => $request->semester
@@ -104,7 +104,7 @@ class JadwalPelajaranController extends Controller
 
         $jadwalPelajaran->delete();
 
-        return redirect()->route('admin.jadwal-pelajaran.index', [
+        return redirect()->route('admin.jadwal.index', [
             'kelompok' => $kelompok,
             'tahun_ajaran_id' => $ta,
             'semester' => $sem

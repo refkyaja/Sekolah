@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Concerns\AuthorizesModuleAccess;
 use App\Http\Controllers\Controller;
 use App\Models\Galeri;
 use App\Models\GambarGaleri; // Model baru untuk multiple images
@@ -12,18 +13,42 @@ use Illuminate\Support\Str;
 
 class GaleriController extends Controller
 {
+    use AuthorizesModuleAccess;
+
+    protected function galeriRoutePrefix(): string
+    {
+        return match (auth()->user()?->role) {
+            'admin' => 'admin',
+            'operator' => 'operator',
+            'kepala_sekolah' => 'kepala-sekolah',
+            'guru' => 'guru',
+            default => 'admin',
+        };
+    }
+
+    protected function galeriRoute(string $name, mixed ...$parameters): string
+    {
+        return route($this->galeriRoutePrefix() . '.galeri.' . $name, ...$parameters);
+    }
+
     public function index()
     {
+        $this->authorizeModule('galeri', 'read');
+
         return view('admin.galeri.index');
     }
 
     public function create()
     {
+        $this->authorizeModule('galeri', 'create');
+
         return view('admin.galeri.create');
     }
 
     public function store(Request $request)
     {
+        $this->authorizeModule('galeri', 'create');
+
         // Untuk AJAX (fetch dari JS), validasi error otomatis return JSON 422
         $validated = $request->validate([
             'judul'        => 'required|string|max:255',
@@ -74,11 +99,11 @@ class GaleriController extends Controller
                 return response()->json([
                     'success'  => true,
                     'message'  => $successMsg,
-                    'redirect' => route('admin.galeri.index'),
+                    'redirect' => $this->galeriRoute('index'),
                 ]);
             }
 
-            return redirect()->route('admin.galeri.index')->with('success', $successMsg);
+            return redirect()->to($this->galeriRoute('index'))->with('success', $successMsg);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -105,18 +130,24 @@ class GaleriController extends Controller
 
     public function show(Galeri $galeri)
     {
+        $this->authorizeModule('galeri', 'read');
+
         $galeri->load('gambar', 'user');
         return view('admin.galeri.show', compact('galeri'));
     }
 
     public function edit(Galeri $galeri)
     {
+        $this->authorizeModule('galeri', 'update');
+
         $galeri->load('gambar');
         return view('admin.galeri.edit', compact('galeri'));
     }
 
     public function update(Request $request, Galeri $galeri)
     {
+        $this->authorizeModule('galeri', 'update');
+
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
@@ -188,7 +219,7 @@ class GaleriController extends Controller
             
             DB::commit();
             
-            return redirect()->route('admin.galeri.index')
+            return redirect()->to($this->galeriRoute('index'))
                 ->with('success', 'Galeri berhasil diperbarui! ' . 
                     ($request->filled('hapus_gambar') ? count($request->hapus_gambar) . ' gambar dihapus. ' : '') .
                     ($request->hasFile('gambar') ? count($request->file('gambar')) . ' gambar ditambahkan.' : ''));
@@ -211,6 +242,8 @@ class GaleriController extends Controller
 
     public function destroy(Galeri $galeri)
     {
+        $this->authorizeModule('galeri', 'delete');
+
         // Hapus semua gambar dari storage
         foreach ($galeri->gambar as $gambar) {
             Storage::disk('public')->delete($gambar->path);
@@ -219,12 +252,14 @@ class GaleriController extends Controller
 
         $galeri->delete();
 
-        return redirect()->route('admin.galeri.index')
+        return redirect()->to($this->galeriRoute('index'))
             ->with('success', 'Galeri berhasil dihapus!');
     }
 
     public function bulkDelete(Request $request)
     {
+        $this->authorizeModule('galeri', 'delete');
+
         $request->validate([
             'ids' => 'required|array',
             'ids.*' => 'exists:galeris,id'
@@ -249,6 +284,8 @@ class GaleriController extends Controller
 
     public function togglePublish(Galeri $galeri)
     {
+        $this->authorizeModule('galeri', 'update');
+
         $galeri->update(['is_published' => !$galeri->is_published]);
 
         return back()->with('success', 'Status galeri berhasil diubah!');
@@ -257,6 +294,8 @@ class GaleriController extends Controller
     // Method baru untuk menghapus gambar individual
     public function destroyGambar($id)
     {
+        $this->authorizeModule('galeri', 'update');
+
         try {
             $gambar = GambarGaleri::findOrFail($id);
             
@@ -284,6 +323,8 @@ class GaleriController extends Controller
     // Method untuk mengupdate urutan gambar
     public function updateUrutan(Request $request, Galeri $galeri)
     {
+        $this->authorizeModule('galeri', 'update');
+
         $request->validate([
             'urutan' => 'required|array',
             'urutan.*' => 'exists:gambar_galeri,id'

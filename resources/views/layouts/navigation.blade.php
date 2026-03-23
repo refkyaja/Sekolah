@@ -42,20 +42,8 @@
                     </button>
                     
                     <div x-show="open" x-transition class="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border py-2 z-50">
-                        <a href="{{ route('profil.sejarah') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                            <i class="fas fa-history mr-3"></i> Sejarah Singkat
-                        </a>
-                        <a href="{{ route('profil.sambutan') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                            <i class="fas fa-user-tie mr-3"></i> Sambutan Kepala Sekolah
-                        </a>
-                        <a href="{{ route('profil.visimisi') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                            <i class="fas fa-bullseye mr-3"></i> Visi & Misi
-                        </a>
-                        <a href="{{ route('profil.program') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                            <i class="fas fa-calendar-alt mr-3"></i> Program Sekolah
-                        </a>
-                        <a href="{{ route('profil.lokasi') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                            <i class="fas fa-map-marker-alt mr-3"></i> Lokasi Sekolah
+                        <a href="{{ route('profil') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                            <i class="fas fa-school mr-3"></i> Profil Sekolah
                         </a>
                     </div>
                 </div>
@@ -68,17 +56,8 @@
                     </button>
                     
                     <div x-show="open" x-transition class="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border py-2 z-50">
-                        <a href="{{ route('akademik.kegiatan') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                            <i class="fas fa-running mr-3"></i> Kegiatan Sekolah
-                        </a>
-                        <a href="{{ route('akademik.prestasi') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                            <i class="fas fa-trophy mr-3"></i> Prestasi Siswa
-                        </a>
-                        <a href="{{ route('akademik.ekstrakurikuler') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                            <i class="fas fa-music mr-3"></i> Ekstrakurikuler
-                        </a>
-                        <a href="{{ route('akademik.bahan-ajar') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                            <i class="fas fa-book mr-3"></i> Bahan Ajar
+                        <a href="{{ route('kurikulum') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                            <i class="fas fa-graduation-cap mr-3"></i> Kurikulum Sekolah
                         </a>
                     </div>
                 </div>
@@ -91,11 +70,8 @@
                     </button>
                     
                     <div x-show="open" x-transition class="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border py-2 z-50">
-                        <a href="{{ route('sarana.infrastruktur') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                            <i class="fas fa-school mr-3"></i> Sarana Infrastruktur
-                        </a>
-                        <a href="{{ route('sarana.pembelajaran') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                            <i class="fas fa-chalkboard-teacher mr-3"></i> Sarana Pembelajaran
+                        <a href="{{ route('galeri.index') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                            <i class="fas fa-images mr-3"></i> Galeri Sekolah
                         </a>
                     </div>
                 </div>
@@ -108,19 +84,19 @@
                     </button>
                     
                     <div x-show="open" x-transition class="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border py-2 z-50">
-                        <a href="{{ route('layanan.buku-tamu') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                        <a href="{{ route('home') }}#bukutamu-section" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
                             <i class="fas fa-book-open mr-3"></i> Buku Tamu
                         </a>
-                        <a href="{{ route('layanan.kontak') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                            <i class="fas fa-phone-alt mr-3"></i> Kontak Sekolah
+                        <a href="{{ route('home') }}#bukutamu-section" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                            <i class="fas fa-phone-alt mr-3"></i> Hubungi Sekolah
                         </a>
                     </div>
                 </div>
 
                 <!-- 8. PPDB Button (Special Highlight) -->
-                <a href="{{ route('spmb.index') }}" 
+                <a href="{{ route('ppdb.index') }}" 
                    class="ml-4 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold px-5 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center">
-                    <i class="fas fa-user-plus mr-2"></i> SPMB
+                    <i class="fas fa-user-plus mr-2"></i> PPDB
                     <span class="ml-1 text-xs bg-white text-orange-500 px-1.5 py-0.5 rounded-full">⭐</span>
                 </a>
             </div>
@@ -166,25 +142,9 @@
                 </button>
                 
                 <div x-show="openDropdown === 'profil'" class="bg-gray-50">
-                    <a href="{{ route('profil.sejarah') }}" @click="open = false"
+                    <a href="{{ route('profil') }}" @click="open = false"
                        class="block pl-12 pr-4 py-3 text-sm text-gray-600 hover:bg-blue-100 hover:text-blue-700">
-                        Sejarah Singkat
-                    </a>
-                    <a href="{{ route('profil.sambutan') }}" @click="open = false"
-                       class="block pl-12 pr-4 py-3 text-sm text-gray-600 hover:bg-blue-100 hover:text-blue-700">
-                        Sambutan Kepala Sekolah
-                    </a>
-                    <a href="{{ route('profil.visimisi') }}" @click="open = false"
-                       class="block pl-12 pr-4 py-3 text-sm text-gray-600 hover:bg-blue-100 hover:text-blue-700">
-                        Visi & Misi
-                    </a>
-                    <a href="{{ route('profil.program') }}" @click="open = false"
-                       class="block pl-12 pr-4 py-3 text-sm text-gray-600 hover:bg-blue-100 hover:text-blue-700">
-                        Program Sekolah
-                    </a>
-                    <a href="{{ route('profil.lokasi') }}" @click="open = false"
-                       class="block pl-12 pr-4 py-3 text-sm text-gray-600 hover:bg-blue-100 hover:text-blue-700">
-                        Lokasi Sekolah
+                        Profil Sekolah
                     </a>
                 </div>
             </div>
@@ -200,21 +160,9 @@
                 </button>
                 
                 <div x-show="openDropdown === 'akademik'" class="bg-gray-50">
-                    <a href="{{ route('akademik.kegiatan') }}" @click="open = false"
+                    <a href="{{ route('kurikulum') }}" @click="open = false"
                        class="block pl-12 pr-4 py-3 text-sm text-gray-600 hover:bg-blue-100 hover:text-blue-700">
-                        Kegiatan Sekolah
-                    </a>
-                    <a href="{{ route('akademik.prestasi') }}" @click="open = false"
-                       class="block pl-12 pr-4 py-3 text-sm text-gray-600 hover:bg-blue-100 hover:text-blue-700">
-                        Prestasi Siswa
-                    </a>
-                    <a href="{{ route('akademik.ekstrakurikuler') }}" @click="open = false"
-                       class="block pl-12 pr-4 py-3 text-sm text-gray-600 hover:bg-blue-100 hover:text-blue-700">
-                        Ekstrakurikuler
-                    </a>
-                    <a href="{{ route('akademik.bahan-ajar') }}" @click="open = false"
-                       class="block pl-12 pr-4 py-3 text-sm text-gray-600 hover:bg-blue-100 hover:text-blue-700">
-                        Bahan Ajar
+                        Kurikulum Sekolah
                     </a>
                 </div>
             </div>
@@ -230,13 +178,9 @@
                 </button>
                 
                 <div x-show="openDropdown === 'sarana'" class="bg-gray-50">
-                    <a href="{{ route('sarana.infrastruktur') }}" @click="open = false"
+                    <a href="{{ route('galeri.index') }}" @click="open = false"
                        class="block pl-12 pr-4 py-3 text-sm text-gray-600 hover:bg-blue-100 hover:text-blue-700">
-                        Sarana Infrastruktur
-                    </a>
-                    <a href="{{ route('sarana.pembelajaran') }}" @click="open = false"
-                       class="block pl-12 pr-4 py-3 text-sm text-gray-600 hover:bg-blue-100 hover:text-blue-700">
-                        Sarana Pembelajaran
+                        Galeri Sekolah
                     </a>
                 </div>
             </div>
@@ -252,22 +196,22 @@
                 </button>
                 
                 <div x-show="openDropdown === 'layanan'" class="bg-gray-50">
-                    <a href="{{ route('layanan.buku-tamu') }}" @click="open = false"
+                    <a href="{{ route('home') }}#bukutamu-section" @click="open = false"
                        class="block pl-12 pr-4 py-3 text-sm text-gray-600 hover:bg-blue-100 hover:text-blue-700">
                         Buku Tamu
                     </a>
-                    <a href="{{ route('layanan.kontak') }}" @click="open = false"
+                    <a href="{{ route('home') }}#bukutamu-section" @click="open = false"
                        class="block pl-12 pr-4 py-3 text-sm text-gray-600 hover:bg-blue-100 hover:text-blue-700">
-                        Kontak Sekolah
+                        Hubungi Sekolah
                     </a>
                 </div>
             </div>
 
             <!-- 8. spmb Button Mobile -->
             <div class="pt-4">
-                <a href="{{ route('spmb.index') }}" @click="open = false"
+                <a href="{{ route('ppdb.index') }}" @click="open = false"
                    class="block w-full text-center bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center">
-                    <i class="fas fa-user-plus mr-2"></i> PENDAFTARAN (SPMB)
+                    <i class="fas fa-user-plus mr-2"></i> PENDAFTARAN (PPDB)
                     <span class="ml-2 text-xs bg-white text-orange-500 px-1.5 py-0.5 rounded-full">⭐</span>
                 </a>
             </div>

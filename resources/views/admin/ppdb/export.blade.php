@@ -22,7 +22,7 @@
 @section('content')
 <nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 uppercase tracking-widest">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
-            <a href="{{ route('admin.spmb.index') }}">PPDB</a>
+            <a href="{{ route('admin.ppdb.index') }}">PPDB</a>
         <li><span class="mx-2">/</span></li>
         <li class="text-slate-600">Export Data</li>
     </ol>
@@ -34,7 +34,7 @@
         <p class="text-sm text-slate-500 mt-1">Eksport data calon siswa berdasarkan tahun ajaran.</p>
     </div>
     <div class="flex items-center gap-3">
-        <a href="{{ route('admin.spmb.index') }}" class="flex items-center gap-2 px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-medium text-sm hover:bg-slate-200 transition-all">
+        <a href="{{ route('admin.ppdb.index') }}" class="flex items-center gap-2 px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-medium text-sm hover:bg-slate-200 transition-all">
             <span class="material-symbols-outlined text-lg">arrow_back</span>
             Kembali
         </a>
@@ -72,11 +72,11 @@
             <span class="material-symbols-outlined text-lg">arrow_drop_down</span>
         </button>
         <div class="absolute right-0 mt-2 w-48 bg-white border border-slate-100 rounded-xl shadow-xl overflow-hidden z-30 hidden group-hover:block">
-            <a href="{{ route('admin.spmb.exportAll', ['format' => 'pdf']) }}" class="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2 border-b border-slate-50">
+            <a href="{{ route('admin.ppdb.export', ['format' => 'pdf']) }}" class="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2 border-b border-slate-50">
                 <span class="material-symbols-outlined text-red-500 text-lg">picture_as_pdf</span>
                 Export as PDF
             </a>
-            <a href="{{ route('admin.spmb.exportAll', ['format' => 'excel']) }}" class="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
+            <a href="{{ route('admin.ppdb.export', ['format' => 'excel']) }}" class="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
                 <span class="material-symbols-outlined text-green-600 text-lg">table_chart</span>
                 Export as Excel
             </a>
@@ -114,11 +114,11 @@
                     <td class="px-6 py-5 text-sm text-center font-semibold text-yellow-600">{{ $stat['menunggu'] }}</td>
                     <td class="px-6 py-5">
                         <div class="flex items-center justify-end gap-3">
-                            <a href="{{ route('admin.spmb.exportData', ['tahun_ajaran_id' => $stat['tahun_ajaran_id'], 'format' => 'pdf']) }}" class="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-xs font-bold transition-all border border-red-100">
+                            <a href="{{ route('admin.ppdb.export', ['tahun_ajaran_id' => $stat['tahun_ajaran_id'], 'format' => 'pdf']) }}" class="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-xs font-bold transition-all border border-red-100">
                                 <span class="material-symbols-outlined text-lg leading-none">picture_as_pdf</span>
                                 Export PDF
                             </a>
-                            <a href="{{ route('admin.spmb.exportData', ['tahun_ajaran_id' => $stat['tahun_ajaran_id'], 'format' => 'excel']) }}" class="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg text-xs font-bold transition-all border border-green-100">
+                            <a href="{{ route('admin.ppdb.export', ['tahun_ajaran_id' => $stat['tahun_ajaran_id'], 'format' => 'excel']) }}" class="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg text-xs font-bold transition-all border border-green-100">
                                 <span class="material-symbols-outlined text-lg leading-none">table_chart</span>
                                 Export Excel
                             </a>

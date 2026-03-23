@@ -60,9 +60,9 @@
                     <div class="flex flex-col gap-2">
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">NIK Anak <span class="text-red-500">*</span></label>
                         <input type="text" name="nik" value="{{ old('nik') }}" required 
-                               maxlength="16" minlength="16"
+                               maxlength="20"
                                class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all outline-none dark:text-white @error('nik') border-red-500 @enderror numeric-only" 
-                               placeholder="16 digit NIK">
+                               placeholder="NIK">
                         @error('nik') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
@@ -435,9 +435,9 @@
                         <div class="flex flex-col gap-2">
                             <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">NIK Ayah <span class="text-red-500">*</span></label>
                             <input type="text" name="nik_ayah" value="{{ old('nik_ayah') }}" required 
-                                   maxlength="16" minlength="16"
+                                   maxlength="20"
                                    class="w-full px-4 py-3 bg-white border border-slate-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm shadow-sm transition-all outline-none dark:bg-slate-900 dark:text-white numeric-only" 
-                                   placeholder="16 digit NIK">
+                                   placeholder="NIK">
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
@@ -522,9 +522,9 @@
                         <div class="flex flex-col gap-2">
                             <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">NIK Ibu <span class="text-red-500">*</span></label>
                             <input type="text" name="nik_ibu" value="{{ old('nik_ibu') }}" required 
-                                   maxlength="16" minlength="16"
+                                   maxlength="20"
                                    class="w-full px-4 py-3 bg-white border border-slate-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm shadow-sm transition-all outline-none dark:bg-slate-900 dark:text-white numeric-only" 
-                                   placeholder="16 digit NIK">
+                                   placeholder="NIK">
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
@@ -622,9 +622,9 @@
                         <div class="flex flex-col gap-2">
                             <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">NIK Wali</label>
                             <input type="text" name="nik_wali" value="{{ old('nik_wali') }}" 
-                                   maxlength="16" minlength="16"
+                                   maxlength="20"
                                    class="w-full px-4 py-3 bg-white border border-slate-100 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm shadow-sm transition-all outline-none dark:bg-slate-900 dark:text-white numeric-only" 
-                                   placeholder="16 digit NIK">
+                                   placeholder="NIK">
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">

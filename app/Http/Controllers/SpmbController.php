@@ -30,7 +30,7 @@ class SpmbController extends Controller
         
         $tahunAjaran = TahunAjaran::orderBy('tahun_ajaran', 'desc')->get();
         
-        return view('admin.spmb.index', compact('spmb', 'tahunAjaran'));
+        return view('admin.ppdb.index', compact('spmb', 'tahunAjaran'));
     }
 
     /**
@@ -41,7 +41,7 @@ class SpmbController extends Controller
         $tahunAjaran = TahunAjaran::orderBy('tahun_ajaran', 'desc')->get();
         $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
         
-        return view('admin.spmb.create', compact('tahunAjaran', 'tahunAjaranAktif'));
+        return view('admin.ppdb.create', compact('tahunAjaran', 'tahunAjaranAktif'));
     }
 
     /**
@@ -57,7 +57,7 @@ class SpmbController extends Controller
             // Data Anak (Bagian 1) - semuanya string tanpa in kecuali yang benar-benar perlu
             'nama_lengkap_anak' => 'required|string|max:255',
             'nama_panggilan_anak' => 'nullable|string|max:100',
-            'nik_anak' => 'required|digits:16|unique:spmb,nik_anak',
+            'nik_anak' => 'required|string|max:20|unique:spmb,nik_anak',
             'tempat_lahir_anak' => 'required|string|max:100',
             'tanggal_lahir_anak' => 'required|date',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
@@ -92,7 +92,7 @@ class SpmbController extends Controller
             
             // Data Ayah
             'nama_lengkap_ayah' => 'required|string|max:255',
-            'nik_ayah' => 'required|digits:16',
+            'nik_ayah' => 'required|string|max:20',
             'tempat_lahir_ayah' => 'required|string|max:100',
             'tanggal_lahir_ayah' => 'required|date',
             'pendidikan_ayah' => 'nullable|string|max:100',
@@ -104,7 +104,7 @@ class SpmbController extends Controller
             
             // Data Ibu
             'nama_lengkap_ibu' => 'required|string|max:255',
-            'nik_ibu' => 'required|digits:16',
+            'nik_ibu' => 'required|string|max:20',
             'tempat_lahir_ibu' => 'required|string|max:100',
             'tanggal_lahir_ibu' => 'required|date',
             'pendidikan_ibu' => 'nullable|string|max:100',
@@ -118,7 +118,7 @@ class SpmbController extends Controller
             'punya_wali' => 'nullable|boolean',
             'nama_lengkap_wali' => 'nullable|string|max:255',
             'hubungan_dengan_anak' => 'nullable|string|max:100',
-            'nik_wali' => 'nullable|digits:16',
+            'nik_wali' => 'nullable|string|max:20',
             'tempat_lahir_wali' => 'nullable|string|max:100',
             'tanggal_lahir_wali' => 'nullable|date',
             'pendidikan_wali' => 'nullable|string|max:100',
@@ -137,15 +137,15 @@ class SpmbController extends Controller
             'kartu_keluarga' => 'nullable|file|mimes:pdf,jpeg,jpg,png|max:2048',
             'ktp_orang_tua' => 'nullable|file|mimes:pdf,jpeg,jpg,png|max:2048',
         ], [
-            'nik_anak.digits' => 'NIK anak harus 16 digit angka',
+            'nik_anak.max' => 'NIK anak maksimal 20 karakter',
             'nik_anak.unique' => 'NIK ini sudah terdaftar',
-            'nik_ayah.digits' => 'NIK ayah harus 16 digit angka',
-            'nik_ibu.digits' => 'NIK ibu harus 16 digit angka',
-            'nik_wali.digits' => 'NIK wali harus 16 digit angka',
+            'nik_ayah.max' => 'NIK ayah maksimal 20 karakter',
+            'nik_ibu.max' => 'NIK ibu maksimal 20 karakter',
+            'nik_wali.max' => 'NIK wali maksimal 20 karakter',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('admin.spmb.create')
+            return redirect()->route('admin.ppdb.create')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -255,7 +255,7 @@ class SpmbController extends Controller
             
             DB::commit();
             
-            return redirect()->route('admin.spmb.index')
+            return redirect()->route('admin.ppdb.index')
                 ->with('success', 'Data pendaftaran SPMB berhasil ditambahkan. Nomor Pendaftaran: ' . $noPendaftaran);
                 
         } catch (\Exception $e) {
@@ -263,7 +263,7 @@ class SpmbController extends Controller
             Log::error('Admin SPMB Store Error: ' . $e->getMessage());
             Log::error('Admin SPMB Store Trace: ' . $e->getTraceAsString());
             
-            return redirect()->route('admin.spmb.create')
+            return redirect()->route('admin.ppdb.create')
                 ->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
                 ->withInput();
         }
@@ -276,7 +276,7 @@ class SpmbController extends Controller
     {
         $spmb = Spmb::with(['tahunAjaran', 'dokumen'])->findOrFail($id);
         
-        return view('admin.spmb.show', compact('spmb'));
+        return view('admin.ppdb.show', compact('spmb'));
     }
 
     /**
@@ -287,7 +287,7 @@ class SpmbController extends Controller
         $spmb = Spmb::with('dokumen')->findOrFail($id);
         $tahunAjaran = TahunAjaran::orderBy('tahun_ajaran', 'desc')->get();
         
-        return view('admin.spmb.edit', compact('spmb', 'tahunAjaran'));
+        return view('admin.ppdb.edit', compact('spmb', 'tahunAjaran'));
     }
 
     /**
@@ -303,7 +303,7 @@ class SpmbController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('admin.spmb.edit', $id)
+            return redirect()->route('admin.ppdb.edit', $id)
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -315,13 +315,13 @@ class SpmbController extends Controller
                 'tanggal_verifikasi' => $request->status_pendaftaran != 'Menunggu Verifikasi' ? now() : $spmb->tanggal_verifikasi,
             ]);
             
-            return redirect()->route('admin.spmb.index')
+            return redirect()->route('admin.ppdb.index')
                 ->with('success', 'Data pendaftaran berhasil diperbarui');
                 
         } catch (\Exception $e) {
             Log::error('Admin SPMB Update Error: ' . $e->getMessage());
             
-            return redirect()->route('admin.spmb.edit', $id)
+            return redirect()->route('admin.ppdb.edit', $id)
                 ->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
                 ->withInput();
         }
@@ -342,7 +342,7 @@ class SpmbController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('admin.spmb.show', $id)
+            return redirect()->route('admin.ppdb.show', $id)
                 ->withErrors($validator);
         }
 
@@ -361,13 +361,13 @@ class SpmbController extends Controller
                 }
             }
             
-            return redirect()->route('admin.spmb.show', $id)
+            return redirect()->route('admin.ppdb.show', $id)
                 ->with('success', 'Verifikasi dokumen berhasil diperbarui');
                 
         } catch (\Exception $e) {
             Log::error('Admin Verifikasi Dokumen Error: ' . $e->getMessage());
             
-            return redirect()->route('admin.spmb.show', $id)
+            return redirect()->route('admin.ppdb.show', $id)
                 ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
@@ -388,13 +388,13 @@ class SpmbController extends Controller
             
             $spmb->delete();
             
-            return redirect()->route('admin.spmb.index')
+            return redirect()->route('admin.ppdb.index')
                 ->with('success', 'Data pendaftaran berhasil dihapus');
                 
         } catch (\Exception $e) {
             Log::error('Admin SPMB Delete Error: ' . $e->getMessage());
             
-            return redirect()->route('admin.spmb.index')
+            return redirect()->route('admin.ppdb.index')
                 ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
@@ -488,18 +488,18 @@ class SpmbController extends Controller
             'tempat_lahir' => 'required|string|max:100',
             'tanggal_lahir' => 'required|date',
             'agama' => 'required|string|max:50',
-            'nik' => 'required|digits:16|unique:spmb,nik_anak',
+            'nik' => 'required|string|max:20|unique:spmb,nik_anak',
             'alamat' => 'required|string',
             'akta_kelahiran' => 'required|file|mimes:pdf,jpeg,jpg,png|max:2048',
             'kartu_keluarga' => 'required|file|mimes:pdf,jpeg,jpg,png|max:2048',
             
             // Section 2: Data Orang Tua
             'nama_ayah' => 'required|string|max:255',
-            'nik_ayah' => 'required|digits:16',
+            'nik_ayah' => 'required|string|max:20',
             'pekerjaan_ayah' => 'nullable|string|max:100',
             'penghasilan_ayah' => 'nullable|string|max:100',
             'nama_ibu' => 'required|string|max:255',
-            'nik_ibu' => 'required|digits:16',
+            'nik_ibu' => 'required|string|max:20',
             'pekerjaan_ibu' => 'nullable|string|max:100',
             'no_hp_ortu' => 'required|string|max:20',
             'email_ortu' => 'nullable|email|max:255',
@@ -514,10 +514,10 @@ class SpmbController extends Controller
             'jenis_daftar' => 'nullable|in:Siswa Baru,Pindahan',
             'punya_saudara_sekolah_tk' => 'nullable|in:Ya,Tidak',
         ], [
-            'nik.digits' => 'NIK anak harus 16 digit angka',
+            'nik.max' => 'NIK anak maksimal 20 karakter',
             'nik.unique' => 'NIK ini sudah terdaftar',
-            'nik_ayah.digits' => 'NIK ayah harus 16 digit angka',
-            'nik_ibu.digits' => 'NIK ibu harus 16 digit angka',
+            'nik_ayah.max' => 'NIK ayah maksimal 20 karakter',
+            'nik_ibu.max' => 'NIK ibu maksimal 20 karakter',
             'akta_kelahiran.required' => 'Upload akta kelahiran',
             'kartu_keluarga.required' => 'Upload kartu keluarga',
         ]);
@@ -599,6 +599,8 @@ class SpmbController extends Controller
             $this->handleDokumenUploads($request, $spmb);
             
             DB::commit();
+
+            NotificationController::notifyNewSpmbRegistration($spmb);
             
             // Redirect ke halaman success
             return redirect()->route('spmb.success', $noPendaftaran)
@@ -735,11 +737,11 @@ class SpmbController extends Controller
         // Validasi input
         $validator = Validator::make($request->all(), [
             'no_pendaftaran' => 'required|string',
-            'nik_anak' => 'required|digits:16'
+            'nik_anak' => 'required|string|max:20'
         ], [
             'no_pendaftaran.required' => 'Masukkan nomor pendaftaran',
             'nik_anak.required' => 'Masukkan NIK calon siswa',
-            'nik_anak.digits' => 'NIK harus 16 digit angka'
+            'nik_anak.max' => 'NIK harus maksimal 20 karakter'
         ]);
 
         if ($validator->fails()) {

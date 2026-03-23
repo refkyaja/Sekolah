@@ -1,4 +1,25 @@
-@extends('layouts.admin')
+@php
+    $role = auth()->user()->role;
+    $user = auth()->user();
+    $layout = match ($role) {
+        'admin' => 'layouts.admin',
+        'operator' => 'layouts.operator',
+        'kepala_sekolah' => 'layouts.kepala-sekolah',
+        'guru' => 'layouts.guru',
+        default => 'layouts.app',
+    };
+    $routePrefix = match ($role) {
+        'admin' => 'admin',
+        'operator' => 'operator',
+        'kepala_sekolah' => 'kepala-sekolah',
+        'guru' => 'guru',
+        default => 'admin',
+    };
+    $canUpdateMateri = $user->canAccessModule('materi_kbm', 'update');
+    $canDeleteMateri = $user->canAccessModule('materi_kbm', 'delete');
+@endphp
+
+@extends($layout)
 
 @section('title', 'Detail Materi KBM')
 @section('breadcrumb', 'Materi KBM / Detail')
@@ -25,17 +46,21 @@
                 <p class="text-sm text-slate-500 mt-1">{{ $materiKbm->kelas }}</p>
             </div>
             <div class="flex gap-1.5 flex-shrink-0">
-                <a href="{{ route('admin.materi-kbm.edit', $materiKbm) }}"
+                @if($canUpdateMateri)
+                <a href="{{ route($routePrefix . '.materi-kbm.edit', $materiKbm) }}"
                     class="p-2 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors" title="Edit">
                     <span class="material-symbols-outlined">edit</span>
                 </a>
-                <form method="POST" action="{{ route('admin.materi-kbm.destroy', $materiKbm) }}"
+                @endif
+                @if($canDeleteMateri)
+                <form method="POST" action="{{ route($routePrefix . '.materi-kbm.destroy', $materiKbm) }}"
                     onsubmit="return confirm('Yakin ingin menghapus materi ini?')" class="no-loading">
                     @csrf @method('DELETE')
                     <button type="submit" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
                         <span class="material-symbols-outlined">delete</span>
                     </button>
                 </form>
+                @endif
             </div>
         </div>
 
@@ -69,7 +94,7 @@
                 <p class="text-sm font-bold text-slate-800 truncate">{{ $materiKbm->file_name }}</p>
                 <p class="text-xs text-slate-500">{{ $materiKbm->file_type }} • {{ $materiKbm->file_size_formatted }}</p>
             </div>
-            <a href="{{ route('admin.materi-kbm.download', $materiKbm) }}"
+            <a href="{{ route($routePrefix . '.materi-kbm.download', $materiKbm) }}"
                 class="flex items-center justify-center gap-1.5 px-4 py-2 bg-primary text-white rounded-xl text-sm font-bold hover:bg-purple-700 transition-all flex-shrink-0 w-full sm:w-auto">
                 <span class="material-symbols-outlined text-lg">download</span>
                 Download
@@ -92,7 +117,7 @@
 
         {{-- Back --}}
         <div class="mt-6">
-            <a href="{{ route('admin.materi-kbm.index') }}"
+            <a href="{{ route($routePrefix . '.materi-kbm.index') }}"
                 class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-primary transition-colors font-medium">
                 <span class="material-symbols-outlined text-lg">arrow_back</span>
                 Kembali ke Daftar Materi

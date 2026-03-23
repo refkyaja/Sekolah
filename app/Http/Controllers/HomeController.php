@@ -19,35 +19,34 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Ambil berita terbaru untuk ditampilkan di homepage (max 3)
+        // Berita terbaru (max 3)
         $beritas = Berita::where('status', 'publish')
                         ->where('tanggal_publish', '<=', now())
                         ->orderBy('tanggal_publish', 'desc')
                         ->take(3)
                         ->get();
-        
-        // Ambil data galeri
+
+        // Galeri (max 6)
         $galeris = Galeri::where('is_published', 1)
                         ->orderBy('tanggal', 'desc')
                         ->orderBy('created_at', 'desc')
                         ->take(6)
                         ->get();
 
+        // Testimoni (max 3)
+        $testimonis = Testimoni::latest()->take(3)->get();
+
+        // Programs / keunggulan sekolah
         $programs = Program::all();
-        $testimonis = Testimoni::latest()->take(4)->get();
 
-        // Data guru (tetap array)
-        $guru = [
-            [
-                'nama' => 'Siti Nurhaliza, S.Pd',
-                'jabatan' => 'Kepala Sekolah',
-                'deskripsi' => 'S1 Pendidikan Anak Usia Dini, 15 tahun pengalaman',
-                'foto' => 'images/kepala-sekolah.jpg'
-            ],
-            // ... data guru lainnya
-        ];
+        // Info PPDB (status pendaftaran)
+        $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+        $spmbSetting = null;
+        if ($tahunAjaranAktif) {
+            $spmbSetting = \App\Models\SpmbSetting::where('tahun_ajaran_id', $tahunAjaranAktif->id)->first();
+        }
 
-        return view('home', compact('beritas', 'galeris', 'guru', 'programs', 'testimonis'));
+        return view('Home.index', compact('beritas', 'galeris', 'testimonis', 'programs', 'tahunAjaranAktif', 'spmbSetting'));
     }
 
     public function storeBukuTamu(Request $request)
@@ -153,7 +152,7 @@ class HomeController extends Controller
         $siswa = Auth::guard('siswa')->user();
 
         if ($siswa?->spmb_id) {
-            return redirect()->route('siswa.ppdb.hasil-seleksi');
+            return redirect()->route('siswa.success');
         }
 
         $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
@@ -162,7 +161,7 @@ class HomeController extends Controller
             // Data Pribadi
             'nama_lengkap_anak' => 'required|string|max:255',
             'nama_panggilan_anak' => 'nullable|string|max:100',
-            'nik_anak' => 'required|digits:16|unique:spmb,nik_anak',
+            'nik_anak' => 'required|string|max:20|unique:spmb,nik_anak',
             'tempat_lahir_anak' => 'required|string|max:100',
             'tanggal_lahir_anak' => 'required|date',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
@@ -197,7 +196,7 @@ class HomeController extends Controller
 
             // Data Ayah
             'nama_lengkap_ayah' => 'required|string|max:255',
-            'nik_ayah' => 'required|digits:16',
+            'nik_ayah' => 'required|string|max:20',
             'tempat_lahir_ayah' => 'required|string|max:100',
             'tanggal_lahir_ayah' => 'required|date',
             'pendidikan_ayah' => 'nullable|string|max:50',
@@ -209,7 +208,7 @@ class HomeController extends Controller
 
             // Data Ibu
             'nama_lengkap_ibu' => 'required|string|max:255',
-            'nik_ibu' => 'required|digits:16',
+            'nik_ibu' => 'required|string|max:20',
             'tempat_lahir_ibu' => 'required|string|max:100',
             'tanggal_lahir_ibu' => 'required|date',
             'pendidikan_ibu' => 'nullable|string|max:50',
@@ -223,7 +222,7 @@ class HomeController extends Controller
             'punya_wali' => 'nullable|boolean',
             'nama_lengkap_wali' => 'nullable|string|max:255',
             'hubungan_dengan_anak' => 'nullable|string|max:50',
-            'nik_wali' => 'nullable|digits:16',
+            'nik_wali' => 'nullable|string|max:20',
             'tempat_lahir_wali' => 'nullable|string|max:100',
             'tanggal_lahir_wali' => 'nullable|date',
             'pendidikan_wali' => 'nullable|string|max:50',
@@ -299,7 +298,9 @@ class HomeController extends Controller
         $siswa->tahun_ajaran = $tahunAjaranAktif?->tahun_ajaran;
         $siswa->save();
 
-        return redirect()->route('siswa.ppdb.hasil-seleksi')
+        NotificationController::notifyNewSpmbRegistration($spmb);
+
+        return redirect()->route('siswa.success')
             ->with('success', 'Pendaftaran PPDB berhasil dikirim. Data bersifat read-only.');
     }
 }

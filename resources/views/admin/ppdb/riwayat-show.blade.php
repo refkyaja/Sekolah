@@ -1,4 +1,22 @@
-@extends('layouts.admin')
+@php
+    $role = auth()->user()->role;
+    $layout = match ($role) {
+        'admin' => 'layouts.admin',
+        'operator' => 'layouts.operator',
+        'kepala_sekolah' => 'layouts.kepala-sekolah',
+        'guru' => 'layouts.guru',
+        default => 'layouts.app',
+    };
+    $routePrefix = match ($role) {
+        'admin' => 'admin',
+        'operator' => 'operator',
+        'kepala_sekolah' => 'kepala-sekolah',
+        'guru' => 'guru',
+        default => 'admin',
+    };
+@endphp
+
+@extends($layout)
 
 @section('title', 'Detail Riwayat PPDB')
 
@@ -20,8 +38,8 @@
 @section('content')
 <nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 uppercase tracking-widest">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
-        <li><a class="hover:text-primary" href="{{ route('admin.ppdb.index') }}">PPDB</a></li>
-        <li><a class="hover:text-primary" href="{{ route('admin.ppdb.riwayat') }}">Riwayat PPDB</a></li>
+        <li><a class="hover:text-primary" href="{{ route($routePrefix . '.ppdb.index') }}">PPDB</a></li>
+        <li><a class="hover:text-primary" href="{{ route($routePrefix . '.ppdb.riwayat') }}">Riwayat PPDB</a></li>
         <li><span class="mx-2">/</span></li>
         <li class="text-slate-600">{{ $tahunAjaran }}</li>
     </ol>
@@ -98,7 +116,7 @@
                 <option value="Tidak Lulus" {{ $status == 'Tidak Lulus' ? 'selected' : '' }}>Tidak Lulus</option>
             </select>
         </div>
-        <a href="{{ route('admin.ppdb.riwayat.show', $tahunAjaran) }}" class="px-6 py-3 bg-slate-100 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all">
+        <a href="{{ route($routePrefix . '.ppdb.riwayat.show', $tahunAjaran) }}" class="px-6 py-3 bg-slate-100 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all">
             Reset
         </a>
     </form>
@@ -146,7 +164,7 @@
                     </td>
                     <td class="px-6 py-5">
                         <div class="flex items-center justify-center">
-                            <a href="{{ route('admin.ppdb.show', $item->id) }}" class="flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary text-primary hover:text-white rounded-xl transition-all font-bold text-xs">
+                            <a href="{{ route($routePrefix . '.ppdb.show', $item->id) }}" class="flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary text-primary hover:text-white rounded-xl transition-all font-bold text-xs">
                                 <span class="material-symbols-outlined text-base">visibility</span>
                                 Detail
                             </a>

@@ -3,7 +3,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Concerns\AuthorizesModuleAccess;
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use App\Models\Spmb;
 use App\Models\Siswa;
 use App\Models\SpmbArsip;
@@ -25,11 +28,31 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 
 class SpmbController extends Controller
 {
+    use AuthorizesModuleAccess;
+
+    protected function ppdbRoutePrefix(): string
+    {
+        return match (auth()->user()?->role) {
+            'admin' => 'admin',
+            'operator' => 'operator',
+            'kepala_sekolah' => 'kepala-sekolah',
+            'guru' => 'guru',
+            default => 'admin',
+        };
+    }
+
+    protected function ppdbRoute(string $name, mixed ...$parameters): string
+    {
+        return route($this->ppdbRoutePrefix() . '.ppdb.' . $name, ...$parameters);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorizeModule('ppdb', 'read');
+
         try {
             $query = Spmb::with(['tahunAjaran', 'siswa']);
             
@@ -89,11 +112,11 @@ class SpmbController extends Controller
             if ($request->ajax() || $request->expectsJson()) {
                 return response()->json([
                     'success' => true,
-                    'table_html' => view('admin.spmb.partials.table', compact('spmb', 'search'))->render(),
+                    'table_html' => view('admin.ppdb.partials.table', compact('spmb', 'search'))->render(),
                     'pagination_html' => $spmb->hasPages() 
                         ? $spmb->onEachSide(1)->links('vendor.pagination.tailwind')->toHtml() 
                         : '',
-                    'stats_html' => view('admin.spmb.partials.stats', compact('statistik'))->render(),
+                    'stats_html' => view('admin.ppdb.partials.stats', compact('statistik'))->render(),
                     'total' => $spmb->total(),
                     'filtered_count' => $spmb->count(),
                     'statistik' => $statistik,
@@ -121,7 +144,7 @@ class SpmbController extends Controller
                 ], 500);
             }
             
-            return redirect()->route('admin.spmb.index')
+            return redirect()->to($this->ppdbRoute('index'))
                 ->with('error', 'Terjadi kesalahan saat memuat data.');
         }
     }
@@ -131,6 +154,8 @@ class SpmbController extends Controller
      */
     public function exportIndex(Request $request)
     {
+        $this->authorizeModule('ppdb', 'read');
+
         $tahunAjaran = TahunAjaran::orderBy('tahun_ajaran', 'desc')->get();
         
         $statistikPerTahun = [];
@@ -155,6 +180,8 @@ class SpmbController extends Controller
      */
     public function export(Request $request)
     {
+        $this->authorizeModule('ppdb', 'read');
+
         $request->validate([
             'tahun_ajaran_id' => 'nullable|exists:tahun_ajarans,id',
             'format' => 'required|in:pdf,excel',
@@ -184,6 +211,8 @@ class SpmbController extends Controller
      */
     public function exportAll(Request $request)
     {
+        $this->authorizeModule('ppdb', 'read');
+
         $request->validate([
             'format' => 'required|in:pdf,excel',
         ]);
@@ -258,6 +287,8 @@ class SpmbController extends Controller
      */
     public function create()
     {
+        $this->authorizeModule('ppdb', 'create');
+
         $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
         $tahunAjaran = TahunAjaran::orderBy('tahun_ajaran', 'desc')->get();
         
@@ -282,6 +313,8 @@ class SpmbController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorizeModule('ppdb', 'create');
+
         try {
             // ✅ PERBAIKAN KRITIS: Mapping input sebelum validasi
             $this->normalizeTinggalBersamaInput($request);
@@ -290,7 +323,7 @@ class SpmbController extends Controller
                 // Data Anak (Bagian 1)
                 'nama_lengkap_anak' => 'required|string|max:255',
                 'nama_panggilan_anak' => 'nullable|string|max:100',
-                'nik_anak' => 'required|digits:16|unique:spmb,nik_anak',
+                'nik_anak' => 'required|string|max:20|unique:spmb,nik_anak',
                 'tempat_lahir_anak' => 'required|string|max:100',
                 'tanggal_lahir_anak' => 'required|date',
                 'provinsi_rumah' => 'required|string|max:100',
@@ -322,7 +355,7 @@ class SpmbController extends Controller
                 
                 // Data Ayah
                 'nama_lengkap_ayah' => 'required|string|max:255',
-                'nik_ayah' => 'required|digits:16',
+                'nik_ayah' => 'required|string|max:20',
                 'tempat_lahir_ayah' => 'required|string|max:100',
                 'tanggal_lahir_ayah' => 'required|date',
                 'pendidikan_ayah' => 'nullable|string|max:100',
@@ -334,7 +367,7 @@ class SpmbController extends Controller
                 
                 // Data Ibu
                 'nama_lengkap_ibu' => 'required|string|max:255',
-                'nik_ibu' => 'required|digits:16',
+                'nik_ibu' => 'required|string|max:20',
                 'tempat_lahir_ibu' => 'required|string|max:100',
                 'tanggal_lahir_ibu' => 'required|date',
                 'pendidikan_ibu' => 'nullable|string|max:100',
@@ -348,7 +381,7 @@ class SpmbController extends Controller
                 'punya_wali' => 'nullable|boolean',
                 'nama_lengkap_wali' => 'nullable|required_if:punya_wali,true|string|max:255',
                 'hubungan_dengan_anak' => 'nullable|required_if:punya_wali,true|in:' . implode(',', Spmb::HUBUNGAN_WALI_OPTIONS),
-                'nik_wali' => 'nullable|required_if:punya_wali,true|digits:16',
+                'nik_wali' => 'nullable|required_if:punya_wali,true|string|max:20',
                 'tempat_lahir_wali' => 'nullable|required_if:punya_wali,true|string|max:100',
                 'tanggal_lahir_wali' => 'nullable|required_if:punya_wali,true|date',
                 'pendidikan_wali' => 'nullable|string|max:100',
@@ -411,7 +444,7 @@ class SpmbController extends Controller
             
             DB::commit();
             
-            return redirect()->route('admin.spmb.show', $spmb)
+            return redirect()->to($this->ppdbRoute('show', $spmb))
                 ->with('success', 'Data pendaftaran SPMB berhasil ditambahkan.');
                 
         } catch (\Exception $e) {
@@ -428,6 +461,8 @@ class SpmbController extends Controller
      */
     public function show(Spmb $spmb)
     {
+        $this->authorizeModule('ppdb', 'read');
+
         $spmb->load(['tahunAjaran', 'dokumen', 'buktiTransfer', 'riwayatStatus.user', 'siswa']);
         
         return view('admin.ppdb.show', compact('spmb'));
@@ -438,6 +473,14 @@ class SpmbController extends Controller
      */
     public function edit(Spmb $spmb)
     {
+        $this->authorizeModule('ppdb', 'update');
+
+        // Flash model data to session for old() helper in blade
+        session()->flash('oldInput', $spmb->getAttributes());
+        
+        // Load documents
+        $dokumen = $spmb->dokumen()->get()->keyBy('jenis_dokumen');
+        
         $tahunAjaran = TahunAjaran::orderBy('tahun_ajaran', 'desc')->get();
         
         // ✅ PERBAIKAN: Gunakan konstanta dari model
@@ -448,6 +491,7 @@ class SpmbController extends Controller
         
         return view('admin.ppdb.edit', compact(
             'spmb', 
+            'dokumen',
             'tahunAjaran',
             'tinggalBersamaOptions',
             'statusTempatTinggalOptions',
@@ -461,6 +505,8 @@ class SpmbController extends Controller
      */
     public function update(Request $request, Spmb $spmb)
     {
+        $this->authorizeModule('ppdb', 'update');
+
         try {
             // ✅ PERBAIKAN KRITIS: Mapping input sebelum validasi
             $this->normalizeTinggalBersamaInput($request);
@@ -469,7 +515,7 @@ class SpmbController extends Controller
                 // Data Anak (Bagian 1)
                 'nama_lengkap_anak' => 'required|string|max:255',
                 'nama_panggilan_anak' => 'nullable|string|max:100',
-                'nik_anak' => 'required|digits:16|unique:spmb,nik_anak,' . $spmb->id,
+                'nik_anak' => 'required|string|max:20|unique:spmb,nik_anak,' . $spmb->id,
                 'tempat_lahir_anak' => 'required|string|max:100',
                 'tanggal_lahir_anak' => 'required|date',
                 'provinsi_rumah' => 'required|string|max:100',
@@ -501,7 +547,7 @@ class SpmbController extends Controller
                 
                 // Data Ayah
                 'nama_lengkap_ayah' => 'required|string|max:255',
-                'nik_ayah' => 'required|digits:16',
+                'nik_ayah' => 'required|string|max:20',
                 'tempat_lahir_ayah' => 'required|string|max:100',
                 'tanggal_lahir_ayah' => 'required|date',
                 'pendidikan_ayah' => 'nullable|string|max:100',
@@ -513,7 +559,7 @@ class SpmbController extends Controller
                 
                 // Data Ibu
                 'nama_lengkap_ibu' => 'required|string|max:255',
-                'nik_ibu' => 'required|digits:16',
+                'nik_ibu' => 'required|string|max:20',
                 'tempat_lahir_ibu' => 'required|string|max:100',
                 'tanggal_lahir_ibu' => 'required|date',
                 'pendidikan_ibu' => 'nullable|string|max:100',
@@ -527,7 +573,7 @@ class SpmbController extends Controller
                 'punya_wali' => 'nullable|boolean',
                 'nama_lengkap_wali' => 'nullable|string|max:255',
                 'hubungan_dengan_anak' => 'nullable|in:' . implode(',', Spmb::HUBUNGAN_WALI_OPTIONS),
-                'nik_wali' => 'nullable|digits:16',
+                'nik_wali' => 'nullable|string|max:20',
                 'tempat_lahir_wali' => 'nullable|string|max:100',
                 'tanggal_lahir_wali' => 'nullable|date',
                 'pendidikan_wali' => 'nullable|string|max:100',
@@ -570,7 +616,7 @@ class SpmbController extends Controller
             
             DB::commit();
             
-            return redirect()->route('admin.spmb.show', $spmb)
+            return redirect()->to($this->ppdbRoute('show', $spmb))
                 ->with('success', 'Data pendaftaran SPMB berhasil diperbarui.');
                 
         } catch (\Exception $e) {
@@ -587,9 +633,11 @@ class SpmbController extends Controller
      */
     public function destroy(Spmb $spmb)
     {
+        $this->authorizeModule('ppdb', 'delete');
+
         try {
             if ($spmb->siswa()->exists()) {
-                return redirect()->route('admin.spmb.index')
+                return redirect()->to($this->ppdbRoute('index'))
                     ->with('error', 'Tidak dapat menghapus data yang sudah dikonversi menjadi siswa.');
             }
             
@@ -609,14 +657,14 @@ class SpmbController extends Controller
             
             DB::commit();
             
-            return redirect()->route('admin.spmb.index')
+            return redirect()->to($this->ppdbRoute('index'))
                 ->with('success', 'Data pendaftaran SPMB berhasil dihapus.');
                 
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('SpmbController@destroy Error: ' . $e->getMessage());
             
-            return redirect()->route('admin.spmb.index')
+            return redirect()->to($this->ppdbRoute('index'))
                 ->with('error', 'Gagal menghapus data pendaftaran: ' . $e->getMessage());
         }
     }
@@ -626,6 +674,8 @@ class SpmbController extends Controller
      */
     public function updateStatus(Request $request, Spmb $spmb)
     {
+        $this->authorizeModule('ppdb', 'update');
+
         $request->validate([
             'status' => 'required|in:Menunggu Verifikasi,Revisi Dokumen,Dokumen Verified,Lulus,Tidak Lulus',
             'catatan' => 'nullable|string',
@@ -725,31 +775,176 @@ class SpmbController extends Controller
     }
 
     /**
+     * Tambah catatan admin dan reset verifikasi dokumen
+     */
+    public function tambahCatatan(Request $request, Spmb $spmb)
+    {
+        $this->authorizeModule('ppdb', 'update');
+
+        $request->validate([
+            'catatan_admin' => 'required|string',
+            'jenis_dokumen' => 'nullable|array'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $statusSebelumnya = $spmb->status_pendaftaran;
+            $dokumenLabels = [
+                'akte_kelahiran' => 'Akta Kelahiran',
+                'kartu_keluarga' => 'Kartu Keluarga',
+                'ktp_orang_tua' => 'KTP Orang Tua',
+            ];
+            $selectedDokumenLabels = collect($request->jenis_dokumen ?? [])
+                ->map(fn ($jenis) => $dokumenLabels[$jenis] ?? null)
+                ->filter()
+                ->values();
+
+            // Update catatan admin
+            $spmb->catatan_admin = $request->catatan_admin;
+            $spmb->catatan_admin_at = now();
+
+            // Jika ada dokumen yang dipilih untuk direvisi, reset verifikasinya dan ubah status
+            if ($request->has('jenis_dokumen') && count($request->jenis_dokumen) > 0) {
+                foreach ($request->jenis_dokumen as $jenis) {
+                    $field = match($jenis) {
+                        'akte_kelahiran' => 'verifikasi_akte',
+                        'kartu_keluarga' => 'verifikasi_kk',
+                        'ktp_orang_tua' => 'verifikasi_ktp',
+                        default => null
+                    };
+                    if ($field) {
+                        $spmb->$field = false;
+                    }
+                }
+                // Ubah status ke Revisi Dokumen
+                $spmb->status_pendaftaran = 'Revisi Dokumen';
+            }
+
+            $spmb->save();
+
+            // Catat riwayat status
+            $spmb->riwayatStatus()->create([
+                'status_sebelumnya' => $statusSebelumnya,
+                'status_baru' => $spmb->status_pendaftaran,
+                'keterangan' => $request->catatan_admin,
+                'diubah_oleh' => auth()->id(),
+                'role_pengubah' => auth()->user()->role ?? 'admin'
+            ]);
+
+            $siswa = Siswa::where('spmb_id', $spmb->id)
+                ->orWhere('nik', $spmb->nik_anak)
+                ->first();
+
+            if ($siswa) {
+                $catatanKe = Notification::query()
+                    ->where('type', 'system_admin_note')
+                    ->where('data->spmb_id', $spmb->id)
+                    ->where('data->recipient_siswa_id', $siswa->id)
+                    ->count() + 1;
+
+                $body = 'Kami baru saja mengirim catatan untuk dokumen Anda. Silakan cek detail catatan dan lakukan perbaikan bila diperlukan.';
+                if ($selectedDokumenLabels->isNotEmpty()) {
+                    $body = 'Kami baru saja mengirim catatan revisi untuk ' . $selectedDokumenLabels->join(', ') . '. Silakan cek detail catatan dan lakukan perbaikan yang diperlukan.';
+                }
+
+                NotificationController::sendToSiswa(
+                    siswaId: $siswa->id,
+                    type: 'system_admin_note',
+                    title: 'Catatan Revisi #' . $catatanKe,
+                    body: $body,
+                    data: [
+                        'url' => route('siswa.dokumen'),
+                        'note' => $request->catatan_admin,
+                        'spmb_id' => $spmb->id,
+                        'revision_number' => $catatanKe,
+                        'documents' => $selectedDokumenLabels->all(),
+                    ],
+                );
+            }
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Catatan berhasil ditambahkan');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal menambahkan catatan: ' . $e->getMessage());
+        }
+    }
+
+    /**
      * Verifikasi dokumen
      */
     public function verifikasiDokumen(Request $request, Spmb $spmb)
     {
-        $request->validate([
-            'jenis' => 'required|in:akte,kk,ktp',
-        ]);
+        $this->authorizeModule('ppdb', 'update');
 
-        try {
-            $spmb->verifikasiDokumen($request->jenis, auth()->id());
+        $request->validate([
+            'jenis' => 'required|in:akte_kelahiran,kartu_keluarga,ktp_orang_tua',
+            'action' => 'required|in:verify,unverify'
+        ]);
+        
+        $field = '';
+        switch($request->jenis) {
+            case 'akte_kelahiran':
+                $field = 'verifikasi_akte';
+                break;
+            case 'kartu_keluarga':
+                $field = 'verifikasi_kk';
+                break;
+            case 'ktp_orang_tua':
+                $field = 'verifikasi_ktp';
+                break;
+        }
+
+        if ($request->action === 'verify' && !$spmb->hasUploadedDocument($request->jenis)) {
+            $message = 'Dokumen belum diunggah, jadi tidak bisa diverifikasi.';
+
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $message,
+                ], 422);
+            }
+
+            return redirect()->back()->with('error', $message);
+        }
+        
+        if ($request->action === 'verify') {
+            $spmb->$field = true;
+            $message = 'Dokumen berhasil diverifikasi.';
             
+            // Auto-update status if all verified
+            if ($spmb->verifikasi_akte && $spmb->verifikasi_kk && $spmb->verifikasi_ktp) {
+                $spmb->status_pendaftaran = 'Dokumen Verified';
+            }
+        } else {
+            $spmb->$field = false;
+            $message = 'Verifikasi dokumen dibatalkan.';
+            
+            // Ubah status jika ada dokumen yang dibatalkan verifikasinya
+            if ($spmb->status_pendaftaran === 'Dokumen Verified') {
+                $spmb->status_pendaftaran = 'Menunggu Verifikasi';
+            }
+        }
+        
+        $spmb->save();
+        
+        // Always return JSON for AJAX requests
+        if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Dokumen berhasil diverifikasi.',
-                'progress' => $spmb->progress_verifikasi
+                'message' => $message,
+                'data' => [
+                    'verifikasi_akte' => $spmb->verifikasi_akte,
+                    'verifikasi_kk' => $spmb->verifikasi_kk,
+                    'verifikasi_ktp' => $spmb->verifikasi_ktp,
+                    'status_pendaftaran' => $spmb->status_pendaftaran
+                ]
             ]);
-            
-        } catch (\Exception $e) {
-            Log::error('VerifikasiDokumen Error: ' . $e->getMessage());
-            
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal verifikasi dokumen: ' . $e->getMessage()
-            ], 500);
         }
+        
+        return redirect()->back()->with('success', $message);
     }
 
     /**
@@ -757,6 +952,8 @@ class SpmbController extends Controller
      */
     public function approveKepsek(Spmb $spmb)
     {
+        $this->authorizeModule('ppdb', 'update');
+
         try {
             $spmb->approveKepsek(auth()->id());
             
@@ -781,6 +978,8 @@ class SpmbController extends Controller
      */
     public function assignKelas(Request $request, Spmb $spmb)
     {
+        $this->authorizeModule('ppdb', 'update');
+
         $request->validate([
             'kelas' => 'required|string|max:50',
             'guru_kelas' => 'required|string|max:255',
@@ -810,6 +1009,8 @@ class SpmbController extends Controller
      */
     public function konversiKeSiswa(Spmb $spmb)
     {
+        $this->authorizeModule('ppdb', 'update');
+
         try {
             DB::beginTransaction();
             
@@ -832,7 +1033,7 @@ class SpmbController extends Controller
             DB::rollBack();
             Log::error('SpmbController@konversiKeSiswa Error: ' . $e->getMessage());
             
-            return redirect()->route('admin.spmb.show', $spmb)
+            return redirect()->to($this->ppdbRoute('show', $spmb))
                 ->with('error', 'Gagal mengkonversi ke siswa: ' . $e->getMessage());
         }
     }
@@ -842,53 +1043,9 @@ class SpmbController extends Controller
      */
     public function dashboard()
     {
-        try {
-            $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
-            $tahunAjaranId = $tahunAjaranAktif ? $tahunAjaranAktif->id : null;
-            
-            $statistik = Spmb::getStatistik($tahunAjaranId);
-            
-            // Grafik pendaftaran per bulan
-            $grafikBulanan = Spmb::select(
-                    DB::raw('MONTH(created_at) as bulan'),
-                    DB::raw('COUNT(*) as total')
-                )
-                ->whereYear('created_at', date('Y'))
-                ->groupBy('bulan')
-                ->orderBy('bulan')
-                ->get();
-            
-            // Data status pendaftaran
-            $statusPendaftaran = [
-                'Lulus' => Spmb::where('status_pendaftaran', 'Lulus')
-                    ->when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
-                    ->count(),
-                'Menunggu Verifikasi' => Spmb::where('status_pendaftaran', 'Menunggu Verifikasi')
-                    ->when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
-                    ->count(),
-                'Tidak Lulus' => Spmb::where('status_pendaftaran', 'Tidak Lulus')
-                    ->when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
-                    ->count(),
-            ];
-            
-            // Pendaftar terbaru
-            $pendaftarTerbaru = Spmb::with(['tahunAjaran'])
-                ->latest()
-                ->take(10)
-                ->get();
-            
-            return view('admin.spmb.dashboard', compact(
-                'statistik',
-                'grafikBulanan',
-                'statusPendaftaran',
-                'pendaftarTerbaru',
-                'tahunAjaranAktif'
-            ));
-            
-        } catch (\Exception $e) {
-            Log::error('SpmbController@dashboard Error: ' . $e->getMessage());
-            return back()->with('error', 'Gagal memuat dashboard: ' . $e->getMessage());
-        }
+        $this->authorizeModule('ppdb', 'read');
+
+        return redirect()->to($this->ppdbRoute('index'));
     }
 
     /**
@@ -896,6 +1053,8 @@ class SpmbController extends Controller
      */
     public function pengaturan(Request $request)
     {
+        $this->authorizeModule('ppdb_settings', 'read');
+
         try {
             $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
             $tahunAjaranId = $tahunAjaranAktif ? $tahunAjaranAktif->id : null;
@@ -936,6 +1095,8 @@ class SpmbController extends Controller
      */
     public function updatePengaturan(Request $request)
     {
+        $this->authorizeModule('ppdb_settings', 'update');
+
         try {
             $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
             $tahunAjaran = $tahunAjaranAktif ? $tahunAjaranAktif->tahun_ajaran : date('Y') . '/' . (date('Y') + 1);
@@ -966,6 +1127,8 @@ class SpmbController extends Controller
      */
     public function pengumuman(Request $request)
     {
+        $this->authorizeModule('pengumuman', 'read');
+
         try {
             $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
             $tahunAjaranId = $tahunAjaranAktif ? $tahunAjaranAktif->id : null;
@@ -1028,6 +1191,8 @@ class SpmbController extends Controller
      */
     public function publishPengumuman(Request $request)
     {
+        $this->authorizeModule('pengumuman', 'update');
+
         try {
             $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
             $tahunAjaranId = $tahunAjaranAktif ? $tahunAjaranAktif->id : null;
@@ -1137,6 +1302,8 @@ class SpmbController extends Controller
      */
     public function riwayat(Request $request)
     {
+        $this->authorizeModule('ppdb', 'read');
+
         try {
             $search = $request->get('search', '');
             $range = $request->get('range', '');
@@ -1205,6 +1372,8 @@ class SpmbController extends Controller
      */
     public function riwayatShow(Request $request, $tahunAjaran)
     {
+        $this->authorizeModule('ppdb', 'read');
+
         try {
             $tahunAjaranData = TahunAjaran::where('tahun_ajaran', $tahunAjaran)->firstOrFail();
             
@@ -1482,7 +1651,7 @@ class SpmbController extends Controller
     {
         $map = [
             'Siswa Baru' => 'reguler',
-            'Pindahan' => 'mutasi'
+            'Pindahan' => 'reguler'
         ];
         
         return $map[$jenisDaftar] ?? 'reguler';
@@ -1524,6 +1693,8 @@ class SpmbController extends Controller
      */
     public function classDivisionPreview(Request $request)
     {
+        $this->authorizeModule('ppdb', 'update');
+
         try {
             $tahunAjaranId = $request->tahun_ajaran_id;
             
@@ -1570,6 +1741,8 @@ class SpmbController extends Controller
      */
     public function executeClassDivision(Request $request)
     {
+        $this->authorizeModule('ppdb', 'update');
+
         DB::beginTransaction();
         
         try {
@@ -1616,6 +1789,8 @@ class SpmbController extends Controller
      */
     public function bulkLulus(Request $request)
     {
+        $this->authorizeModule('ppdb', 'update');
+
         $ids = explode(',', $request->selected_ids);
         
         Spmb::whereIn('id', $ids)->update([
@@ -1630,6 +1805,8 @@ class SpmbController extends Controller
      */
     public function bulkDelete(Request $request)
     {
+        $this->authorizeModule('ppdb', 'delete');
+
         $ids = explode(',', $request->selected_ids);
         
         Spmb::whereIn('id', $ids)->delete();

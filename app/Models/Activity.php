@@ -3,31 +3,9 @@
 namespace App\Models;
 
 use Spatie\Activitylog\Models\Activity as SpatieActivity;
-use Illuminate\Support\Facades\Request;
 
-class Activity extends Model
+class Activity extends SpatieActivity
 {
-    protected $table = 'activity_log';
-
-    protected $fillable = [
-        'log_name',
-        'description',
-        'subject_type',
-        'subject_id',
-        'causer_type',
-        'causer_id',
-        'properties',
-        'ip_address',
-        'user_agent',
-    ];
-
-    protected $casts = [
-        'properties' => 'array',
-    ];
-
-    public function causer()
-    {
-        return $this->belongsTo(User::class, 'causer_id');
-    }
+    // This model extends Spatie's Activity model
+    // All functionality is inherited from Spatie Activitylog package
 }
-*/

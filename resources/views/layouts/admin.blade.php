@@ -8,6 +8,52 @@
 
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
+    <script>
+        (function () {
+            function applyAdminTheme() {
+                var savedTheme = localStorage.getItem('adminTheme') || 'system';
+                var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var shouldUseDark = savedTheme === 'dark' || (savedTheme === 'system' && prefersDark);
+
+                document.documentElement.classList.toggle('dark', shouldUseDark);
+                document.documentElement.dataset.themePreference = savedTheme;
+                if (document.body) {
+                    document.body.classList.toggle('dark', shouldUseDark);
+                    document.body.dataset.themePreference = savedTheme;
+                }
+            }
+
+            window.applyAdminTheme = applyAdminTheme;
+            applyAdminTheme();
+
+            window.addEventListener('pageshow', function () {
+                applyAdminTheme();
+            });
+
+            window.addEventListener('focus', function () {
+                applyAdminTheme();
+            });
+
+            document.addEventListener('visibilitychange', function () {
+                if (!document.hidden) {
+                    applyAdminTheme();
+                }
+            });
+
+            window.addEventListener('storage', function (event) {
+                if (!event.key || event.key === 'adminTheme') {
+                    applyAdminTheme();
+                }
+            });
+
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+                if ((localStorage.getItem('adminTheme') || 'system') === 'system') {
+                    applyAdminTheme();
+                }
+            });
+        })();
+    </script>
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&opsz=24" rel="stylesheet">
@@ -99,12 +145,27 @@
                 z-index: 40;
                 transform: translateX(-100%);
                 transition: transform 0.3s ease;
+                width: 18rem !important;
             }
             body.mobile-sidebar-open aside {
                 transform: translateX(0);
             }
             body.mobile-sidebar-open {
                 overflow: hidden;
+            }
+            .sidebar-collapsed aside .logo-text,
+            .sidebar-collapsed aside .nav-text,
+            .sidebar-collapsed aside .nav-section-title,
+            .sidebar-collapsed aside .system-status {
+                display: block;
+            }
+            .sidebar-collapsed aside .nav-item {
+                justify-content: flex-start;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            .sidebar-collapsed aside .nav-section-divider {
+                display: none;
             }
         }
     </style>
@@ -255,6 +316,7 @@
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @vite(['resources/js/app.js'])
     @livewireScripts
     @stack('scripts')
 </body>

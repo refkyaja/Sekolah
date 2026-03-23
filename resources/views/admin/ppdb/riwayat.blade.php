@@ -1,4 +1,22 @@
-@extends('layouts.admin')
+@php
+    $role = auth()->user()->role;
+    $layout = match ($role) {
+        'admin' => 'layouts.admin',
+        'operator' => 'layouts.operator',
+        'kepala_sekolah' => 'layouts.kepala-sekolah',
+        'guru' => 'layouts.guru',
+        default => 'layouts.app',
+    };
+    $routePrefix = match ($role) {
+        'admin' => 'admin',
+        'operator' => 'operator',
+        'kepala_sekolah' => 'kepala-sekolah',
+        'guru' => 'guru',
+        default => 'admin',
+    };
+@endphp
+
+@extends($layout)
 
 @push('styles')
 <style>
@@ -18,7 +36,7 @@
 @section('content')
 <nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 uppercase tracking-widest">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
-        <li><a class="hover:text-primary" href="{{ route('admin.ppdb.index') }}">PPDB</a></li>
+        <li><a class="hover:text-primary" href="{{ route($routePrefix . '.ppdb.index') }}">PPDB</a></li>
         <li><span class="mx-2">/</span></li>
         <li class="text-slate-600">Riwayat PPDB</li>
     </ol>
@@ -45,7 +63,7 @@
                 <option value="5" {{ $range == '5' ? 'selected' : '' }}>5 Tahun Terakhir</option>
             </select>
         </div>
-        <a href="{{ route('admin.ppdb.riwayat') }}" class="px-6 py-3 bg-slate-100 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all">
+        <a href="{{ route($routePrefix . '.ppdb.riwayat') }}" class="px-6 py-3 bg-slate-100 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all">
             Reset
         </a>
     </form>
@@ -84,7 +102,7 @@
                     </td>
                     <td class="px-6 py-5">
                         <div class="flex items-center justify-center">
-                            <a href="{{ route('admin.ppdb.riwayat.show', $item->tahun_ajaran) }}" class="flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary text-primary hover:text-white rounded-xl transition-all font-bold text-xs" title="Lihat Detail">
+                            <a href="{{ route($routePrefix . '.ppdb.riwayat.show', $item->tahun_ajaran) }}" class="flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary text-primary hover:text-white rounded-xl transition-all font-bold text-xs" title="Lihat Detail">
                                 <span class="material-symbols-outlined text-base">visibility</span>
                                 Show List
                             </a>

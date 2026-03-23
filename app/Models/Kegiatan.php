@@ -20,7 +20,6 @@ class Kegiatan extends Model
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
-    */
 
     protected $fillable = [
         'nama_kegiatan',

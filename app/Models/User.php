@@ -46,12 +46,6 @@ class User extends Authenticatable
 
     // ==================== RELASI ====================
     
-    // Relasi ke activity logs
-    public function activities()
-    {
-        return $this->morphMany(Activity::class, 'causer');
-    }
-    
     // Relasi ke data guru
     public function guru()
     {
@@ -78,6 +72,16 @@ class User extends Authenticatable
     {
         return $query->where('role', 'guru');
     }
+
+    public function scopeOperators($query)
+    {
+        return $query->where('role', 'operator');
+    }
+
+    public function scopeKepalaSekolah($query)
+    {
+        return $query->where('role', 'kepala_sekolah');
+    }
     
     // ==================== METHODS ====================
     
@@ -90,6 +94,32 @@ class User extends Authenticatable
     {
         return $this->role === 'guru';
     }
+
+    public function isOperator()
+    {
+        return $this->role === 'operator';
+    }
+
+    public function isKepalaSekolah()
+    {
+        return $this->role === 'kepala_sekolah';
+    }
+
+    public function canAccessModule(string $module, string $action): bool
+    {
+        $permissions = config('role_permissions', []);
+        $rolePermissions = $permissions[$this->role] ?? [];
+
+        if (isset($rolePermissions['*']) && in_array($action, $rolePermissions['*'], true)) {
+            return true;
+        }
+
+        if (isset($rolePermissions[$module]) && in_array($action, $rolePermissions[$module], true)) {
+            return true;
+        }
+
+        return $action === 'read';
+    }
     
     public function hasGuruProfile()
     {
@@ -98,7 +128,13 @@ class User extends Authenticatable
     
     public function getRoleNameAttribute()
     {
-        return $this->role == 'admin' ? 'Administrator' : 'Guru';
+        return match ($this->role) {
+            'admin' => 'Administrator',
+            'guru' => 'Guru',
+            'operator' => 'Operator',
+            'kepala_sekolah' => 'Kepala Sekolah',
+            default => ucfirst(str_replace('_', ' ', $this->role)),
+        };
     }
     
     public function getStatusAttribute()

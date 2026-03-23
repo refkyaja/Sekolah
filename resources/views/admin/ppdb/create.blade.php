@@ -95,10 +95,10 @@
                        name="nik_anak" 
                        value="{{ old('nik_anak') }}"
                        required
-                       pattern="[0-9]{16}"
-                       maxlength="16"
+                       pattern="[0-9]{10,20}"
+                       maxlength="20"
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('nik_anak') border-red-500 @enderror"
-                       placeholder="16 digit NIK">
+                       placeholder="NIK">
                 <p class="text-xs text-gray-500 mt-1">Nomor Induk Kependudukan</p>
                 @error('nik_anak')
                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -527,8 +527,8 @@
                        name="nik_ayah" 
                        value="{{ old('nik_ayah') }}"
                        required
-                       pattern="[0-9]{16}"
-                       maxlength="16"
+                       pattern="[0-9]{10,20}"
+                       maxlength="20"
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('nik_ayah') border-red-500 @enderror">
             </div>
 
@@ -636,7 +636,7 @@
                        name="nomor_telepon_ayah" 
                        value="{{ old('nomor_telepon_ayah') }}"
                        required
-                       maxlength="16"
+                       maxlength="20"
                        placeholder="081234567890"
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('nomor_telepon_ayah') border-red-500 @enderror">
             </div>
@@ -692,8 +692,8 @@
                        name="nik_ibu" 
                        value="{{ old('nik_ibu') }}"
                        required
-                       pattern="[0-9]{16}"
-                       maxlength="16"
+                       pattern="[0-9]{10,20}"
+                       maxlength="20"
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('nik_ibu') border-red-500 @enderror">
             </div>
 
@@ -802,7 +802,7 @@
                        name="nomor_telepon_ibu" 
                        value="{{ old('nomor_telepon_ibu') }}"
                        required
-                       maxlength="16"
+                       maxlength="20"
                        placeholder="081234567890"
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('nomor_telepon_ibu') border-red-500 @enderror">
             </div>
@@ -886,8 +886,8 @@
                        id="nik_wali"
                        name="nik_wali" 
                        value="{{ old('nik_wali') }}"
-                       pattern="[0-9]{16}"
-                       maxlength="16"
+                       pattern="[0-9]{10,20}"
+                       maxlength="20"
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             </div>
 
@@ -962,7 +962,7 @@
                        id="nomor_telepon_wali"
                        name="nomor_telepon_wali" 
                        value="{{ old('nomor_telepon_wali') }}"
-                       maxlength="16"
+                       maxlength="20"
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             </div>
 

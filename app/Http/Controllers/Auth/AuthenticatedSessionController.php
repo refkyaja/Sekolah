@@ -21,7 +21,15 @@ class AuthenticatedSessionController extends Controller
         }
 
         if (Auth::guard('web')->check()) {
-            return redirect()->route('dashboard');
+            $dashboardRoute = match (Auth::guard('web')->user()->role) {
+                'admin' => 'admin.dashboard',
+                'operator' => 'operator.dashboard',
+                'guru' => 'guru.dashboard',
+                'kepala_sekolah' => 'kepala-sekolah.dashboard',
+                default => 'dashboard',
+            };
+
+            return redirect()->route($dashboardRoute);
         }
 
         return view('auth.login');
@@ -51,7 +59,17 @@ class AuthenticatedSessionController extends Controller
             'user_agent' => $request->userAgent(),
         ]);
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Redirect berdasarkan role user
+        $user = Auth::user();
+        $dashboardRoute = match ($user->role) {
+            'admin' => 'admin.dashboard',
+            'operator' => 'operator.dashboard',
+            'guru' => 'guru.dashboard',
+            'kepala_sekolah' => 'kepala-sekolah.dashboard',
+            default => 'dashboard',
+        };
+
+        return redirect()->intended(route($dashboardRoute, absolute: false));
     }
 
     /**

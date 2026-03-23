@@ -1,4 +1,26 @@
-@extends('layouts.admin')
+@php
+    $role = auth()->user()->role;
+    $user = auth()->user();
+    $layout = match ($role) {
+        'admin' => 'layouts.admin',
+        'operator' => 'layouts.operator',
+        'kepala_sekolah' => 'layouts.kepala-sekolah',
+        'guru' => 'layouts.guru',
+        default => 'layouts.app',
+    };
+    $routePrefix = match ($role) {
+        'admin' => 'admin',
+        'operator' => 'operator',
+        'kepala_sekolah' => 'kepala-sekolah',
+        'guru' => 'guru',
+        default => 'admin',
+    };
+    $canCreateMateri = $user->canAccessModule('materi_kbm', 'create');
+    $canUpdateMateri = $user->canAccessModule('materi_kbm', 'update');
+    $canDeleteMateri = $user->canAccessModule('materi_kbm', 'delete');
+@endphp
+
+@extends($layout)
 
 @section('title', 'Materi KBM')
 @section('breadcrumb', 'Akademik / Management Materi')
@@ -6,7 +28,7 @@
 @section('content')
 
 {{-- Filter & Tombol Tambah --}}
-<form method="GET" action="{{ route('admin.materi-kbm.index') }}" id="filterForm">
+<form method="GET" action="{{ route($routePrefix . '.materi-kbm.index') }}" id="filterForm">
     <div class="flex flex-col gap-3 mb-6">
         {{-- Row 1: Search full-width --}}
         <div class="relative">
@@ -39,12 +61,14 @@
                 @endforeach
             </select>
 
-            <a href="{{ route('admin.materi-kbm.create') }}"
+            @if($canCreateMateri)
+            <a href="{{ route($routePrefix . '.materi-kbm.create') }}"
                 class="flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl font-bold text-sm hover:bg-purple-700 transition-all shadow-lg shadow-primary/20 whitespace-nowrap flex-shrink-0">
                 <span class="material-symbols-outlined text-xl">add</span>
                 <span class="hidden sm:inline">Tambah Materi</span>
                 <span class="sm:hidden">Tambah</span>
             </a>
+            @endif
         </div>
     </div>
 </form>
@@ -96,23 +120,27 @@
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex items-center justify-center gap-1">
-                            <a href="{{ route('admin.materi-kbm.show', $materi) }}"
+                            <a href="{{ route($routePrefix . '.materi-kbm.show', $materi) }}"
                                 class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Detail">
                                 <span class="material-symbols-outlined text-lg">visibility</span>
                             </a>
-                            <a href="{{ route('admin.materi-kbm.edit', $materi) }}"
+                            @if($canUpdateMateri)
+                            <a href="{{ route($routePrefix . '.materi-kbm.edit', $materi) }}"
                                 class="p-2 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors" title="Edit">
                                 <span class="material-symbols-outlined text-lg">edit</span>
                             </a>
-                            <form method="POST" action="{{ route('admin.materi-kbm.destroy', $materi) }}"
+                            @endif
+                            @if($canDeleteMateri)
+                            <form method="POST" action="{{ route($routePrefix . '.materi-kbm.destroy', $materi) }}"
                                 onsubmit="return confirm('Yakin ingin menghapus materi ini?')" class="inline no-loading">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Hapus">
                                     <span class="material-symbols-outlined text-lg">delete</span>
                                 </button>
                             </form>
+                            @endif
                             @if($materi->file_path)
-                            <a href="{{ route('admin.materi-kbm.download', $materi) }}"
+                            <a href="{{ route($routePrefix . '.materi-kbm.download', $materi) }}"
                                 class="p-2 text-primary hover:bg-purple-50 rounded-lg transition-colors" title="Download">
                                 <span class="material-symbols-outlined text-lg">download</span>
                             </a>
@@ -126,10 +154,12 @@
                         <div class="flex flex-col items-center gap-3">
                             <span class="material-symbols-outlined text-5xl text-slate-300">auto_stories</span>
                             <p class="text-slate-400 font-medium">Belum ada materi KBM</p>
-                            <a href="{{ route('admin.materi-kbm.create') }}"
+                            @if($canCreateMateri)
+                            <a href="{{ route($routePrefix . '.materi-kbm.create') }}"
                                 class="mt-2 px-5 py-2 bg-primary text-white rounded-xl text-sm font-bold hover:bg-purple-700 transition-all">
                                 Tambah Materi Pertama
                             </a>
+                            @endif
                         </div>
                     </td>
                 </tr>
@@ -162,17 +192,21 @@
             </div>
             {{-- Action dropdown for mobile --}}
             <div class="flex gap-1 flex-shrink-0">
-                <a href="{{ route('admin.materi-kbm.edit', $materi) }}"
+                @if($canUpdateMateri)
+                <a href="{{ route($routePrefix . '.materi-kbm.edit', $materi) }}"
                     class="p-1.5 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors" title="Edit">
                     <span class="material-symbols-outlined text-base">edit</span>
                 </a>
-                <form method="POST" action="{{ route('admin.materi-kbm.destroy', $materi) }}"
+                @endif
+                @if($canDeleteMateri)
+                <form method="POST" action="{{ route($routePrefix . '.materi-kbm.destroy', $materi) }}"
                     onsubmit="return confirm('Yakin ingin menghapus materi ini?')" class="inline no-loading">
                     @csrf @method('DELETE')
                     <button type="submit" class="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
                         <span class="material-symbols-outlined text-base">delete</span>
                     </button>
                 </form>
+                @endif
             </div>
         </div>
 
@@ -194,12 +228,12 @@
         </div>
 
         <div class="flex gap-2 pt-3 border-t border-slate-50">
-            <a href="{{ route('admin.materi-kbm.show', $materi) }}"
+            <a href="{{ route($routePrefix . '.materi-kbm.show', $materi) }}"
                 class="flex-1 flex items-center justify-center gap-1.5 py-2 text-blue-600 hover:bg-blue-50 rounded-xl text-xs font-bold transition-colors">
                 <span class="material-symbols-outlined text-base">visibility</span> Detail
             </a>
             @if($materi->file_path)
-            <a href="{{ route('admin.materi-kbm.download', $materi) }}"
+            <a href="{{ route($routePrefix . '.materi-kbm.download', $materi) }}"
                 class="flex-1 flex items-center justify-center gap-1.5 py-2 text-primary hover:bg-purple-50 rounded-xl text-xs font-bold transition-colors">
                 <span class="material-symbols-outlined text-base">download</span> Download
             </a>
@@ -210,10 +244,12 @@
     <div class="bg-white rounded-2xl p-12 text-center shadow-sm border border-slate-100">
         <span class="material-symbols-outlined text-5xl text-slate-300 block mb-3">auto_stories</span>
         <p class="text-slate-400 font-medium">Belum ada materi KBM</p>
-        <a href="{{ route('admin.materi-kbm.create') }}"
+        @if($canCreateMateri)
+        <a href="{{ route($routePrefix . '.materi-kbm.create') }}"
             class="mt-4 inline-block px-5 py-2 bg-primary text-white rounded-xl text-sm font-bold hover:bg-purple-700 transition-all">
             Tambah Materi Pertama
         </a>
+        @endif
     </div>
     @endforelse
 

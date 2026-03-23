@@ -1,4 +1,22 @@
-@extends('layouts.admin')
+@php
+    $role = auth()->user()->role;
+    $layout = match ($role) {
+        'admin' => 'layouts.admin',
+        'operator' => 'layouts.operator',
+        'kepala_sekolah' => 'layouts.kepala-sekolah',
+        'guru' => 'layouts.guru',
+        default => 'layouts.app',
+    };
+    $routePrefix = match ($role) {
+        'admin' => 'admin',
+        'operator' => 'operator',
+        'kepala_sekolah' => 'kepala-sekolah',
+        'guru' => 'guru',
+        default => 'admin',
+    };
+@endphp
+
+@extends($layout)
 
 @section('title', 'Edit Materi KBM')
 @section('breadcrumb', 'Materi KBM / Edit')
@@ -6,7 +24,7 @@
 @section('content')
 <div class="max-w-2xl mx-auto">
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 sm:p-8">
-        <form method="POST" action="{{ route('admin.materi-kbm.update', $materiKbm) }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route($routePrefix . '.materi-kbm.update', $materiKbm) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -106,7 +124,7 @@
                     <p class="text-sm font-medium text-slate-700 truncate">{{ $materiKbm->file_name }}</p>
                     <p class="text-xs text-slate-400">{{ $materiKbm->file_type }} • {{ $materiKbm->file_size_formatted }}</p>
                 </div>
-                <a href="{{ route('admin.materi-kbm.download', $materiKbm) }}"
+                <a href="{{ route($routePrefix . '.materi-kbm.download', $materiKbm) }}"
                     class="text-primary hover:text-purple-700 text-xs font-bold flex-shrink-0">Download</a>
             </div>
             <p class="text-xs text-slate-400 mb-3">Upload file baru di bawah untuk mengganti file yang ada.</p>
@@ -142,7 +160,7 @@
                     <span class="material-symbols-outlined text-xl">save</span>
                     Perbarui Materi
                 </button>
-                <a href="{{ route('admin.materi-kbm.index') }}"
+                <a href="{{ route($routePrefix . '.materi-kbm.index') }}"
                     class="flex items-center justify-center px-6 py-2.5 border border-slate-200 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all w-full sm:w-auto">
                     Batal
                 </a>

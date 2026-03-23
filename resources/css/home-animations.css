@@ -1,0 +1,320 @@
+:root {
+    --home-anim-duration: 620ms;
+    --home-anim-ease: cubic-bezier(0.34, 1.2, 0.64, 1);
+    --home-anim-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Navbar Container */
+#homepage-navbar {
+    padding: 1rem 0;
+    transition: all 380ms cubic-bezier(0.34, 1.2, 0.64, 1), transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(0);
+}
+
+#homepage-navbar .home-navbar-shell {
+    border: 1px solid transparent;
+    border-radius: 1.5rem;
+    box-shadow: none;
+    transition: all 380ms cubic-bezier(0.34, 1.2, 0.64, 1);
+    backdrop-filter: blur(0px);
+}
+
+/* Scrolled State dengan Animasi Lebih Halus */
+#homepage-navbar.is-scrolled {
+    padding: 0.5rem 0;
+}
+
+#homepage-navbar.is-scrolled .home-navbar-shell {
+    background: rgba(255, 255, 255, 0.92);
+    border-color: rgba(148, 163, 184, 0.2);
+    border-radius: 2rem;
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(148, 163, 184, 0.1);
+    backdrop-filter: blur(12px);
+}
+
+/* ============================================
+   ANIMASI KHUSUS UNTUK ELEMEN YANG MEMILIKI data-home-animate
+   ============================================ */
+[data-home-animate],
+[data-kurikulum-animate] {
+    opacity: 0;
+    will-change: opacity, transform, filter;
+    transition: all var(--home-anim-duration) var(--home-anim-ease);
+    transition-delay: var(--animate-delay, 0ms);
+}
+
+/* Fade Up - Efek Muncul dari Bawah */
+[data-home-animate="fade-up"],
+[data-kurikulum-animate="fade-up"] {
+    transform: translateY(40px);
+}
+
+[data-home-animate="fade-up"].is-visible,
+[data-kurikulum-animate="fade-up"].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Fade Left - Efek dari Kanan */
+[data-home-animate="fade-left"],
+[data-kurikulum-animate="fade-left"] {
+    transform: translateX(40px);
+}
+
+[data-home-animate="fade-left"].is-visible,
+[data-kurikulum-animate="fade-left"].is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Fade Right - Efek dari Kiri */
+[data-home-animate="fade-right"],
+[data-kurikulum-animate="fade-right"] {
+    transform: translateX(-40px);
+}
+
+[data-home-animate="fade-right"].is-visible,
+[data-kurikulum-animate="fade-right"].is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Zoom In - Efek Zoom dengan Bounce */
+[data-home-animate="zoom-in"],
+[data-kurikulum-animate="zoom-in"] {
+    transform: scale(0.9);
+}
+
+[data-home-animate="zoom-in"].is-visible,
+[data-kurikulum-animate="zoom-in"].is-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Scale Up - Efek Scale Halus */
+[data-home-animate="scale-up"],
+[data-kurikulum-animate="scale-up"] {
+    transform: scale(0.85);
+}
+
+[data-home-animate="scale-up"].is-visible,
+[data-kurikulum-animate="scale-up"].is-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Slide In dengan Rotasi Ringan */
+[data-home-animate="slide-rotate"],
+[data-kurikulum-animate="slide-rotate"] {
+    transform: translateX(-30px) rotate(-5deg);
+}
+
+[data-home-animate="slide-rotate"].is-visible,
+[data-kurikulum-animate="slide-rotate"].is-visible {
+    opacity: 1;
+    transform: translateX(0) rotate(0);
+}
+
+/* Blur In - Efek Blur ke Jelas */
+[data-home-animate="blur-in"],
+[data-kurikulum-animate="blur-in"] {
+    filter: blur(12px);
+    transform: scale(1.05);
+}
+
+[data-home-animate="blur-in"].is-visible,
+[data-kurikulum-animate="blur-in"].is-visible {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+}
+
+/* Flip In - Efek 3D */
+[data-home-animate="flip-in"],
+[data-kurikulum-animate="flip-in"] {
+    transform: perspective(600px) rotateX(15deg);
+    transform-origin: top;
+}
+
+[data-home-animate="flip-in"].is-visible,
+[data-kurikulum-animate="flip-in"].is-visible {
+    opacity: 1;
+    transform: perspective(600px) rotateX(0);
+}
+
+/* Stagger Effect untuk Children */
+[data-home-stagger] > *,
+[data-kurikulum-stagger] > * {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 480ms var(--home-anim-ease);
+    transition-delay: calc(var(--stagger-delay, 0ms) + (var(--stagger-index, 0) * 80ms));
+    will-change: opacity, transform;
+}
+
+[data-home-stagger] > .is-visible,
+[data-kurikulum-stagger] > .is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================
+   KHUSUS LOGO - TIDAK KENA ANIMASI
+   ============================================ */
+/* Logo container - override animasi */
+#homepage-navbar .flex.items-center.gap-3 {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: all 280ms cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+/* Hover effect untuk logo */
+#homepage-navbar .flex.items-center.gap-3:hover {
+    transform: scale(1.02) !important;
+}
+
+#homepage-navbar .flex.items-center.gap-3:hover .size-10 {
+    transform: rotate(-5deg) scale(1.05);
+}
+
+.size-10 {
+    transition: all 280ms cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+/* ============================================
+   HOVER EFFECTS UNTUK MENU
+   ============================================ */
+/* Hover Effects untuk Menu Items Desktop */
+#homepage-navbar .home-navbar-shell .hidden.md\\:flex a:not(.bg-primary) {
+    position: relative;
+    transition: all 280ms ease;
+}
+
+#homepage-navbar .home-navbar-shell .hidden.md\\:flex a:not(.bg-primary)::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: width 320ms cubic-bezier(0.34, 1.2, 0.64, 1);
+    border-radius: 2px;
+}
+
+#homepage-navbar .home-navbar-shell .hidden.md\\:flex a:not(.bg-primary):hover::after {
+    width: 100%;
+}
+
+#homepage-navbar .home-navbar-shell .hidden.md\\:flex a:not(.bg-primary):hover {
+    transform: translateY(-1px);
+}
+
+/* Button Hover Effect */
+#homepage-navbar .home-navbar-shell .bg-primary {
+    position: relative;
+    overflow: hidden;
+    transition: all 320ms cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+#homepage-navbar .home-navbar-shell .bg-primary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 480ms, height 480ms;
+}
+
+#homepage-navbar .home-navbar-shell .bg-primary:hover::before {
+    width: 200%;
+    height: 200%;
+}
+
+#homepage-navbar .home-navbar-shell .bg-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px -8px rgba(102, 126, 234, 0.5);
+}
+
+/* Mobile Menu Animation */
+#mobile-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 480ms cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+#mobile-menu.active {
+    max-height: 500px;
+}
+
+#mobile-menu a {
+    transition: all 280ms cubic-bezier(0.34, 1.2, 0.64, 1);
+    transform: translateX(-10px);
+    opacity: 0.8;
+}
+
+#mobile-menu.active a {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+#mobile-menu.active a:nth-child(1) { transition-delay: 40ms; }
+#mobile-menu.active a:nth-child(2) { transition-delay: 80ms; }
+#mobile-menu.active a:nth-child(3) { transition-delay: 120ms; }
+#mobile-menu.active a:nth-child(4) { transition-delay: 160ms; }
+#mobile-menu.active a:nth-child(5) { transition-delay: 200ms; }
+
+/* Responsive */
+@media (max-width: 767px) {
+    #homepage-navbar {
+        padding: 0.5rem 0;
+    }
+    
+    [data-home-animate="fade-up"],
+    [data-kurikulum-animate="fade-up"] {
+        transform: translateY(25px);
+    }
+    
+    [data-home-animate="fade-left"],
+    [data-home-animate="fade-right"],
+    [data-kurikulum-animate="fade-left"],
+    [data-kurikulum-animate="fade-right"] {
+        transform: translateX(25px);
+    }
+}
+
+/* Reduce Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --home-anim-duration: 0.01ms;
+    }
+    
+    #homepage-navbar,
+    #homepage-navbar .home-navbar-shell,
+    [data-home-animate],
+    [data-kurikulum-animate],
+    [data-home-stagger] > *,
+    [data-kurikulum-stagger] > *,
+    #mobile-menu,
+    #mobile-menu a,
+    .size-10,
+    .bg-primary {
+        transition: none !important;
+        animation: none !important;
+        transform: none !important;
+    }
+    
+    [data-home-animate],
+    [data-kurikulum-animate],
+    [data-home-stagger] > *,
+    [data-kurikulum-stagger] > * {
+        opacity: 1 !important;
+        filter: none !important;
+        transform: none !important;
+    }
+}

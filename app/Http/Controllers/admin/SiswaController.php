@@ -512,7 +512,7 @@ class SiswaController extends Controller
             // Data Calon Siswa
             'nama_lengkap' => 'required|string|max:255',
             'nama_panggilan' => 'nullable|string|max:100',
-            'nik' => 'required|numeric|digits:16|unique:siswas,nik' . ($id ? ',' . $id : ''),
+            'nik' => 'required|string|max:20|unique:siswas,nik' . ($id ? ',' . $id : ''),
             'nis' => 'required|numeric|digits_between:5,15|unique:siswas,nis' . ($id ? ',' . $id : ''),
             'nisn' => 'required|numeric|digits:10|unique:siswas,nisn' . ($id ? ',' . $id : ''),
             'tempat_lahir' => 'required|string|max:100',
@@ -550,7 +550,7 @@ class SiswaController extends Controller
             
             // Data Ayah
             'nama_ayah' => 'required|string|max:255',
-            'nik_ayah' => 'required|numeric|digits:16',
+            'nik_ayah' => 'required|string|max:20',
             'tempat_lahir_ayah' => 'required|string|max:100',
             'tanggal_lahir_ayah' => 'required|date|before_or_equal:today',
             'pendidikan_ayah' => 'nullable|string',
@@ -560,7 +560,7 @@ class SiswaController extends Controller
             
             // Data Ibu
             'nama_ibu' => 'required|string|max:255',
-            'nik_ibu' => 'required|numeric|digits:16',
+            'nik_ibu' => 'required|string|max:20',
             'tempat_lahir_ibu' => 'required|string|max:100',
             'tanggal_lahir_ibu' => 'required|date|before_or_equal:today',
             'pendidikan_ibu' => 'nullable|string',
@@ -571,7 +571,7 @@ class SiswaController extends Controller
             // Data Wali
             'punya_wali' => 'nullable|boolean',
             'nama_wali' => 'required_if:punya_wali,1|nullable|string|max:255',
-            'nik_wali' => 'required_if:punya_wali,1|nullable|numeric|digits:16',
+            'nik_wali' => 'required_if:punya_wali,1|nullable|string|max:20',
             'tempat_lahir_wali' => 'required_if:punya_wali,1|nullable|string|max:100',
             'tanggal_lahir_wali' => 'required_if:punya_wali,1|nullable|date|before_or_equal:today',
             'nomor_telepon_wali' => 'required_if:punya_wali,1|nullable|numeric|digits_between:10,15',

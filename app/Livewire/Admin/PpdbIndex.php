@@ -22,6 +22,11 @@ class PpdbIndex extends Component
         'page' => ['except' => 1],
     ];
 
+    public function canManage(): bool
+    {
+        return auth()->user()?->canAccessModule('ppdb', 'delete') ?? false;
+    }
+
     public function updatedSearch()
     {
         $this->resetPage();
@@ -36,6 +41,12 @@ class PpdbIndex extends Component
 
     public function updatedSelectAll($value)
     {
+        if (!$this->canManage()) {
+            $this->selectAll = false;
+            $this->selectedIds = [];
+            return;
+        }
+
         if ($value) {
             $this->selectedIds = $this->getSpmbQuery()->pluck('id')->map(fn ($id) => (string) $id)->toArray();
         } else {
@@ -45,6 +56,12 @@ class PpdbIndex extends Component
 
     public function updatedSelectedIds()
     {
+        if (!$this->canManage()) {
+            $this->selectedIds = [];
+            $this->selectAll = false;
+            return;
+        }
+
         $count = $this->getSpmbQuery()->count();
         $this->selectAll = count($this->selectedIds) === $count && $count > 0;
     }
@@ -64,6 +81,8 @@ class PpdbIndex extends Component
 
     public function bulkLulus()
     {
+        abort_unless($this->canManage(), 403);
+
         if (empty($this->selectedIds)) {
             return;
         }
@@ -80,6 +99,8 @@ class PpdbIndex extends Component
 
     public function bulkDelete()
     {
+        abort_unless($this->canManage(), 403);
+
         if (empty($this->selectedIds)) {
             return;
         }
@@ -96,6 +117,8 @@ class PpdbIndex extends Component
 
     public function confirmBulkLulus()
     {
+        abort_unless($this->canManage(), 403);
+
         $this->dispatch('show-confirm', [
             'title' => 'Konfirmasi',
             'text' => 'Ubah status Lulus untuk ' . count($this->selectedIds) . ' data?',
@@ -108,6 +131,8 @@ class PpdbIndex extends Component
 
     public function confirmBulkDelete()
     {
+        abort_unless($this->canManage(), 403);
+
         $this->dispatch('show-confirm', [
             'title' => 'Konfirmasi Hapus',
             'text' => 'Hapus ' . count($this->selectedIds) . ' data? Tindakan ini tidak dapat dibatalkan.',

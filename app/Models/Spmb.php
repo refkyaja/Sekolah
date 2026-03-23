@@ -144,6 +144,7 @@ class Spmb extends Model
         'is_lulus',
         'is_mengulang',
         'catatan_admin',
+        'catatan_admin_at',
         'foto_calon_siswa',
     ];
 
@@ -159,6 +160,7 @@ class Spmb extends Model
         'tanggal_verifikasi_ktp' => 'datetime',
         'tanggal_verifikasi_bukti_transfer' => 'datetime',
         'tanggal_approval' => 'datetime',
+        'catatan_admin_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
@@ -374,6 +376,28 @@ class Spmb extends Model
     public function getDokumenLengkapAttribute()
     {
         return $this->verifikasi_akte && $this->verifikasi_kk && $this->verifikasi_ktp;
+    }
+
+    public function getDokumenTerunggahAttribute()
+    {
+        $types = $this->dokumen->pluck('jenis_dokumen')->toArray();
+        return in_array('akte_kelahiran', $types) && 
+               in_array('kartu_keluarga', $types) && 
+               in_array('ktp_orang_tua', $types);
+    }
+
+    public function hasUploadedDocument(string $jenisDokumen): bool
+    {
+        if ($this->relationLoaded('dokumen')) {
+            return $this->dokumen->contains(function ($dokumen) use ($jenisDokumen) {
+                return $dokumen->jenis_dokumen === $jenisDokumen && filled($dokumen->path_file);
+            });
+        }
+
+        return $this->dokumen()
+            ->where('jenis_dokumen', $jenisDokumen)
+            ->whereNotNull('path_file')
+            ->exists();
     }
 
     public function getSiapLulusAttribute()

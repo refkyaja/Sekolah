@@ -101,7 +101,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Tambahkan Alpine.js jika dibutuhkan
-import Alpine from 'alpinejs';
-window.Alpine = Alpine;
-Alpine.start();
+// Alpine sudah dibawa oleh Livewire. Jangan start instance kedua di sini,
+// karena akan bentrok dengan komponen yang memakai entangle().

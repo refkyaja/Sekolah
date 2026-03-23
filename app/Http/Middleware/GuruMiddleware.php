@@ -18,13 +18,7 @@ class GuruMiddleware
         
         // Cek apakah user adalah guru
         if (Auth::user()->role !== 'guru') {
-            // Jika user adalah admin, redirect ke dashboard admin
-            if (Auth::user()->role === 'admin') {
-                return redirect()->route('admin.dashboard');
-            }
-            
-            // Jika role tidak dikenali, redirect ke home
-            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses ke halaman guru.');
+            abort(403, 'Access denied. Guru privileges required.');
         }
         
         return $next($request);

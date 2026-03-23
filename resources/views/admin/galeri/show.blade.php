@@ -1,5 +1,26 @@
 {{-- resources/views/admin/galeri/show.blade.php --}}
-@extends('layouts.admin')
+@php
+    $role = auth()->user()->role;
+    $user = auth()->user();
+    $layout = match ($role) {
+        'admin' => 'layouts.admin',
+        'operator' => 'layouts.operator',
+        'kepala_sekolah' => 'layouts.kepala-sekolah',
+        'guru' => 'layouts.guru',
+        default => 'layouts.app',
+    };
+    $routePrefix = match ($role) {
+        'admin' => 'admin',
+        'operator' => 'operator',
+        'kepala_sekolah' => 'kepala-sekolah',
+        'guru' => 'guru',
+        default => 'admin',
+    };
+    $canUpdateGaleri = $user->canAccessModule('galeri', 'update');
+    $canDeleteGaleri = $user->canAccessModule('galeri', 'delete');
+@endphp
+
+@extends($layout)
 
 @section('title', 'Detail Galeri - ' . $galeri->judul)
 
@@ -8,7 +29,7 @@
     <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
             <div class="flex items-center">
-                <a href="{{ route('admin.galeri.index') }}" class="text-gray-400 hover:text-gray-600 mr-4">
+                <a href="{{ route($routePrefix . '.galeri.index') }}" class="text-gray-400 hover:text-gray-600 mr-4">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
@@ -159,15 +180,18 @@
                     <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Aksi</h3>
                     
                     <div class="space-y-2">
-                        <a href="{{ route('admin.galeri.edit', $galeri) }}" 
+                        @if($canUpdateGaleri)
+                        <a href="{{ route($routePrefix . '.galeri.edit', $galeri) }}" 
                            class="w-full flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                             </svg>
                             Edit Galeri
                         </a>
+                        @endif
                         
-                        <form action="{{ route('admin.galeri.toggle-publish', $galeri) }}" method="POST">
+                        @if($canUpdateGaleri)
+                        <form action="{{ route($routePrefix . '.galeri.toggle-publish', $galeri) }}" method="POST">
                             @csrf
                             @method('PATCH')
                             <button type="submit" 
@@ -182,7 +206,9 @@
                                 {{ $galeri->is_published ? 'Unpublish' : 'Publish' }}
                             </button>
                         </form>
+                        @endif
                         
+                        @if($canDeleteGaleri)
                         <button type="button" 
                                 onclick="confirmDelete({{ $galeri->id }})"
                                 class="w-full flex items-center justify-center px-4 py-2 border border-red-300 text-red-700 rounded-lg hover:bg-red-50 transition-colors">
@@ -191,6 +217,7 @@
                             </svg>
                             Hapus Galeri
                         </button>
+                        @endif
                     </div>
                 </div>
                 
@@ -325,7 +352,7 @@
                             </div>
                             <h3 class="text-lg font-medium text-gray-900 mb-2">Belum Ada Gambar</h3>
                             <p class="text-gray-500 mb-6">Galeri ini belum memiliki gambar. Tambahkan gambar sekarang!</p>
-                            <a href="{{ route('admin.galeri.edit', $galeri) }}" 
+                            <a href="{{ route($routePrefix . '.galeri.edit', $galeri) }}" 
                                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>

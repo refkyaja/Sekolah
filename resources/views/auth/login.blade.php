@@ -226,8 +226,8 @@
                             @csrf
 
                             <!-- Login with Google -->
-                            <div class="mb-6">
-                                <a href="{{ route('login.google') }}" class="btn-animation w-full flex items-center justify-center gap-3 bg-white hover:bg-white/90 text-slate-900 font-semibold py-3 px-4 rounded-lg shadow-lg transition-all">
+                            {{-- <div class="mb-6">
+                                <a href="{{ route('siswa.login.google') }}" class="btn-animation w-full flex items-center justify-center gap-3 bg-white hover:bg-white/90 text-slate-900 font-semibold py-3 px-4 rounded-lg shadow-lg transition-all">
                                     <svg class="h-5 w-5" viewBox="0 0 24 24">
                                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
                                         <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
@@ -236,16 +236,7 @@
                                     </svg>
                                     <span>Sign in with Google</span>
                                 </a>
-                            </div>
-
-                            <div class="relative mb-6">
-                                <div class="absolute inset-0 flex items-center">
-                                    <div class="w-full border-t border-white/20"></div>
-                                </div>
-                                <div class="relative flex justify-center text-sm">
-                                    <span class="px-2 bg-slate-900 text-white/50">Or continue with email</span>
-                                </div>
-                            </div>
+                            </div> --}}
 
                             <!-- Email Address -->
                             <div>

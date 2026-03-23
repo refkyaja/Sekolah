@@ -1,4 +1,19 @@
 <div>
+    @php
+        $role = auth()->user()->role;
+        $user = auth()->user();
+        $routePrefix = match ($role) {
+            'admin' => 'admin',
+            'operator' => 'operator',
+            'kepala_sekolah' => 'kepala-sekolah',
+            'guru' => 'guru',
+            default => 'admin',
+        };
+        $canManagePpdb = $user->canAccessModule('ppdb', 'delete');
+        $canCreatePpdb = $user->canAccessModule('ppdb', 'create') && \Illuminate\Support\Facades\Route::has($routePrefix . '.ppdb.create');
+        $canEditPpdb = $user->canAccessModule('ppdb', 'update') && \Illuminate\Support\Facades\Route::has($routePrefix . '.ppdb.edit');
+    @endphp
+
     <div class="bg-white rounded-2xl p-6 mb-8 border border-slate-100 shadow-sm flex flex-wrap items-center gap-4">
         <div class="flex-1 min-w-[250px] relative">
             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
@@ -27,7 +42,7 @@
         </button>
         @endif
 
-        @if(!empty($selectedIds))
+        @if($canManagePpdb && !empty($selectedIds))
         <div class="w-full md:w-56" x-data="{ open: false }">
             <div class="relative">
                 <button type="button" @click="open = !open" class="w-full px-4 py-3 bg-primary text-white rounded-xl font-bold text-sm flex items-center justify-between">
@@ -61,9 +76,11 @@
             <table class="w-full text-left border-collapse data-table">
                 <thead>
                     <tr class="bg-slate-50/50 border-b border-slate-100">
-                        <th class="pl-6 py-4 w-12">
-                            <input wire:model.live="selectAll" class="w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary transition-all cursor-pointer" type="checkbox" />
-                        </th>
+                        @if($canManagePpdb)
+                            <th class="pl-6 py-4 w-12">
+                                <input wire:model.live="selectAll" class="w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary transition-all cursor-pointer" type="checkbox" />
+                            </th>
+                        @endif
                         <th class="px-4 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider w-16">No</th>
                         <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">Kode Pendaftaran</th>
                         <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">Nama Lengkap</th>
@@ -76,9 +93,11 @@
                 <tbody class="divide-y divide-slate-50">
                     @forelse($spmb as $index => $item)
                     <tr class="hover:bg-slate-50/50 transition-colors group">
-                        <td class="pl-6 py-4">
-                            <input wire:model.live="selectedIds" class="w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary transition-all cursor-pointer" type="checkbox" value="{{ $item->id }}" />
-                        </td>
+                        @if($canManagePpdb)
+                            <td class="pl-6 py-4">
+                                <input wire:model.live="selectedIds" class="w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary transition-all cursor-pointer" type="checkbox" value="{{ $item->id }}" />
+                            </td>
+                        @endif
                         <td class="px-4 py-4 text-sm font-medium text-slate-400">{{ $spmb->firstItem() + $index }}</td>
                         <td class="px-6 py-4 text-sm font-bold text-primary">{{ $item->no_pendaftaran ?? '-' }}</td>
                         <td class="px-6 py-4">
@@ -117,22 +136,26 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center justify-center gap-2">
-                                <a href="{{ route('admin.ppdb.show', $item->id) }}" class="p-2 bg-slate-50 hover:bg-primary/10 text-slate-400 hover:text-primary rounded-lg transition-all" title="Show">
+                                <a href="{{ route($routePrefix . '.ppdb.show', $item->id) }}" class="p-2 bg-slate-50 hover:bg-primary/10 text-slate-400 hover:text-primary rounded-lg transition-all" title="Show">
                                     <span class="material-symbols-outlined text-lg">visibility</span>
                                 </a>
-                                <a href="{{ route('admin.ppdb.edit', $item->id) }}" class="p-2 bg-slate-50 hover:bg-primary/10 text-slate-400 hover:text-primary rounded-lg transition-all" title="Edit">
-                                    <span class="material-symbols-outlined text-lg">edit</span>
-                                </a>
+                                @if($canEditPpdb)
+                                    <a href="{{ route($routePrefix . '.ppdb.edit', $item->id) }}" class="p-2 bg-slate-50 hover:bg-primary/10 text-slate-400 hover:text-primary rounded-lg transition-all" title="Edit">
+                                        <span class="material-symbols-outlined text-lg">edit</span>
+                                    </a>
+                                @endif
                             </div>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="px-6 py-12 text-center">
+                        <td colspan="{{ $canManagePpdb ? '8' : '7' }}" class="px-6 py-12 text-center">
                             <div class="flex flex-col items-center">
                                 <span class="material-symbols-outlined text-5xl text-slate-300 mb-3">folder_off</span>
                                 <p class="text-slate-500 font-medium">Tidak ada data pendaftaran</p>
-                                <a href="{{ route('admin.ppdb.create') }}" class="text-primary hover:underline text-sm mt-2">Tambah data baru</a>
+                                @if($canCreatePpdb)
+                                    <a href="{{ route($routePrefix . '.ppdb.create') }}" class="text-primary hover:underline text-sm mt-2">Tambah data baru</a>
+                                @endif
                             </div>
                         </td>
                     </tr>

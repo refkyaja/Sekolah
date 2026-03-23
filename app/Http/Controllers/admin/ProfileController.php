@@ -26,6 +26,12 @@ class ProfileController extends Controller
         return view('admin.profile.index', compact('user', 'activities'));
     }
 
+    public function settings()
+    {
+        $user = auth()->user();
+        return view('admin.profile.settings', compact('user'));
+    }
+
     public function update(Request $request)
     {
         $user = auth()->user();

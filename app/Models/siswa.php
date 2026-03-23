@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 // use Spatie\Activitylog\Traits\LogsActivity;
@@ -12,24 +13,7 @@ use Carbon\Carbon;
 
 class Siswa extends Authenticatable
 {
-<<<<<<< HEAD
     use HasFactory, SoftDeletes;
-
-=======
-    use HasFactory, SoftDeletes; //, LogsActivity;
-
-    /*
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logFillable()
-            ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
-    }
-    */
-
-    protected $table = 'siswas';
->>>>>>> 9a49cb3ed1b84f3600c4e18b848e92f6d9c17047
     protected $fillable = [
         // Relasi
         'spmb_id',
@@ -169,21 +153,7 @@ class Siswa extends Authenticatable
         self::STATUS_CUTI => 'Cuti',
     ];
 
-    /* =======================
-     | ACTIVITY LOG OPTIONS
-     ======================= */
 
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logAll()
-            ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
-    }
-
-    /* =======================
-     | RELATIONSHIPS
-     ======================= */
     
     /**
      * Relasi ke SPMB (pendaftaran asal)
@@ -212,10 +182,12 @@ class Siswa extends Authenticatable
     /**
      * Relasi ke Nilai
      */
+    /*
     public function nilai()
     {
         return $this->hasMany(Nilai::class, 'siswa_id');
     }
+    */
 
     /* =======================
      | ACCESSORS
@@ -289,6 +261,22 @@ class Siswa extends Authenticatable
         return $this->tanggal_keluar
             ? $this->tanggal_keluar->translatedFormat('d F Y')
             : '-';
+    }
+
+    /**
+     * URL foto siswa, mendukung path storage lokal maupun URL eksternal.
+     */
+    public function getFotoUrlAttribute()
+    {
+        if (blank($this->foto)) {
+            return 'https://ui-avatars.com/api/?name=' . urlencode($this->nama_lengkap ?? 'S') . '&background=7f19e6&color=fff';
+        }
+
+        if (Str::startsWith($this->foto, ['http://', 'https://'])) {
+            return $this->foto;
+        }
+
+        return asset('storage/' . ltrim($this->foto, '/'));
     }
 
     /**

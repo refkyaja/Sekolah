@@ -10,16 +10,22 @@
         <!-- Desktop Menu -->
         <div class="hidden md:flex items-center gap-8 font-semibold text-slate-600 dark:text-slate-300">
             <a class="hover:text-primary transition-colors {{ request()->routeIs('home') ? 'text-primary' : '' }}" href="{{ route('home') }}">Beranda</a>
-            <a class="hover:text-primary transition-colors {{ request()->routeIs('profil.index') ? 'text-primary' : '' }}" href="{{ route('profil.index') }}">Profil</a>
-            <a class="hover:text-primary transition-colors {{ request()->routeIs('akademik.kurikulum') ? 'text-primary' : '' }}" href="{{ route('akademik.kurikulum') }}">Kurikulum</a>
-            <a class="hover:text-primary transition-colors {{ request()->routeIs('spmb.index') ? 'text-primary' : '' }}" href="{{ route('spmb.index') }}">PPDB</a>
-            <a class="hover:text-primary transition-colors {{ request()->routeIs('berita.index') ? 'text-primary' : '' }}" href="{{ route('berita.index') }}">Informasi</a>
+            <a class="hover:text-primary transition-colors {{ request()->routeIs('profil') ? 'text-primary' : '' }}" href="{{ route('profil') }}">Profil</a>
+            <a class="hover:text-primary transition-colors {{ request()->routeIs('kurikulum') ? 'text-primary' : '' }}" href="{{ route('kurikulum') }}">Kurikulum</a>
+            <a class="hover:text-primary transition-colors {{ request()->routeIs('ppdb.index') ? 'text-primary' : '' }}" href="{{ route('ppdb.index') }}">PPDB</a>
+            <a class="hover:text-primary transition-colors {{ request()->routeIs('informasi') || request()->routeIs('berita.*') || request()->routeIs('galeri.*') ? 'text-primary' : '' }}" href="{{ route('informasi') }}">Informasi</a>
         </div>
 
         <!-- Right: Desktop Links / Toggle -->
         <div class="flex items-center space-x-8">
             <div class="hidden md:flex items-center space-x-8 text-[10px] font-bold uppercase tracking-widest text-brand-dark dark:text-stone-300">
-                @foreach(array_slice($navLinks, 3) as $link)
+                @php
+                $navLinks = [
+                    ['name' => 'Galeri', 'route' => 'galeri.index'],
+                    ['name' => 'Informasi', 'route' => 'informasi'],
+                ];
+                @endphp
+                @foreach($navLinks as $link)
                     <a class="hover:text-brand-primary transition-colors {{ request()->routeIs($link['route']) ? 'text-brand-primary' : '' }}" href="{{ route($link['route']) }}">{{ $link['name'] }}</a>
                 @endforeach
             </div>
@@ -78,14 +84,14 @@
          class="md:hidden bg-white dark:bg-slate-900 shadow-md border-t border-slate-100 dark:border-slate-800">
         <div class="flex flex-col p-4 font-semibold text-slate-600 dark:text-slate-300 gap-y-4">
             <a class="hover:text-primary transition-colors {{ request()->routeIs('home') ? 'text-primary' : '' }}" href="{{ route('home') }}">Beranda</a>
-            <a class="hover:text-primary transition-colors {{ request()->routeIs('profil.index') ? 'text-primary' : '' }}" href="{{ route('profil.index') }}">Profil</a>
-            <a class="hover:text-primary transition-colors {{ request()->routeIs('akademik.kurikulum') ? 'text-primary' : '' }}" href="{{ route('akademik.kurikulum') }}">Kurikulum</a>
-            <a class="hover:text-primary transition-colors {{ request()->routeIs('spmb.index') ? 'text-primary' : '' }}" href="{{ route('spmb.index') }}">PPDB</a>
-            <a class="hover:text-primary transition-colors {{ request()->routeIs('berita.index') ? 'text-primary' : '' }}" href="{{ route('berita.index') }}">Informasi</a>
+            <a class="hover:text-primary transition-colors {{ request()->routeIs('profil') ? 'text-primary' : '' }}" href="{{ route('profil') }}">Profil</a>
+            <a class="hover:text-primary transition-colors {{ request()->routeIs('kurikulum') ? 'text-primary' : '' }}" href="{{ route('kurikulum') }}">Kurikulum</a>
+            <a class="hover:text-primary transition-colors {{ request()->routeIs('ppdb.index') ? 'text-primary' : '' }}" href="{{ route('ppdb.index') }}">PPDB</a>
+            <a class="hover:text-primary transition-colors {{ request()->routeIs('informasi') || request()->routeIs('berita.*') || request()->routeIs('galeri.*') ? 'text-primary' : '' }}" href="{{ route('informasi') }}">Informasi</a>
             @guest('siswa')
             <button onclick="showLoginModal(event)" class="bg-primary text-white px-6 py-2.5 rounded-full font-bold text-center mt-2 shadow-md">Daftar Sekarang</button>
             @else
-            <a class="bg-primary text-white px-6 py-2.5 rounded-full font-bold text-center mt-2 shadow-md" href="{{ route('spmb.pendaftaran') }}">Daftar Sekarang</a>
+            <a class="bg-primary text-white px-6 py-2.5 rounded-full font-bold text-center mt-2 shadow-md" href="{{ route('ppdb.index') }}">Daftar Sekarang</a>
             @endguest
         </div>
     </div>

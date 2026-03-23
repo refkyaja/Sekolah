@@ -56,11 +56,11 @@
             <!-- Nav Links -->
             <div class="hidden md:flex items-center gap-10">
                 <a href="{{ url('/') }}" class="text-[10px] font-bold uppercase tracking-widest hover:text-brand-primary transition-colors">Beranda</a>
-                <a href="{{ route('spmb.index') }}" class="text-[10px] font-bold uppercase tracking-widest text-brand-primary">PPDB Online</a>
+                <a href="{{ route('ppdb.index') }}" class="text-[10px] font-bold uppercase tracking-widest text-brand-primary">PPDB Online</a>
                 @guest('siswa')
                 <button onclick="showLoginModal(event)" class="bg-brand-dark text-white px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-brand-primary transition-all shadow-lg shadow-stone-200">Daftar</button>
                 @else
-                <a href="{{ route('spmb.pendaftaran') }}" class="bg-brand-dark text-white px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-brand-primary transition-all shadow-lg shadow-stone-200">Daftar</a>
+                <a href="{{ route('ppdb.index') }}" class="bg-brand-dark text-white px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-brand-primary transition-all shadow-lg shadow-stone-200">Daftar</a>
                 @endguest
             </div>
 
@@ -83,7 +83,7 @@
                         <i class="fas fa-user-plus mr-2"></i>Daftar Sekarang
                     </button>
                     @else
-                    <a href="{{ route('spmb.pendaftaran') }}" class="block px-3 py-2 bg-blue-600 text-white rounded">
+                    <a href="{{ route('ppdb.index') }}" class="block px-3 py-2 bg-blue-600 text-white rounded">
                         <i class="fas fa-user-plus mr-2"></i>Daftar Sekarang
                     </a>
                     @endguest
@@ -114,7 +114,7 @@
                     <h4 class="text-[10px] font-bold uppercase tracking-widest text-brand-dark mb-6">Tautan Cepat</h4>
                     <ul class="space-y-4 text-[10px] font-bold uppercase tracking-wider">
                         <li><a href="{{ url('/') }}" class="hover:text-brand-primary">Beranda</a></li>
-                        <li><a href="{{ route('spmb.index') }}" class="hover:text-brand-primary">PPDB Online</a></li>
+                        <li><a href="{{ route('ppdb.index') }}" class="hover:text-brand-primary">PPDB Online</a></li>
                         <li><a href="#" class="hover:text-brand-primary">Kontak</a></li>
                     </ul>
                 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Concerns\AuthorizesModuleAccess;
 use App\Http\Controllers\Controller;
 use App\Models\Kegiatan;
 use Illuminate\Http\Request;
@@ -10,18 +11,42 @@ use Illuminate\Support\Facades\Storage;
 
 class KegiatanController extends Controller
 {
+    use AuthorizesModuleAccess;
+
+    protected function kegiatanRoutePrefix(): string
+    {
+        return match (auth()->user()?->role) {
+            'admin' => 'admin',
+            'operator' => 'operator',
+            'kepala_sekolah' => 'kepala-sekolah',
+            'guru' => 'guru',
+            default => 'admin',
+        };
+    }
+
+    protected function kegiatanRoute(string $name, mixed ...$parameters): string
+    {
+        return route($this->kegiatanRoutePrefix() . '.kegiatan.' . $name, ...$parameters);
+    }
+
     public function index()
     {
+        $this->authorizeModule('kegiatan', 'read');
+
         return view('admin.kegiatan.index');
     }
 
     public function create()
     {
+        $this->authorizeModule('kegiatan', 'create');
+
         return view('admin.kegiatan.create');
     }
 
     public function store(Request $request)
     {
+        $this->authorizeModule('kegiatan', 'create');
+
         $validated = $request->validate([
             'nama_kegiatan'   => 'required|string|max:255',
             'tanggal_mulai'   => 'required|date',
@@ -41,22 +66,28 @@ class KegiatanController extends Controller
 
         Kegiatan::create($validated);
 
-        return redirect()->route('admin.kegiatan.index')
+        return redirect()->to($this->kegiatanRoute('index'))
             ->with('success', 'Kegiatan berhasil ditambahkan!');
     }
 
     public function show(Kegiatan $kegiatan)
     {
+        $this->authorizeModule('kegiatan', 'read');
+
         return view('admin.kegiatan.show', compact('kegiatan'));
     }
 
     public function edit(Kegiatan $kegiatan)
     {
+        $this->authorizeModule('kegiatan', 'update');
+
         return view('admin.kegiatan.edit', compact('kegiatan'));
     }
 
     public function update(Request $request, Kegiatan $kegiatan)
     {
+        $this->authorizeModule('kegiatan', 'update');
+
         $validated = $request->validate([
             'nama_kegiatan'   => 'required|string|max:255',
             'tanggal_mulai'   => 'required|date',
@@ -80,20 +111,24 @@ class KegiatanController extends Controller
 
         $kegiatan->update($validated);
 
-        return redirect()->route('admin.kegiatan.index')
+        return redirect()->to($this->kegiatanRoute('index'))
             ->with('success', 'Kegiatan berhasil diperbarui!');
     }
 
     public function destroy(Kegiatan $kegiatan)
     {
+        $this->authorizeModule('kegiatan', 'delete');
+
         $kegiatan->delete();
 
-        return redirect()->route('admin.kegiatan.index')
+        return redirect()->to($this->kegiatanRoute('index'))
             ->with('success', 'Kegiatan berhasil dihapus!');
     }
 
     public function togglePublish(Kegiatan $kegiatan)
     {
+        $this->authorizeModule('kegiatan', 'update');
+
         $kegiatan->update(['is_published' => !$kegiatan->is_published]);
 
         return back()->with('success', 'Status kegiatan berhasil diubah!');

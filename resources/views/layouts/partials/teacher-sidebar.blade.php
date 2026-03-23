@@ -29,25 +29,7 @@
             <span class="font-medium sidebar-text">Dashboard</span>
         </a>
 
-        <a href="{{ route('guru.absensi.index') }}" 
-           class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('guru.absensi.index') ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100' }}">
-            <span class="material-symbols-outlined">assignment_turned_in</span>
-            <span class="font-medium sidebar-text">Absensi Siswa</span>
-        </a>
-
-        <a href="#" 
-           class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100">
-            <span class="material-symbols-outlined">calendar_today</span>
-            <span class="font-medium sidebar-text">Jadwal Mengajar</span>
-        </a>
-
         <p class="px-4 mt-6 mb-2 text-[10px] font-semibold text-slate-400 uppercase tracking-wider sidebar-text">Akun</p>
-
-        <a href="{{ route('guru.profile') }}" 
-           class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('guru.profile') ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100' }}">
-            <span class="material-symbols-outlined">person</span>
-            <span class="font-medium sidebar-text">Profil Saya</span>
-        </a>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf

@@ -84,9 +84,10 @@ class AuthController extends Controller
         ]);
 
         Auth::guard('siswa')->login($siswa);
+        $request->session()->forget('url.intended');
         $request->session()->regenerate();
 
-        return redirect()->intended(route('siswa.dashboard'))->with('success', 'Pendaftaran berhasil! Selamat datang di TK Harapan Bangsa 1.');
+        return redirect()->to(route('siswa.dashboard', [], false))->with('success', 'Pendaftaran berhasil! Selamat datang di TK Harapan Bangsa 1.');
     }
 
     /**
@@ -105,9 +106,10 @@ class AuthController extends Controller
         ];
 
         if (Auth::guard('siswa')->attempt($credentials, $request->filled('remember-me'))) {
+            $request->session()->forget('url.intended');
             $request->session()->regenerate();
 
-            return redirect()->intended(route('siswa.dashboard'));
+            return redirect()->to(route('siswa.dashboard', [], false));
         }
 
         return back()->withErrors([

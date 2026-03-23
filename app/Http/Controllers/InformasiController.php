@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Berita;
 use App\Models\Kegiatan;
 use App\Models\Galeri;
 use Illuminate\Http\Request;
@@ -11,7 +10,6 @@ class InformasiController extends Controller
 {
     public function index()
     {
-        // Ambil 3 kegiatan terbaru yang sudah dipublish
         $kegiatan = Kegiatan::where('is_published', true)
             ->orderBy('tanggal_mulai', 'desc')
             ->limit(3)
@@ -26,6 +24,6 @@ class InformasiController extends Controller
             ->limit(6)
             ->get();
 
-        return view('Home.informasi.index', compact('kegiatan', 'galeri'));
+        return view('Home.informasi', compact('kegiatan', 'galeri'));
     }
 }

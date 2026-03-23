@@ -18,8 +18,8 @@ class AdminMiddleware
         
         $user = Auth::user();
         
-        // Cek apakah user adalah admin atau super_admin
-        if (!in_array($user->role, ['admin', 'super_admin'])) {
+        // Cek apakah user adalah admin
+        if ($user->role !== 'admin') {
             // Jika user adalah guru, redirect ke dashboard guru
             if ($user->role === 'guru') {
                 return redirect()->route('guru.dashboard');
@@ -27,7 +27,7 @@ class AdminMiddleware
             
             // Jika user adalah kepala sekolah atau operator
             if (in_array($user->role, ['kepala_sekolah', 'operator'])) {
-                return redirect()->route('dashboard')
+                return redirect()->route('home')
                     ->with('error', 'Anda tidak memiliki akses ke halaman admin.');
             }
             

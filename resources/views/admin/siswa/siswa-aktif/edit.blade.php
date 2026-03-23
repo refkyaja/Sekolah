@@ -61,7 +61,7 @@
                         </label>
                         <input type="text" name="nik" id="nik" 
                                value="{{ old('nik', $siswa->nik) }}"
-                               maxlength="16"
+                               maxlength="20"
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                required>
                         @error('nik')
@@ -312,7 +312,7 @@
                         <label for="nik_ayah" class="block text-sm font-medium text-gray-700 mb-1">NIK Ayah</label>
                         <input type="text" name="nik_ayah" id="nik_ayah" 
                                value="{{ old('nik_ayah', $siswa->nik_ayah) }}"
-                               maxlength="16"
+                               maxlength="20"
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         @error('nik_ayah')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -420,7 +420,7 @@
                         <label for="nik_ibu" class="block text-sm font-medium text-gray-700 mb-1">NIK Ibu</label>
                         <input type="text" name="nik_ibu" id="nik_ibu" 
                                value="{{ old('nik_ibu', $siswa->nik_ibu) }}"
-                               maxlength="16"
+                               maxlength="20"
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         @error('nik_ibu')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -596,11 +596,8 @@
                         <label for="jalur_masuk" class="block text-sm font-medium text-gray-700 mb-1">Jalur Masuk</label>
                         <select name="jalur_masuk" id="jalur_masuk" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">Pilih Jalur</option>
-                            <option value="zonasi" {{ old('jalur_masuk', $siswa->jalur_masuk) == 'zonasi' ? 'selected' : '' }}>Zonasi</option>
-                            <option value="afirmasi" {{ old('jalur_masuk', $siswa->jalur_masuk) == 'afirmasi' ? 'selected' : '' }}>Afirmasi</option>
-                            <option value="prestasi" {{ old('jalur_masuk', $siswa->jalur_masuk) == 'prestasi' ? 'selected' : '' }}>Prestasi</option>
-                            <option value="mutasi" {{ old('jalur_masuk', $siswa->jalur_masuk) == 'mutasi' ? 'selected' : '' }}>Mutasi</option>
                             <option value="reguler" {{ old('jalur_masuk', $siswa->jalur_masuk) == 'reguler' ? 'selected' : '' }}>Reguler</option>
+                            <option value="pindahan" {{ old('jalur_masuk', $siswa->jalur_masuk) == 'pindahan' ? 'selected' : '' }}>Pindahan</option>
                         </select>
                     </div>
 
@@ -693,7 +690,7 @@
                         <label for="nik_wali" class="block text-sm font-medium text-gray-700 mb-1">NIK Wali</label>
                         <input type="text" name="nik_wali" id="nik_wali" 
                                value="{{ old('nik_wali', $siswa->nik_wali) }}"
-                               maxlength="16"
+                               maxlength="20"
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
@@ -890,7 +887,7 @@
         });
     });
 
-    document.querySelectorAll('input[maxlength="16"]').forEach(input => {
+    document.querySelectorAll('input[maxlength="20"]').forEach(input => {
         input.addEventListener('input', function() {
             this.value = this.value.replace(/[^0-9]/g, '');
             if (this.value.length > 16) {

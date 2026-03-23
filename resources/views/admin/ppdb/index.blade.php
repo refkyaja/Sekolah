@@ -1,4 +1,24 @@
-@extends('layouts.admin')
+@php
+    $role = auth()->user()->role;
+    $user = auth()->user();
+    $layout = match ($role) {
+        'admin' => 'layouts.admin',
+        'operator' => 'layouts.operator',
+        'kepala_sekolah' => 'layouts.kepala-sekolah',
+        'guru' => 'layouts.guru',
+        default => 'layouts.app',
+    };
+    $routePrefix = match ($role) {
+        'admin' => 'admin',
+        'operator' => 'operator',
+        'kepala_sekolah' => 'kepala-sekolah',
+        'guru' => 'guru',
+        default => 'admin',
+    };
+    $canCreatePpdb = $user->canAccessModule('ppdb', 'create') && \Illuminate\Support\Facades\Route::has($routePrefix . '.ppdb.create');
+@endphp
+
+@extends($layout)
 
 @push('styles')
 <style>
@@ -63,10 +83,12 @@
         <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Pendaftaran PPDB</h1>
         <p class="text-sm text-slate-500 mt-1">Manajemen pendaftaran calon siswa baru dengan fitur filter dan aksi massal.</p>
     </div>
-    <a href="{{ route('admin.ppdb.create') }}" class="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-2xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
-        <span class="material-symbols-outlined text-lg">add</span>
-        Tambah Data PPDB
-    </a>
+    @if($canCreatePpdb)
+        <a href="{{ route($routePrefix . '.ppdb.create') }}" class="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-2xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+            <span class="material-symbols-outlined text-lg">add</span>
+            Tambah Data PPDB
+        </a>
+    @endif
 </div>
 
 <livewire:admin.ppdb-index />

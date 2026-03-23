@@ -1,5 +1,23 @@
 {{-- resources/views/admin/galeri/edit.blade.php --}}
-@extends('layouts.admin')
+@php
+    $role = auth()->user()->role;
+    $layout = match ($role) {
+        'admin' => 'layouts.admin',
+        'operator' => 'layouts.operator',
+        'kepala_sekolah' => 'layouts.kepala-sekolah',
+        'guru' => 'layouts.guru',
+        default => 'layouts.app',
+    };
+    $routePrefix = match ($role) {
+        'admin' => 'admin',
+        'operator' => 'operator',
+        'kepala_sekolah' => 'kepala-sekolah',
+        'guru' => 'guru',
+        default => 'admin',
+    };
+@endphp
+
+@extends($layout)
 
 @section('title', 'Edit Galeri')
 
@@ -12,7 +30,7 @@
     </div>
     
     <div class="p-6">
-        <form action="{{ route('admin.galeri.update', $galeri) }}" 
+        <form action="{{ route($routePrefix . '.galeri.update', $galeri) }}" 
               method="POST" 
               enctype="multipart/form-data"
               id="formGaleri">
@@ -243,7 +261,7 @@
                             class="w-full sm:w-auto px-6 py-3 md:py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 order-1 sm:order-2">
                         Update Galeri
                     </button>
-                    <a href="{{ route('admin.galeri.index') }}" 
+                    <a href="{{ route($routePrefix . '.galeri.index') }}" 
                        class="w-full sm:w-auto text-center px-6 py-3 md:py-2 border border-slate-300 text-slate-700 font-bold rounded-lg hover:bg-slate-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 order-2 sm:order-1">
                         Batal
                     </a>

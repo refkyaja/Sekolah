@@ -8,25 +8,36 @@
     .calendar-grid {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
+        gap: 0.75rem;
     }
     .calendar-day {
-        min-height: 140px; /* Taller on desktop for more premium feel */
+        min-height: 150px;
+        border: 1px solid rgb(226 232 240 / 0.8);
+        border-radius: 1.25rem;
+        background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.92) 100%);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
         transition: all 0.2s ease;
     }
     .calendar-day:hover {
-        background-color: theme('colors.slate.50');
+        transform: translateY(-2px);
+        box-shadow: 0 18px 32px -22px rgba(79, 70, 229, 0.45);
     }
     @media (max-width: 768px) {
         .calendar-day { 
-            min-height: 70px; /* More compact on mobile */
-            padding: 0.25rem !important; /* Less padding on small screens */
+            min-height: 88px;
+            padding: 0.5rem !important;
+            border-radius: 1rem;
         }
         .calendar-day:hover {
-            background-color: transparent; /* No hover effect on mobile */
+            transform: none;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
         }
         .event-label { display: none; }
         .event-dot { display: block !important; margin: 0 auto; }
-        .calendar-grid-header { padding-top: 0.5rem; padding-bottom: 0.5rem; font-size: 0.6rem; }
+        .calendar-grid {
+            gap: 0.4rem;
+        }
+        .calendar-grid-header { padding-top: 0.25rem; padding-bottom: 0.35rem; font-size: 0.6rem; }
     }
     [x-cloak] { display: none !important; }
 </style>
@@ -42,7 +53,7 @@
     ];
 @endphp
 <div x-data="calendarModal()" x-init="init()">
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+    <div class="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
             <p class="text-slate-500 text-sm mt-1">Kelola agenda kegiatan sekolah dan hari libur nasional (Masehi).</p>
         </div>
@@ -109,8 +120,9 @@
         </div>
     </div>
 
+    @if(false)
     <!-- Category legend remains same but ensured it matches model icons -->
-    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 mb-6 flex flex-wrap items-center gap-6">
+    <div class="mb-6 flex flex-wrap items-center gap-6 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
         <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mr-2">Legend:</span>
         @foreach($daftarKategori as $key => $kat)
             @php
@@ -129,10 +141,26 @@
         @endforeach
     </div>
 
+    @endif
     <!-- Calendar Grid remains same -->
-    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-        <!-- ... existing grid code ... -->
-        <div class="calendar-grid border-b border-slate-100 bg-slate-50/50">
+    <div class="overflow-hidden rounded-3xl border border-slate-100 bg-white p-5 shadow-sm sm:p-6">
+        <div class="mb-5 flex items-center justify-between">
+            <h2 class="text-sm font-bold text-slate-800">{{ $currentMonth->translatedFormat('F Y') }}</h2>
+            <div class="flex gap-2">
+                <a href="{{ route('admin.kalender-akademik.index', ['year' => $prevMonth->year, 'month' => $prevMonth->month]) }}"
+                   class="flex h-8 w-8 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-slate-100"
+                   aria-label="Bulan sebelumnya">
+                    <span class="material-symbols-outlined text-lg">chevron_left</span>
+                </a>
+                <a href="{{ route('admin.kalender-akademik.index', ['year' => $nextMonth->year, 'month' => $nextMonth->month]) }}"
+                   class="flex h-8 w-8 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-slate-100"
+                   aria-label="Bulan berikutnya">
+                    <span class="material-symbols-outlined text-lg">chevron_right</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="calendar-grid mb-4 text-center">
             @php
                 $days = [
                     ['full' => 'Minggu', 'short' => 'Min'],
@@ -145,7 +173,7 @@
                 ];
             @endphp
             @foreach($days as $day)
-                <div class="calendar-grid-header py-2 md:py-4 text-center text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest">
+                <div class="calendar-grid-header py-2 text-center text-[10px] font-black uppercase tracking-widest text-slate-400 md:py-3 md:text-xs">
                     <span class="hidden md:inline">{{ $day['full'] }}</span>
                     <span class="md:hidden">{{ $day['short'] }}</span>
                 </div>
@@ -161,8 +189,8 @@
 
             {{-- Previous Month Days --}}
             @for($i = 0; $i < $prevDays; $i++)
-                <div class="calendar-day p-2 border-b border-r border-slate-100 bg-slate-50/30">
-                    <span class="text-slate-300 font-medium text-sm">{{ $startDay + $i }}</span>
+                <div class="calendar-day p-3 opacity-60">
+                    <span class="text-sm font-semibold text-slate-300">{{ $startDay + $i }}</span>
                 </div>
             @endfor
 
@@ -174,17 +202,26 @@
                     $isSunday = $date->dayOfWeek === 0;
                     $dayEvents = $eventsByDay[$day] ?? [];
                 @endphp
-                <div class="calendar-day p-2 border-b border-r border-slate-100 {{ $isToday ? 'bg-primary/5' : '' }}">
-                    <span class="{{ $isSunday ? 'text-red-500' : 'text-slate-700' }} font-bold text-sm">{{ $day }}</span>
-                    <div class="mt-1 flex flex-col gap-1">
+                <div class="calendar-day p-3 {{ $isToday ? 'ring-2 ring-primary/15 bg-primary/[0.03]' : '' }}">
+                    <div class="flex items-start justify-between gap-2">
+                        <span class="flex h-8 w-8 items-center justify-center rounded-xl text-sm font-bold {{ $isToday ? 'bg-primary text-white shadow-lg shadow-primary/30' : ($isSunday ? 'text-red-500 bg-red-50' : 'bg-slate-100 text-slate-700') }}">
+                            {{ $day }}
+                        </span>
+                        @if($dayEvents)
+                            <span class="text-[10px] font-black uppercase tracking-wider text-slate-300">
+                                {{ count($dayEvents) }} agenda
+                            </span>
+                        @endif
+                    </div>
+                    <div class="mt-3 flex flex-col gap-1.5">
                         @foreach($dayEvents as $event)
                             @php $classes = $event->tailwindClasses; @endphp
-                            <div class="event-label {{ $classes['bg'] }} {{ $classes['text'] }} text-[10px] px-1.5 py-0.5 rounded font-bold truncate cursor-pointer" 
+                            <div class="event-label {{ $classes['bg'] }} {{ $classes['text'] }} cursor-pointer truncate rounded-xl px-2 py-1 text-[10px] font-bold" 
                                  @click="openEditModal({{ json_encode($event) }})"
                                  title="{{ $event->judul }}">
                                 {{ $event->judul }}
                             </div>
-                            <div class="event-dot hidden {{ $classes['dot'] }} w-1.5 h-1.5 rounded-full" title="{{ $event->judul }}"></div>
+                            <div class="event-dot hidden {{ $classes['dot'] }} h-1.5 w-1.5 rounded-full" title="{{ $event->judul }}"></div>
                         @endforeach
                     </div>
                 </div>
@@ -196,8 +233,8 @@
                 if ($remainingCells == 7) $remainingCells = 0;
             @endphp
             @for($i = 1; $i <= $remainingCells; $i++)
-                <div class="calendar-day p-2 border-b {{ ($prevDays + $daysInMonth + $i) % 7 != 0 ? 'border-r' : '' }} border-slate-100 bg-slate-50/30">
-                    <span class="text-slate-300 font-medium text-sm">{{ $i }}</span>
+                <div class="calendar-day p-3 opacity-60">
+                    <span class="text-sm font-semibold text-slate-300">{{ $i }}</span>
                 </div>
             @endfor
         </div>
@@ -216,12 +253,8 @@
         <h3 class="text-lg font-bold text-slate-800 mb-4 px-2">Daftar Agenda {{ $currentMonth->translatedFormat('F Y') }}</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             @foreach($allEvents as $event)
-                @php $classes = $event->tailwindClasses; @endphp
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow group">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider {{ $classes['bg'] }} {{ $classes['text'] }}">
-                            {{ $event->kategori }}
-                        </div>
+                    <div class="flex items-start justify-end mb-1">
                         <div class="flex gap-2 md:gap-1 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
                             <button @click="openEditModal({{ json_encode($event) }})" class="p-1.5 md:p-1 text-slate-400 hover:text-primary transition-colors bg-slate-50 md:bg-transparent rounded-lg md:rounded-none">
                                 <span class="material-symbols-outlined text-[16px] md:text-sm">edit</span>
@@ -260,7 +293,7 @@
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0">
         
-        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden"
              @click.away="closeModal()"
              x-transition:enter="transition ease-out duration-300"
              x-transition:enter-start="opacity-0 scale-95 translate-y-4"
@@ -269,7 +302,7 @@
              x-transition:leave-start="opacity-100 scale-100 translate-y-0"
              x-transition:leave-end="opacity-0 scale-95 translate-y-4">
             
-            <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0 z-10">
+            <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-white">
                 <div>
                     <h2 class="text-xl font-bold text-slate-900" x-text="isEdit ? 'Edit Agenda' : 'Tambah Agenda Baru'"></h2>
                     <p class="text-xs text-slate-500 mt-0.5">Lengkapi informasi agenda untuk kalender akademik.</p>
@@ -279,12 +312,13 @@
                 </button>
             </div>
 
-            <div class="overflow-y-auto">
-                <form :action="formAction" method="POST" class="p-8 space-y-6">
+            <div x-ref="modalBody" class="bg-white">
+                <form :action="formAction" method="POST" class="px-8 pt-5 pb-8 space-y-5">
                     @csrf
                     <template x-if="isEdit">
                         <input type="hidden" name="_method" value="PUT">
                     </template>
+                    <input type="hidden" name="kategori" value="Kegiatan Sekolah">
 
                     <div class="space-y-2">
                         <label class="text-sm font-bold text-slate-700 ml-1">Judul Agenda <span class="text-red-500">*</span></label>
@@ -293,26 +327,11 @@
                                placeholder="Masukkan judul agenda (misal: Ujian Akhir Semester)">
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-slate-700 ml-1">Jenis Agenda <span class="text-red-500">*</span></label>
-                            <div class="relative">
-                                <select name="kategori" x-model="formData.kategori" required
-                                        class="w-full px-4 py-3 rounded-xl border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-sm appearance-none bg-white font-medium">
-                                    <option value="" disabled>Pilih jenis agenda</option>
-                                    @foreach($daftarKategori as $key => $kat)
-                                        <option value="{{ $key }}">{{ $kat['label'] }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">unfold_more</span>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-slate-700 ml-1">Keterangan</label>
-                            <input type="text" name="deskripsi" x-model="formData.deskripsi"
-                                   class="w-full px-4 py-3 rounded-xl border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-sm placeholder:text-slate-400" 
-                                   placeholder="Detail singkat (opsional)">
-                        </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-slate-700 ml-1">Keterangan</label>
+                        <input type="text" name="deskripsi" x-model="formData.deskripsi"
+                               class="w-full px-4 py-3 rounded-xl border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-sm placeholder:text-slate-400" 
+                               placeholder="Detail singkat (opsional)">
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -335,7 +354,7 @@
                         </div>
                     </div>
 
-                    <div class="p-6 border-t border-slate-100 flex flex-col-reverse sm:flex-row items-center justify-end gap-3 bg-slate-50/50 mt-4 -mx-8 -mb-8">
+                    <div class="p-6 border-t border-slate-100 flex flex-col-reverse sm:flex-row items-center justify-end gap-3 bg-slate-50/50 mt-3 -mx-8 -mb-8">
                         <button type="button" @click="closeModal()" class="w-full sm:w-auto px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-200 rounded-xl transition-all">
                             Batal
                         </button>
@@ -364,7 +383,6 @@
             formData: {
                 id: '',
                 judul: '',
-                kategori: '',
                 deskripsi: '',
                 tanggal_mulai: '',
                 tanggal_selesai: ''
@@ -384,12 +402,16 @@
                 this.formData = {
                     id: '',
                     judul: '',
-                    kategori: '',
                     deskripsi: '',
                     tanggal_mulai: '',
                     tanggal_selesai: ''
                 };
                 this.isOpen = true;
+                this.$nextTick(() => {
+                    if (this.$refs.modalBody) {
+                        this.$refs.modalBody.scrollTop = 0;
+                    }
+                });
             },
             openEditModal(event) {
                 this.isEdit = true;
@@ -398,12 +420,16 @@
                 this.formData = {
                     id: event.id,
                     judul: event.judul,
-                    kategori: event.kategori,
                     deskripsi: event.deskripsi || '',
                     tanggal_mulai: this.formatDate(event.tanggal_mulai),
                     tanggal_selesai: event.tanggal_selesai ? this.formatDate(event.tanggal_selesai) : ''
                 };
                 this.isOpen = true;
+                this.$nextTick(() => {
+                    if (this.$refs.modalBody) {
+                        this.$refs.modalBody.scrollTop = 0;
+                    }
+                });
             },
             closeModal() {
                 this.isOpen = false;

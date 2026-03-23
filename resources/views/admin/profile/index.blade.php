@@ -4,6 +4,10 @@
 
 @push('styles')
 <style>
+    .admin-profile-page {
+        color: #0f172a;
+    }
+
     .profile-photo-container {
         position: relative;
         width: 150px;
@@ -57,6 +61,7 @@
     
     .info-card {
         background: white;
+        border: 1px solid rgba(226, 232, 240, 0.9);
         border-radius: 1rem;
         padding: 1.5rem;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -120,11 +125,96 @@
     .strength-weak { background: #ef4444; width: 33.33%; }
     .strength-medium { background: #f59e0b; width: 66.66%; }
     .strength-strong { background: #10b981; width: 100%; }
+
+    .dark .admin-profile-page {
+        color: #e2e8f0;
+    }
+
+    .dark .admin-profile-page .info-card {
+        background: rgba(15, 23, 42, 0.9);
+        border-color: rgba(51, 65, 85, 0.9);
+        box-shadow: 0 12px 32px -20px rgba(2, 6, 23, 0.75);
+    }
+
+    .dark .admin-profile-page .profile-photo {
+        border-color: #0f172a;
+    }
+
+    .dark .admin-profile-page .profile-photo-overlay {
+        border-color: #0f172a;
+    }
+
+    .dark .admin-profile-page .info-label {
+        color: #94a3b8;
+    }
+
+    .dark .admin-profile-page .info-value {
+        color: #f8fafc;
+    }
+
+    .dark .admin-profile-page .tab-button {
+        color: #cbd5e1;
+        background: rgba(15, 23, 42, 0.76);
+        border: 1px solid rgba(51, 65, 85, 0.8);
+    }
+
+    .dark .admin-profile-page .tab-button.active {
+        border-color: transparent;
+    }
+
+    .dark .admin-profile-page .text-gray-900 {
+        color: #f8fafc !important;
+    }
+
+    .dark .admin-profile-page .text-gray-700 {
+        color: #cbd5e1 !important;
+    }
+
+    .dark .admin-profile-page .text-gray-600,
+    .dark .admin-profile-page .text-gray-500 {
+        color: #94a3b8 !important;
+    }
+
+    .dark .admin-profile-page .text-gray-400 {
+        color: #64748b !important;
+    }
+
+    .dark .admin-profile-page .bg-gray-50,
+    .dark .admin-profile-page .bg-white {
+        background-color: rgba(15, 23, 42, 0.8) !important;
+    }
+
+    .dark .admin-profile-page .bg-gray-100 {
+        background-color: rgba(30, 41, 59, 0.9) !important;
+    }
+
+    .dark .admin-profile-page .border-gray-300,
+    .dark .admin-profile-page .border-gray-200 {
+        border-color: rgba(51, 65, 85, 0.9) !important;
+    }
+
+    .dark .admin-profile-page input,
+    .dark .admin-profile-page select,
+    .dark .admin-profile-page textarea {
+        background: rgba(15, 23, 42, 0.88);
+        color: #e2e8f0;
+        border-color: rgba(51, 65, 85, 0.9);
+    }
+
+    .dark .admin-profile-page input::placeholder,
+    .dark .admin-profile-page textarea::placeholder {
+        color: #64748b;
+    }
+
+    .dark .admin-profile-page #cropperModal > div {
+        background: #0f172a;
+        border: 1px solid rgba(51, 65, 85, 0.9);
+    }
 </style>
 @endpush
 
 @section('content')
-<div class="max-w-7xl mx-auto">
+<div class="admin-profile-page max-w-7xl mx-auto">
     <!-- Header -->
     <div class="mb-6">
         <h2 class="text-2xl font-bold text-gray-900">Profile Saya</h2>
@@ -185,15 +275,15 @@
 
     <!-- Tabs - Dengan Ikon (Hemat Ruang) -->
     <div class="grid grid-cols-3 gap-2 mb-6">
-        <button class="tab-button active flex flex-col items-center py-3" onclick="switchTab('profile')">
+        <button class="tab-button active flex flex-col items-center py-3" onclick="switchTab('profile', event)">
             <i class="fas fa-user text-xl mb-1"></i>
             <span class="text-xs">Profile</span>
         </button>
-        <button class="tab-button flex flex-col items-center py-3" onclick="switchTab('password')">
+        <button class="tab-button flex flex-col items-center py-3" onclick="switchTab('password', event)">
             <i class="fas fa-lock text-xl mb-1"></i>
             <span class="text-xs">Password</span>
         </button>
-        <button class="tab-button flex flex-col items-center py-3" onclick="switchTab('activity')">
+        <button class="tab-button flex flex-col items-center py-3" onclick="switchTab('activity', event)">
             <i class="fas fa-history text-xl mb-1"></i>
             <span class="text-xs">Aktivitas</span>
         </button>
@@ -555,10 +645,15 @@ let cropper;
 let selectedFile;
 
 // Tab switching
-function switchTab(tab) {
+function switchTab(tab, event) {
     // Update tab buttons
     document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-    event.target.closest('.tab-button').classList.add('active');
+    if (event && event.target) {
+        event.target.closest('.tab-button').classList.add('active');
+    } else {
+        const targetButton = document.querySelector(`[onclick*="${tab}"]`);
+        if (targetButton) targetButton.classList.add('active');
+    }
     
     // Update tab panes
     document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
@@ -878,6 +973,12 @@ function resetPasswordForm() {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const initialTab = params.get('tab');
+    if (initialTab && document.getElementById(`tab-${initialTab}`)) {
+        switchTab(initialTab);
+    }
+
     // Check if there's any message from session
     @if(session('success'))
     Swal.fire({

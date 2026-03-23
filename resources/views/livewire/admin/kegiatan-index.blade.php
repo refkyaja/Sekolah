@@ -1,11 +1,28 @@
 <div>
+    @php
+        $role = auth()->user()->role;
+        $user = auth()->user();
+        $routePrefix = match ($role) {
+            'admin' => 'admin',
+            'operator' => 'operator',
+            'kepala_sekolah' => 'kepala-sekolah',
+            'guru' => 'guru',
+            default => 'admin',
+        };
+        $canCreateKegiatan = $user->canAccessModule('kegiatan', 'create');
+        $canUpdateKegiatan = $user->canAccessModule('kegiatan', 'update');
+        $canDeleteKegiatan = $user->canAccessModule('kegiatan', 'delete');
+    @endphp
+
     <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 mb-8">
         <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 flex-1">
-                <a href="{{ route('admin.kegiatan.create') }}" class="flex items-center justify-center gap-2 px-6 py-3.5 bg-primary text-white rounded-2xl font-bold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20 whitespace-nowrap">
+                @if($canCreateKegiatan)
+                <a href="{{ route($routePrefix . '.kegiatan.create') }}" class="flex items-center justify-center gap-2 px-6 py-3.5 bg-primary text-white rounded-2xl font-bold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20 whitespace-nowrap">
                     <span class="material-symbols-outlined text-lg">add_circle</span>
                     Tambah Kegiatan
                 </a>
+                @endif
                 <div class="relative flex-1 group">
                     <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
                     <input wire:model.live.debounce.300ms="search" 
@@ -103,15 +120,19 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center justify-center gap-2">
-                                <a href="{{ route('admin.kegiatan.show', $kegiatan) }}" class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 text-slate-600 hover:bg-primary hover:text-white transition-all" title="Show">
+                                <a href="{{ route($routePrefix . '.kegiatan.show', $kegiatan) }}" class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 text-slate-600 hover:bg-primary hover:text-white transition-all" title="Show">
                                     <span class="material-symbols-outlined text-lg">visibility</span>
                                 </a>
-                                <a href="{{ route('admin.kegiatan.edit', $kegiatan) }}" class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 text-slate-600 hover:bg-amber-500 hover:text-white transition-all" title="Edit">
+                                @if($canUpdateKegiatan)
+                                <a href="{{ route($routePrefix . '.kegiatan.edit', $kegiatan) }}" class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 text-slate-600 hover:bg-amber-500 hover:text-white transition-all" title="Edit">
                                     <span class="material-symbols-outlined text-lg">edit</span>
                                 </a>
+                                @endif
+                                @if($canDeleteKegiatan)
                                 <button type="button" onclick="confirmDeleteKegiatan({{ $kegiatan->id }})" class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 text-slate-600 hover:bg-red-500 hover:text-white transition-all" title="Delete">
                                     <span class="material-symbols-outlined text-lg">delete</span>
                                 </button>
+                                @endif
                             </div>
                         </td>
                     </tr>

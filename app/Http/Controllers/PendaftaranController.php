@@ -104,11 +104,11 @@ class PendaftaranController extends Controller
 
         $validator = Validator::make($request->all(), [
             'nama_lengkap_ayah'       => 'required|string|max:255',
-            'nik_ayah'                => 'required|digits:16',
+            'nik_ayah'                => 'required|string|max:20',
             'pekerjaan_ayah'          => 'nullable|string|max:100',
             'pendidikan_ayah'         => 'nullable|string|max:100',
             'nama_lengkap_ibu'        => 'required|string|max:255',
-            'nik_ibu'                 => 'required|digits:16',
+            'nik_ibu'                 => 'required|string|max:20',
             'pekerjaan_ibu'           => 'nullable|string|max:100',
             'pendidikan_ibu'          => 'nullable|string|max:100',
             'nomor_telepon'           => 'required|string|max:20',
@@ -116,11 +116,10 @@ class PendaftaranController extends Controller
             'penghasilan_gabungan'    => 'nullable|string|max:100',
         ], [
             'nama_lengkap_ayah.required' => 'Nama lengkap ayah wajib diisi.',
-            'nik_ayah.required'          => 'NIK ayah wajib diisi.',
-            'nik_ayah.digits'            => 'NIK ayah harus 16 digit angka.',
-            'nama_lengkap_ibu.required'  => 'Nama lengkap ibu wajib diisi.',
+            'nik_ayah.max'               => 'NIK ayah maksimal 20 karakter.',
+            'nik_lengkap_ibu.required'  => 'Nama lengkap ibu wajib diisi.',
             'nik_ibu.required'           => 'NIK ibu wajib diisi.',
-            'nik_ibu.digits'             => 'NIK ibu harus 16 digit angka.',
+            'nik_ibu.max'                => 'NIK ibu maksimal 20 karakter.',
             'nomor_telepon.required'     => 'Nomor WhatsApp aktif wajib diisi.',
         ]);
 
@@ -323,6 +322,8 @@ class PendaftaranController extends Controller
             }
 
             DB::commit();
+
+            NotificationController::notifyNewSpmbRegistration($spmb);
 
             // Clear all session data
             session()->forget(['pendaftaran.step1', 'pendaftaran.step2', 'pendaftaran.step3.files']);

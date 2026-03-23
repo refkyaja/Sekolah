@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Concerns\AuthorizesModuleAccess;
 use App\Http\Controllers\Controller;
 use App\Models\MateriKbm;
 use Illuminate\Http\Request;
@@ -11,11 +12,31 @@ use Illuminate\Support\Facades\Storage;
 
 class MateriKbmController extends Controller
 {
+    use AuthorizesModuleAccess;
+
+    protected function materiRoutePrefix(): string
+    {
+        return match (auth()->user()?->role) {
+            'admin' => 'admin',
+            'operator' => 'operator',
+            'kepala_sekolah' => 'kepala-sekolah',
+            'guru' => 'guru',
+            default => 'admin',
+        };
+    }
+
+    protected function materiRoute(string $name, mixed ...$parameters): string
+    {
+        return route($this->materiRoutePrefix() . '.materi-kbm.' . $name, ...$parameters);
+    }
+
     /**
      * Display a listing of materi KBM.
      */
     public function index(Request $request)
     {
+        $this->authorizeModule('materi_kbm', 'read');
+
         $query = MateriKbm::latest('tanggal_publish');
 
         if ($request->filled('search')) {
@@ -46,6 +67,8 @@ class MateriKbmController extends Controller
      */
     public function create()
     {
+        $this->authorizeModule('materi_kbm', 'create');
+
         $daftarMapel = MateriKbm::daftarMataPelajaran();
         $daftarKelas = MateriKbm::daftarKelas();
 
@@ -57,6 +80,8 @@ class MateriKbmController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorizeModule('materi_kbm', 'create');
+
         $request->validate([
             'mata_pelajaran'  => 'required|string|max:100',
             'judul_materi'    => 'required|string|max:255',
@@ -89,7 +114,7 @@ class MateriKbmController extends Controller
 
             MateriKbm::create($data);
 
-            return redirect()->route('admin.materi-kbm.index')
+            return redirect()->to($this->materiRoute('index'))
                 ->with('success', 'Materi KBM berhasil ditambahkan.');
         } catch (\Exception $e) {
             Log::error('Error creating materi KBM: ' . $e->getMessage());
@@ -102,6 +127,8 @@ class MateriKbmController extends Controller
      */
     public function show(MateriKbm $materiKbm)
     {
+        $this->authorizeModule('materi_kbm', 'read');
+
         return view('admin.materi-kbm.show', compact('materiKbm'));
     }
 
@@ -110,6 +137,8 @@ class MateriKbmController extends Controller
      */
     public function edit(MateriKbm $materiKbm)
     {
+        $this->authorizeModule('materi_kbm', 'update');
+
         $daftarMapel = MateriKbm::daftarMataPelajaran();
         $daftarKelas = MateriKbm::daftarKelas();
 
@@ -121,6 +150,8 @@ class MateriKbmController extends Controller
      */
     public function update(Request $request, MateriKbm $materiKbm)
     {
+        $this->authorizeModule('materi_kbm', 'update');
+
         $request->validate([
             'mata_pelajaran'  => 'required|string|max:100',
             'judul_materi'    => 'required|string|max:255',
@@ -157,7 +188,7 @@ class MateriKbmController extends Controller
 
             $materiKbm->update($data);
 
-            return redirect()->route('admin.materi-kbm.index')
+            return redirect()->to($this->materiRoute('index'))
                 ->with('success', 'Materi KBM berhasil diperbarui.');
         } catch (\Exception $e) {
             Log::error('Error updating materi KBM: ' . $e->getMessage());
@@ -170,6 +201,8 @@ class MateriKbmController extends Controller
      */
     public function destroy(MateriKbm $materiKbm)
     {
+        $this->authorizeModule('materi_kbm', 'delete');
+
         try {
             if ($materiKbm->file_path && Storage::disk('public')->exists($materiKbm->file_path)) {
                 Storage::disk('public')->delete($materiKbm->file_path);
@@ -177,7 +210,7 @@ class MateriKbmController extends Controller
 
             $materiKbm->delete();
 
-            return redirect()->route('admin.materi-kbm.index')
+            return redirect()->to($this->materiRoute('index'))
                 ->with('success', 'Materi KBM berhasil dihapus.');
         } catch (\Exception $e) {
             Log::error('Error deleting materi KBM: ' . $e->getMessage());
@@ -190,6 +223,8 @@ class MateriKbmController extends Controller
      */
     public function download(MateriKbm $materiKbm)
     {
+        $this->authorizeModule('materi_kbm', 'read');
+
         if (!$materiKbm->file_path || !Storage::disk('public')->exists($materiKbm->file_path)) {
             return back()->with('error', 'File tidak ditemukan.');
         }

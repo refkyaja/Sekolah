@@ -281,7 +281,7 @@ class DashboardController extends Controller
                         'status_color' => $statusColor,
                         'tanggal' => $spmb->created_at->format('d/m/Y H:i'),
                         'tanggal_formatted' => $spmb->created_at->diffForHumans(),
-                        'url' => route('admin.spmb.show', $spmb->id),
+                        'url' => route('admin.ppdb.show', $spmb->id),
                     ];
                 });
         });

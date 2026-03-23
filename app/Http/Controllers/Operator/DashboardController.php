@@ -39,7 +39,7 @@ class DashboardController extends Controller
             ->get();
         
         // Data Tahun Ajaran
-        $tahun_ajaran_list = TahunAjaran::orderBy('tahun', 'desc')->get();
+        $tahun_ajaran_list = TahunAjaran::orderBy('tahun_ajaran', 'desc')->get();
         $tahun_ajaran_aktif = $tahunAjaranAktif;
         
         // Data Materi KBM

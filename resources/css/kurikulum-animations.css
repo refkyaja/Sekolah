@@ -1,0 +1,796 @@
+/* ============================================
+   Kurikulum Page Animations - Complete Version
+   ============================================ */
+
+:root {
+    --kurikulum-anim-duration: 700ms;
+    --kurikulum-anim-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --kurikulum-anim-ease-out: cubic-bezier(0.34, 1.2, 0.64, 1);
+    --kurikulum-anim-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --kurikulum-anim-ease-elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+}
+
+/* ============================================
+   BASE ANIMATION CLASSES
+   ============================================ */
+
+/* Fade Up Animation */
+.fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out);
+}
+
+.fade-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Fade Down Animation */
+.fade-down {
+    opacity: 0;
+    transform: translateY(-40px);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out);
+}
+
+.fade-down.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Fade Left Animation */
+.fade-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out);
+}
+
+.fade-left.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Fade Right Animation */
+.fade-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out);
+}
+
+.fade-right.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Zoom In Animation */
+.zoom-in {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-elastic);
+}
+
+.zoom-in.is-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Zoom Out Animation */
+.zoom-out {
+    opacity: 0;
+    transform: scale(1.1);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out);
+}
+
+.zoom-out.is-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Blur In Animation */
+.blur-in {
+    opacity: 0;
+    filter: blur(8px);
+    transform: scale(0.98);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out);
+}
+
+.blur-in.is-visible {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+}
+
+/* Slide Rotate Animation */
+.slide-rotate {
+    opacity: 0;
+    transform: translateX(-30px) rotate(-5deg);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-bounce);
+}
+
+.slide-rotate.is-visible {
+    opacity: 1;
+    transform: translateX(0) rotate(0);
+}
+
+/* Flip In Animation */
+.flip-in {
+    opacity: 0;
+    transform: perspective(600px) rotateX(15deg);
+    transform-origin: top;
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out);
+}
+
+.flip-in.is-visible {
+    opacity: 1;
+    transform: perspective(600px) rotateX(0);
+}
+
+/* Scale Up Animation */
+.scale-up {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 600ms var(--kurikulum-anim-ease-elastic);
+}
+
+.scale-up.is-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ============================================
+   HERO SECTION ANIMATIONS
+   ============================================ */
+
+.hero-section {
+    opacity: 0;
+    transform: translateY(50px) scale(0.98);
+    filter: blur(8px);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out);
+}
+
+.hero-section.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+}
+
+.hero-breadcrumb {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: all calc(var(--kurikulum-anim-duration) - 100ms) var(--kurikulum-anim-ease);
+    transition-delay: 100ms;
+}
+
+.hero-breadcrumb.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hero-title {
+    opacity: 0;
+    transform: translateY(35px) scale(0.96);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out);
+    transition-delay: 200ms;
+}
+
+.hero-title.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* ============================================
+   KURIKULUM MERDEKA SECTION ANIMATIONS
+   ============================================ */
+
+.kurikulum-section {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out);
+    transition-delay: 300ms;
+}
+
+.kurikulum-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.kurikulum-badge {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: all 500ms var(--kurikulum-anim-ease-out);
+    transition-delay: 400ms;
+}
+
+.kurikulum-badge.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.kurikulum-title {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 550ms var(--kurikulum-anim-ease-out);
+    transition-delay: 500ms;
+}
+
+.kurikulum-title.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.kurikulum-content {
+    opacity: 0;
+    transform: translateX(-60px);
+    transition: all 600ms var(--kurikulum-anim-ease);
+    transition-delay: 600ms;
+}
+
+.kurikulum-content.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.kurikulum-features {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 500ms var(--kurikulum-anim-ease-out);
+    transition-delay: 700ms;
+}
+
+.kurikulum-features.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.kurikulum-image {
+    opacity: 0;
+    transform: translateX(40px) scale(0.95);
+    transition: all 600ms var(--kurikulum-anim-ease-elastic);
+    transition-delay: 800ms;
+}
+
+.kurikulum-image.is-visible {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+/* ============================================
+   HOLISTIC SECTION ANIMATIONS
+   ============================================ */
+
+.holistic-section {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out);
+    transition-delay: 900ms;
+}
+
+.holistic-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.holistic-header {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 500ms var(--kurikulum-anim-ease);
+    transition-delay: 1000ms;
+}
+
+.holistic-header.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.holistic-item {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    transition: all 500ms var(--kurikulum-anim-ease-elastic);
+}
+
+.holistic-item.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.holistic-item:nth-child(1) { transition-delay: 1100ms; }
+.holistic-item:nth-child(2) { transition-delay: 1150ms; }
+.holistic-item:nth-child(3) { transition-delay: 1200ms; }
+.holistic-item:nth-child(4) { transition-delay: 1250ms; }
+.holistic-item:nth-child(5) { transition-delay: 1300ms; }
+
+.holistic-quote {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 600ms var(--kurikulum-anim-ease-out);
+    transition-delay: 1350ms;
+}
+
+.holistic-quote.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================
+   PAUD HIBER SECTION ANIMATIONS
+   ============================================ */
+
+.paud-section {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out);
+    transition-delay: 1400ms;
+}
+
+.paud-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.paud-header {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 500ms var(--kurikulum-anim-ease);
+    transition-delay: 1450ms;
+}
+
+.paud-header.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.paud-item {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    transition: all 450ms var(--kurikulum-anim-ease-elastic);
+}
+
+.paud-item.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.paud-item:nth-child(1) { transition-delay: 1500ms; }
+.paud-item:nth-child(2) { transition-delay: 1550ms; }
+.paud-item:nth-child(3) { transition-delay: 1600ms; }
+.paud-item:nth-child(4) { transition-delay: 1650ms; }
+.paud-item:nth-child(5) { transition-delay: 1700ms; }
+.paud-item:nth-child(6) { transition-delay: 1750ms; }
+.paud-item:nth-child(7) { transition-delay: 1800ms; }
+.paud-item:nth-child(8) { transition-delay: 1850ms; }
+
+/* ============================================
+   PERCONTOHAN SECTION ANIMATIONS
+   ============================================ */
+
+.percontohan-section {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out);
+    transition-delay: 1900ms;
+}
+
+.percontohan-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.percontohan-content {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: all 600ms var(--kurikulum-anim-ease-out);
+    transition-delay: 1950ms;
+}
+
+.percontohan-content.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.percontohan-card {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    transition: all 500ms var(--kurikulum-anim-ease-elastic);
+}
+
+.percontohan-card.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.percontohan-card:nth-child(1) { transition-delay: 2000ms; }
+.percontohan-card:nth-child(2) { transition-delay: 2050ms; }
+
+/* ============================================
+   WHY CHOOSE US SECTION ANIMATIONS
+   ============================================ */
+
+.why-section {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out);
+    transition-delay: 2100ms;
+}
+
+.why-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.why-header {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 500ms var(--kurikulum-anim-ease);
+    transition-delay: 2150ms;
+}
+
+.why-header.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.why-card {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 550ms var(--kurikulum-anim-ease-elastic);
+}
+
+.why-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.why-card:nth-child(1) { transition-delay: 2200ms; }
+.why-card:nth-child(2) { transition-delay: 2250ms; }
+.why-card:nth-child(3) { transition-delay: 2300ms; }
+
+.why-cta {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    transition: all 600ms var(--kurikulum-anim-ease-bounce);
+    transition-delay: 2350ms;
+}
+
+.why-cta.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* ============================================
+   PREMIUM HOVER EFFECTS
+   ============================================ */
+
+/* Card Hover Effects */
+.holistic-item:hover,
+.paud-item:hover,
+.why-card:hover {
+    transform: translateY(-8px) scale(1.05) !important;
+    box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.15);
+    transition: all 300ms var(--kurikulum-anim-ease-out);
+}
+
+/* Image Hover */
+.kurikulum-image img {
+    transition: transform 600ms var(--kurikulum-anim-ease-elastic);
+}
+
+.kurikulum-image:hover img {
+    transform: scale(1.05);
+}
+
+/* Percontohan Section Hover */
+.percontohan-card {
+    transition: all 300ms var(--kurikulum-anim-ease-out);
+}
+
+.percontohan-card:hover {
+    transform: translateY(-5px) scale(1.02) !important;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Feature Items Hover */
+.kurikulum-features div {
+    transition: all 300ms var(--kurikulum-anim-ease-out);
+}
+
+.kurikulum-features div:hover {
+    transform: translateX(8px);
+    color: #4f46e5;
+}
+
+/* ============================================
+   KEYFRAMES ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes blurIn {
+    from {
+        opacity: 0;
+        filter: blur(8px);
+        transform: scale(0.98);
+    }
+    to {
+        opacity: 1;
+        filter: blur(0);
+        transform: scale(1);
+    }
+}
+
+@keyframes slideRotate {
+    from {
+        opacity: 0;
+        transform: translateX(-30px) rotate(-5deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) rotate(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+/* Utility Animation Classes */
+.animate-fade-up {
+    animation: fadeInUp var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out) forwards;
+}
+
+.animate-fade-left {
+    animation: fadeInLeft var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out) forwards;
+}
+
+.animate-fade-right {
+    animation: fadeInRight var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out) forwards;
+}
+
+.animate-scale-in {
+    animation: scaleIn var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-elastic) forwards;
+}
+
+.animate-blur-in {
+    animation: blurIn var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out) forwards;
+}
+
+.animate-bounce-in {
+    animation: bounceIn 800ms var(--kurikulum-anim-ease-bounce) forwards;
+}
+
+/* Shimmer Effect for Loading */
+.shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 768px) {
+    :root {
+        --kurikulum-anim-duration: 550ms;
+    }
+    
+    .hero-section {
+        transform: translateY(30px);
+    }
+    
+    .kurikulum-badge,
+    .kurikulum-title,
+    .kurikulum-content {
+        transform: translateX(-20px);
+    }
+    
+    .kurikulum-image {
+        transform: translateX(0) scale(0.95);
+    }
+    
+    .holistic-item,
+    .paud-item,
+    .why-card {
+        transform: translateY(20px) scale(0.98);
+    }
+    
+    .fade-up,
+    .fade-down {
+        transform: translateY(25px);
+    }
+    
+    .fade-left,
+    .fade-right {
+        transform: translateX(25px);
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        transform: translateY(25px);
+    }
+    
+    .kurikulum-title {
+        font-size: 1.75rem;
+    }
+}
+
+/* ============================================
+   SCROLL TRIGGERED EFFECTS
+   ============================================ */
+
+/* Parallax Effect */
+.parallax {
+    transition: transform 0.3s ease-out;
+}
+
+/* Scroll Reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all var(--kurikulum-anim-duration) var(--kurikulum-anim-ease-out);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Sticky Header Effect */
+.sticky-header {
+    transition: all 300ms var(--kurikulum-anim-ease-out);
+}
+
+.sticky-header.is-sticky {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================
+   REDUCE MOTION PREFERENCE
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --kurikulum-anim-duration: 0.01ms;
+    }
+    
+    .hero-section,
+    .hero-breadcrumb,
+    .hero-title,
+    .kurikulum-section,
+    .kurikulum-badge,
+    .kurikulum-title,
+    .kurikulum-content,
+    .kurikulum-features,
+    .kurikulum-image,
+    .holistic-section,
+    .holistic-header,
+    .holistic-item,
+    .holistic-quote,
+    .paud-section,
+    .paud-header,
+    .paud-item,
+    .percontohan-section,
+    .percontohan-content,
+    .percontohan-card,
+    .why-section,
+    .why-header,
+    .why-card,
+    .why-cta,
+    .fade-up,
+    .fade-down,
+    .fade-left,
+    .fade-right,
+    .zoom-in,
+    .zoom-out,
+    .blur-in,
+    .slide-rotate,
+    .flip-in,
+    .scale-up {
+        transition: none !important;
+        animation: none !important;
+        transform: none !important;
+        filter: none !important;
+    }
+    
+    .hero-section,
+    .hero-breadcrumb,
+    .hero-title,
+    .kurikulum-section,
+    .kurikulum-badge,
+    .kurikulum-title,
+    .kurikulum-content,
+    .kurikulum-features,
+    .kurikulum-image,
+    .holistic-section,
+    .holistic-header,
+    .holistic-item,
+    .holistic-quote,
+    .paud-section,
+    .paud-header,
+    .paud-item,
+    .percontohan-section,
+    .percontohan-content,
+    .percontohan-card,
+    .why-section,
+    .why-header,
+    .why-card,
+    .why-cta,
+    .fade-up,
+    .fade-down,
+    .fade-left,
+    .fade-right,
+    .zoom-in,
+    .zoom-out,
+    .blur-in,
+    .slide-rotate,
+    .flip-in,
+    .scale-up {
+        opacity: 1 !important;
+    }
+}
