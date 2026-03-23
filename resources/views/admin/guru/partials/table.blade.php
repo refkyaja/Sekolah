@@ -1,16 +1,16 @@
 @if(isset($gurus) && $gurus->count() > 0)
 <table class="w-full text-left border-collapse">
     <thead>
-        <tr class="bg-slate-50/50 border-b border-slate-100">
-            <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider w-16">No</th>
-            <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">Nama Lengkap</th>
-            <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider hidden md:table-cell">NIP</th>
-            <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">Jabatan</th>
-            <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider hidden lg:table-cell">Kelompok</th>
-            <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-wider text-center">Aksi</th>
+        <tr class="bg-slate-50/50 dark:bg-slate-700/50 border-b border-slate-100 dark:border-slate-700">
+            <th class="px-6 py-4 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider w-16">No</th>
+            <th class="px-6 py-4 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">Nama Lengkap</th>
+            <th class="px-6 py-4 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider hidden md:table-cell">NIP</th>
+            <th class="px-6 py-4 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">Jabatan</th>
+            <th class="px-6 py-4 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider hidden lg:table-cell">Kelompok</th>
+            <th class="px-6 py-4 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider text-center">Aksi</th>
         </tr>
     </thead>
-    <tbody class="divide-y divide-slate-50">
+    <tbody class="divide-y divide-slate-50 dark:divide-slate-700/50">
         @foreach($gurus as $index => $guru)
         @php
             $colors = [
@@ -26,8 +26,8 @@
             $parts = explode(' ', $guru->nama);
             if (count($parts) > 1) $initials .= strtoupper(substr($parts[1], 0, 1));
         @endphp
-        <tr class="hover:bg-slate-50/50 transition-colors group">
-            <td class="px-6 py-4 text-sm font-medium text-slate-400">
+        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/50 transition-colors group">
+            <td class="px-6 py-4 text-sm font-medium text-slate-400 dark:text-slate-500">
                 {{ ($gurus->currentPage() - 1) * $gurus->perPage() + $index + 1 }}
             </td>
             <td class="px-6 py-4">
@@ -36,37 +36,37 @@
                         {{ $initials }}
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-sm font-bold text-slate-800">{{ $guru->nama }}</span>
-                        <span class="text-[10px] text-slate-400">{{ $guru->email ?: '-' }}</span>
+                        <span class="text-sm font-bold text-slate-800 dark:text-slate-200">{{ $guru->nama }}</span>
+                        <span class="text-[10px] text-slate-400 dark:text-slate-500">{{ $guru->email ?: '-' }}</span>
                     </div>
                 </div>
             </td>
-            <td class="px-6 py-4 text-sm text-slate-600 hidden md:table-cell">
+            <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 hidden md:table-cell">
                 {{ $guru->nip ?: '-' }}
             </td>
             <td class="px-6 py-4">
                 @if($guru->jabatan == 'guru')
-                    <span class="px-3 py-1 bg-purple-100 text-primary rounded-full text-[10px] font-bold uppercase">Guru</span>
+                    <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-primary dark:text-purple-400 rounded-full text-[10px] font-bold uppercase">Guru</span>
                 @else
-                    <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[10px] font-bold uppercase">Staff</span>
+                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 rounded-full text-[10px] font-bold uppercase">Staff</span>
                 @endif
             </td>
-            <td class="px-6 py-4 text-sm text-slate-600 hidden lg:table-cell">
+            <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 hidden lg:table-cell">
                 @if($guru->jabatan == 'guru' && $guru->kelompok)
                     Kelompok {{ $guru->kelompok }}
                 @else
-                    <span class="text-slate-300">-</span>
+                    <span class="text-slate-300 dark:text-slate-600">-</span>
                 @endif
             </td>
             <td class="px-6 py-4">
                 <div class="flex items-center justify-center gap-2">
                     <a href="{{ route('admin.guru.show', $guru->id) }}"
-                       class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-all"
+                       class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-600 hover:text-white transition-all"
                        title="Detail">
                         <span class="material-symbols-outlined text-lg">visibility</span>
                     </a>
                     <a href="{{ route('admin.guru.edit', $guru->id) }}"
-                       class="w-8 h-8 flex items-center justify-center rounded-lg bg-amber-50 text-amber-600 hover:bg-amber-600 hover:text-white transition-all"
+                       class="w-8 h-8 flex items-center justify-center rounded-lg bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 hover:bg-amber-600 hover:text-white transition-all"
                        title="Edit">
                         <span class="material-symbols-outlined text-lg">edit</span>
                     </a>
@@ -74,7 +74,7 @@
                         @csrf
                         @method('DELETE')
                         <button type="button" onclick="confirmDeleteGuru({{ $guru->id }}, '{{ $guru->nama }}')"
-                                class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all"
+                                class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-600 hover:text-white transition-all"
                                 title="Hapus">
                             <span class="material-symbols-outlined text-lg">delete</span>
                         </button>
@@ -87,11 +87,11 @@
 </table>
 @else
 <div class="flex flex-col items-center justify-center py-20 px-4 text-center">
-    <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
-        <span class="material-symbols-outlined text-4xl text-slate-300">person_off</span>
+    <div class="w-20 h-20 bg-slate-50 dark:bg-slate-800/80 rounded-full flex items-center justify-center mx-auto mb-6">
+        <span class="material-symbols-outlined text-4xl text-slate-300 dark:text-slate-600">person_off</span>
     </div>
-    <h3 class="text-xl font-bold text-slate-800 mb-2">Tidak Ada Data Guru</h3>
-    <p class="text-slate-400 text-sm max-w-sm mx-auto mb-8">
+    <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-2">Tidak Ada Data Guru</h3>
+    <p class="text-slate-400 dark:text-slate-500 text-sm max-w-sm mx-auto mb-8">
         @if(isset($search) && !empty($search))
             Tidak ditemukan guru dengan pencarian "{{ $search }}"
         @else
@@ -106,7 +106,7 @@
         </a>
         @if(isset($search) && !empty($search))
         <a href="{{ route('admin.guru.index') }}"
-           class="inline-flex items-center gap-2 px-6 py-3 bg-slate-100 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all">
+           class="inline-flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl font-bold text-sm hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
             <span class="material-symbols-outlined text-lg">refresh</span>
             Reset Pencarian
         </a>

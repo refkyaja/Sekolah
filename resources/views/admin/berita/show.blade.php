@@ -3,10 +3,10 @@
 @section('title', 'Detail Berita - TK Harapan Bangsa 1')
 
 @section('content')
-<div class="bg-white rounded-xl shadow-sm border border-gray-100">
-    <div class="px-6 py-4 border-b border-gray-200">
+<div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-600">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <h2 class="text-lg font-semibold text-gray-900">Detail Berita</h2>
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Detail Berita</h2>
             <div class="flex space-x-2">
                     @if($berita->status == 'draft')
                         <a href="{{ route('admin.berita.publish', $berita->id) }}" 
@@ -30,7 +30,7 @@
     <div class="p-6">
         <div class="mb-6">
             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                {{ $berita->status == 'publish' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                {{ $berita->status == 'publish' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300' }}">
                 <i class="{{ $berita->status == 'publish' ? 'fas fa-check-circle' : 'fas fa-clock' }} mr-1"></i>
                 {{ $berita->status == 'publish' ? 'Published' : 'Draft' }}
             </span>
@@ -39,7 +39,7 @@
         @if($berita->gambar)
         <div class="mb-6">
             <div class="flex flex-col items-start">
-                <h3 class="text-sm font-medium text-gray-500 mb-2">Gambar Utama</h3>
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Gambar Utama</h3>
                 <div class="relative group">
                     {{-- Gambar dengan ukuran kecil --}}
                     <img src="{{ Storage::url($berita->gambar) }}" 
@@ -50,7 +50,7 @@
                     {{-- Tooltip untuk memperbesar --}}
                     <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-opacity duration-200 rounded-lg cursor-pointer flex items-center justify-center opacity-0 group-hover:opacity-100"
                          onclick="openImageModal('{{ Storage::url($berita->gambar) }}')">
-                        <span class="bg-white px-3 py-1 rounded-lg text-sm shadow-lg">
+                        <span class="bg-white dark:bg-slate-800 px-3 py-1 rounded-lg text-sm shadow-lg">
                             <i class="fas fa-search-plus mr-1"></i> Klik untuk memperbesar
                         </span>
                     </div>
@@ -61,35 +61,35 @@
         
         <div class="space-y-4">
             <div>
-                <h3 class="text-sm font-medium text-gray-500">Judul</h3>
-                <p class="mt-1 text-lg font-semibold text-gray-900">{{ $berita->judul }}</p>
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Judul</h3>
+                <p class="mt-1 text-lg font-semibold text-gray-900 dark:text-gray-100">{{ $berita->judul }}</p>
             </div>
             
             <div>
-                <h3 class="text-sm font-medium text-gray-500">Slug URL</h3>
-                <p class="mt-1 text-gray-900 font-mono">{{ $berita->slug }}</p>
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Slug URL</h3>
+                <p class="mt-1 text-gray-900 dark:text-gray-100 font-mono">{{ $berita->slug }}</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                    <h3 class="text-sm font-medium text-gray-500">Penulis</h3>
-                    <p class="mt-1 text-gray-900">{{ $berita->penulis }}</p>
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Penulis</h3>
+                    <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $berita->penulis }}</p>
                 </div>
                 
                 <div>
-                    <h3 class="text-sm font-medium text-gray-500">Tanggal Publish</h3>
-                    <p class="mt-1 text-gray-900">{{ $berita->tanggal_publish->format('d/m/Y H:i') }}</p>
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Tanggal Publish</h3>
+                    <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $berita->tanggal_publish->format('d/m/Y H:i') }}</p>
                 </div>
                 
                 <div>
-                    <h3 class="text-sm font-medium text-gray-500">Dibuat Oleh</h3>
-                    <p class="mt-1 text-gray-900">{{ $berita->user->name ?? 'Admin' }}</p>
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Dibuat Oleh</h3>
+                    <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $berita->user->name ?? 'Admin' }}</p>
                 </div>
             </div>
             
             <div>
-                <h3 class="text-sm font-medium text-gray-500">Isi Berita</h3>
-                <div class="mt-2 p-4 bg-gray-50 rounded-lg">
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Isi Berita</h3>
+                <div class="mt-2 p-4 bg-gray-50 dark:bg-slate-900/50 rounded-lg">
                     <div class="prose max-w-none">
                         {!! $berita->isi_berita !!}
                     </div>
@@ -97,16 +97,16 @@
             </div>
         </div>
         
-        <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="mt-8 pt-6 border-t border-gray-200 dark:border-slate-600">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div class="text-sm text-gray-500 space-y-1">
+                <div class="text-sm text-gray-500 dark:text-gray-400 space-y-1">
                     <p>Dibuat: {{ $berita->created_at->format('d/m/Y H:i') }}</p>
                     <p>Diupdate: {{ $berita->updated_at->format('d/m/Y H:i') }}</p>
                 </div>
                 
                 <div class="flex space-x-2">
                     <a href="{{ route('admin.berita.index') }}" 
-                       class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                       class="px-4 py-2 border border-gray-300 dark:border-slate-500 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
                         <i class="fas fa-arrow-left mr-2"></i> Kembali
                     </a>
                     <form action="{{ route('admin.berita.destroy', $berita) }}" 
@@ -130,7 +130,7 @@
     <div class="relative max-w-4xl max-h-[90vh]">
         <img id="modalImage" src="" alt="" class="max-w-full max-h-[80vh] object-contain rounded-lg">
         <button onclick="closeImageModal()" 
-                class="absolute -top-3 -right-3 bg-white text-gray-800 rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:bg-gray-100">
+                class="absolute -top-3 -right-3 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200 rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:bg-gray-100 dark:hover:bg-slate-600">
             <i class="fas fa-times"></i>
         </button>
     </div>

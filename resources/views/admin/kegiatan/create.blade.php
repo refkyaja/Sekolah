@@ -36,7 +36,7 @@
 
 @section('content')
 <div class="max-w-5xl mx-auto space-y-6">
-    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
         <form action="{{ route($routePrefix . '.kegiatan.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             
@@ -44,15 +44,15 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="space-y-6">
                         <div>
-                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Nama Kegiatan</label>
+                            <label class="block text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 px-1">Nama Kegiatan</label>
                             <input type="text" name="nama_kegiatan" value="{{ old('nama_kegiatan') }}" required
-                                   class="w-full px-5 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700" 
+                                   class="w-full px-5 py-3.5 bg-slate-50 dark:bg-slate-900 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700 dark:text-slate-300" 
                                    placeholder="Masukkan nama kegiatan...">
                         </div>
                         <div>
-                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Kategori Kegiatan</label>
+                            <label class="block text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 px-1">Kategori Kegiatan</label>
                             <select name="kategori" required
-                                    class="w-full px-5 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700">
+                                    class="w-full px-5 py-3.5 bg-slate-50 dark:bg-slate-900 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700 dark:text-slate-300">
                                 <option value="" disabled selected>Pilih Kategori</option>
                                 <option value="Academic Event" {{ old('kategori') == 'Academic Event' ? 'selected' : '' }}>Academic Event</option>
                                 <option value="Extracurricular" {{ old('kategori') == 'Extracurricular' ? 'selected' : '' }}>Extracurricular</option>
@@ -61,61 +61,61 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Lokasi</label>
+                            <label class="block text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 px-1">Lokasi</label>
                             <div class="relative">
-                                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">location_on</span>
+                                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500">location_on</span>
                                 <input type="text" name="lokasi" value="{{ old('lokasi') }}" required
-                                       class="w-full pl-12 pr-5 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700" 
+                                       class="w-full pl-12 pr-5 py-3.5 bg-slate-50 dark:bg-slate-900 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700 dark:text-slate-300" 
                                        placeholder="Masukkan lokasi kegiatan...">
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Tanggal Mulai</label>
+                                <label class="block text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 px-1">Tanggal Mulai</label>
                                 <div class="relative">
-                                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">calendar_today</span>
+                                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-lg">calendar_today</span>
                                     <input type="date" name="tanggal_mulai" value="{{ old('tanggal_mulai') }}" required
-                                           class="w-full pl-12 pr-4 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700">
+                                           class="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-900 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700 dark:text-slate-300" [color-scheme:light] dark:[color-scheme:dark]>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Tanggal Selesai</label>
+                                <label class="block text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 px-1">Tanggal Selesai</label>
                                 <div class="relative">
-                                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">calendar_today</span>
+                                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-lg">calendar_today</span>
                                     <input type="date" name="tanggal_selesai" value="{{ old('tanggal_selesai') }}"
-                                           class="w-full pl-12 pr-4 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700">
+                                           class="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-900 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700 dark:text-slate-300" [color-scheme:light] dark:[color-scheme:dark]>
                                 </div>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Waktu Mulai</label>
+                                <label class="block text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 px-1">Waktu Mulai</label>
                                 <div class="relative">
-                                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">schedule</span>
+                                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-lg">schedule</span>
                                     <input type="time" name="waktu_mulai" value="{{ old('waktu_mulai') }}"
-                                           class="w-full pl-12 pr-4 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700">
+                                           class="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-900 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700 dark:text-slate-300">
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Waktu Selesai</label>
+                                <label class="block text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 px-1">Waktu Selesai</label>
                                 <div class="relative">
-                                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">schedule</span>
+                                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-lg">schedule</span>
                                     <input type="time" name="waktu_selesai" value="{{ old('waktu_selesai') }}"
-                                           class="w-full pl-12 pr-4 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700">
+                                           class="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-900 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700 dark:text-slate-300">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="space-y-6">
                         <div>
-                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Banner/Foto Kegiatan</label>
-                            <label id="banner-container" class="border-2 border-dashed border-slate-200 rounded-3xl p-8 text-center bg-slate-50/50 hover:bg-slate-50 transition-all group cursor-pointer block relative overflow-hidden">
+                            <label class="block text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 px-1">Banner/Foto Kegiatan</label>
+                            <label id="banner-container" class="border-2 border-dashed border-slate-200 dark:border-slate-600 rounded-3xl p-8 text-center bg-slate-50/50 dark:bg-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all group cursor-pointer block relative overflow-hidden">
                                 <div id="banner-placeholder">
-                                    <div class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                                    <div class="w-16 h-16 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                                         <span class="material-symbols-outlined text-primary text-3xl">cloud_upload</span>
                                     </div>
-                                    <h4 class="text-sm font-bold text-slate-700 mb-1">Klik atau seret file banner</h4>
-                                    <p class="text-xs text-slate-400">Rekomendasi ukuran 1200 x 600 px (Maks. 5MB)</p>
+                                    <h4 class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Klik atau seret file banner</h4>
+                                    <p class="text-xs text-slate-400 dark:text-slate-500">Rekomendasi ukuran 1200 x 600 px (Maks. 5MB)</p>
                                 </div>
                                 <div id="banner-preview" class="hidden absolute inset-0">
                                     <img src="" class="w-full h-full object-cover">
@@ -127,25 +127,25 @@
                             </label>
                         </div>
                         <div>
-                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Deskripsi Kegiatan</label>
+                            <label class="block text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 px-1">Deskripsi Kegiatan</label>
                             <textarea name="deskripsi" rows="6"
-                                      class="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700 resize-none" 
+                                      class="w-full px-5 py-4 bg-slate-50 dark:bg-slate-900 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-700 dark:text-slate-300 resize-none" 
                                       placeholder="Tuliskan rincian kegiatan sekolah...">{{ old('deskripsi') }}</textarea>
                         </div>
                         <div class="flex items-center justify-between p-5 bg-lavender/30 rounded-2xl border border-primary/10">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm">
+                                <div class="w-10 h-10 bg-white dark:bg-slate-800 rounded-xl flex items-center justify-center shadow-sm">
                                     <span class="material-symbols-outlined text-primary">visibility</span>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-bold text-slate-800">Status Publikasi</p>
-                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Tentukan keterlihatan kegiatan</p>
+                                    <p class="text-sm font-bold text-slate-800 dark:text-slate-100">Status Publikasi</p>
+                                    <p class="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Tentukan keterlihatan kegiatan</p>
                                 </div>
                             </div>
                             <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
                                 <input type="hidden" name="is_published" value="0">
                                 <input type="checkbox" name="is_published" value="1" id="toggle" 
-                                       class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300" 
+                                       class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white dark:bg-slate-800 border-4 appearance-none cursor-pointer border-slate-300 dark:border-slate-500" 
                                        {{ old('is_published') ? 'checked' : '' }}>
                                 <label class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 cursor-pointer" for="toggle"></label>
                             </div>
@@ -156,9 +156,9 @@
             <!-- Spacer for sticky mobile buttons -->
             <div class="h-24 md:hidden"></div>
 
-            <div class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg px-6 py-4 flex items-center justify-between gap-4 border-t border-slate-100 md:relative md:bg-slate-50/50 md:px-8 md:py-6 md:justify-end md:gap-4 z-30">
+            <div class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg px-6 py-4 flex items-center justify-between gap-4 border-t border-slate-100 dark:border-slate-700 md:relative md:bg-slate-50/50 md:px-8 md:py-6 md:justify-end md:gap-4 z-30">
                 <a href="{{ route($routePrefix . '.kegiatan.index') }}" 
-                   class="flex-1 md:flex-none text-center px-8 py-3.5 text-slate-600 font-bold text-sm hover:bg-slate-100 rounded-2xl transition-all">
+                   class="flex-1 md:flex-none text-center px-8 py-3.5 text-slate-600 dark:text-slate-400 font-bold text-sm hover:bg-slate-100 rounded-2xl transition-all">
                     Batal
                 </a>
                 <button type="submit" class="flex-1 md:flex-none px-8 py-3.5 bg-primary text-white rounded-2xl font-bold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
@@ -168,8 +168,8 @@
             </div>
         </form>
     </div>
-    <div class="bg-blue-50 border border-blue-100 p-5 rounded-3xl flex items-start gap-4">
-        <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-blue-500 shadow-sm shrink-0">
+    <div class="bg-blue-50 dark:bg-blue-900/10 border border-blue-100 p-5 rounded-3xl flex items-start gap-4">
+        <div class="w-10 h-10 bg-white dark:bg-slate-800 rounded-xl flex items-center justify-center text-blue-500 shadow-sm shrink-0">
             <span class="material-symbols-outlined">info</span>
         </div>
         <div>

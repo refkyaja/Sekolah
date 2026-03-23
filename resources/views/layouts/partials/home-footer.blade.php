@@ -11,7 +11,7 @@
                     <div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
                         <span class="material-symbols-outlined text-xl">school</span>
                     </div>
-                    <h1 class="text-xl font-black text-white">TK PGRI HB 1</h1>
+                    <h1 class="text-xl font-black text-white">TK PGRI Harapan Bangsa 1  </h1>
                 </div>
                 <p class="text-sm leading-relaxed max-w-xs mx-auto lg:mx-0">
                     Membangun fondasi masa depan cerah anak anda melalui pendidikan usia dini yang holistik dan kreatif di Kota Bandung.

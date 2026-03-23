@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Login Calon Siswa - Portal Penerimaan')
+@section('title', 'Login PPDB - Portal Penerimaan')
 
 @section('content')
 <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">

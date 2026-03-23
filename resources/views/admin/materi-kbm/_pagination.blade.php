@@ -1,17 +1,17 @@
-<div class="p-4 sm:p-6 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-    <p class="text-xs font-medium text-slate-400 uppercase tracking-wider text-center sm:text-left">
+<div class="p-4 sm:p-6 border-t border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <p class="text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider text-center sm:text-left">
         Menampilkan {{ $materiKbm->firstItem() ?? 0 }}&ndash;{{ $materiKbm->lastItem() ?? 0 }}
         dari {{ $materiKbm->total() }} Materi
     </p>
     <div class="flex items-center justify-center gap-1.5 flex-wrap">
         {{-- Previous --}}
         @if($materiKbm->onFirstPage())
-            <span class="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 text-slate-300 cursor-not-allowed">
+            <span class="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-600 text-slate-300 dark:text-slate-600 cursor-not-allowed">
                 <span class="material-symbols-outlined text-lg">chevron_left</span>
             </span>
         @else
             <a href="{{ $materiKbm->previousPageUrl() }}"
-                class="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:bg-slate-50">
+                class="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-600 text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700">
                 <span class="material-symbols-outlined text-lg">chevron_left</span>
             </a>
         @endif
@@ -24,22 +24,22 @@
                 </span>
             @elseif($page == 1 || $page == $materiKbm->lastPage() || abs($page - $materiKbm->currentPage()) <= 1)
                 <a href="{{ $url }}"
-                    class="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-sm">
+                    class="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 font-bold text-sm">
                     {{ $page }}
                 </a>
             @elseif(abs($page - $materiKbm->currentPage()) == 2)
-                <span class="w-9 h-9 flex items-center justify-center text-slate-400 text-sm">…</span>
+                <span class="w-9 h-9 flex items-center justify-center text-slate-400 dark:text-slate-500 text-sm">…</span>
             @endif
         @endforeach
 
         {{-- Next --}}
         @if($materiKbm->hasMorePages())
             <a href="{{ $materiKbm->nextPageUrl() }}"
-                class="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:bg-slate-50">
+                class="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-600 text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700">
                 <span class="material-symbols-outlined text-lg">chevron_right</span>
             </a>
         @else
-            <span class="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 text-slate-300 cursor-not-allowed">
+            <span class="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-600 text-slate-300 dark:text-slate-600 cursor-not-allowed">
                 <span class="material-symbols-outlined text-lg">chevron_right</span>
             </span>
         @endif

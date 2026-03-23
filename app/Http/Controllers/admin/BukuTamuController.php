@@ -35,15 +35,15 @@ class BukuTamuController extends Controller
 
         $validated = $request->validate([
             'nama' => 'required|string|max:100',
-            'instansi' => 'required|string|max:100',
-            'jabatan' => 'nullable|string|max:100',
-            'email' => 'nullable|email|max:100',
             'telepon' => 'required|string|max:20',
             'tanggal_kunjungan' => 'required|date',
-            'jam_kunjungan' => 'required|date_format:H:i',
-            'tujuan_kunjungan' => 'required|string|max:500',
-            'pesan_kesan' => 'nullable|string|max:1000',
+            'jam_kunjungan' => 'required|string',
+            'jabatan' => 'required|string|max:100',
+            'instansi' => 'required|string|max:100',
+            'tujuan_kunjungan' => 'required|string|max:1000',
+            'pesan_kesan' => 'required|string|max:1000',
             'status' => 'required|in:pending,approved,rejected,completed',
+            'email' => 'nullable|email|max:100',
             'is_verified' => 'boolean'
         ]);
 
@@ -73,15 +73,15 @@ class BukuTamuController extends Controller
 
         $validated = $request->validate([
             'nama' => 'required|string|max:100',
-            'instansi' => 'required|string|max:100',
-            'jabatan' => 'nullable|string|max:100',
-            'email' => 'nullable|email|max:100',
             'telepon' => 'required|string|max:20',
             'tanggal_kunjungan' => 'required|date',
-            'jam_kunjungan' => 'required|date_format:H:i',
-            'tujuan_kunjungan' => 'required|string|max:500',
-            'pesan_kesan' => 'nullable|string|max:1000',
+            'jam_kunjungan' => 'required|string',
+            'jabatan' => 'required|string|max:100',
+            'instansi' => 'required|string|max:100',
+            'tujuan_kunjungan' => 'required|string|max:1000',
+            'pesan_kesan' => 'required|string|max:1000',
             'status' => 'required|in:pending,approved,rejected,completed',
+            'email' => 'nullable|email|max:100',
             'is_verified' => 'boolean'
         ]);
 

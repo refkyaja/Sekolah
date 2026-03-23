@@ -70,18 +70,18 @@
 @endpush
 
 @section('content')
-<nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 uppercase tracking-widest">
+<nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-widest">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
         <li><a class="hover:text-primary" href="#">PPDB</a></li>
         <li><span class="mx-2">/</span></li>
-        <li class="text-slate-600">Pendaftaran</li>
+        <li class="text-slate-600 dark:text-slate-400">Pendaftaran</li>
     </ol>
 </nav>
 
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
     <div>
-        <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Pendaftaran PPDB</h1>
-        <p class="text-sm text-slate-500 mt-1">Manajemen pendaftaran calon siswa baru dengan fitur filter dan aksi massal.</p>
+        <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Pendaftaran PPDB</h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manajemen pendaftaran calon siswa baru dengan fitur filter dan aksi massal.</p>
     </div>
     @if($canCreatePpdb)
         <a href="{{ route($routePrefix . '.ppdb.create') }}" class="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-2xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
@@ -93,55 +93,55 @@
 
 <livewire:admin.ppdb-index />
 
-<div class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
+<div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-100 dark:border-slate-700 shadow-sm">
     <div class="flex items-center gap-2 mb-8">
         <span class="material-symbols-outlined text-primary">info</span>
-        <h3 class="text-lg font-bold text-slate-800 tracking-tight">Status Information</h3>
+        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight">Status Information</h3>
     </div>
     <div class="space-y-6 max-w-4xl">
         <div class="flex items-start gap-4">
             <div class="flex-shrink-0 mt-1">
-                <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-[10px] font-black bg-orange-100 text-orange-700 uppercase tracking-widest min-w-[130px]">Menunggu Verifikasi</span>
+                <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-[10px] font-black bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 uppercase tracking-widest min-w-[130px]">Menunggu Verifikasi</span>
             </div>
             <div class="flex-1">
-                <h4 class="text-sm font-bold text-slate-800 tracking-tight">Menunggu Verifikasi</h4>
-                <p class="text-[13px] text-slate-500 mt-0.5">Pendaftaran baru masuk dan perlu diperiksa.</p>
+                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 tracking-tight">Menunggu Verifikasi</h4>
+                <p class="text-[13px] text-slate-500 dark:text-slate-400 mt-0.5">Pendaftaran baru masuk dan perlu diperiksa.</p>
             </div>
         </div>
         <div class="flex items-start gap-4">
             <div class="flex-shrink-0 mt-1">
-                <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-[10px] font-black bg-yellow-100 text-yellow-700 uppercase tracking-widest min-w-[130px]">Revisi Dokumen</span>
+                <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-[10px] font-black bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 uppercase tracking-widest min-w-[130px]">Revisi Dokumen</span>
             </div>
             <div class="flex-1">
-                <h4 class="text-sm font-bold text-slate-800 tracking-tight">Revisi Dokumen</h4>
-                <p class="text-[13px] text-slate-500 mt-0.5">Menunggu perbaikan berkas dari orang tua.</p>
+                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 tracking-tight">Revisi Dokumen</h4>
+                <p class="text-[13px] text-slate-500 dark:text-slate-400 mt-0.5">Menunggu perbaikan berkas dari orang tua.</p>
             </div>
         </div>
         <div class="flex items-start gap-4">
             <div class="flex-shrink-0 mt-1">
-                <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-[10px] font-black bg-blue-100 text-blue-700 uppercase tracking-widest min-w-[130px]">Dokumen Verified</span>
+                <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-[10px] font-black bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 uppercase tracking-widest min-w-[130px]">Dokumen Verified</span>
             </div>
             <div class="flex-1">
-                <h4 class="text-sm font-bold text-slate-800 tracking-tight">Dokumen Verified</h4>
-                <p class="text-[13px] text-slate-500 mt-0.5">Berkas lengkap dan valid.</p>
+                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 tracking-tight">Dokumen Verified</h4>
+                <p class="text-[13px] text-slate-500 dark:text-slate-400 mt-0.5">Berkas lengkap dan valid.</p>
             </div>
         </div>
         <div class="flex items-start gap-4">
             <div class="flex-shrink-0 mt-1">
-                <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-[10px] font-black bg-green-100 text-green-700 uppercase tracking-widest min-w-[130px]">Lulus</span>
+                <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-[10px] font-black bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 uppercase tracking-widest min-w-[130px]">Lulus</span>
             </div>
             <div class="flex-1">
-                <h4 class="text-sm font-bold text-slate-800 tracking-tight">Lulus</h4>
-                <p class="text-[13px] text-slate-500 mt-0.5">Calon siswa diterima.</p>
+                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 tracking-tight">Lulus</h4>
+                <p class="text-[13px] text-slate-500 dark:text-slate-400 mt-0.5">Calon siswa diterima.</p>
             </div>
         </div>
         <div class="flex items-start gap-4">
             <div class="flex-shrink-0 mt-1">
-                <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-[10px] font-black bg-red-100 text-red-700 uppercase tracking-widest min-w-[130px]">Tidak Lulus</span>
+                <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-[10px] font-black bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 uppercase tracking-widest min-w-[130px]">Tidak Lulus</span>
             </div>
             <div class="flex-1">
-                <h4 class="text-sm font-bold text-slate-800 tracking-tight">Tidak Lulus</h4>
-                <p class="text-[13px] text-slate-500 mt-0.5">Calon siswa tidak diterima.</p>
+                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 tracking-tight">Tidak Lulus</h4>
+                <p class="text-[13px] text-slate-500 dark:text-slate-400 mt-0.5">Calon siswa tidak diterima.</p>
             </div>
         </div>
     </div>

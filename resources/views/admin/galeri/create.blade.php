@@ -33,12 +33,12 @@
     {{-- Sub-header: Back + Judul --}}
     <div class="flex items-center gap-4 mb-6">
         <a href="{{ route($routePrefix . '.galeri.index') }}"
-           class="flex items-center gap-2 text-slate-500 hover:text-primary transition-colors">
+           class="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">
             <span class="material-symbols-outlined">arrow_back</span>
             <span class="text-sm font-medium">Kembali ke Galeri</span>
         </a>
         <div class="h-4 w-[1px] bg-slate-200"></div>
-        <h1 class="text-lg font-bold text-slate-800">Tambah Album Baru</h1>
+        <h1 class="text-lg font-bold text-slate-800 dark:text-slate-100">Tambah Album Baru</h1>
     </div>
 
     <div class="max-w-5xl mx-auto space-y-6">
@@ -48,8 +48,8 @@
             <div class="lg:col-span-2 space-y-6">
 
                 {{-- Informasi Album --}}
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                    <h2 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-700">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-6 flex items-center gap-2">
                         <span class="material-symbols-outlined text-primary">info</span>
                         Informasi Album
                     </h2>
@@ -57,8 +57,8 @@
                     <div class="space-y-5">
                         {{-- Judul --}}
                         <div>
-                            <label for="judul" class="block text-sm font-semibold text-slate-700 mb-2">
-                                Judul Album <span class="text-red-500">*</span>
+                            <label for="judul" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                                Judul Album <span class="text-red-500 dark:text-red-400">*</span>
                             </label>
                             <input type="text"
                                    id="judul"
@@ -66,9 +66,9 @@
                                    value="{{ old('judul') }}"
                                    placeholder="Masukkan judul album kegiatan..."
                                    required
-                                   class="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all @error('judul') ring-2 ring-red-400 @enderror">
+                                   class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all @error('judul') ring-2 ring-red-400 @enderror">
                             @error('judul')
-                                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                                <p class="mt-1 text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -76,13 +76,13 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             {{-- Kategori --}}
                             <div>
-                                <label for="kategori" class="block text-sm font-semibold text-slate-700 mb-2">
-                                    Kategori <span class="text-red-500">*</span>
+                                <label for="kategori" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                                    Kategori <span class="text-red-500 dark:text-red-400">*</span>
                                 </label>
                                 <select name="kategori"
                                         id="kategori"
                                         required
-                                        class="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all @error('kategori') ring-2 ring-red-400 @enderror">
+                                        class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all @error('kategori') ring-2 ring-red-400 @enderror">
                                     <option value="">Pilih Kategori</option>
                                     <option value="kegiatan"  {{ old('kategori') == 'kegiatan'  ? 'selected' : '' }}>Kegiatan</option>
                                     <option value="prestasi"  {{ old('kategori') == 'prestasi'  ? 'selected' : '' }}>Prestasi</option>
@@ -91,70 +91,70 @@
                                     <option value="harian"    {{ old('kategori') == 'harian'    ? 'selected' : '' }}>Kegiatan Harian</option>
                                 </select>
                                 @error('kategori')
-                                    <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                                    <p class="mt-1 text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             {{-- Tanggal --}}
                             <div>
-                                <label for="tanggal" class="block text-sm font-semibold text-slate-700 mb-2">
-                                    Tanggal Kegiatan <span class="text-red-500">*</span>
+                                <label for="tanggal" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                                    Tanggal Kegiatan <span class="text-red-500 dark:text-red-400">*</span>
                                 </label>
                                 <div class="relative">
-                                    <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg pointer-events-none">calendar_today</span>
+                                    <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-lg pointer-events-none">calendar_today</span>
                                     <input type="date"
                                            id="tanggal"
                                            name="tanggal"
                                            value="{{ old('tanggal', date('Y-m-d')) }}"
                                            required
-                                           class="w-full pl-10 pr-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all @error('tanggal') ring-2 ring-red-400 @enderror">
+                                           class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all @error('tanggal') ring-2 ring-red-400 @enderror" [color-scheme:light] dark:[color-scheme:dark]>
                                 </div>
                                 @error('tanggal')
-                                    <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                                    <p class="mt-1 text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
 
                         {{-- Lokasi --}}
                         <div>
-                            <label for="lokasi" class="block text-sm font-semibold text-slate-700 mb-2">Lokasi</label>
+                            <label for="lokasi" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Lokasi</label>
                             <div class="relative">
-                                <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg pointer-events-none">location_on</span>
+                                <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-lg pointer-events-none">location_on</span>
                                 <input type="text"
                                        id="lokasi"
                                        name="lokasi"
                                        value="{{ old('lokasi', 'TK Harapan Bangsa 1') }}"
                                        placeholder="Tempat kegiatan"
-                                       class="w-full pl-10 pr-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all @error('lokasi') ring-2 ring-red-400 @enderror">
+                                       class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all @error('lokasi') ring-2 ring-red-400 @enderror">
                             </div>
                             @error('lokasi')
-                                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                                <p class="mt-1 text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
                             @enderror
                         </div>
 
                         {{-- Deskripsi --}}
                         <div>
-                            <label for="deskripsi" class="block text-sm font-semibold text-slate-700 mb-2">Deskripsi Album</label>
+                            <label for="deskripsi" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Deskripsi Album</label>
                             <textarea name="deskripsi"
                                       id="deskripsi"
                                       rows="4"
                                       placeholder="Berikan deskripsi singkat mengenai kegiatan ini..."
-                                      class="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all resize-none @error('deskripsi') ring-2 ring-red-400 @enderror">{{ old('deskripsi') }}</textarea>
+                                      class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all resize-none @error('deskripsi') ring-2 ring-red-400 @enderror">{{ old('deskripsi') }}</textarea>
                             @error('deskripsi')
-                                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                                <p class="mt-1 text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
                 </div>
 
                 {{-- Upload File --}}
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-700">
                     <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
                             <span class="material-symbols-outlined text-primary">cloud_upload</span>
                             Unggah Gambar
                         </h2>
-                        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Max 5MB / file · Max 10 file</span>
+                        <span class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Max 5MB / file · Max 10 file</span>
                     </div>
 
                     {{-- Hidden Input di LUAR dropzone agar tidak ikut click handler --}}
@@ -167,20 +167,20 @@
 
                     {{-- Dropzone --}}
                     <div id="dropzone"
-                         class="border-2 border-dashed border-slate-200 rounded-2xl p-10 flex flex-col items-center justify-center bg-slate-50/50 hover:bg-lavender/10 hover:border-primary/30 transition-all group cursor-pointer">
-                        <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 transition-transform">
+                         class="border-2 border-dashed border-slate-200 dark:border-slate-600 rounded-2xl p-10 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-800/50 hover:bg-lavender/10 hover:border-primary/30 transition-all group cursor-pointer">
+                        <div class="w-16 h-16 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 transition-transform">
                             <span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
                         </div>
-                        <p class="text-slate-700 font-bold">Tarik dan lepas file di sini</p>
-                        <p class="text-slate-400 text-sm mt-1">atau klik untuk memilih file dari komputer</p>
-                        <p class="text-[11px] text-slate-400 mt-3">Format: JPG, JPEG, PNG, GIF &nbsp;·&nbsp; Minimal 1, Maksimal 10 gambar</p>
+                        <p class="text-slate-700 dark:text-slate-300 font-bold">Tarik dan lepas file di sini</p>
+                        <p class="text-slate-400 dark:text-slate-500 text-sm mt-1">atau klik untuk memilih file dari komputer</p>
+                        <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-3">Format: JPG, JPEG, PNG, GIF &nbsp;·&nbsp; Minimal 1, Maksimal 10 gambar</p>
                     </div>
 
                     @error('gambar')
-                        <p class="mt-2 text-xs text-red-500">{{ $message }}</p>
+                        <p class="mt-2 text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
                     @enderror
                     @error('gambar.*')
-                        <p class="mt-2 text-xs text-red-500">{{ $message }}</p>
+                        <p class="mt-2 text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
                     @enderror
 
                     {{-- File Counter + Clear --}}
@@ -195,7 +195,7 @@
                                 </div>
                                 <button type="button"
                                         id="clearAllBtn"
-                                        class="text-xs font-bold text-red-500 hover:text-red-700 flex items-center gap-1 transition-colors">
+                                        class="text-xs font-bold text-red-500 dark:text-red-400 hover:text-red-700 flex items-center gap-1 transition-colors">
                                     <span class="material-symbols-outlined text-sm">delete_sweep</span>
                                     Hapus semua
                                 </button>
@@ -212,14 +212,14 @@
             <div class="space-y-6">
 
                 {{-- Pengaturan Album --}}
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                    <h2 class="text-sm font-bold text-slate-800 mb-4 uppercase tracking-widest text-center">Pengaturan Album</h2>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-700">
+                    <h2 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4 uppercase tracking-widest text-center">Pengaturan Album</h2>
 
                     {{-- Toggle Publish --}}
-                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
+                    <div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-xl">
                         <div>
-                            <p class="text-sm font-bold text-slate-700">Status Visibilitas</p>
-                            <p class="text-[10px] text-slate-400 uppercase font-medium">Publik atau Draft</p>
+                            <p class="text-sm font-bold text-slate-700 dark:text-slate-300">Status Visibilitas</p>
+                            <p class="text-[10px] text-slate-400 dark:text-slate-500 uppercase font-medium">Publik atau Draft</p>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox"
@@ -229,7 +229,7 @@
                                    class="sr-only"
                                    {{ old('is_published', true) ? 'checked' : '' }}>
                             <div id="toggleBg" class="w-11 h-5 rounded-full transition-colors duration-200 flex items-center bg-slate-200">
-                                <div id="toggleDot" class="bg-white w-4 h-4 rounded-full shadow-sm transform transition-transform duration-200 ml-0.5"></div>
+                                <div id="toggleDot" class="bg-white dark:bg-slate-800 w-4 h-4 rounded-full shadow-sm transform transition-transform duration-200 ml-0.5"></div>
                             </div>
                             <span id="publishLabel" class="ml-3 text-xs font-bold text-primary">Public</span>
                         </label>
@@ -237,23 +237,23 @@
                 </div>
 
                 {{-- Thumbnail --}}
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                    <h2 class="text-sm font-bold text-slate-800 mb-4 uppercase tracking-widest text-center">Thumbnail Album</h2>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-700">
+                    <h2 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4 uppercase tracking-widest text-center">Thumbnail Album</h2>
                     <div id="thumbnailZone"
-                         class="aspect-video rounded-xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center bg-slate-50 hover:bg-lavender/10 transition-all cursor-pointer overflow-hidden group">
+                         class="aspect-video rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-600 flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-900 hover:bg-lavender/10 transition-all cursor-pointer overflow-hidden group">
                         <div id="thumbnailPlaceholder" class="flex flex-col items-center pointer-events-none">
-                            <span class="material-symbols-outlined text-slate-400 text-3xl mb-2">add_photo_alternate</span>
-                            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider text-center px-4">Pilih Cover Album</p>
+                            <span class="material-symbols-outlined text-slate-400 dark:text-slate-500 text-3xl mb-2">add_photo_alternate</span>
+                            <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-center px-4">Pilih Cover Album</p>
                         </div>
                         <div id="thumbnailPreview" class="hidden w-full h-full relative">
                             <img id="thumbnailImg" alt="Cover preview" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                <span class="bg-white text-slate-800 px-3 py-1.5 rounded-lg text-xs font-bold">Ganti Foto</span>
+                                <span class="bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 px-3 py-1.5 rounded-lg text-xs font-bold">Ganti Foto</span>
                             </div>
                         </div>
                     </div>
                     <input type="file" id="thumbnailInput" class="hidden" accept="image/*">
-                    <p class="text-[10px] text-slate-400 mt-3 italic text-center">Rekomendasi ukuran: 1280 x 720 px (16:9)</p>
+                    <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-3 italic text-center">Rekomendasi ukuran: 1280 x 720 px (16:9)</p>
                 </div>
 
                 {{-- Tips --}}
@@ -262,14 +262,14 @@
                         <span class="material-symbols-outlined text-primary">lightbulb</span>
                         <p class="text-sm font-bold text-primary">Tips</p>
                     </div>
-                    <p class="text-xs text-slate-600 leading-relaxed">
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                         Pastikan gambar cover menarik untuk audiens publik. Gunakan format .jpg atau .png untuk hasil terbaik. Minimal 1 gambar harus diupload sebelum menyimpan.
                     </p>
                 </div>
 
                 {{-- Action Buttons (Sticky on mobile, inline on desktop) --}}
-                <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-slate-200 z-50 lg:relative lg:p-0 lg:bg-transparent lg:border-none lg:z-auto">
-                    <div class="bg-white lg:rounded-2xl lg:p-5 lg:shadow-sm lg:border lg:border-slate-100 flex flex-col sm:flex-row lg:flex-col gap-3 max-w-5xl mx-auto">
+                <div class="fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-600 z-50 lg:relative lg:p-0 lg:bg-transparent lg:border-none lg:z-auto">
+                    <div class="bg-white dark:bg-slate-800 lg:rounded-2xl lg:p-5 lg:shadow-sm lg:border lg:border-slate-100 flex flex-col sm:flex-row lg:flex-col gap-3 max-w-5xl mx-auto">
                         <button type="submit"
                                 id="btnSubmit"
                                 class="w-full flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed order-1 sm:order-2 lg:order-1">
@@ -277,7 +277,7 @@
                             Simpan Album
                         </button>
                         <a href="{{ route($routePrefix . '.galeri.index') }}"
-                           class="w-full flex items-center justify-center px-6 py-3 lg:py-2.5 text-sm font-bold text-slate-500 hover:text-primary border border-slate-200 rounded-xl bg-slate-50 hover:bg-lavender transition-all order-2 sm:order-1 lg:order-2">
+                           class="w-full flex items-center justify-center px-6 py-3 lg:py-2.5 text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-primary border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 hover:bg-lavender transition-all order-2 sm:order-1 lg:order-2">
                             Batal
                         </a>
                     </div>
@@ -367,7 +367,7 @@ document.addEventListener('DOMContentLoaded', function () {
             toggleBg.classList.add('bg-slate-200');
             toggleDot.style.transform = 'translateX(0)';
             publishLabel.textContent = 'Draft';
-            publishLabel.className = 'ml-3 text-xs font-bold text-slate-400';
+            publishLabel.className = 'ml-3 text-xs font-bold text-slate-400 dark:text-slate-500';
         }
     }
     togglePublish.addEventListener('change', syncToggle);
@@ -521,7 +521,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 item.className = 'preview-item';
                 item.setAttribute('data-index', index);
                 item.innerHTML = `
-                    <div class="image-container border-2 border-slate-100">
+                    <div class="image-container border-2 border-slate-100 dark:border-slate-700">
                         <img src="${e.target.result}" alt="${file.name}" loading="lazy">
                         <button type="button"
                                 onclick="removeFile(${index})"
@@ -531,7 +531,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <span class="absolute top-1 left-1 bg-primary text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">${index + 1}</span>
                         <span class="absolute bottom-1 right-1 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded-full">${formatFileSize(file.size)}</span>
                     </div>
-                    <p class="mt-1 text-[10px] text-slate-500 truncate px-1" title="${file.name}">
+                    <p class="mt-1 text-[10px] text-slate-500 dark:text-slate-400 truncate px-1" title="${file.name}">
                         ${file.name.length > 20 ? file.name.substring(0, 17) + '...' : file.name}
                     </p>
                 `;

@@ -57,6 +57,13 @@
             <span class="text-sm text-slate-500">Tahun Ajaran {{ $tahunAjaran }}</span>
         </div>
     </div>
+    
+    <div class="flex items-center gap-3">
+        <a href="{{ route('home') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm group">
+            <span class="material-symbols-outlined text-lg group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
+            Kembali ke Beranda
+        </a>
+    </div>
 </header>
 
 {{-- Notification Dropdown --}}

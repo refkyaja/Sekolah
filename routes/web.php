@@ -55,7 +55,7 @@ Route::prefix('kegiatan')->name('kegiatan.')->group(function () {
 // Buku Tamu Routes
 Route::prefix('buku-tamu')->name('buku-tamu.')->group(function () {
     Route::get('/', [BukuTamuController::class, 'index'])->name('index');
-    Route::post('/', [BukuTamuController::class, 'store'])->name('store');
+    Route::post('/', [HomeController::class, 'storeBukuTamu'])->name('store');
     Route::get('/success', [BukuTamuController::class, 'success'])->name('success');
 });
 
@@ -330,6 +330,7 @@ Route::prefix('operator')->name('operator.')->middleware(['auth', 'verified', 'a
     // Profile Routes
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [App\Http\Controllers\Operator\ProfileController::class, 'index'])->name('index');
+        Route::get('/settings', [App\Http\Controllers\Operator\ProfileController::class, 'settings'])->name('settings');
         Route::put('/update', [App\Http\Controllers\Operator\ProfileController::class, 'update'])->name('update');
         Route::post('/update-photo', [App\Http\Controllers\Operator\ProfileController::class, 'updatePhoto'])->name('update-photo');
         Route::put('/change-password', [App\Http\Controllers\Operator\ProfileController::class, 'changePassword'])->name('change-password');
@@ -418,6 +419,7 @@ Route::prefix('kepala-sekolah')->name('kepala-sekolah.')->middleware(['auth', 'v
     // Profile Routes
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [App\Http\Controllers\KepalaSekolah\ProfileController::class, 'index'])->name('index');
+        Route::get('/settings', [App\Http\Controllers\KepalaSekolah\ProfileController::class, 'settings'])->name('settings');
         Route::put('/update', [App\Http\Controllers\KepalaSekolah\ProfileController::class, 'update'])->name('update');
         Route::post('/update-photo', [App\Http\Controllers\KepalaSekolah\ProfileController::class, 'updatePhoto'])->name('update-photo');
         Route::put('/change-password', [App\Http\Controllers\KepalaSekolah\ProfileController::class, 'changePassword'])->name('change-password');
@@ -506,6 +508,7 @@ Route::prefix('guru')->name('guru.')->middleware(['auth', 'verified', 'active', 
     // Profile Routes
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [App\Http\Controllers\Guru\ProfileController::class, 'index'])->name('index');
+        Route::get('/settings', [App\Http\Controllers\Guru\ProfileController::class, 'settings'])->name('settings');
         Route::put('/update', [App\Http\Controllers\Guru\ProfileController::class, 'update'])->name('update');
         Route::post('/update-photo', [App\Http\Controllers\Guru\ProfileController::class, 'updatePhoto'])->name('update-photo');
         Route::put('/change-password', [App\Http\Controllers\Guru\ProfileController::class, 'changePassword'])->name('change-password');

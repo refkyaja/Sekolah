@@ -206,7 +206,7 @@ new class extends Component
             </thead>
             <tbody class="divide-y divide-slate-50">
                 @forelse($this->users as $index => $user)
-                <tr class="hover:bg-slate-50/50 transition-colors {{ $user->id === auth()->id() ? 'self-account' : '' }}">
+                <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/50 transition-colors {{ $user->id === auth()->id() ? 'self-account' : '' }}">
                     <td class="px-6 py-4 text-sm text-slate-500">
                         {{ $loop->iteration + ($this->users->currentPage() - 1) * $this->users->perPage() }}
                     </td>

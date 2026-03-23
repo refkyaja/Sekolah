@@ -46,12 +46,12 @@
                 <form id="exportForm">
                     <div class="space-y-3">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
-                            <input type="date" name="start_date" class="w-full px-3 py-2 border rounded-lg">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tanggal Mulai</label>
+                            <input type="date" name="start_date" class="w-full px-3 py-2 border rounded-lg" [color-scheme:light] dark:[color-scheme:dark]>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Tanggal Selesai</label>
-                            <input type="date" name="end_date" class="w-full px-3 py-2 border rounded-lg">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tanggal Selesai</label>
+                            <input type="date" name="end_date" class="w-full px-3 py-2 border rounded-lg" [color-scheme:light] dark:[color-scheme:dark]>
                         </div>
                     </div>
                 </form>

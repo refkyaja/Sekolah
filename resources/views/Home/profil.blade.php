@@ -5,8 +5,8 @@
 @section('content')
 <div class="px-4 md:px-10 py-6 space-y-12">
     <!-- Hero Section -->
-    <section data-home-animate="zoom-in" class="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-xl md:rounded-3xl shadow-lg mt-8 md:mt-16">
-        <div class="absolute inset-0 bg-cover bg-center" data-alt="Children playing happily in a colorful classroom" style="background-image: url('https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=1600&auto=format&fit=crop');"></div>
+    <section data-home-animate="zoom-in" class="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-xl md:rounded-3xl shadow-lg mt-4 md:mt-8">
+        <div class="absolute inset-0 bg-cover bg-center" data-alt="Children playing happily in a colorful classroom" style="background-image: url('{{ asset('images/profile.jpeg') }}');"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-8 md:p-12">
             <nav data-home-animate="fade-up" class="flex gap-2 text-white/80 text-sm mb-4">
                 <span><a href="{{ route('home') }}" class="hover:text-white transition-colors">Beranda</a></span> <span>/</span> <span class="text-white font-medium">Profil Sekolah</span>
@@ -24,7 +24,7 @@
             <div class="relative group mt-0 md:mt-4">
                 <div class="absolute -inset-4 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all"></div>
                 <div class="size-64 md:size-72 lg:size-80 rounded-full overflow-hidden border-8 border-white shadow-xl relative">
-                    <img alt="Ibu Tina Wati, S.Pd." class="w-full h-full object-cover" data-alt="Portrait of a smiling female principal in formal attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqx8-CkhbBpuKxt1c22w_aIqbCpIFS0LxhRLtMUXZwFDvONfSW165oPGFEsSeLFvuaZh1GUmT37imvghoe7ZC_wGOxx0aRFFdjsNqZkSzKgafxUf2K-yaevX0P7Vor05xBLBa-7P8OmHiDL6ORi5mktWo4BdMvBPhJk2xjyuQjksUEOHwAZtLNaZX7yd9Pj4mewpMi7FSRBe0f0Fvae7VUmLxsSDDc7CTGvfp03kggiSXXD6ahWdBas-XQvr73U3jhCuM1YnWpf-o"/>
+                    <img alt="Ibu Tina Wati, S.Pd." class="w-full h-full object-cover" data-alt="Portrait of a smiling female principal in formal attire" src="{{ asset('images/kepala-sekolah.jpeg') }}"/>
                 </div>
             </div>
         </div>
@@ -219,30 +219,34 @@
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <div data-home-animate="flip-in" class="text-center group transition-all duration-300 hover:-translate-y-2">
                             <div class="size-20 bg-slate-100 rounded-full mx-auto mb-2 overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 relative group-hover:shadow-xl">
-                                <img alt="Kepala Sekolah" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" data-alt="Portrait of a female teacher" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqx8-CkhbBpuKxt1c22w_aIqbCpIFS0LxhRLtMUXZwFDvONfSW165oPGFEsSeLFvuaZh1GUmT37imvghoe7ZC_wGOxx0aRFFdjsNqZkSzKgafxUf2K-yaevX0P7Vor05xBLBa-7P8OmHiDL6ORi5mktWo4BdMvBPhJk2xjyuQjksUEOHwAZtLNaZX7yd9Pj4mewpMi7FSRBe0f0Fvae7VUmLxsSDDc7CTGvfp03kggiSXXD6ahWdBas-XQvr73U3jhCuM1YnWpf-o"/>
+                                <!-- UBAH SRC DI BAWAH UNTUK FOTO KEPALA SEKOLAH -->
+                                <img alt="Kepala Sekolah" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" data-alt="Portrait of a female teacher" src="{{ asset('images/kepala-sekolah.jpeg') }}"/>
                             </div>
-                            <p class="font-bold text-sm text-slate-900">Tina Wati</p>
+                            <p class="font-bold text-sm text-slate-900">Tina Wati, S.Pd</p>
                             <p class="text-[10px] text-slate-400">Kepala Sekolah</p>
                         </div>
                         <div data-home-animate="flip-in" class="text-center group transition-all duration-300 hover:-translate-y-2" style="transition-delay: 100ms">
                             <div class="size-20 bg-slate-100 rounded-full mx-auto mb-2 overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 relative group-hover:shadow-xl">
-                                <span class="material-symbols-outlined absolute inset-0 m-auto flex items-center justify-center text-slate-400 text-3xl transition-transform duration-300 group-hover:scale-110">person</span>
+                                <!-- UBAH SRC DI BAWAH UNTUK FOTO GURU KELOMPOK A -->
+                                <img alt="Guru Kelompok A" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" data-alt="Portrait of a female teacher" src="{{ asset('images/guru-a.jpeg') }}"/>
                             </div>
-                            <p class="font-bold text-sm text-slate-900">Guru Kelas 1</p>
-                            <p class="text-[10px] text-slate-400">Guru Kelas</p>
+                            <p class="font-bold text-sm text-slate-900">Vera Irawaty, S.Pd</p>
+                            <p class="text-[10px] text-slate-400">Guru Kelompok A</p>
                         </div>
                         <div data-home-animate="flip-in" class="text-center group transition-all duration-300 hover:-translate-y-2" style="transition-delay: 200ms">
                             <div class="size-20 bg-slate-100 rounded-full mx-auto mb-2 overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 relative group-hover:shadow-xl">
-                                <span class="material-symbols-outlined absolute inset-0 m-auto flex items-center justify-center text-slate-400 text-3xl transition-transform duration-300 group-hover:scale-110">person</span>
+                                <!-- UBAH SRC DI BAWAH UNTUK FOTO GURU KELOMPOK B -->
+                                <img alt="Guru Kelompok B" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" data-alt="Portrait of a female teacher" src="{{ asset('images/guru-b.jpeg') }}"/>
                             </div>
-                            <p class="font-bold text-sm text-slate-900">Guru Kelas 2</p>
-                            <p class="text-[10px] text-slate-400">Guru Kelas</p>
+                            <p class="font-bold text-sm text-slate-900">Nena, S.Pd</p>
+                            <p class="text-[10px] text-slate-400">Guru Kelompok B</p>
                         </div>
                         <div data-home-animate="flip-in" class="text-center group transition-all duration-300 hover:-translate-y-2" style="transition-delay: 300ms">
                             <div class="size-20 bg-slate-100 rounded-full mx-auto mb-2 overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 relative group-hover:shadow-xl">
-                                <span class="material-symbols-outlined absolute inset-0 m-auto flex items-center justify-center text-slate-400 text-3xl transition-transform duration-300 group-hover:scale-110">person</span>
+                                <!-- UBAH SRC DI BAWAH UNTUK FOTO GURU PENDAMPING -->
+                                <img alt="Guru Pendamping" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" data-alt="Portrait of a female teacher" src="{{ asset('images/guru-p.jpeg') }}"/>
                             </div>
-                            <p class="font-bold text-sm text-slate-900">Guru Staff</p>
+                            <p class="font-bold text-sm text-slate-900">Serly Marliyana, SE</p>
                             <p class="text-[10px] text-slate-400">Guru Pendamping</p>
                         </div>
                     </div>

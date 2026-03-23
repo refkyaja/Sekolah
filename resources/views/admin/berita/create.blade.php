@@ -4,13 +4,13 @@
 @section('title', 'Tambah Berita Baru - TK Harapan Bangsa 1')
 
 @section('content')
-<div class="bg-white rounded-xl shadow-sm border border-gray-100">
-    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h2 class="text-lg font-semibold text-gray-900">
+<div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-600 flex justify-between items-center">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
             Tambah Berita Baru
         </h2>
         <a href="{{ route('admin.berita.index') }}" 
-           class="text-sm text-gray-600 hover:text-gray-900">
+           class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900">
             <i class="fas fa-arrow-left mr-1"></i> Kembali
         </a>
     </div>
@@ -27,34 +27,34 @@
                 <div class="lg:col-span-2 space-y-6">
                     {{-- Judul --}}
                     <div>
-                        <label for="judul" class="block text-sm font-medium text-gray-700 mb-2">
-                            Judul Berita <span class="text-red-500">*</span>
+                        <label for="judul" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Judul Berita <span class="text-red-500 dark:text-red-400">*</span>
                         </label>
                         <input type="text" 
                                id="judul"
                                name="judul" 
                                value="{{ old('judul') }}"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('judul') border-red-500 @enderror"
+                               class="w-full px-4 py-2 border border-gray-300 dark:border-slate-500 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('judul') border-red-500 @enderror"
                                placeholder="Masukkan judul berita"
                                required>
                         @error('judul')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
                     
                     {{-- Isi Berita --}}
                     <div>
-                        <label for="isi_berita" class="block text-sm font-medium text-gray-700 mb-2">
-                            Isi Berita <span class="text-red-500">*</span>
+                        <label for="isi_berita" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Isi Berita <span class="text-red-500 dark:text-red-400">*</span>
                         </label>
                         <textarea name="isi_berita" 
                                   id="isi_berita"
                                   rows="12"
-                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('isi_berita') border-red-500 @enderror"
+                                  class="w-full px-4 py-2 border border-gray-300 dark:border-slate-500 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('isi_berita') border-red-500 @enderror"
                                   placeholder="Tulis isi berita di sini..."
                                   required>{{ old('isi_berita') }}</textarea>
                         @error('isi_berita')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
@@ -62,16 +62,16 @@
                 {{-- Kolom Kanan (1/3) - Info Tambahan --}}
                 <div class="space-y-6">
                     {{-- Gambar Utama --}}
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <label for="gambar" class="block text-sm font-medium text-gray-700 mb-2">
+                    <div class="bg-gray-50 dark:bg-slate-900/50 p-4 rounded-lg">
+                        <label for="gambar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Gambar Utama
                         </label>
                         
                         {{-- Dropzone Area --}}
-                        <div class="border-2 border-dashed border-gray-300 rounded-lg hover:border-indigo-500 hover:bg-indigo-50 transition-all cursor-pointer group mb-3"
+                        <div class="border-2 border-dashed border-gray-300 dark:border-slate-500 rounded-lg hover:border-indigo-500 hover:bg-indigo-50 transition-all cursor-pointer group mb-3"
                              id="dropzone">
                             <div class="p-4 text-center">
-                                <svg class="mx-auto h-8 w-8 text-gray-400 group-hover:text-indigo-500 transition-colors" 
+                                <svg class="mx-auto h-8 w-8 text-gray-400 dark:text-gray-500 group-hover:text-indigo-500 transition-colors" 
                                      fill="none" 
                                      stroke="currentColor" 
                                      viewBox="0 0 24 24">
@@ -80,7 +80,7 @@
                                           stroke-width="2" 
                                           d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
-                                <p class="text-xs text-gray-500 mt-1">
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                     <span class="font-semibold">Klik</span> atau <span class="font-semibold">drag & drop</span>
                                 </p>
                                 <input type="file" 
@@ -95,7 +95,7 @@
                         <div id="imagePreviewContainer" class="hidden">
                             <div class="relative inline-block">
                                 <img id="previewImage" 
-                                     class="h-32 w-full object-cover rounded-lg border-2 border-gray-200">
+                                     class="h-32 w-full object-cover rounded-lg border-2 border-gray-200 dark:border-slate-600">
                                 <button type="button" 
                                         id="removeImage"
                                         class="absolute -top-2 -right-2 p-1 bg-red-600 text-white rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
@@ -104,57 +104,57 @@
                                     </svg>
                                 </button>
                             </div>
-                            <p class="text-xs text-gray-500 mt-1">
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                 Format: JPG, PNG, GIF (max 2MB)
                             </p>
                         </div>
                         
                         @error('gambar')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
                     
                     {{-- Penulis --}}
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <label for="penulis" class="block text-sm font-medium text-gray-700 mb-2">
-                            Penulis <span class="text-red-500">*</span>
+                    <div class="bg-gray-50 dark:bg-slate-900/50 p-4 rounded-lg">
+                        <label for="penulis" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Penulis <span class="text-red-500 dark:text-red-400">*</span>
                         </label>
                         <input type="text" 
                                id="penulis"
                                name="penulis" 
                                value="{{ old('penulis', Auth::user()->name) }}"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('penulis') border-red-500 @enderror"
+                               class="w-full px-4 py-2 border border-gray-300 dark:border-slate-500 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('penulis') border-red-500 @enderror"
                                placeholder="Nama penulis"
                                required>
                         @error('penulis')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
                     
                     {{-- Tanggal Publish --}}
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <label for="tanggal_publish" class="block text-sm font-medium text-gray-700 mb-2">
-                            Tanggal Publish <span class="text-red-500">*</span>
+                    <div class="bg-gray-50 dark:bg-slate-900/50 p-4 rounded-lg">
+                        <label for="tanggal_publish" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Tanggal Publish <span class="text-red-500 dark:text-red-400">*</span>
                         </label>
                         <input type="datetime-local" 
                                id="tanggal_publish"
                                name="tanggal_publish" 
                                value="{{ old('tanggal_publish', now()->format('Y-m-d\TH:i')) }}"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('tanggal_publish') border-red-500 @enderror"
+                               class="w-full px-4 py-2 border border-gray-300 dark:border-slate-500 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('tanggal_publish') border-red-500 @enderror"
                                required>
                         @error('tanggal_publish')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
                     
                     {{-- Status --}}
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
-                            Status <span class="text-red-500">*</span>
+                    <div class="bg-gray-50 dark:bg-slate-900/50 p-4 rounded-lg">
+                        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Status <span class="text-red-500 dark:text-red-400">*</span>
                         </label>
                         <select name="status" 
                                 id="status"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('status') border-red-500 @enderror">
+                                class="w-full px-4 py-2 border border-gray-300 dark:border-slate-500 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('status') border-red-500 @enderror">
                             <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>
                                 Draft - Simpan sebagai konsep
                             </option>
@@ -163,7 +163,7 @@
                             </option>
                         </select>
                         @error('status')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
@@ -172,7 +172,7 @@
             {{-- Tombol Aksi --}}
             <div class="mt-8 flex justify-end space-x-3 pt-6 border-t">
                 <a href="{{ route('admin.berita.index') }}" 
-                   class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                   class="px-6 py-2 border border-gray-300 dark:border-slate-500 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                     Batal
                 </a>
                 <button type="submit" 
@@ -245,17 +245,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Drag & drop events
     dropzone.addEventListener('dragover', function(e) {
         e.preventDefault();
-        this.classList.add('border-indigo-500', 'bg-indigo-100');
+        this.classList.add('border-indigo-500', 'bg-indigo-100 dark:bg-indigo-900/30');
     });
     
     dropzone.addEventListener('dragleave', function(e) {
         e.preventDefault();
-        this.classList.remove('border-indigo-500', 'bg-indigo-100');
+        this.classList.remove('border-indigo-500', 'bg-indigo-100 dark:bg-indigo-900/30');
     });
     
     dropzone.addEventListener('drop', function(e) {
         e.preventDefault();
-        this.classList.remove('border-indigo-500', 'bg-indigo-100');
+        this.classList.remove('border-indigo-500', 'bg-indigo-100 dark:bg-indigo-900/30');
         
         const file = e.dataTransfer.files[0];
         if (file) {
@@ -333,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function() {
         imageInput.value = '';
         
         // Clear any error
-        const errorElement = document.querySelector('.text-red-600');
+        const errorElement = document.querySelector('.text-red-600 dark:text-red-500');
         if (errorElement) {
             errorElement.remove();
         }

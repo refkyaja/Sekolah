@@ -39,17 +39,17 @@
 @endpush
 
 @section('content')
-<nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 uppercase tracking-widest">
+<nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-widest">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
         <li><a class="hover:text-primary" href="{{ route($routePrefix . '.ppdb.index') }}">PPDB</a></li>
         <li><span class="mx-2">/</span></li>
-        <li class="text-slate-600">Pengaturan Jadwal & Statistik</li>
+        <li class="text-slate-600 dark:text-slate-400">Pengaturan Jadwal & Statistik</li>
     </ol>
 </nav>
 
 <div class="mb-8">
-    <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Pengaturan Jadwal & Statistik</h1>
-    <p class="text-sm text-slate-500 mt-1">Kelola periode pendaftaran, jadwal pengumuman, dan pantau statistik aplikasi masuk.</p>
+    <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Pengaturan Jadwal & Statistik</h1>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Kelola periode pendaftaran, jadwal pengumuman, dan pantau statistik aplikasi masuk.</p>
 </div>
 
 @php
@@ -91,79 +91,79 @@ $diff = $now->diff($countdownDate);
     @csrf
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
         <div class="xl:col-span-2 space-y-8">
-            <div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 border border-slate-100 dark:border-slate-700 shadow-sm">
                 <div class="flex items-center gap-3 mb-8">
                     <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
                         <span class="material-symbols-outlined text-primary">calendar_month</span>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800">Jadwal Pendaftaran</h3>
+                    <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100">Jadwal Pendaftaran</h3>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="space-y-2">
-                        <label class="text-sm font-bold text-slate-700 ml-1">Mulai Pendaftaran</label>
+                        <label class="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">Mulai Pendaftaran</label>
                         <div class="relative">
-                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">event</span>
-                            <input type="datetime-local" name="pendaftaran_mulai" value="{{ $setting->pendaftaran_mulai ? $setting->pendaftaran_mulai->format('Y-m-d\TH:i') : '' }}" class="w-full pl-12 pr-4 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500">event</span>
+                            <input type="datetime-local" name="pendaftaran_mulai" value="{{ $setting->pendaftaran_mulai ? $setting->pendaftaran_mulai->format('Y-m-d\TH:i') : '' }}" class="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-900 border-none dark:text-slate-100 rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all">
                         </div>
-                        <p class="text-[11px] text-slate-400 mt-1 px-1 italic">Waktu dimana formulir pendaftaran mulai dapat diakses publik.</p>
+                        <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-1 px-1 italic">Waktu dimana formulir pendaftaran mulai dapat diakses publik.</p>
                     </div>
                     <div class="space-y-2">
-                        <label class="text-sm font-bold text-slate-700 ml-1">Selesai Pendaftaran</label>
+                        <label class="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">Selesai Pendaftaran</label>
                         <div class="relative">
-                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">event_available</span>
-                            <input type="datetime-local" name="pendaftaran_selesai" value="{{ $setting->pendaftaran_selesai ? $setting->pendaftaran_selesai->format('Y-m-d\TH:i') : '' }}" class="w-full pl-12 pr-4 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500">event_available</span>
+                            <input type="datetime-local" name="pendaftaran_selesai" value="{{ $setting->pendaftaran_selesai ? $setting->pendaftaran_selesai->format('Y-m-d\TH:i') : '' }}" class="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-900 border-none dark:text-slate-100 rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all">
                         </div>
-                        <p class="text-[11px] text-slate-400 mt-1 px-1 italic">Sistem akan otomatis menutup pendaftaran pada waktu ini.</p>
+                        <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-1 px-1 italic">Sistem akan otomatis menutup pendaftaran pada waktu ini.</p>
                     </div>
                 </div>
-                <div class="mt-10 pt-8 border-t border-slate-100">
+                <div class="mt-10 pt-8 border-t border-slate-100 dark:border-slate-700">
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center">
-                            <span class="material-symbols-outlined text-orange-600">notifications_active</span>
+                        <div class="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center">
+                            <span class="material-symbols-outlined text-orange-600 dark:text-orange-500">notifications_active</span>
                         </div>
-                        <h3 class="text-xl font-bold text-slate-800">Waktu Pengumuman</h3>
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100">Waktu Pengumuman</h3>
                     </div>
                     <div class="max-w-md space-y-2">
-                        <label class="text-sm font-bold text-slate-700 ml-1">Tanggal & Waktu Pengumuman</label>
+                        <label class="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">Tanggal & Waktu Pengumuman</label>
                         <div class="relative">
-                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">campaign</span>
-                            <input type="datetime-local" name="pengumuman_mulai" value="{{ $setting->pengumuman_mulai ? $setting->pengumuman_mulai->format('Y-m-d\TH:i') : '' }}" class="w-full pl-12 pr-4 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500">campaign</span>
+                            <input type="datetime-local" name="pengumuman_mulai" value="{{ $setting->pengumuman_mulai ? $setting->pengumuman_mulai->format('Y-m-d\TH:i') : '' }}" class="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-900 border-none dark:text-slate-100 rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all">
                         </div>
-                        <p class="text-[11px] text-slate-400 mt-1 px-1 italic">Status kelulusan pendaftar akan dipublikasikan secara serentak.</p>
+                        <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-1 px-1 italic">Status kelulusan pendaftar akan dipublikasikan secara serentak.</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="space-y-8">
-            <div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm h-full">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 border border-slate-100 dark:border-slate-700 shadow-sm h-full">
                 <div class="flex items-center gap-3 mb-8">
-                    <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center">
-                        <span class="material-symbols-outlined text-indigo-600">analytics</span>
+                    <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center">
+                        <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-500">analytics</span>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800">Statistik Pendaftaran</h3>
+                    <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100">Statistik Pendaftaran</h3>
                 </div>
                 <div class="space-y-6">
-                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex items-center gap-5 transition-all hover:shadow-md hover:bg-white">
+                    <div class="bg-slate-50 dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 flex items-center gap-5 transition-all hover:shadow-md hover:bg-white dark:hover:bg-slate-800">
                         <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center flex-shrink-0">
                             <span class="material-symbols-outlined text-primary text-3xl">groups</span>
                         </div>
                         <div>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Jumlah Pendaftar</p>
+                            <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Jumlah Pendaftar</p>
                             <div class="flex items-baseline gap-2">
-                                <span class="text-3xl font-extrabold text-slate-800">{{ $totalPendaftaran }}</span>
+                                <span class="text-3xl font-extrabold text-slate-800 dark:text-slate-100">{{ $totalPendaftaran }}</span>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex items-center gap-5 transition-all hover:shadow-md hover:bg-white">
-                        <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                            <span class="material-symbols-outlined text-green-600 text-3xl">verified</span>
+                    <div class="bg-slate-50 dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 flex items-center gap-5 transition-all hover:shadow-md hover:bg-white dark:hover:bg-slate-800">
+                        <div class="w-14 h-14 bg-green-100 dark:bg-green-900/30 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined text-green-600 dark:text-green-500 text-3xl">verified</span>
                         </div>
                         <div>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Jumlah Siswa Lulus</p>
+                            <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Jumlah Siswa Lulus</p>
                             <div class="flex items-baseline gap-2">
-                                <span class="text-3xl font-extrabold text-slate-800">{{ $totalLulus }}</span>
-                                <span class="text-[10px] font-bold text-slate-400">dari {{ $kuota }} kuota</span>
+                                <span class="text-3xl font-extrabold text-slate-800 dark:text-slate-100">{{ $totalLulus }}</span>
+                                <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500">dari {{ $kuota }} kuota</span>
                             </div>
                         </div>
                     </div>
@@ -171,27 +171,27 @@ $diff = $now->diff($countdownDate);
                 @php
                 $persentase = $totalPendaftaran > 0 ? round(($totalLulus / $totalPendaftaran) * 100) : 0;
                 @endphp
-                <div class="mt-4 p-5 rounded-2xl bg-indigo-50 border border-indigo-100/50">
+                <div class="mt-4 p-5 rounded-2xl bg-indigo-50 dark:bg-indigo-900/10 border border-indigo-100/50">
                     <div class="flex items-center gap-2 mb-3">
-                        <span class="material-symbols-outlined text-indigo-500 text-sm">insights</span>
-                        <span class="text-[11px] font-bold text-indigo-900 uppercase tracking-wider">Persentase Kelulusan</span>
+                        <span class="material-symbols-outlined text-indigo-500 dark:text-indigo-400 text-sm">insights</span>
+                        <span class="text-[11px] font-bold text-indigo-900 dark:text-indigo-300 uppercase tracking-wider">Persentase Kelulusan</span>
                     </div>
                     <div class="h-2 bg-indigo-200/50 rounded-full overflow-hidden">
                         <div class="h-full bg-indigo-500 rounded-full" style="width: {{ $persentase }}%"></div>
                     </div>
-                    <p class="text-[10px] text-indigo-600 mt-2 italic">Sekitar {{ $persentase }}% dari total pendaftar dinyatakan lulus seleksi dokumen.</p>
+                    <p class="text-[10px] text-indigo-600 dark:text-indigo-500 mt-2 italic">Sekitar {{ $persentase }}% dari total pendaftar dinyatakan lulus seleksi dokumen.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-white rounded-3xl border border-slate-100 shadow-sm">
+    <div class="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
         <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-slate-400">update</span>
-            <p class="text-xs text-slate-500">Terakhir diperbarui: {{ $setting->updated_at ? $setting->updated_at->format('d M Y, H:i') : '-' }}</p>
+            <span class="material-symbols-outlined text-slate-400 dark:text-slate-500">update</span>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Terakhir diperbarui: {{ $setting->updated_at ? $setting->updated_at->format('d M Y, H:i') : '-' }}</p>
         </div>
         <div class="flex items-center gap-3 w-full sm:w-auto">
-            <a href="{{ route($routePrefix . '.ppdb.pengaturan') }}" class="flex-1 sm:flex-none px-8 py-3.5 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-200 transition-all">
+            <a href="{{ route($routePrefix . '.ppdb.pengaturan') }}" class="flex-1 sm:flex-none px-8 py-3.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-2xl font-bold text-sm hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
                 Reset Jadwal
             </a>
             @if(!$isReadOnlyRole)
@@ -200,7 +200,7 @@ $diff = $now->diff($countdownDate);
                     Simpan Perubahan
                 </button>
             @else
-                <div class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-100 text-slate-500 rounded-2xl font-bold text-sm">
+                <div class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded-2xl font-bold text-sm">
                     <span class="material-symbols-outlined text-lg">visibility</span>
                     Mode Lihat Saja
                 </div>

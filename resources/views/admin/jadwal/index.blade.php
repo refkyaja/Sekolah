@@ -1,8 +1,5 @@
 @extends('layouts.admin')
 
-@section('title', 'Jadwal Pelajaran')
-@section('breadcrumb', 'Akademik / Jadwal Pelajaran')
-
 @section('content')
 <div class="space-y-6">
     <!-- Page Title Section -->

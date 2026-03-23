@@ -4,44 +4,44 @@
 
 @section('content')
     <section class="px-4 md:px-10 py-6">
-        <div data-home-animate="zoom-in" class="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-xl md:rounded-3xl shadow-lg mt-8 md:mt-16">
-            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1600&auto=format&fit=crop');"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-8 md:p-12">
-                <nav data-home-animate="fade-up" class="flex gap-2 text-white/80 text-sm mb-4">
+        <div data-home-animate="zoom-in" class="relative min-h-[400px] md:h-[400px] h-auto w-full overflow-hidden rounded-xl md:rounded-3xl shadow-lg mt-4 md:mt-8">
+            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/ppdb.jpeg') }}');"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-center p-6 md:p-12 py-14 md:py-12">
+                <nav data-home-animate="fade-up" class="flex gap-2 text-white/80 text-sm mb-3 md:mb-4">
                     <span><a href="{{ route('home') }}" class="hover:text-white transition-colors">Beranda</a></span>
                     <span>/</span>
                     <span class="text-white font-medium">PPDB</span>
                 </nav>
-                <div data-home-animate="fade-up" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 text-white text-xs font-bold uppercase tracking-widest mb-5 w-fit">
+                <div data-home-animate="fade-up" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/15 border border-white/20 text-white text-[10px] md:text-xs font-bold uppercase tracking-widest mb-4 md:mb-5 w-fit">
                     <span class="relative flex h-2 w-2">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
                     </span>
                     Tahun Ajaran {{ $tahunAjaranAktif ? $tahunAjaranAktif->tahun_ajaran : '2026/2027' }}
                 </div>
-                <h1 data-home-animate="fade-up" class="text-white text-4xl md:text-5xl font-bold tracking-tight max-w-3xl">Penerimaan Peserta Didik Baru</h1>
-                <p data-home-animate="fade-up" class="mt-4 text-white/85 text-base md:text-lg leading-relaxed max-w-2xl">
+                <h1 data-home-animate="fade-up" class="text-white text-3xl md:text-5xl font-bold tracking-tight max-w-3xl">Penerimaan Peserta Didik Baru</h1>
+                <p data-home-animate="fade-up" class="mt-3 md:mt-4 text-white/85 text-sm md:text-lg leading-relaxed max-w-2xl">
                     Kami membuka kesempatan bagi putra-putri terbaik untuk bergabung dan bertumbuh bersama sekolah dalam lingkungan yang aman, menyenangkan, dan berkualitas.
                 </p>
 
                 @if (session('error'))
-                    <div class="mt-5 p-4 rounded-2xl bg-red-50/95 border border-red-200 text-red-600 flex items-start gap-3 text-left max-w-2xl">
-                        <span class="material-symbols-outlined">error</span>
-                        <p class="text-sm font-medium">{{ session('error') }}</p>
+                    <div class="mt-4 p-3 rounded-xl bg-red-50/95 border border-red-200 text-red-600 flex items-start gap-2 text-left max-w-2xl">
+                        <span class="material-symbols-outlined text-sm">error</span>
+                        <p class="text-xs font-medium">{{ session('error') }}</p>
                     </div>
                 @endif
 
-                <div data-home-animate="fade-up" class="mt-6 flex flex-col sm:flex-row gap-4">
+                <div data-home-animate="fade-up" class="mt-5 md:mt-6 flex flex-row flex-wrap gap-3 md:gap-4">
                     @guest('siswa')
-                        <button onclick="showLoginModal(event)" class="inline-flex items-center justify-center gap-2 bg-white text-primary px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:scale-105 transition-all">
+                        <button onclick="showLoginModal(event)" class="inline-flex items-center justify-center gap-2 bg-white text-primary px-5 md:px-8 py-2.5 md:py-4 rounded-full font-bold text-sm md:text-lg shadow-xl hover:scale-105 transition-all">
                             Daftar Sekarang
                         </button>
                     @else
-                        <a href="{{ route('siswa.dashboard') }}" class="inline-flex items-center justify-center gap-2 bg-white text-primary px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:scale-105 transition-all">
-                            Ke Dashboard Siswa
+                        <a href="{{ route('siswa.dashboard') }}" class="inline-flex items-center justify-center gap-2 bg-white text-primary px-5 md:px-8 py-2.5 md:py-4 rounded-full font-bold text-sm md:text-lg shadow-xl hover:scale-105 transition-all">
+                            Dashboard
                         </a>
                     @endguest
-                    <a href="#alur-ppdb" class="inline-flex items-center justify-center gap-2 bg-white/15 text-white border border-white/20 px-8 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-all">
+                    <a href="#alur-ppdb" class="inline-flex items-center justify-center gap-2 bg-white/15 text-white border border-white/20 px-5 md:px-8 py-2.5 md:py-4 rounded-full font-bold text-sm md:text-lg hover:bg-white/20 transition-all">
                         Lihat Alur
                     </a>
                 </div>
@@ -142,7 +142,7 @@
     </section>
 
     <!-- Alur Pendaftaran Section -->
-    <section class="py-24 bg-white dark:bg-slate-900 border-y border-slate-100 dark:border-slate-800" data-home-animate="fade-up">
+    <section id="alur-ppdb" class="py-24 bg-white dark:bg-slate-900 border-y border-slate-100 dark:border-slate-800" data-home-animate="fade-up">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl font-extrabold mb-16 flex items-center justify-center gap-3" data-home-animate="fade-up">
             <span class="material-symbols-outlined text-primary bg-primary/10 p-3 rounded-xl">account_tree</span>
@@ -331,6 +331,88 @@
                             diganggu gugat oleh pihak manapun.</p>
                     </li>
                 </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-24 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800" data-home-animate="fade-up">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="text-xs font-bold text-primary tracking-widest uppercase mb-4">Informasi Tambahan</p>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 leading-tight">Pertanyaan Sering Diajukan</h2>
+            </div>
+            
+            <div class="space-y-4" data-home-stagger>
+                {{-- FAQ 1 --}}
+                <details class="group bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 overflow-hidden transition-all duration-300 [&[open]]:bg-white [&[open]]:shadow-xl [&[open]]:border-primary/20">
+                    <summary class="flex items-center justify-between p-6 cursor-pointer list-none font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">
+                        <span class="flex items-center gap-4">
+                            <span class="size-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary text-sm">01</span>
+                            Berapa usia minimal untuk mendaftar di sekolah ini?
+                        </span>
+                        <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 text-slate-400">expand_more</span>
+                    </summary>
+                    <div class="px-6 pb-6 pt-0 ml-12 text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Usia minimal untuk masuk Kelompok A adalah 4 tahun 4 bulan, sedangkan untuk Kelompok B adalah 5 tahun 4 bulan pada bulan Juli tahun ajaran berjalan.
+                    </div>
+                </details>
+
+                {{-- FAQ 2 --}}
+                <details class="group bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 overflow-hidden transition-all duration-300 [&[open]]:bg-white [&[open]]:shadow-xl [&[open]]:border-primary/20">
+                    <summary class="flex items-center justify-between p-6 cursor-pointer list-none font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">
+                        <span class="flex items-center gap-4">
+                            <span class="size-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary text-sm">02</span>
+                            Bagaimana cara melakukan pendaftaran online?
+                        </span>
+                        <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 text-slate-400">expand_more</span>
+                    </summary>
+                    <div class="px-6 pb-6 pt-0 ml-12 text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Ayah & Bunda cukup menekan tombol "Daftar Sekarang", lalu membuat akun pendaftar. Setelah itu, silakan lengkapi formulir biodata anak dan orang tua melalui dashboard masing-masing.
+                    </div>
+                </details>
+
+                {{-- FAQ 3 --}}
+                <details class="group bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 overflow-hidden transition-all duration-300 [&[open]]:bg-white [&[open]]:shadow-xl [&[open]]:border-primary/20">
+                    <summary class="flex items-center justify-between p-6 cursor-pointer list-none font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">
+                        <span class="flex items-center gap-4">
+                            <span class="size-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary text-sm">03</span>
+                            Apa saja dokumen yang perlu disiapkan?
+                        </span>
+                        <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 text-slate-400">expand_more</span>
+                    </summary>
+                    <div class="px-6 pb-6 pt-0 ml-12 text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Dokumen yang wajib diunggah adalah Scan/Foto Kartu Keluarga (KK), Akta Kelahiran, dan KTP Orang Tua/Wali dalam format gambar atau PDF yang jelas terbaca.
+                    </div>
+                </details>
+
+                {{-- FAQ 4 --}}
+                <details class="group bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 overflow-hidden transition-all duration-300 [&[open]]:bg-white [&[open]]:shadow-xl [&[open]]:border-primary/20">
+                    <summary class="flex items-center justify-between p-6 cursor-pointer list-none font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">
+                        <span class="flex items-center gap-4">
+                            <span class="size-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary text-sm">04</span>
+                            Apakah ada seleksi tes masuk untuk calon siswa?
+                        </span>
+                        <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 text-slate-400">expand_more</span>
+                    </summary>
+                    <div class="px-6 pb-6 pt-0 ml-12 text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Kami tidak menerapkan tes akademik (membaca/menulis/hitung) sebagai syarat mutlak. Seleksi dilakukan berdasarkan kesiapan usia dan observasi tingkat kemandirian dasar anak.
+                    </div>
+                </details>
+
+                {{-- FAQ 5 --}}
+                <details class="group bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 overflow-hidden transition-all duration-300 [&[open]]:bg-white [&[open]]:shadow-xl [&[open]]:border-primary/20">
+                    <summary class="flex items-center justify-between p-6 cursor-pointer list-none font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">
+                        <span class="flex items-center gap-4">
+                            <span class="size-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary text-sm">05</span>
+                            Kapan hasil seleksi diumumkan?
+                        </span>
+                        <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 text-slate-400">expand_more</span>
+                    </summary>
+                    <div class="px-6 pb-6 pt-0 ml-12 text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Hasil seleksi akan diumumkan sesuai jadwal (biasanya awal Juli) melalui dashboard akun pendaftar. Ayah & Bunda juga akan mendapatkan notifikasi resmi dari pihak sekolah.
+                    </div>
+                </details>
             </div>
         </div>
     </section>

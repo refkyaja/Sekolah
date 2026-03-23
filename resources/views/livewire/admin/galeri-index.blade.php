@@ -15,20 +15,20 @@
     @endphp
 
     {{-- Toolbar: Search, Filter, Add --}}
-    <div class="bg-white rounded-2xl p-4 shadow-sm mb-8 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 border border-slate-100">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm mb-8 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 border border-slate-100 dark:border-slate-700">
         <div class="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-4 flex-1">
             {{-- Search --}}
             <div class="relative flex-1 min-w-[200px] w-full sm:w-auto">
-                <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+                <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-lg">search</span>
                 <input type="text"
                        wire:model.live.debounce.300ms="search"
                        placeholder="Cari album..."
-                       class="w-full pl-10 pr-4 py-2 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all"/>
+                       class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all"/>
             </div>
 
             {{-- Kategori Filter --}}
             <select wire:model.live="kategori"
-                    class="w-full sm:w-auto border border-slate-200 rounded-xl px-4 py-2 text-sm bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all">
+                    class="w-full sm:w-auto border border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2 text-sm bg-slate-50 dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all">
                 <option value="">Semua Kategori</option>
                 @foreach($kategoriList as $kat)
                     <option value="{{ $kat }}">
@@ -38,24 +38,24 @@
             </select>
 
             {{-- Status Filter --}}
-            <div class="flex items-center justify-center bg-slate-50 rounded-xl p-1 w-full sm:w-auto overflow-x-auto">
+            <div class="flex items-center justify-center bg-slate-50 dark:bg-slate-900 rounded-xl p-1 w-full sm:w-auto overflow-x-auto">
                 <button type="button" wire:click="$set('status', '')"
-                        class="px-4 py-1.5 text-sm font-medium rounded-lg transition-colors whitespace-nowrap {{ $status === '' ? 'bg-white text-primary shadow-sm font-semibold' : 'text-slate-500 hover:text-primary' }}">
+                        class="px-4 py-1.5 text-sm font-medium rounded-lg transition-colors whitespace-nowrap {{ $status === '' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm font-semibold' : 'text-slate-500 dark:text-slate-400 hover:text-primary' }}">
                     Semua
                 </button>
                 <button type="button" wire:click="$set('status', 'published')"
-                        class="px-4 py-1.5 text-sm font-medium rounded-lg transition-colors whitespace-nowrap {{ $status === 'published' ? 'bg-white text-primary shadow-sm font-semibold' : 'text-slate-500 hover:text-primary' }}">
+                        class="px-4 py-1.5 text-sm font-medium rounded-lg transition-colors whitespace-nowrap {{ $status === 'published' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm font-semibold' : 'text-slate-500 dark:text-slate-400 hover:text-primary' }}">
                     Published
                 </button>
                 <button type="button" wire:click="$set('status', 'draft')"
-                        class="px-4 py-1.5 text-sm font-medium rounded-lg transition-colors whitespace-nowrap {{ $status === 'draft' ? 'bg-white text-primary shadow-sm font-semibold' : 'text-slate-500 hover:text-primary' }}">
+                        class="px-4 py-1.5 text-sm font-medium rounded-lg transition-colors whitespace-nowrap {{ $status === 'draft' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm font-semibold' : 'text-slate-500 dark:text-slate-400 hover:text-primary' }}">
                     Draft
                 </button>
             </div>
 
             @if($search || $kategori || $status)
                 <button type="button" wire:click="resetFilters"
-                   class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-slate-500 hover:text-primary border border-slate-200 rounded-xl bg-slate-50 hover:bg-lavender transition-all">
+                   class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 hover:bg-lavender transition-all">
                     Reset
                 </button>
             @endif
@@ -75,7 +75,7 @@
     @if($galeri->count() > 0)
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @foreach($galeri as $item)
-        <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-slate-100 group">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-slate-100 dark:border-slate-700 group">
             {{-- Thumbnail --}}
             <div class="relative aspect-video overflow-hidden">
                 <img src="{{ $item->thumbnail_url }}"
@@ -94,7 +94,7 @@
 
                 {{-- Category Badge --}}
                 <div class="absolute top-3 left-3">
-                    <span class="px-2 py-1 text-[10px] font-semibold bg-white/90 backdrop-blur-sm rounded-lg shadow-sm text-slate-700">
+                    <span class="px-2 py-1 text-[10px] font-semibold bg-white/90 backdrop-blur-sm rounded-lg shadow-sm text-slate-700 dark:text-slate-300">
                         {{ ucfirst($item->kategori) }}
                     </span>
                 </div>
@@ -110,8 +110,8 @@
 
             {{-- Card Body --}}
             <div class="p-5">
-                <h3 class="font-bold text-slate-800 mb-1 line-clamp-1" title="{{ $item->judul }}">{{ $item->judul }}</h3>
-                <p class="text-xs text-slate-400 mb-1">
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-1 line-clamp-1" title="{{ $item->judul }}">{{ $item->judul }}</h3>
+                <p class="text-xs text-slate-400 dark:text-slate-500 mb-1">
                     {{ $item->tanggal->format('d M Y') }}
                     &nbsp;·&nbsp;
                     <span class="inline-flex items-center gap-1">
@@ -120,22 +120,22 @@
                     </span>
                 </p>
                 @if($item->deskripsi)
-                <p class="text-xs text-slate-500 mb-3 line-clamp-2">{{ Str::limit(strip_tags($item->deskripsi), 80) }}</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3 line-clamp-2">{{ Str::limit(strip_tags($item->deskripsi), 80) }}</p>
                 @endif
 
                 {{-- Actions --}}
-                <div class="flex items-center justify-between pt-4 border-t border-slate-50">
+                <div class="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-slate-700/50">
                     <div class="flex gap-1">
                         {{-- View --}}
                         <a href="{{ route($routePrefix . '.galeri.show', $item) }}"
-                           class="p-2 text-slate-400 hover:text-primary hover:bg-lavender rounded-lg transition-all"
+                           class="p-2 text-slate-400 dark:text-slate-500 hover:text-primary hover:bg-lavender rounded-lg transition-all"
                            title="Lihat Detail">
                             <span class="material-symbols-outlined text-xl">visibility</span>
                         </a>
                         {{-- Edit --}}
                         @if($canUpdateGaleri)
                         <a href="{{ route($routePrefix . '.galeri.edit', $item) }}"
-                           class="p-2 text-slate-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-all"
+                           class="p-2 text-slate-400 dark:text-slate-500 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-all"
                            title="Edit">
                             <span class="material-symbols-outlined text-xl">edit</span>
                         </a>
@@ -146,7 +146,7 @@
                             @csrf
                             @method('PATCH')
                             <button type="submit"
-                                    class="p-2 rounded-lg transition-all {{ $item->is_published ? 'text-yellow-500 hover:bg-yellow-50' : 'text-green-500 hover:bg-green-50' }}"
+                                    class="p-2 rounded-lg transition-all {{ $item->is_published ? 'text-yellow-500 hover:bg-yellow-50' : 'text-green-500 dark:text-green-400 hover:bg-green-50' }}"
                                     title="{{ $item->is_published ? 'Unpublish' : 'Publish' }}">
                                 <span class="material-symbols-outlined text-xl">{{ $item->is_published ? 'unpublished' : 'publish' }}</span>
                             </button>
@@ -158,7 +158,7 @@
                     @if($canDeleteGaleri)
                     <button type="button"
                             onclick="confirmDelete({{ $item->id }})"
-                            class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                            class="p-2 text-slate-400 dark:text-slate-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all"
                             title="Hapus">
                         <span class="material-symbols-outlined text-xl">delete</span>
                     </button>
@@ -171,12 +171,12 @@
         {{-- Add New Card --}}
         @if($canCreateGaleri)
         <a href="{{ route($routePrefix . '.galeri.create') }}"
-           class="bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center p-8 hover:bg-lavender hover:border-primary/30 transition-all group min-h-[320px]">
-            <div class="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-sm mb-4 group-hover:bg-primary group-hover:text-white transition-all">
+           class="bg-slate-50 dark:bg-slate-900 border-2 border-dashed border-slate-200 dark:border-slate-600 rounded-2xl flex flex-col items-center justify-center p-8 hover:bg-lavender hover:border-primary/30 transition-all group min-h-[320px]">
+            <div class="w-14 h-14 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center shadow-sm mb-4 group-hover:bg-primary group-hover:text-white transition-all">
                 <span class="material-symbols-outlined text-3xl">add</span>
             </div>
-            <p class="font-bold text-slate-500 group-hover:text-primary">Buat Album Baru</p>
-            <p class="text-xs text-slate-400 mt-1">Foto atau Video Kegiatan</p>
+            <p class="font-bold text-slate-500 dark:text-slate-400 group-hover:text-primary">Buat Album Baru</p>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Foto atau Video Kegiatan</p>
         </a>
         @endif
     </div>
@@ -190,12 +190,12 @@
 
     @else
     {{-- Empty State --}}
-    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm text-center py-20">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm text-center py-20">
         <div class="w-20 h-20 rounded-full bg-lavender flex items-center justify-center mx-auto mb-4">
             <span class="material-symbols-outlined text-4xl text-primary">photo_library</span>
         </div>
-        <h3 class="text-xl font-bold text-slate-700 mb-2">Belum Ada Galeri</h3>
-        <p class="text-slate-400 text-sm mb-6">Mulai dengan menambahkan galeri pertama Anda.</p>
+        <h3 class="text-xl font-bold text-slate-700 dark:text-slate-300 mb-2">Belum Ada Galeri</h3>
+        <p class="text-slate-400 dark:text-slate-500 text-sm mb-6">Mulai dengan menambahkan galeri pertama Anda.</p>
         @if($canCreateGaleri)
         <a href="{{ route($routePrefix . '.galeri.create') }}"
            class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">

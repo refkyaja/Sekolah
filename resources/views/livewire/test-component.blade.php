@@ -2,23 +2,23 @@
     <h3 class="text-lg font-semibold mb-4">Livewire Test Component</h3>
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <div class="bg-gray-50 p-3 rounded">
-            <p class="text-sm text-gray-600">Count</p>
+        <div class="bg-gray-50 dark:bg-slate-900/50 p-3 rounded">
+            <p class="text-sm text-gray-600 dark:text-gray-400">Count</p>
             <p class="text-2xl font-bold">{{ $count }}</p>
         </div>
         
-        <div class="bg-gray-50 p-3 rounded">
-            <p class="text-sm text-gray-600">Message</p>
+        <div class="bg-gray-50 dark:bg-slate-900/50 p-3 rounded">
+            <p class="text-sm text-gray-600 dark:text-gray-400">Message</p>
             <p class="text-lg">{{ $message }}</p>
         </div>
         
-        <div class="bg-gray-50 p-3 rounded">
-            <p class="text-sm text-gray-600">Current Time</p>
+        <div class="bg-gray-50 dark:bg-slate-900/50 p-3 rounded">
+            <p class="text-sm text-gray-600 dark:text-gray-400">Current Time</p>
             <p class="text-lg">{{ $this->timestamp }}</p>
         </div>
         
-        <div class="bg-gray-50 p-3 rounded">
-            <p class="text-sm text-gray-600">Session ID</p>
+        <div class="bg-gray-50 dark:bg-slate-900/50 p-3 rounded">
+            <p class="text-sm text-gray-600 dark:text-gray-400">Session ID</p>
             <p class="text-sm font-mono">{{ $this->sessionId }}</p>
         </div>
     </div>
@@ -51,8 +51,8 @@
         </form>
     </div>
 
-    <div class="text-sm text-gray-600">
-        <p>Livewire Status: <span class="text-green-600 font-semibold">✓ Active</span></p>
-        <p>Wire:loading indicator: <span wire:loading class="text-blue-600">Loading...</span></p>
+    <div class="text-sm text-gray-600 dark:text-gray-400">
+        <p>Livewire Status: <span class="text-green-600 dark:text-green-500 font-semibold">✓ Active</span></p>
+        <p>Wire:loading indicator: <span wire:loading class="text-blue-600 dark:text-blue-500">Loading...</span></p>
     </div>
 </div>

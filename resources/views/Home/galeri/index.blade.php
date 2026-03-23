@@ -1,7 +1,6 @@
 @extends('layouts.home-directory')
 
 @section('title', 'Galeri Sekolah - TK PGRI Harapan Bangsa 1')
-@section('back-url', route('informasi'))
 @section('directory-eyebrow', 'Galeri')
 @section('directory-title', 'Halaman Galeri')
 
@@ -20,13 +19,15 @@
             <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">filter_alt</span>
             <select name="sort"
                     onchange="this.form.submit()"
-                    class="h-12 w-full appearance-none rounded-2xl border border-slate-200 bg-white pl-12 pr-10 text-sm font-medium text-slate-700 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10">
+                    class="h-12 w-full appearance-none rounded-2xl border border-slate-200 bg-white pl-12 pr-12 text-sm font-medium text-slate-700 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 cursor-pointer">
                 <option value="terbaru" @selected($sort === 'terbaru')>Terbaru</option>
                 <option value="terlama" @selected($sort === 'terlama')>Terlama</option>
                 <option value="az" @selected($sort === 'az')>A - Z</option>
                 <option value="za" @selected($sort === 'za')>Z - A</option>
             </select>
-            <span class="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">expand_more</span>
+            <div class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center text-slate-400 bg-white">
+                <span class="material-symbols-outlined text-xl">expand_more</span>
+            </div>
         </label>
     </form>
 @endsection

@@ -86,7 +86,7 @@
                     </a>
 
                     {{-- Settings --}}
-                    <a href="{{ route('kepala-sekolah.profile.index') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-lavender/50 transition-all">
+                    <a href="{{ route('kepala-sekolah.profile.settings') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-lavender/50 transition-all">
                         <span class="material-symbols-outlined text-primary text-lg">settings</span>
                         <span class="font-medium">Pengaturan</span>
                     </a>

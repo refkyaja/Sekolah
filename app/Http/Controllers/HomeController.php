@@ -53,14 +53,23 @@ class HomeController extends Controller
     {
         $rules = [
             'nama' => 'required|string|max:100',
-            'email' => 'nullable|email|max:100',
-            'status' => 'required|string|in:parent,alumni,visitor',
+            'telepon' => 'required|string|max:20',
+            'tanggal_kunjungan' => 'required|date',
+            'jabatan' => 'required|string|max:100',
+            'instansi' => 'required|string|max:100',
+            'tujuan_kunjungan' => 'required|string|max:1000',
             'pesan_kesan' => 'required|string|max:1000',
         ];
 
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput()
@@ -69,19 +78,26 @@ class HomeController extends Controller
 
         BukuTamu::create([
             'nama' => $request->nama,
-            'email' => $request->email,
-            'instansi' => $request->status, // Map status to instansi temporarily as requested by db
-            'jabatan' => $request->status,
-            'tanggal_kunjungan' => now()->toDateString(),
-            'jam_kunjungan' => now()->toTimeString(),
-            'tujuan_kunjungan' => 'Homepage Guestbook',
+            'telepon' => $request->telepon,
+            'tanggal_kunjungan' => $request->tanggal_kunjungan,
+            'jabatan' => $request->jabatan,
+            'instansi' => $request->instansi,
+            'tujuan_kunjungan' => $request->tujuan_kunjungan,
             'pesan_kesan' => $request->pesan_kesan,
+            'jam_kunjungan' => now()->toTimeString(),
             'status' => 'pending',
             'is_verified' => false,
         ]);
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Terima kasih! Data kunjungan Anda telah tercatat.'
+            ]);
+        }
+
         return redirect()->back()
-            ->with('success', 'Terima kasih atas pesan dan kesan Anda!')
+            ->with('success', 'Terima kasih! Data kunjungan Anda telah tercatat.')
             ->withFragment('bukutamu-section');
     }
 

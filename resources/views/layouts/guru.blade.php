@@ -125,6 +125,46 @@
     </style>
     @livewireStyles
     @stack('styles')
+
+    <script>
+        (function() {
+            try {
+                var savedTheme = localStorage.getItem('guruTheme') || 'system';
+                var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var shouldUseDark = savedTheme === 'dark' || (savedTheme === 'system' && prefersDark);
+                
+                if (shouldUseDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+                document.documentElement.dataset.themePreference = savedTheme;
+                
+                window.applyGuruTheme = function() {
+                    var currentTheme = localStorage.getItem('guruTheme') || 'system';
+                    var isDark = currentTheme === 'dark' || (currentTheme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    
+                    document.documentElement.classList.toggle('dark', isDark);
+                    document.documentElement.dataset.themePreference = currentTheme;
+                    if (document.body) {
+                        document.body.classList.toggle('dark', isDark);
+                    }
+                };
+
+                window.addEventListener('storage', function(event) {
+                    if (!event.key || event.key === 'guruTheme') {
+                        window.applyGuruTheme();
+                    }
+                });
+
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+                    if ((localStorage.getItem('guruTheme') || 'system') === 'system') {
+                        window.applyGuruTheme();
+                    }
+                });
+            } catch (e) {}
+        })();
+    </script>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
 

@@ -19,6 +19,13 @@ class ProfileController extends Controller
         return view('operator.profile.index', compact('user'));
     }
 
+    public function settings()
+    {
+        $user = auth()->user();
+        return view('operator.profile.settings', compact('user'));
+    }
+
+
     /**
      * Update the user's profile.
      */

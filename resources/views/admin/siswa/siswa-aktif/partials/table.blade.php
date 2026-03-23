@@ -8,60 +8,60 @@
 @endpush
 
 @section('content')
-<div class="min-h-screen bg-gray-50 p-3 sm:p-4 md:p-6">
+<div class="min-h-screen bg-gray-50 dark:bg-slate-900 p-3 sm:p-4 md:p-6">
     <div class="max-w-full mx-auto">
         
         <!-- Quick Stats -->
         <div id="stats-container" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
-            <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 card-hover">
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 sm:p-5 card-hover dark:border dark:border-slate-700">
                 <div class="flex items-center">
-                    <div class="p-2 sm:p-3 bg-blue-100 rounded-full mr-3 sm:mr-4">
-                        <i class="fas fa-users text-blue-600 text-lg sm:text-xl"></i>
+                    <div class="p-2 sm:p-3 bg-blue-100 dark:bg-blue-500/10 rounded-full mr-3 sm:mr-4">
+                        <i class="fas fa-users text-blue-600 dark:text-blue-400 text-lg sm:text-xl"></i>
                     </div>
                     <div class="min-w-0 flex-1">
-                        <p class="text-xs sm:text-sm text-gray-500 truncate">Total Aktif</p>
-                        <p class="text-xl sm:text-2xl font-bold text-gray-800">{{ $stats['total'] ?? 0 }}</p>
+                        <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate">Total Aktif</p>
+                        <p class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">{{ $stats['total'] ?? 0 }}</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 card-hover">
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 sm:p-5 card-hover dark:border dark:border-slate-700">
                 <div class="flex items-center">
-                    <div class="p-2 sm:p-3 bg-green-100 rounded-full mr-3 sm:mr-4">
-                        <i class="fas fa-child text-green-600 text-lg sm:text-xl"></i>
+                    <div class="p-2 sm:p-3 bg-green-100 dark:bg-green-500/10 rounded-full mr-3 sm:mr-4">
+                        <i class="fas fa-child text-green-600 dark:text-green-400 text-lg sm:text-xl"></i>
                     </div>
                     <div class="min-w-0 flex-1">
-                        <p class="text-xs sm:text-sm text-gray-500 truncate">Kelompok A</p>
-                        <p class="text-xl sm:text-2xl font-bold text-gray-800">{{ $stats['kelompok_a'] ?? 0 }}</p>
+                        <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate">Kelompok A</p>
+                        <p class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">{{ $stats['kelompok_a'] ?? 0 }}</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white rounded-lg shadow-sm p-4 sm:p-5 card-hover">
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 sm:p-5 card-hover dark:border dark:border-slate-700">
                 <div class="flex items-center">
-                    <div class="p-2 sm:p-3 bg-yellow-100 rounded-full mr-3 sm:mr-4">
-                        <i class="fas fa-child text-yellow-600 text-lg sm:text-xl"></i>
+                    <div class="p-2 sm:p-3 bg-yellow-100 dark:bg-yellow-500/10 rounded-full mr-3 sm:mr-4">
+                        <i class="fas fa-child text-yellow-600 dark:text-yellow-400 text-lg sm:text-xl"></i>
                     </div>
                     <div class="min-w-0 flex-1">
-                        <p class="text-xs sm:text-sm text-gray-500 truncate">Kelompok B</p>
-                        <p class="text-xl sm:text-2xl font-bold text-gray-800">{{ $stats['kelompok_b'] ?? 0 }}</p>
+                        <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate">Kelompok B</p>
+                        <p class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">{{ $stats['kelompok_b'] ?? 0 }}</p>
                     </div>
                 </div>
             </div>
         </div>
         
         <!-- Main Card -->
-        <div class="bg-white rounded-lg sm:rounded-xl shadow-sm sm:shadow overflow-hidden">
+        <div class="bg-white dark:bg-slate-800 rounded-lg sm:rounded-xl shadow-sm sm:shadow overflow-hidden dark:border dark:border-slate-700">
             <!-- Header dengan tombol navigasi -->
-            <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
+            <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
                 <div class="flex items-center space-x-3">
                     <a href="{{ route('admin.siswa.siswa-aktif.index') }}" 
-                       class="text-gray-500 hover:text-gray-700 transition-colors duration-150 p-2 hover:bg-gray-100 rounded-lg">
+                       class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors duration-150 p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg">
                         <i class="fas fa-arrow-left text-sm sm:text-base"></i>
                     </a>
                     <div class="flex-1 min-w-0">
-                        <h2 class="text-base sm:text-lg font-semibold text-gray-800 truncate">Daftar Siswa Aktif</h2>
-                        <p class="text-xs sm:text-sm text-gray-600 mt-1">
+                        <h2 class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-100 truncate">Daftar Siswa Aktif</h2>
+                        <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
                             <span id="total-siswa">{{ $siswas->total() ?? 0 }}</span> siswa aktif
                             <span id="filtered-count" class="hidden">
                                 (<span id="filtered-number">0</span> hasil filter)
@@ -76,7 +76,7 @@
                         <span class="truncate">Tambah Siswa</span>
                     </a>
                     <a href="{{ route('admin.siswa.siswa-aktif.index') }}" 
-                       class="flex-1 sm:flex-none bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 sm:px-4 py-2 rounded-lg flex items-center justify-center whitespace-nowrap text-sm sm:text-base transition-colors duration-150">
+                       class="flex-1 sm:flex-none bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 text-gray-700 dark:text-gray-200 px-3 sm:px-4 py-2 rounded-lg flex items-center justify-center whitespace-nowrap text-sm sm:text-base transition-colors duration-150 border dark:border-slate-600">
                         <i class="fas fa-sync-alt mr-2 text-xs sm:text-sm"></i>
                         <span class="truncate">Refresh</span>
                     </a>
@@ -84,18 +84,18 @@
             </div>
             
             <!-- Filter & Search Section -->
-            <div class="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 border-b">
+            <div class="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 dark:bg-slate-800/50 border-b dark:border-slate-700">
                 <!-- Search Input -->
                 <div class="mb-3 sm:mb-4">
                     <div class="relative">
                         <input type="text" 
                                id="search-input" 
                                placeholder="Cari nama siswa, NIK, NIS..." 
-                               class="w-full px-4 py-2 pl-10 pr-10 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-150"
+                               class="w-full px-4 py-2 pl-10 pr-10 text-sm sm:text-base border border-gray-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-900 dark:text-gray-200 transition-colors duration-150"
                                autocomplete="off"
                                value="{{ request('search', '') }}">
                         <div class="absolute left-3 top-1/2 transform -translate-y-1/2">
-                            <i class="fas fa-search text-gray-400 text-sm"></i>
+                            <i class="fas fa-search text-gray-400 dark:text-gray-500 text-sm"></i>
                         </div>
                         <div id="search-clear" 
                              class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer hidden hover:scale-110 transition-transform"
@@ -109,8 +109,8 @@
                 <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
                     <!-- Kelompok Filter -->
                     <div class="flex-1 min-w-0">
-                        <label class="block text-xs text-gray-500 mb-1 sm:hidden">Kelompok</label>
-                        <select id="filter-kelompok" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-150">
+                        <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1 sm:hidden">Kelompok</label>
+                        <select id="filter-kelompok" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-150">
                             <option value="">Semua Kelompok</option>
                             <option value="A" {{ request('kelompok') == 'A' ? 'selected' : '' }}>Kelompok A</option>
                             <option value="B" {{ request('kelompok') == 'B' ? 'selected' : '' }}>Kelompok B</option>
@@ -119,8 +119,8 @@
                     
                     <!-- Tahun Ajaran Filter -->
                     <div class="flex-1 min-w-0">
-                        <label class="block text-xs text-gray-500 mb-1 sm:hidden">Tahun Ajaran</label>
-                        <select id="filter-tahun-ajaran" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-150">
+                        <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1 sm:hidden">Tahun Ajaran</label>
+                        <select id="filter-tahun-ajaran" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-150">
                             <option value="">Semua Tahun Ajaran</option>
                             @if(isset($tahunAjarans) && $tahunAjarans->count() > 0)
                                 @foreach($tahunAjarans as $ta)
@@ -135,7 +135,7 @@
                     <!-- Reset Button -->
                     <div class="flex-1 sm:flex-none">
                         <button id="reset-filters" 
-                                class="w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 flex items-center justify-center whitespace-nowrap transition-colors duration-150 mt-2 sm:mt-0">
+                                class="w-full sm:w-auto px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 flex items-center justify-center whitespace-nowrap transition-colors duration-150 mt-2 sm:mt-0">
                             <i class="fas fa-redo mr-1 text-xs"></i> 
                             <span>Reset Filter</span>
                         </button>
@@ -143,11 +143,11 @@
                 </div>
                 
                 <!-- Search Info -->
-                <div id="search-info" class="mt-3 text-xs sm:text-sm text-gray-600 hidden">
-                    <div class="flex items-center flex-wrap gap-1 sm:gap-2 bg-blue-50 p-2 rounded-lg">
-                        <i class="fas fa-info-circle mr-1 text-blue-500"></i>
-                        <span>Menampilkan hasil untuk: <span id="search-term" class="font-medium"></span></span>
-                        <button id="clear-search-info" class="ml-auto text-blue-600 hover:text-blue-800 text-xs transition-colors duration-150 whitespace-nowrap bg-white px-2 py-1 rounded border border-blue-200">
+                <div id="search-info" class="mt-3 text-xs sm:text-sm text-gray-600 dark:text-gray-400 hidden">
+                    <div class="flex items-center flex-wrap gap-1 sm:gap-2 bg-blue-50 dark:bg-blue-500/10 p-2 rounded-lg border dark:border-blue-500/20">
+                        <i class="fas fa-info-circle mr-1 text-blue-500 dark:text-blue-400"></i>
+                        <span class="text-gray-700 dark:text-gray-300">Menampilkan hasil untuk: <span id="search-term" class="font-medium"></span></span>
+                        <button id="clear-search-info" class="ml-auto text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-xs transition-colors duration-150 whitespace-nowrap bg-white dark:bg-transparent px-2 py-1 rounded border border-blue-200 dark:border-blue-500/30 font-medium">
                             <i class="fas fa-times mr-1"></i> Hapus
                         </button>
                     </div>
@@ -155,52 +155,52 @@
             </div>
             
             <!-- Loading Overlay -->
-            <div id="loading-overlay" class="fixed inset-0 bg-black bg-opacity-30 z-50 hidden backdrop-blur-sm flex items-center justify-center">
-                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-xl flex items-center">
+            <div id="loading-overlay" class="fixed inset-0 bg-black/30 dark:bg-black/50 z-50 hidden backdrop-blur-sm flex items-center justify-center">
+                <div class="bg-white dark:bg-slate-800 border dark:border-slate-700 p-4 sm:p-6 rounded-lg shadow-xl flex items-center">
                     <i class="fas fa-spinner fa-spin text-blue-500 text-xl sm:text-2xl mr-3"></i>
-                    <span class="text-gray-700 text-sm sm:text-base">Memuat data siswa aktif...</span>
+                    <span class="text-gray-700 dark:text-gray-300 text-sm sm:text-base">Memuat data siswa aktif...</span>
                 </div>
             </div>
             
             <!-- Tabel Container -->
             <div id="siswa-table-container" class="p-4 sm:p-6">
                 @if($siswas->count() > 0)
-                <div class="overflow-x-auto rounded-lg border border-gray-200">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-slate-700">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
+                        <thead class="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-slate-800/80 dark:to-slate-800">
                             <tr>
-                                <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Foto</th>
-                                <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">NIS</th>
-                                <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Nama Siswa</th>
-                                <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider hidden md:table-cell">Orang Tua</th>
-                                <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Kelompok</th>
-                                <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
-                                <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Aksi</th>
+                                <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Foto</th>
+                                <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">NIS</th>
+                                <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Nama Siswa</th>
+                                <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider hidden md:table-cell">Orang Tua</th>
+                                <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Kelompok</th>
+                                <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                                <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-700">
                             @foreach($siswas as $siswa)
-                            <tr class="hover:bg-gray-50 transition-colors duration-150">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors duration-150">
                                 <!-- Foto -->
                                 <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
                                     @if($siswa->foto && Storage::disk('public')->exists($siswa->foto))
                                         <img src="{{ asset('storage/' . $siswa->foto) }}" 
                                              alt="{{ $siswa->nama_lengkap }}" 
-                                             class="h-8 w-8 sm:h-10 sm:w-10 rounded-full object-cover border-2 border-gray-200 shadow-sm">
+                                             class="h-8 w-8 sm:h-10 sm:w-10 rounded-full object-cover border-2 border-gray-200 dark:border-slate-600 shadow-sm">
                                     @else
-                                        <div class="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center border-2 border-gray-200">
-                                            <i class="fas fa-user text-blue-400 text-xs sm:text-sm"></i>
+                                        <div class="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 dark:from-slate-700 dark:to-slate-600 flex items-center justify-center border-2 border-gray-200 dark:border-slate-600">
+                                            <i class="fas fa-user text-blue-400 dark:text-slate-400 text-xs sm:text-sm"></i>
                                         </div>
                                     @endif
                                 </td>
                                 
                                 <!-- NIS -->
                                 <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
-                                    <div class="text-xs sm:text-sm font-mono font-medium text-gray-900">
+                                    <div class="text-xs sm:text-sm font-mono font-medium text-gray-900 dark:text-gray-100">
                                         {{ $siswa->nis ?? 'NIS-' . str_pad($siswa->id, 5, '0', STR_PAD_LEFT) }}
                                     </div>
                                     @if($siswa->nisn)
-                                    <div class="text-xs text-gray-400 mt-1">
+                                    <div class="text-xs text-gray-400 dark:text-gray-500 mt-1">
                                         NISN: {{ $siswa->nisn }}
                                     </div>
                                     @endif
@@ -210,20 +210,20 @@
                                 <td class="px-4 sm:px-6 py-4">
                                     <div class="flex items-center">
                                         <div>
-                                            <div class="text-sm sm:text-base font-medium text-gray-900">
+                                            <div class="text-sm sm:text-base font-medium text-gray-900 dark:text-gray-100">
                                                 @if(request('search'))
-                                                    {!! str_ireplace(request('search'), '<span class="bg-yellow-200 px-1 rounded">' . request('search') . '</span>', $siswa->nama_lengkap) !!}
+                                                    {!! str_ireplace(request('search'), '<span class="bg-yellow-200 dark:bg-yellow-500/30 px-1 rounded">' . request('search') . '</span>', $siswa->nama_lengkap) !!}
                                                 @else
                                                     {{ $siswa->nama_lengkap }}
                                                 @endif
                                             </div>
-                                            <div class="text-xs sm:text-sm text-gray-500 mt-1 flex items-center">
-                                                <i class="fas {{ $siswa->jenis_kelamin == 'L' ? 'fa-mars text-blue-500' : 'fa-venus text-pink-500' }} mr-1"></i>
+                                            <div class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 flex items-center">
+                                                <i class="fas {{ $siswa->jenis_kelamin == 'L' ? 'fa-mars text-blue-500 dark:text-blue-400' : 'fa-venus text-pink-500 dark:text-pink-400' }} mr-1"></i>
                                                 {{ $siswa->jenis_kelamin_lengkap }}
                                             </div>
                                             @if($siswa->nama_panggilan)
                                             <div class="text-xs text-gray-400 mt-1">
-                                                <span class="font-medium">Panggilan:</span> {{ $siswa->nama_panggilan }}
+                                                <span class="font-medium text-gray-500 dark:text-gray-400">Panggilan:</span> {{ $siswa->nama_panggilan }}
                                             </div>
                                             @endif
                                         </div>
@@ -232,28 +232,28 @@
                                 
                                 <!-- Orang Tua (hidden di mobile) -->
                                 <td class="px-4 sm:px-6 py-4 hidden md:table-cell">
-                                    <div class="text-sm text-gray-900">
+                                    <div class="text-sm text-gray-900 dark:text-gray-100">
                                         @php
                                             $namaAyah = $siswa->nama_ayah;
                                             $namaIbu = $siswa->nama_ibu;
                                             $displayNama = $namaAyah ?: $namaIbu ?: '-';
                                         @endphp
                                         @if(request('search'))
-                                            {!! str_ireplace(request('search'), '<span class="bg-yellow-200 px-1 rounded">' . request('search') . '</span>', $displayNama) !!}
+                                            {!! str_ireplace(request('search'), '<span class="bg-yellow-200 dark:bg-yellow-500/30 px-1 rounded">' . request('search') . '</span>', $displayNama) !!}
                                         @else
                                             {{ $displayNama }}
                                         @endif
                                     </div>
-                                    <div class="text-xs text-gray-500 mt-1 flex items-center">
+                                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1 flex items-center">
                                         <i class="fab fa-whatsapp text-green-500 mr-1"></i>
                                         <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $siswa->no_hp_ortu) }}" 
                                            target="_blank"
-                                           class="hover:text-green-600 transition-colors duration-150">
+                                           class="hover:text-green-600 dark:hover:text-green-400 transition-colors duration-150">
                                             {{ $siswa->no_hp_ortu }}
                                         </a>
                                     </div>
                                     @if($siswa->email_ortu)
-                                    <div class="text-xs text-gray-400 mt-1 truncate max-w-[180px]" title="{{ $siswa->email_ortu }}">
+                                    <div class="text-xs text-gray-400 dark:text-gray-500 mt-1 truncate max-w-[180px]" title="{{ $siswa->email_ortu }}">
                                         <i class="far fa-envelope mr-1"></i>
                                         {{ $siswa->email_ortu }}
                                     </div>
@@ -274,10 +274,10 @@
                                 <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
                                     @php
                                         $statusColors = [
-                                            'aktif' => 'bg-green-100 text-green-800 border-green-200',
-                                            'lulus' => 'bg-blue-100 text-blue-800 border-blue-200',
-                                            'pindah' => 'bg-yellow-100 text-yellow-800 border-yellow-200',
-                                            'cuti' => 'bg-purple-100 text-purple-800 border-purple-200',
+                                            'aktif' => 'bg-green-100 dark:bg-green-500/10 text-green-800 dark:text-green-400 border-green-200 dark:border-green-500/20',
+                                            'lulus' => 'bg-blue-100 dark:bg-blue-500/10 text-blue-800 dark:text-blue-400 border-blue-200 dark:border-blue-500/20',
+                                            'pindah' => 'bg-yellow-100 dark:bg-yellow-500/10 text-yellow-800 dark:text-yellow-400 border-yellow-200 dark:border-yellow-500/20',
+                                            'cuti' => 'bg-purple-100 dark:bg-purple-500/10 text-purple-800 dark:text-purple-400 border-purple-200 dark:border-purple-500/20',
                                         ];
                                         $statusIcons = [
                                             'aktif' => 'fa-check-circle',
@@ -286,13 +286,13 @@
                                             'cuti' => 'fa-clock',
                                         ];
                                     @endphp
-                                    <span class="inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-medium border shadow-sm {{ $statusColors[$siswa->status_siswa] ?? 'bg-gray-100 text-gray-800 border-gray-200' }}">
+                                    <span class="inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-medium border shadow-sm {{ $statusColors[$siswa->status_siswa] ?? 'bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-300 border-gray-200 dark:border-slate-600' }}">
                                         <i class="fas {{ $statusIcons[$siswa->status_siswa] ?? 'fa-info-circle' }} mr-1"></i>
                                         {{ ucfirst($siswa->status_siswa) }}
                                     </span>
                                     
                                     <!-- Tahun Ajaran (hidden di mobile, ditampilkan di desktop) -->
-                                    <div class="hidden lg:block text-xs text-gray-400 mt-2">
+                                    <div class="hidden lg:block text-xs text-gray-400 dark:text-gray-500 mt-2">
                                         <i class="far fa-calendar-alt mr-1"></i>
                                         {{ $siswa->tahunAjaran->tahun_ajaran ?? $siswa->tahun_ajaran }}
                                     </div>
@@ -302,12 +302,12 @@
                                 <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <div class="flex items-center space-x-2 sm:space-x-3">
                                         <a href="{{ route('admin.siswa.siswa-aktif.show', $siswa) }}" 
-                                           class="text-blue-600 hover:text-blue-900 p-2 hover:bg-blue-50 rounded-lg transition-all duration-150 hover:scale-110" 
+                                           class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 p-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-all duration-150 hover:scale-110" 
                                            title="Detail">
                                             <i class="fas fa-eye text-sm sm:text-base"></i>
                                         </a>
                                         <a href="{{ route('admin.siswa.siswa-aktif.edit', $siswa) }}" 
-                                           class="text-green-600 hover:text-green-900 p-2 hover:bg-green-50 rounded-lg transition-all duration-150 hover:scale-110" 
+                                           class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 p-2 hover:bg-green-50 dark:hover:bg-green-900/30 rounded-lg transition-all duration-150 hover:scale-110" 
                                            title="Edit">
                                             <i class="fas fa-edit text-sm sm:text-base"></i>
                                         </a>
@@ -315,14 +315,14 @@
                                         <!-- Tombol Update Status -->
                                         <button type="button" 
                                                 onclick="showStatusModal({{ $siswa->id }}, '{{ $siswa->nama_lengkap }}', '{{ $siswa->status_siswa }}')"
-                                                class="text-yellow-600 hover:text-yellow-900 p-2 hover:bg-yellow-50 rounded-lg transition-all duration-150 hover:scale-110" 
+                                                class="text-yellow-600 dark:text-yellow-400 hover:text-yellow-900 dark:hover:text-yellow-300 p-2 hover:bg-yellow-50 dark:hover:bg-yellow-900/30 rounded-lg transition-all duration-150 hover:scale-110" 
                                                 title="Update Status">
                                             <i class="fas fa-sync-alt text-sm sm:text-base"></i>
                                         </button>
                                         
                                         @if($siswa->spmb_id)
                                         <a href="{{ route('admin.ppdb.show', $siswa->spmb_id) }}"
-                                             class="text-purple-600 hover:text-purple-900 p-2 hover:bg-purple-50 rounded-lg transition-all duration-150 hover:scale-110 hidden lg:inline-flex" 
+                                             class="text-purple-600 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300 p-2 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-all duration-150 hover:scale-110 hidden lg:inline-flex" 
                                            title="Lihat Data SPMB">
                                             <i class="fas fa-file-alt text-sm sm:text-base"></i>
                                         </a>
@@ -336,12 +336,12 @@
                 </div>
 
                 @else
-                <div class="py-12 text-center text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                    <div class="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-4 shadow-inner">
-                        <i class="fas fa-user-graduate text-gray-400 text-xl sm:text-2xl"></i>
+                <div class="py-12 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-slate-800/50 rounded-lg border-2 border-dashed border-gray-300 dark:border-slate-600">
+                    <div class="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-slate-700 dark:to-slate-800 rounded-full flex items-center justify-center mb-4 shadow-inner">
+                        <i class="fas fa-user-graduate text-gray-400 dark:text-gray-500 text-xl sm:text-2xl"></i>
                     </div>
-                    <p class="text-lg font-medium text-gray-700 mb-2">Tidak ada data ditemukan</p>
-                    <p class="text-sm sm:text-base text-gray-600 mb-6 max-w-md mx-auto px-4">
+                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">Tidak ada data ditemukan</p>
+                    <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto px-4">
                         @if(request()->has('search') || request()->has('kelompok') || request()->has('tahun_ajaran_id'))
                             Tidak ada siswa aktif yang cocok dengan kriteria pencarian Anda.
                         @else
@@ -355,7 +355,7 @@
                         </a>
                         @if(request()->hasAny(['search', 'kelompok', 'tahun_ajaran_id']))
                         <a href="{{ route('admin.siswa.siswa-aktif.index') }}" 
-                           class="inline-flex items-center justify-center px-5 py-2.5 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors duration-150">
+                           class="inline-flex items-center justify-center px-5 py-2.5 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-slate-600 transition-colors duration-150 border dark:border-slate-600">
                             <i class="fas fa-redo mr-2"></i> Reset Filter
                         </a>
                         @endif
@@ -366,7 +366,7 @@
             
             <!-- Pagination Container -->
             @if($siswas->hasPages())
-            <div id="pagination-container" class="px-4 sm:px-6 py-3 sm:py-4 border-t border-gray-200 bg-gray-50">
+            <div id="pagination-container" class="px-4 sm:px-6 py-3 sm:py-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/20">
                 <div class="overflow-x-auto">
                     <div class="flex justify-center">
                         {{ $siswas->onEachSide(1)->appends(request()->query())->links('vendor.pagination.tailwind') }}
@@ -379,19 +379,19 @@
 </div>
 
 <!-- Status Update Modal -->
-<div id="statusModal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md transform transition-all duration-300 scale-95 opacity-0" id="statusModalContent">
-        <div class="px-5 py-4 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+<div id="statusModal" class="fixed inset-0 bg-gray-900/60 dark:bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300">
+    <div class="bg-white dark:bg-slate-800 dark:border dark:border-slate-700 rounded-xl shadow-2xl w-full max-w-md transform transition-all duration-300 scale-95 opacity-0" id="statusModalContent">
+        <div class="px-5 py-4 border-b border-gray-200 dark:border-slate-700 bg-gradient-to-r from-gray-50 to-white dark:from-slate-800 dark:to-slate-800/80">
             <div class="flex items-center justify-between">
-                <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center">
                     <i class="fas fa-sync-alt text-yellow-500 mr-2"></i>
                     Update Status Siswa
                 </h3>
-                <button onclick="closeStatusModal()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-150">
+                <button onclick="closeStatusModal()" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-150">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <p class="text-xs text-gray-500 mt-1" id="modalStudentInfo"></p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1" id="modalStudentInfo"></p>
         </div>
         
         <div class="px-5 py-4">
@@ -400,8 +400,8 @@
                 @method('PATCH')
                 
                 <div class="mb-5">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Status Baru</label>
-                    <select name="status_siswa" id="status_select" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors duration-150" onchange="toggleTanggalKeluar()">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status Baru</label>
+                    <select name="status_siswa" id="status_select" class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 dark:text-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors duration-150" onchange="toggleTanggalKeluar()">
                         <option value="aktif">Aktif</option>
                         <option value="lulus">Lulus</option>
                         <option value="pindah">Pindah</option>
@@ -410,22 +410,22 @@
                 </div>
                 
                 <div id="tanggalKeluarField" class="mb-5 hidden">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Keluar</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tanggal Keluar</label>
                     <input type="date" name="tanggal_keluar" 
-                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors duration-150">
-                    <p class="text-xs text-gray-500 mt-1">Wajib diisi jika status Lulus atau Pindah</p>
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 dark:text-gray-200 [color-scheme:light] dark:[color-scheme:dark] rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors duration-150">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Wajib diisi jika status Lulus atau Pindah</p>
                 </div>
                 
                 <div class="mb-3">
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Catatan (Opsional)</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Catatan (Opsional)</label>
                     <textarea name="catatan" rows="3" 
-                              class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors duration-150"
+                              class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors duration-150"
                               placeholder="Tambahkan catatan..."></textarea>
                 </div>
                 
-                <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-slate-700">
                     <button type="button" onclick="closeStatusModal()" 
-                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-150">
+                            class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors duration-150">
                         Batal
                     </button>
                     <button type="submit" 

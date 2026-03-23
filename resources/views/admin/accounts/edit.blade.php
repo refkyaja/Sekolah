@@ -1,8 +1,5 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Akun - ' . $account->name)
-@section('breadcrumb', 'Edit Akun')
-
 @push('styles')
 <style>
     .form-card {
@@ -314,7 +311,48 @@
         color: #0369a1;
         font-size: 0.875rem;
     }
+
+    /* Dark Mode Styles */
+    .dark .form-card { background: #1e293b; }
+    .dark .form-section { border-bottom-color: #334155; }
+    .dark .section-title { color: #f1f5f9; }
+    .dark .form-label { color: #cbd5e1; }
+    .dark .form-control { 
+        border-color: #475569; 
+        background: #0f172a; 
+        color: #f1f5f9; 
+    }
+    .dark .form-control:focus {
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+    }
+    .dark .form-control:disabled { background: #1e293b; }
+    .dark .btn-cancel { 
+        background: #1e293b; 
+        color: #cbd5e1; 
+        border-color: #475569; 
+    }
+    .dark .btn-cancel:hover { background: #334155; }
+    .dark .role-card { border-color: #475569; }
+    .dark .role-card:hover, .dark .role-card.selected { background: #0f172a; }
+    .dark .role-card.selected { border-color: #667eea; }
+    .dark .toggle-switch { background-color: #475569; }
+    .dark .toggle-label { color: #cbd5e1; }
+    .dark .alert-error { 
+        background: rgba(153, 27, 27, 0.2); 
+        color: #fca5a5; 
+        border-color: rgba(153, 27, 27, 0.5); 
+    }
+    .dark .info-panel { 
+        background: rgba(2, 132, 199, 0.1); 
+        border-color: rgba(2, 132, 199, 0.3); 
+    }
+    .dark .info-panel p { color: #bae6fd; }
+    .dark .role-icon.admin { background: rgba(59, 130, 246, 0.2); }
+    .dark .role-icon.kepala_sekolah { background: rgba(245, 158, 11, 0.2); }
+    .dark .role-icon.operator { background: rgba(16, 185, 129, 0.2); }
+    .dark .role-icon.guru { background: rgba(107, 114, 128, 0.2); color: #9ca3af; }
 </style>
+
 @endpush
 
 @section('content')
@@ -322,8 +360,8 @@
     <!-- Header -->
     <div class="mb-6 flex items-center justify-between">
         <div>
-            <h2 class="text-2xl font-bold text-gray-900">Edit Akun</h2>
-            <p class="text-sm text-gray-600">Edit informasi akun pengguna</p>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Edit Akun</h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Edit informasi akun pengguna</p>
         </div>
         <div class="flex gap-3">
             <a href="{{ route('admin.accounts.show', $account) }}" 
@@ -332,7 +370,7 @@
                 Lihat Detail
             </a>
             <a href="{{ route('admin.accounts.index') }}" 
-               class="bg-white text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors duration-200 flex items-center border border-gray-300">
+               class="bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors duration-200 flex items-center border border-gray-300 dark:border-slate-600">
                 <i class="fas fa-arrow-left mr-2"></i>
                 Kembali
             </a>
@@ -410,14 +448,14 @@
                             <i class="fas fa-key"></i>
                             Password
                         </label>
-                        <div class="form-control bg-gray-50 text-gray-500 flex items-center justify-between">
+                        <div class="form-control bg-gray-50 dark:bg-slate-900 text-gray-500 dark:text-gray-400 dark:text-gray-400 flex items-center justify-between">
                             <span>••••••••</span>
                             <a href="#" onclick="event.preventDefault(); document.getElementById('resetPasswordForm').submit();" 
                                class="text-indigo-600 hover:text-indigo-800 text-sm">
                                 Reset Password
                             </a>
                         </div>
-                        <p class="text-xs text-gray-500 mt-1">Kosongkan jika tidak ingin mengubah password</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Kosongkan jika tidak ingin mengubah password</p>
                     </div>
                 </div>
             </div>
@@ -484,11 +522,7 @@
                             <i class="fas fa-calendar-alt"></i>
                             Tanggal Lahir
                         </label>
-                        <input type="date" 
-                               id="tanggal_lahir" 
-                               name="tanggal_lahir" 
-                               value="{{ old('tanggal_lahir', $account->tanggal_lahir ? $account->tanggal_lahir->format('Y-m-d') : '') }}"
-                               class="form-control">
+                        <input type="date" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir', $account->tanggal_lahir ? $account->tanggal_lahir->format('Y-m-d') : '') }}" class="form-control [color-scheme:light] dark:[color-scheme:dark]">
                     </div>
 
                     <!-- No Telepon -->
@@ -542,8 +576,8 @@
                                 <div class="role-icon admin">
                                     <i class="fas fa-user-shield"></i>
                                 </div>
-                                <div class="font-medium text-gray-900">Admin</div>
-                                <div class="text-xs text-gray-500">Akses penuh ke semua fitur</div>
+                                <div class="font-medium text-gray-900 dark:text-gray-100">Admin</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">Akses penuh ke semua fitur</div>
                             </label>
 
                             <!-- Kepala Sekolah -->
@@ -552,8 +586,8 @@
                                 <div class="role-icon kepala_sekolah">
                                     <i class="fas fa-user-graduate"></i>
                                 </div>
-                                <div class="font-medium text-gray-900">Kepala Sekolah</div>
-                                <div class="text-xs text-gray-500">Akses laporan & monitoring</div>
+                                <div class="font-medium text-gray-900 dark:text-gray-100">Kepala Sekolah</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">Akses laporan & monitoring</div>
                             </label>
 
                             <!-- Operator -->
@@ -562,8 +596,8 @@
                                 <div class="role-icon operator">
                                     <i class="fas fa-cog"></i>
                                 </div>
-                                <div class="font-medium text-gray-900">Operator</div>
-                                <div class="text-xs text-gray-500">Input data & administrasi</div>
+                                <div class="font-medium text-gray-900 dark:text-gray-100">Operator</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">Input data & administrasi</div>
                             </label>
 
                             <!-- Guru -->
@@ -572,8 +606,8 @@
                                 <div class="role-icon guru">
                                     <i class="fas fa-chalkboard-teacher"></i>
                                 </div>
-                                <div class="font-medium text-gray-900">Guru</div>
-                                <div class="text-xs text-gray-500">Absensi & nilai</div>
+                                <div class="font-medium text-gray-900 dark:text-gray-100">Guru</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">Absensi & nilai</div>
                             </label>
                         </div>
                         
@@ -603,7 +637,7 @@
                         </div>
                         
                         @if($account->id === auth()->id())
-                        <p class="text-xs text-yellow-600 mt-2">
+                        <p class="text-xs text-yellow-600 dark:text-yellow-400 mt-2">
                             <i class="fas fa-exclamation-triangle"></i>
                             Anda tidak dapat menonaktifkan akun sendiri
                         </p>
@@ -613,7 +647,7 @@
             </div>
 
             <!-- Form Actions -->
-            <div class="form-section bg-gray-50">
+            <div class="form-section bg-gray-50 dark:bg-slate-800/50">
                 <div class="flex flex-col sm:flex-row gap-3 justify-end">
                     <button type="button" 
                             onclick="resetForm()"

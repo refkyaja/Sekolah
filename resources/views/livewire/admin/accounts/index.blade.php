@@ -54,32 +54,32 @@
     }
 </style>
 
-<div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-    <div class="p-6 border-b border-slate-50">
+<div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+    <div class="p-6 border-b border-slate-50 dark:border-slate-700/50">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div class="flex flex-wrap items-center gap-4">
                 <div class="relative w-full sm:w-72">
-                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-xl">search</span>
                     <input type="text"
                            wire:model.live.debounce.300ms="search"
                            placeholder="Cari nama atau email..."
-                           class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all">
+                           class="w-full pl-11 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm transition-all">
                 </div>
                 <div class="flex items-center gap-3">
-                    <select wire:model.live="role" class="bg-slate-50 border-none rounded-xl text-xs font-semibold text-slate-600 focus:ring-2 focus:ring-primary/20 py-2.5 px-4 pr-10 cursor-pointer">
+                    <select wire:model.live="role" class="bg-slate-50 dark:bg-slate-900 border-none rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 focus:ring-2 focus:ring-primary/20 py-2.5 px-4 pr-10 cursor-pointer">
                         <option value="">Semua Role</option>
                         <option value="admin">Admin</option>
                         <option value="kepala_sekolah">Kepala Sekolah</option>
                         <option value="operator">Operator</option>
                         <option value="guru">Guru</option>
                     </select>
-                    <select wire:model.live="status" class="bg-slate-50 border-none rounded-xl text-xs font-semibold text-slate-600 focus:ring-2 focus:ring-primary/20 py-2.5 px-4 pr-10 cursor-pointer">
+                    <select wire:model.live="status" class="bg-slate-50 dark:bg-slate-900 border-none rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 focus:ring-2 focus:ring-primary/20 py-2.5 px-4 pr-10 cursor-pointer">
                         <option value="">Semua Status</option>
                         <option value="active">Aktif</option>
                         <option value="inactive">Nonaktif</option>
                     </select>
                     @if($search || $role || $status)
-                        <button type="button" wire:click="resetFilters" class="text-xs text-slate-500 hover:text-primary">
+                        <button type="button" wire:click="resetFilters" class="text-xs text-slate-500 dark:text-slate-400 hover:text-primary">
                             <span class="material-symbols-outlined">close</span>
                         </button>
                     @endif
@@ -95,20 +95,20 @@
     <div class="overflow-x-auto" wire:loading.class.opacity-50 wire:target="search,role,status,sort">
         <table class="w-full text-left border-collapse">
             <thead>
-                <tr class="bg-slate-50/50">
-                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest">No</th>
-                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest">Nama</th>
-                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest">Email</th>
-                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest">Role</th>
-                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest">Status</th>
-                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest">Terakhir Login</th>
-                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Aksi</th>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/50">
+                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">No</th>
+                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Nama</th>
+                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Email</th>
+                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Role</th>
+                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Status</th>
+                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Terakhir Login</th>
+                    <th class="px-6 py-4 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest text-center">Aksi</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-50">
+            <tbody class="divide-y divide-slate-50 dark:divide-slate-700/50">
                 @forelse($this->users as $index => $user)
-                <tr class="hover:bg-slate-50/50 transition-colors {{ $user->id === auth()->id() ? 'self-account' : '' }}">
-                    <td class="px-6 py-4 text-sm text-slate-500">
+                <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/50 transition-colors {{ $user->id === auth()->id() ? 'self-account' : '' }}">
+                    <td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
                         {{ $loop->iteration + ($this->users->currentPage() - 1) * $this->users->perPage() }}
                     </td>
                     <td class="px-6 py-4">
@@ -120,18 +120,18 @@
                                     {{ strtoupper(substr($user->name, 0, 2)) }}
                                 </div>
                             @endif
-                            <span class="text-sm font-bold text-slate-700">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300">
                                 {{ $user->name }}
                                 @if($user->id === auth()->id())
-                                    <span class="text-xs text-blue-600 font-normal">(Anda)</span>
+                                    <span class="text-xs text-blue-600 dark:text-blue-500 font-normal">(Anda)</span>
                                 @endif
                             </span>
                         </div>
                     </td>
-                    <td class="px-6 py-4 text-sm text-slate-600">
+                    <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">
                         {{ $user->email }}
                         @if($user->email_verified_at)
-                            <span class="material-symbols-outlined text-green-500 text-xs ml-1">verified</span>
+                            <span class="material-symbols-outlined text-green-500 dark:text-green-400 text-xs ml-1">verified</span>
                         @endif
                     </td>
                     <td class="px-6 py-4">
@@ -140,47 +140,47 @@
                         </span>
                     </td>
                     <td class="px-6 py-4">
-                        <span class="flex items-center gap-1.5 text-[10px] font-bold {{ $user->is_active ? 'text-green-600' : 'text-red-600' }} uppercase">
+                        <span class="flex items-center gap-1.5 text-[10px] font-bold {{ $user->is_active ? 'text-green-600 dark:text-green-500' : 'text-red-600 dark:text-red-500' }} uppercase">
                             <span class="w-1.5 h-1.5 rounded-full {{ $user->is_active ? 'bg-green-500' : 'bg-red-500' }}"></span>
                             {{ $user->is_active ? 'Aktif' : 'Nonaktif' }}
                         </span>
                     </td>
-                    <td class="px-6 py-4 text-sm text-slate-500">
+                    <td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
                         @if($user->last_login_at)
                             {{ \Carbon\Carbon::parse($user->last_login_at)->format('d M Y, H:i') }}
                         @else
-                            <span class="text-slate-400">Belum pernah</span>
+                            <span class="text-slate-400 dark:text-slate-500">Belum pernah</span>
                         @endif
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex items-center justify-center gap-2">
                             <a href="{{ route('admin.accounts.show', $user) }}"
-                               class="action-btn text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
+                               class="action-btn text-slate-400 dark:text-slate-500 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
                                title="Detail">
                                 <span class="material-symbols-outlined text-xl">visibility</span>
                             </a>
 
                             <a href="{{ route('admin.accounts.edit', $user) }}"
-                               class="action-btn text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-all"
+                               class="action-btn text-slate-400 dark:text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-all"
                                title="Edit">
                                 <span class="material-symbols-outlined text-xl">edit</span>
                             </a>
 
                             <button type="button" onclick="window.resetPassword({{ $user->id }}, '{{ $user->name }}')"
-                                    class="action-btn text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                                    class="action-btn text-slate-400 dark:text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
                                     title="Reset Password">
                                 <span class="material-symbols-outlined text-xl">key</span>
                             </button>
 
                             @if($user->id !== auth()->id())
                                 <button type="button" onclick="window.toggleStatus({{ $user->id }}, '{{ $user->name }}', {{ $user->is_active ? 0 : 1 }})"
-                                        class="action-btn text-slate-400 hover:{{ $user->is_active ? 'text-red-600 hover:bg-red-50' : 'text-green-600 hover:bg-green-50' }} rounded-lg transition-all"
+                                        class="action-btn text-slate-400 dark:text-slate-500 hover:{{ $user->is_active ? 'text-red-600 dark:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20' : 'text-green-600 dark:text-green-500 hover:bg-green-50' }} rounded-lg transition-all"
                                         title="{{ $user->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
                                     <span class="material-symbols-outlined text-xl">{{ $user->is_active ? 'block' : 'check_circle' }}</span>
                                 </button>
 
                                 <button type="button" onclick="window.deleteAccount({{ $user->id }}, '{{ $user->name }}')"
-                                        class="action-btn text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                                        class="action-btn text-slate-400 dark:text-slate-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all"
                                         title="Hapus">
                                     <span class="material-symbols-outlined text-xl">delete</span>
                                 </button>
@@ -190,10 +190,10 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="px-6 py-12 text-center text-slate-500">
-                        <span class="material-symbols-outlined text-5xl mb-4 text-slate-300">person_off</span>
+                    <td colspan="7" class="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
+                        <span class="material-symbols-outlined text-5xl mb-4 text-slate-300 dark:text-slate-600">person_off</span>
                         <p class="text-lg font-medium">Tidak ada user ditemukan</p>
-                        <p class="text-sm text-slate-400 mt-1">Coba ubah filter atau tambah user baru</p>
+                        <p class="text-sm text-slate-400 dark:text-slate-500 mt-1">Coba ubah filter atau tambah user baru</p>
                     </td>
                 </tr>
                 @endforelse
@@ -202,9 +202,9 @@
     </div>
 
     @if($this->users->hasPages())
-    <div class="p-6 border-t border-slate-50 flex items-center justify-between">
-        <p class="text-xs text-slate-400 font-medium">
-            Showing <span class="text-slate-700">{{ $this->users->firstItem() }}</span> to <span class="text-slate-700">{{ $this->users->lastItem() }}</span> of <span class="text-slate-700">{{ $this->users->total() }}</span> users
+    <div class="p-6 border-t border-slate-50 dark:border-slate-700/50 flex items-center justify-between">
+        <p class="text-xs text-slate-400 dark:text-slate-500 font-medium">
+            Showing <span class="text-slate-700 dark:text-slate-300">{{ $this->users->firstItem() }}</span> to <span class="text-slate-700 dark:text-slate-300">{{ $this->users->lastItem() }}</span> of <span class="text-slate-700 dark:text-slate-300">{{ $this->users->total() }}</span> users
         </p>
         <div class="flex items-center gap-2">
             {{ $this->users->links('vendor.pagination.tailwind') }}
@@ -234,15 +234,15 @@
 </div>
 
 <div id="resetPasswordModal" wire:ignore.self class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl">
-        <h3 class="text-lg font-bold text-slate-800 mb-2">Reset Password</h3>
-        <p class="text-sm text-slate-600 mb-4">Password untuk akun <span id="resetUserName" class="font-semibold text-primary"></span> akan direset menjadi:</p>
-        <div class="bg-slate-50 p-3 rounded-xl text-center mb-6">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl">
+        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Reset Password</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Password untuk akun <span id="resetUserName" class="font-semibold text-primary"></span> akan direset menjadi:</p>
+        <div class="bg-slate-50 dark:bg-slate-900 p-3 rounded-xl text-center mb-6">
             <code class="text-lg font-mono font-bold text-primary">password123</code>
         </div>
         <div class="flex justify-end gap-3">
             <button type="button" onclick="window.closeResetModal()"
-                    class="px-4 py-2.5 border border-slate-200 rounded-xl text-slate-700 hover:bg-slate-50 transition-colors font-medium text-sm">
+                    class="px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors font-medium text-sm">
                 Batal
             </button>
             <button type="button" onclick="window.confirmReset()"

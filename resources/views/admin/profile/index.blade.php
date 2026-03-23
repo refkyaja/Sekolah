@@ -126,90 +126,26 @@
     .strength-medium { background: #f59e0b; width: 66.66%; }
     .strength-strong { background: #10b981; width: 100%; }
 
-    .dark .admin-profile-page {
-        color: #e2e8f0;
+    .dark .info-card {
+        background: #1e293b;
+        border-color: #334155;
     }
-
-    .dark .admin-profile-page .info-card {
-        background: rgba(15, 23, 42, 0.9);
-        border-color: rgba(51, 65, 85, 0.9);
-        box-shadow: 0 12px 32px -20px rgba(2, 6, 23, 0.75);
+    .dark .profile-photo {
+        border-color: #1e293b;
     }
-
-    .dark .admin-profile-page .profile-photo {
-        border-color: #0f172a;
+    .dark .profile-photo-overlay {
+        border-color: #1e293b;
     }
-
-    .dark .admin-profile-page .profile-photo-overlay {
-        border-color: #0f172a;
-    }
-
-    .dark .admin-profile-page .info-label {
+    .dark .info-label { color: #94a3b8; }
+    .dark .info-value { color: #f1f5f9; }
+    .dark .tab-button {
         color: #94a3b8;
     }
-
-    .dark .admin-profile-page .info-value {
-        color: #f8fafc;
+    .dark .tab-button.active {
+        color: #ffffff;
     }
 
-    .dark .admin-profile-page .tab-button {
-        color: #cbd5e1;
-        background: rgba(15, 23, 42, 0.76);
-        border: 1px solid rgba(51, 65, 85, 0.8);
-    }
 
-    .dark .admin-profile-page .tab-button.active {
-        border-color: transparent;
-    }
-
-    .dark .admin-profile-page .text-gray-900 {
-        color: #f8fafc !important;
-    }
-
-    .dark .admin-profile-page .text-gray-700 {
-        color: #cbd5e1 !important;
-    }
-
-    .dark .admin-profile-page .text-gray-600,
-    .dark .admin-profile-page .text-gray-500 {
-        color: #94a3b8 !important;
-    }
-
-    .dark .admin-profile-page .text-gray-400 {
-        color: #64748b !important;
-    }
-
-    .dark .admin-profile-page .bg-gray-50,
-    .dark .admin-profile-page .bg-white {
-        background-color: rgba(15, 23, 42, 0.8) !important;
-    }
-
-    .dark .admin-profile-page .bg-gray-100 {
-        background-color: rgba(30, 41, 59, 0.9) !important;
-    }
-
-    .dark .admin-profile-page .border-gray-300,
-    .dark .admin-profile-page .border-gray-200 {
-        border-color: rgba(51, 65, 85, 0.9) !important;
-    }
-
-    .dark .admin-profile-page input,
-    .dark .admin-profile-page select,
-    .dark .admin-profile-page textarea {
-        background: rgba(15, 23, 42, 0.88);
-        color: #e2e8f0;
-        border-color: rgba(51, 65, 85, 0.9);
-    }
-
-    .dark .admin-profile-page input::placeholder,
-    .dark .admin-profile-page textarea::placeholder {
-        color: #64748b;
-    }
-
-    .dark .admin-profile-page #cropperModal > div {
-        background: #0f172a;
-        border: 1px solid rgba(51, 65, 85, 0.9);
-    }
 </style>
 @endpush
 
@@ -217,8 +153,8 @@
 <div class="admin-profile-page max-w-7xl mx-auto">
     <!-- Header -->
     <div class="mb-6">
-        <h2 class="text-2xl font-bold text-gray-900">Profile Saya</h2>
-        <p class="text-sm text-gray-600">Kelola informasi profile dan pengaturan akun Anda</p>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Profile Saya</h2>
+        <p class="text-sm text-gray-600 dark:text-gray-400">Kelola informasi profile dan pengaturan akun Anda</p>
     </div>
 
     <!-- Profile Overview Card -->
@@ -238,12 +174,12 @@
             
             <!-- Profile Info -->
             <div class="flex-1 text-center md:text-left">
-                <h3 class="text-2xl font-bold text-gray-900">{{ $user->name }}</h3>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ $user->name }}</h3>
                 <div class="flex items-center justify-center md:justify-start gap-2 mt-2">
                     <span class="role-badge role-{{ str_replace(' ', '-', strtolower($user->role)) }}">
                         {{ ucfirst($user->role) }}
                     </span>
-                    <span class="text-sm text-gray-500">
+                    <span class="text-sm text-gray-500 dark:text-gray-400">
                         <i class="fas fa-envelope mr-1"></i>{{ $user->email }}
                     </span>
                 </div>
@@ -266,7 +202,7 @@
             <div class="text-right hidden md:block">
                 <div class="info-label">Member Sejak</div>
                 <div class="info-value">{{ $user->created_at->translatedFormat('d F Y') }}</div>
-                <div class="text-xs text-gray-500 mt-1">
+                <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     <i class="fas fa-clock mr-1"></i>{{ $user->created_at->diffForHumans() }}
                 </div>
             </div>
@@ -293,7 +229,7 @@
     <div class="info-card">
         <!-- Profile Information Tab -->
         <div id="tab-profile" class="tab-pane active">
-            <h4 class="text-lg font-semibold text-gray-900 mb-4">Informasi Profile</h4>
+            <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Informasi Profile</h4>
             
             <form id="profileForm" class="space-y-6">
                 @csrf
@@ -302,35 +238,35 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Nama Lengkap -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             <i class="fas fa-user text-indigo-500 mr-2"></i>Nama Lengkap
                         </label>
                         <input type="text" 
                                name="name" 
                                value="{{ $user->name }}"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                               class="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
                                required>
                     </div>
                     
                     <!-- Email -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             <i class="fas fa-envelope text-indigo-500 mr-2"></i>Email
                         </label>
                         <input type="email" 
                                name="email" 
                                value="{{ $user->email }}"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                               class="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
                                required>
                     </div>
                     
                     <!-- Jenis Kelamin -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             <i class="fas fa-venus-mars text-indigo-500 mr-2"></i>Jenis Kelamin
                         </label>
                         <select name="jenis_kelamin" 
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200">
+                                class="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200">
                             <option value="">Pilih Jenis Kelamin</option>
                             <option value="Laki-laki" {{ ($user->jenis_kelamin ?? '') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                             <option value="Perempuan" {{ ($user->jenis_kelamin ?? '') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
@@ -339,35 +275,35 @@
                     
                     <!-- Tanggal Lahir -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             <i class="fas fa-calendar text-indigo-500 mr-2"></i>Tanggal Lahir
                         </label>
                         <input type="date" 
                                name="tanggal_lahir" 
                                value="{{ $user->tanggal_lahir ?? '' }}"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200">
+                               class="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200">
                     </div>
                     
                     <!-- No Telepon -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             <i class="fas fa-phone text-indigo-500 mr-2"></i>No. Telepon
                         </label>
                         <input type="text" 
                                name="no_telepon" 
                                value="{{ $user->no_telepon ?? '' }}"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                               class="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
                                placeholder="08xxxxxxxxxx">
                     </div>
                     
                     <!-- Alamat -->
                     <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             <i class="fas fa-map-marker-alt text-indigo-500 mr-2"></i>Alamat
                         </label>
                         <textarea name="alamat" 
                                   rows="3"
-                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                                  class="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
                                   placeholder="Alamat lengkap">{{ $user->alamat ?? '' }}</textarea>
                     </div>
                 </div>
@@ -376,7 +312,7 @@
                 <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
                     <button type="button" 
                             onclick="resetProfileForm()"
-                            class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200">
+                            class="px-6 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-all duration-200">
                         <i class="fas fa-undo mr-2"></i>Reset
                     </button>
                     <button type="submit" 
@@ -389,7 +325,7 @@
 
         <!-- Password Change Tab -->
         <div id="tab-password" class="tab-pane">
-            <h4 class="text-lg font-semibold text-gray-900 mb-4">Ubah Password</h4>
+            <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Ubah Password</h4>
             
             <form id="passwordForm" class="space-y-6 max-w-md">
                 @csrf
@@ -397,18 +333,18 @@
                 
                 <!-- Current Password -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         <i class="fas fa-lock text-indigo-500 mr-2"></i>Password Saat Ini
                     </label>
                     <div class="relative">
                         <input type="password" 
                                name="current_password" 
                                id="current_password"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 pr-10"
+                               class="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 pr-10"
                                required>
                         <button type="button" 
                                 onclick="togglePassword('current_password')"
-                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-indigo-600">
+                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-indigo-600">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
@@ -416,63 +352,63 @@
                 
                 <!-- New Password -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         <i class="fas fa-key text-indigo-500 mr-2"></i>Password Baru
                     </label>
                     <div class="relative">
                         <input type="password" 
                                name="new_password" 
                                id="new_password"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 pr-10"
+                               class="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 pr-10"
                                required
                                onkeyup="checkPasswordStrength(this.value)">
                         <button type="button" 
                                 onclick="togglePassword('new_password')"
-                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-indigo-600">
+                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-indigo-600">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
                     <!-- Password Strength Indicator -->
                     <div class="password-strength" id="passwordStrength"></div>
-                    <div class="text-xs text-gray-500 mt-2">
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">
                         <span id="strengthText">Masukkan password</span>
                     </div>
                     
                     <!-- Password Requirements -->
                     <div class="mt-3 text-xs space-y-1">
                         <div class="requirement" id="reqLength">
-                            <i class="fas fa-circle text-gray-300 mr-1"></i> Minimal 8 karakter
+                            <i class="fas fa-circle text-gray-300 dark:text-gray-600 mr-1"></i> Minimal 8 karakter
                         </div>
                         <div class="requirement" id="reqUppercase">
-                            <i class="fas fa-circle text-gray-300 mr-1"></i> Huruf besar (A-Z)
+                            <i class="fas fa-circle text-gray-300 dark:text-gray-600 mr-1"></i> Huruf besar (A-Z)
                         </div>
                         <div class="requirement" id="reqLowercase">
-                            <i class="fas fa-circle text-gray-300 mr-1"></i> Huruf kecil (a-z)
+                            <i class="fas fa-circle text-gray-300 dark:text-gray-600 mr-1"></i> Huruf kecil (a-z)
                         </div>
                         <div class="requirement" id="reqNumber">
-                            <i class="fas fa-circle text-gray-300 mr-1"></i> Angka (0-9)
+                            <i class="fas fa-circle text-gray-300 dark:text-gray-600 mr-1"></i> Angka (0-9)
                         </div>
                         <div class="requirement" id="reqSpecial">
-                            <i class="fas fa-circle text-gray-300 mr-1"></i> Karakter spesial (!@#$%^&*)
+                            <i class="fas fa-circle text-gray-300 dark:text-gray-600 mr-1"></i> Karakter spesial (!@#$%^&*)
                         </div>
                     </div>
                 </div>
                 
                 <!-- Confirm New Password -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         <i class="fas fa-check-circle text-indigo-500 mr-2"></i>Konfirmasi Password Baru
                     </label>
                     <div class="relative">
                         <input type="password" 
                                name="new_password_confirmation" 
                                id="new_password_confirmation"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 pr-10"
+                               class="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 pr-10"
                                required
                                onkeyup="checkPasswordMatch()">
                         <button type="button" 
                                 onclick="togglePassword('new_password_confirmation')"
-                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-indigo-600">
+                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-indigo-600">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
@@ -483,7 +419,7 @@
                 <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
                     <button type="button" 
                             onclick="resetPasswordForm()"
-                            class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200">
+                            class="px-6 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-all duration-200">
                         <i class="fas fa-undo mr-2"></i>Reset
                     </button>
                     <button type="submit" 
@@ -497,16 +433,16 @@
         <!-- Activity Log Tab -->
         <div id="tab-activity" class="tab-pane">
             <div class="flex justify-between items-center mb-4">
-                <h4 class="text-lg font-semibold text-gray-900">Aktivitas Terakhir</h4>
+                <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Aktivitas Terakhir</h4>
                 @if(isset($activities) && $activities->count() > 0)
-                <span class="text-xs text-gray-500">Total {{ $activities->count() }} aktivitas</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">Total {{ $activities->count() }} aktivitas</span>
                 @endif
             </div>
             
             @if(isset($activities) && $activities->count() > 0)
             <div class="space-y-3">
                 @foreach($activities as $activity)
-                <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-200">
+                <div class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-slate-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 transition-all duration-200">
                     <!-- Icon berdasarkan action -->
                     <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0
                         @if($activity->action == 'login') bg-green-100
@@ -520,7 +456,7 @@
                         @if($activity->action == 'login')
                             <i class="fas fa-sign-in-alt text-green-600 text-sm"></i>
                         @elseif($activity->action == 'logout')
-                            <i class="fas fa-sign-out-alt text-gray-600 text-sm"></i>
+                            <i class="fas fa-sign-out-alt text-gray-600 dark:text-gray-400 text-sm"></i>
                         @elseif($activity->action == 'update_profile')
                             <i class="fas fa-user-edit text-blue-600 text-sm"></i>
                         @elseif($activity->action == 'change_password')
@@ -535,16 +471,16 @@
                     <!-- Content -->
                     <div class="flex-1">
                         <div class="flex items-center justify-between">
-                            <p class="text-sm font-medium text-gray-900">
+                            <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
                                 {{ $activity->description ?? ucfirst(str_replace('_', ' ', $activity->action)) }}
                             </p>
-                            <span class="text-xs text-gray-500">
+                            <span class="text-xs text-gray-500 dark:text-gray-400">
                                 {{ $activity->created_at->diffForHumans() }}
                             </span>
                         </div>
                         
                         <!-- Device Info -->
-                        <div class="flex items-center gap-3 mt-1 text-xs text-gray-500">
+                        <div class="flex items-center gap-3 mt-1 text-xs text-gray-500 dark:text-gray-400">
                             <span>
                                 <i class="fas fa-globe mr-1"></i>{{ $activity->ip_address ?? '127.0.0.1' }}
                             </span>
@@ -559,8 +495,8 @@
 
                         <!-- Tampilkan perubahan data dengan format yang lebih baik -->
                         @if($activity->action == 'update_profile' && ($activity->old_data || $activity->new_data))
-                        <div class="mt-2 p-2 bg-white rounded border border-gray-200">
-                            <p class="text-xs font-medium text-gray-700 mb-1">Perubahan:</p>
+                        <div class="mt-2 p-2 bg-white dark:bg-slate-800 rounded border border-gray-200 dark:border-slate-700">
+                            <p class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Perubahan:</p>
                             <div class="space-y-1">
                                 @php
                                     $old = is_string($activity->old_data) ? json_decode($activity->old_data, true) : $activity->old_data;
@@ -571,9 +507,9 @@
                                     @foreach($new as $key => $value)
                                         @if(isset($old[$key]) && $old[$key] != $value)
                                             <div class="text-xs">
-                                                <span class="text-gray-500">{{ ucfirst($key) }}:</span>
+                                                <span class="text-gray-500 dark:text-gray-400">{{ ucfirst($key) }}:</span>
                                                 <span class="text-red-600 line-through mr-2">{{ $old[$key] }}</span>
-                                                <i class="fas fa-arrow-right text-xs text-gray-400 mx-1"></i>
+                                                <i class="fas fa-arrow-right text-xs text-gray-400 dark:text-gray-500 mx-1"></i>
                                                 <span class="text-green-600">{{ $value }}</span>
                                             </div>
                                         @endif
@@ -589,11 +525,11 @@
             
             @else
             <div class="text-center py-8">
-                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <i class="fas fa-history text-gray-400 text-2xl"></i>
+                <div class="w-16 h-16 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-history text-gray-400 dark:text-gray-500 text-2xl"></i>
                 </div>
-                <p class="text-gray-600">Belum ada aktivitas</p>
-                <p class="text-sm text-gray-500 mt-1">Aktivitas Anda akan muncul di sini</p>
+                <p class="text-gray-600 dark:text-gray-400">Belum ada aktivitas</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Aktivitas Anda akan muncul di sini</p>
             </div>
             @endif
         </div>
@@ -602,10 +538,10 @@
 
 <!-- Cropper Modal for Photo - DIPERKECIL -->
 <div id="cropperModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white rounded-lg p-4 max-w-sm w-full mx-4">
+    <div class="bg-white dark:bg-slate-800 rounded-lg p-4 max-w-sm w-full mx-4">
         <div class="flex justify-between items-center mb-3">
-            <h3 class="text-base font-semibold text-gray-900">Sesuaikan Foto</h3>
-            <button type="button" onclick="closeCropper()" class="text-gray-400 hover:text-gray-600">
+            <h3 class="text-base font-semibold text-gray-900 dark:text-gray-100">Sesuaikan Foto</h3>
+            <button type="button" onclick="closeCropper()" class="text-gray-400 dark:text-gray-500 hover:text-gray-600">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -618,12 +554,12 @@
         </div>
         
         <!-- Info ukuran -->
-        <p class="text-xs text-gray-500 mb-3">Foto akan disimpan ukuran 300x300 px</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Foto akan disimpan ukuran 300x300 px</p>
         
         <!-- Tombol aksi -->
         <div class="flex justify-end gap-2">
             <button type="button" onclick="closeCropper()" 
-                    class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                    class="px-3 py-1.5 text-sm border border-gray-300 dark:border-slate-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700">
                 Batal
             </button>
             <button type="button" onclick="cropAndUpload()" 
@@ -922,7 +858,7 @@ function updateRequirement(id, met) {
         icon.className = 'fas fa-check-circle text-green-500 mr-1';
         element.classList.add('text-green-700');
     } else {
-        icon.className = 'fas fa-circle text-gray-300 mr-1';
+        icon.className = 'fas fa-circle text-gray-300 dark:text-gray-600 mr-1';
         element.classList.remove('text-green-700');
     }
 }
@@ -966,7 +902,7 @@ function resetPasswordForm() {
     ['reqLength', 'reqUppercase', 'reqLowercase', 'reqNumber', 'reqSpecial'].forEach(id => {
         const element = document.getElementById(id);
         const icon = element.querySelector('i');
-        icon.className = 'fas fa-circle text-gray-300 mr-1';
+        icon.className = 'fas fa-circle text-gray-300 dark:text-gray-600 mr-1';
         element.classList.remove('text-green-700');
     });
 }

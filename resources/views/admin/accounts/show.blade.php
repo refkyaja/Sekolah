@@ -1,9 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Detail Akun - ' . $account->name)
-@section('breadcrumb', 'Detail Akun')
-
-@push('styles')
+@section('content')
 <style>
     /* Profile Header dengan background gradien yang lebih terang */
     .profile-header {
@@ -270,19 +267,35 @@
             justify-content: center;
         }
     }
+
+    /* Dark Mode Styles */
+    .dark .info-card { background: #1e293b; }
+    .dark .section-title { color: #f1f5f9; border-bottom-color: #334155; }
+    .dark .info-box { background: #0f172a; border-color: #334155; }
+    .dark .info-box:hover { background: #1e293b; border-color: #475569; }
+    .dark .info-label { color: #94a3b8; }
+    .dark .info-value { color: #f1f5f9; }
+    .dark .btn-edit { background: #1e293b; color: #818cf8; border-color: #475569; }
+    .dark .btn-edit:hover { background: #334155; }
+    .dark .activity-item { background: #0f172a; border-color: #334155; }
+    .dark .activity-item:hover { background: #1e293b; }
+    .dark .back-btn { background: #1e293b; color: #f1f5f9; border-color: #475569; }
+    .dark .back-btn:hover { background: #334155; }
+    .dark .profile-photo-large { border-color: #1e293b; }
 </style>
+
 @endpush
 
 @section('content')
 <div class="max-w-4xl mx-auto space-y-6">
     <div class="h-20 flex items-center justify-between bg-transparent flex-shrink-0">
         <div class="flex items-center gap-4">
-            <a class="p-2.5 bg-white hover:bg-primary hover:text-white rounded-xl transition-all text-slate-400 shadow-sm border border-slate-100 flex items-center justify-center group" href="{{ route('admin.accounts.index') }}">
+            <a class="p-2.5 bg-white dark:bg-slate-800 hover:bg-primary hover:text-white rounded-xl transition-all text-slate-400 dark:text-slate-500 dark:text-slate-400 dark:text-slate-300 shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-center group" href="{{ route('admin.accounts.index') }}">
                 <span class="material-symbols-outlined group-hover:text-white">arrow_back</span>
             </a>
             <div>
-                <h1 class="text-xl font-bold text-slate-800">Detail Informasi User</h1>
-                <nav class="flex text-[10px] font-bold uppercase tracking-widest text-slate-400 gap-2">
+                <h1 class="text-xl font-bold text-slate-800 dark:text-slate-100">Detail Informasi User</h1>
+                <nav class="flex text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 dark:text-slate-400 gap-2">
                     <span>Manajemen Sistem</span>
                     <span>/</span>
                     <span class="text-primary">User Profile</span>
@@ -294,12 +307,12 @@
                 <span class="material-symbols-outlined text-lg">edit</span>
                 Edit User
             </a>
-            <div class="h-8 w-px bg-slate-200 mx-2"></div>
+            <div class="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-2"></div>
             <div class="flex items-center gap-3">
                 @if($account->foto)
-                    <img alt="User" class="w-10 h-10 rounded-2xl object-cover shadow-sm ring-2 ring-white" src="{{ asset('storage/'.$account->foto) }}"/>
+                    <img alt="User" class="w-10 h-10 rounded-2xl object-cover shadow-sm ring-2 ring-white dark:ring-slate-800" src="{{ asset('storage/'.$account->foto) }}"/>
                 @else
-                    <div class="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center shadow-sm ring-2 ring-white">
+                    <div class="w-10 h-10 rounded-2xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center shadow-sm ring-2 ring-white dark:ring-slate-800">
                         <span class="text-primary font-extrabold">{{ strtoupper(substr($account->name, 0, 1)) }}</span>
                     </div>
                 @endif
@@ -307,15 +320,15 @@
         </div>
     </div>
 
-    <div class="bg-white rounded-[2rem] shadow-xl shadow-primary/5 border border-slate-100 overflow-hidden">
-        <div class="p-8 border-b border-slate-50 bg-gradient-to-r from-slate-50 to-white">
+    <div class="bg-white dark:bg-slate-800 rounded-[2rem] shadow-xl shadow-primary/5 border border-slate-100 dark:border-slate-700 overflow-hidden">
+        <div class="p-8 border-b border-slate-50 dark:border-slate-700 bg-gradient-to-r from-slate-50 to-white dark:from-slate-800 dark:to-slate-800/80">
             <div class="flex items-center gap-5">
-                <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+                <div class="w-16 h-16 rounded-2xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
                     <span class="material-symbols-outlined text-primary text-3xl">account_circle</span>
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold text-slate-800">Informasi Profil User</h3>
-                    <p class="text-sm text-slate-500 font-medium">Data detail akun dan akses sistem user yang bersangkutan.</p>
+                    <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100">Informasi Profil User</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Data detail akun dan akses sistem user yang bersangkutan.</p>
                 </div>
             </div>
         </div>
@@ -323,38 +336,38 @@
         <div class="p-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="space-y-1">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Nama Lengkap</p>
-                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                        <p class="text-slate-800 font-bold">{{ $account->name }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] ml-1">Nama Lengkap</p>
+                    <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-700">
+                        <p class="text-slate-800 dark:text-slate-100 font-bold">{{ $account->name }}</p>
                     </div>
                 </div>
 
                 <div class="space-y-1">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Email</p>
-                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                        <p class="text-slate-800 font-bold">{{ $account->email }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] ml-1">Email</p>
+                    <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-700">
+                        <p class="text-slate-800 dark:text-slate-100 font-bold">{{ $account->email }}</p>
                     </div>
                 </div>
 
                 <div class="space-y-1">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Role Akses</p>
-                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center gap-2">
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] ml-1">Role Akses</p>
+                    <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-700 flex items-center gap-2">
                         <span class="material-symbols-outlined text-primary text-xl">admin_panel_settings</span>
-                        <p class="text-slate-800 font-bold">{{ ucfirst(str_replace('_', ' ', $account->role)) }}</p>
+                        <p class="text-slate-800 dark:text-slate-100 font-bold">{{ ucfirst(str_replace('_', ' ', $account->role)) }}</p>
                     </div>
                 </div>
 
                 <div class="space-y-1">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Jenis Kelamin</p>
-                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                        <p class="text-slate-800 font-bold">{{ $account->jenis_kelamin ?? '-' }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] ml-1">Jenis Kelamin</p>
+                    <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-700">
+                        <p class="text-slate-800 dark:text-slate-100 font-bold">{{ $account->jenis_kelamin ?? '-' }}</p>
                     </div>
                 </div>
 
                 <div class="space-y-1">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Tempat Tanggal Lahir</p>
-                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                        <p class="text-slate-800 font-bold">
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] ml-1">Tempat Tanggal Lahir</p>
+                    <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-700">
+                        <p class="text-slate-800 dark:text-slate-100 font-bold">
                             @if($account->tempat_lahir || $account->tanggal_lahir)
                                 {{ $account->tempat_lahir ?? '-' }}{{ $account->tempat_lahir && $account->tanggal_lahir ? ', ' : '' }}
                                 @if($account->tanggal_lahir)
@@ -368,15 +381,15 @@
                 </div>
 
                 <div class="space-y-1">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">No. Telepon</p>
-                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                        <p class="text-slate-800 font-bold">{{ $account->no_telepon ?? '-' }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] ml-1">No. Telepon</p>
+                    <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-700">
+                        <p class="text-slate-800 dark:text-slate-100 font-bold">{{ $account->no_telepon ?? '-' }}</p>
                     </div>
                 </div>
 
                 <div class="space-y-1">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Status Akun</p>
-                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center">
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] ml-1">Status Akun</p>
+                    <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-700 flex items-center">
                         @if($account->is_active)
                             <span class="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-[10px] font-black tracking-widest uppercase">AKTIF</span>
                         @else
@@ -386,10 +399,10 @@
                 </div>
 
                 <div class="space-y-1">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Terakhir Login</p>
-                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center gap-2 text-slate-600">
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] ml-1">Terakhir Login</p>
+                    <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-700 flex items-center gap-2 text-slate-600">
                         <span class="material-symbols-outlined text-lg">history</span>
-                        <p class="text-slate-800 font-bold">
+                        <p class="text-slate-800 dark:text-slate-100 font-bold">
                             @if($account->last_login_at)
                                 {{ \Carbon\Carbon::parse($account->last_login_at)->translatedFormat('d M Y, H:i') }}
                             @else
@@ -402,14 +415,14 @@
         </div>
     </div>
 
-    <div class="flex items-start gap-5 p-6 bg-primary/5 rounded-[1.5rem] border border-primary/10 relative overflow-hidden group">
-        <div class="absolute right-0 top-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 transition-transform duration-500 group-hover:scale-110"></div>
-        <div class="w-12 h-12 rounded-xl bg-white flex-shrink-0 flex items-center justify-center shadow-sm">
+    <div class="flex items-start gap-5 p-6 bg-primary/5 dark:bg-primary/10 rounded-[1.5rem] border border-primary/10 dark:border-primary/20 relative overflow-hidden group">
+        <div class="absolute right-0 top-0 w-32 h-32 bg-primary/5 dark:bg-primary/10 rounded-full -translate-y-1/2 translate-x-1/2 transition-transform duration-500 group-hover:scale-110"></div>
+        <div class="w-12 h-12 rounded-xl bg-white dark:bg-slate-800 flex-shrink-0 flex items-center justify-center shadow-sm">
             <span class="material-symbols-outlined text-primary">info</span>
         </div>
         <div class="relative z-10">
-            <h4 class="text-sm font-bold text-slate-800 mb-1">Catatan Penting:</h4>
-            <p class="text-xs text-slate-500 leading-relaxed max-w-2xl">
+            <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-1">Catatan Penting:</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-2xl">
                 Akses user ini dibatasi oleh hak istimewa role <span class="text-primary font-bold">{{ ucfirst(str_replace('_', ' ', $account->role)) }}</span>.
             </p>
         </div>
@@ -418,25 +431,25 @@
 
 <!-- Reset Password Modal -->
 <div id="resetPasswordModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl transform transition-all">
+    <div class="bg-white dark:bg-slate-800 rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl transform transition-all">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-xl font-bold text-gray-900">Reset Password</h3>
-            <button onclick="closeResetModal()" class="text-gray-400 hover:text-gray-600">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100">Reset Password</h3>
+            <button onclick="closeResetModal()" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300">
                 <i class="fas fa-times"></i>
             </button>
         </div>
         
-        <p class="text-gray-600 mb-4">
-            Password untuk akun <span class="font-semibold text-indigo-600">{{ $account->name }}</span> akan direset menjadi:
+        <p class="text-gray-600 dark:text-gray-400 mb-4">
+            Password untuk akun <span class="font-semibold text-indigo-600 dark:text-indigo-400">{{ $account->name }}</span> akan direset menjadi:
         </p>
         
-        <div class="bg-indigo-50 p-4 rounded-lg text-center mb-6">
-            <code class="text-2xl font-mono font-bold text-indigo-700">password123</code>
+        <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg text-center mb-6">
+            <code class="text-2xl font-mono font-bold text-indigo-700 dark:text-indigo-300">password123</code>
         </div>
         
         <div class="flex justify-end gap-3">
             <button type="button" onclick="closeResetModal()" 
-                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                    class="px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
                 Batal
             </button>
             <button type="button" onclick="confirmReset()" 

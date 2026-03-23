@@ -22,9 +22,9 @@
 @section('title', 'Edit Galeri')
 
 @section('content')
-<div class="bg-white rounded-xl shadow-sm border border-gray-100">
-    <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-lg font-semibold text-gray-900">
+<div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-600">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
             Edit Galeri: {{ $galeri->judul }}
         </h2>
     </div>
@@ -40,29 +40,29 @@
             <div class="space-y-6">
                 {{-- Judul --}}
                 <div>
-                    <label for="judul" class="block text-sm font-medium text-gray-700 mb-2">
-                        Judul Galeri <span class="text-red-500">*</span>
+                    <label for="judul" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Judul Galeri <span class="text-red-500 dark:text-red-400">*</span>
                     </label>
                     <input type="text" 
                            id="judul"
                            name="judul" 
                            value="{{ old('judul', $galeri->judul) }}"
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('judul') border-red-500 @enderror"
+                           class="w-full px-4 py-2 border border-gray-300 dark:border-slate-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('judul') border-red-500 @enderror"
                            placeholder="Masukkan judul galeri"
                            required>
                     @error('judul')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
                 
                 {{-- Kategori --}}
                 <div>
-                    <label for="kategori" class="block text-sm font-medium text-gray-700 mb-2">
-                        Kategori <span class="text-red-500">*</span>
+                    <label for="kategori" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Kategori <span class="text-red-500 dark:text-red-400">*</span>
                     </label>
                     <select name="kategori" 
                             id="kategori"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('kategori') border-red-500 @enderror"
+                            class="w-full px-4 py-2 border border-gray-300 dark:border-slate-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('kategori') border-red-500 @enderror"
                             required>
                         <option value="">Pilih Kategori</option>
                         <option value="kegiatan" {{ old('kategori', $galeri->kategori) == 'kegiatan' ? 'selected' : '' }}>Kegiatan</option>
@@ -72,40 +72,40 @@
                         <option value="harian" {{ old('kategori', $galeri->kategori) == 'harian' ? 'selected' : '' }}>Kegiatan Harian</option>
                     </select>
                     @error('kategori')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
                 
                 {{-- Deskripsi --}}
                 <div>
-                    <label for="deskripsi" class="block text-sm font-medium text-gray-700 mb-2">
+                    <label for="deskripsi" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Deskripsi
                     </label>
                     <textarea name="deskripsi" 
                               id="deskripsi"
                               rows="4"
-                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('deskripsi') border-red-500 @enderror"
+                              class="w-full px-4 py-2 border border-gray-300 dark:border-slate-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('deskripsi') border-red-500 @enderror"
                               placeholder="Deskripsikan galeri ini...">{{ old('deskripsi', $galeri->deskripsi) }}</textarea>
                     @error('deskripsi')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
                 
                 {{-- Multiple Gambar --}}
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Gambar
-                        <span class="text-xs text-gray-500 ml-2">(Upload gambar baru untuk menambah atau mengganti)</span>
+                        <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">(Upload gambar baru untuk menambah atau mengganti)</span>
                     </label>
                     
                     {{-- Existing Images --}}
                     @if($galeri->gambar->count() > 0)
                     <div class="mb-4">
-                        <h4 class="text-sm font-medium text-gray-700 mb-2">Gambar Existing:</h4>
+                        <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Gambar Existing:</h4>
                         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="existing-images">
                             @foreach($galeri->gambar as $gambar)
                             <div class="relative group" data-image-id="{{ $gambar->id }}" data-urutan="{{ $gambar->urutan }}">
-                                <div class="aspect-w-1 aspect-h-1 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+                                <div class="aspect-w-1 aspect-h-1 bg-gray-100 dark:bg-slate-700 rounded-lg overflow-hidden border border-gray-200 dark:border-slate-600">
                                     <img src="{{ $gambar->url }}" 
                                          class="w-full h-32 object-cover"
                                          alt="{{ $galeri->judul }}"
@@ -143,12 +143,12 @@
                     @endif
                     
                     {{-- Dropzone Area untuk Upload Baru --}}
-                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-blue-500 transition-colors cursor-pointer mt-4"
+                    <div class="border-2 border-dashed border-gray-300 dark:border-slate-500 rounded-lg p-6 hover:border-blue-500 transition-colors cursor-pointer mt-4"
                          id="dropzone">
                         <div class="text-center">
                             {{-- Icon --}}
                             <svg xmlns="http://www.w3.org/2000/svg" 
-                                 class="mx-auto h-12 w-12 text-gray-400" 
+                                 class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" 
                                  fill="none" 
                                  viewBox="0 0 24 24" 
                                  stroke="currentColor">
@@ -160,16 +160,16 @@
                             
                             {{-- Text --}}
                             <div class="mt-2">
-                                <span class="text-sm text-gray-600">Drag and drop atau</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Drag and drop atau</span>
                                 <label for="gambar" 
-                                       class="mx-1 px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 cursor-pointer text-sm font-medium transition-colors">
+                                       class="mx-1 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/10 text-blue-600 dark:text-blue-500 rounded-lg hover:bg-blue-100 cursor-pointer text-sm font-medium transition-colors">
                                     Pilih File
                                 </label>
-                                <span class="text-sm text-gray-600">untuk upload gambar baru</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">untuk upload gambar baru</span>
                             </div>
                             
                             {{-- Info --}}
-                            <p class="text-xs text-gray-500 mt-1">
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                 Format: JPG, JPEG, PNG, GIF (Max 5MB per file, maksimal 10 gambar total)
                             </p>
                             
@@ -185,14 +185,14 @@
                     
                     {{-- Error Messages --}}
                     @error('gambar')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                     @enderror
                     @error('gambar.*')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                     @enderror
                     
                     {{-- File Info for New Uploads --}}
-                    <div id="file-info" class="mt-2 text-sm text-gray-600 hidden">
+                    <div id="file-info" class="mt-2 text-sm text-gray-600 dark:text-gray-400 hidden">
                         <span id="file-count">0</span> file baru dipilih
                     </div>
                     
@@ -204,49 +204,49 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {{-- Tanggal --}}
                     <div>
-                        <label for="tanggal" class="block text-sm font-medium text-gray-700 mb-2">
-                            Tanggal <span class="text-red-500">*</span>
+                        <label for="tanggal" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Tanggal <span class="text-red-500 dark:text-red-400">*</span>
                         </label>
                         <input type="date" 
                                id="tanggal"
                                name="tanggal" 
                                value="{{ old('tanggal', $galeri->tanggal->format('Y-m-d')) }}"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('tanggal') border-red-500 @enderror"
+                               class="w-full px-4 py-2 border border-gray-300 dark:border-slate-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('tanggal') border-red-500 @enderror"
                                required>
                         @error('tanggal')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
                     
                     {{-- Lokasi --}}
                     <div>
-                        <label for="lokasi" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label for="lokasi" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Lokasi
                         </label>
                         <input type="text" 
                                id="lokasi"
                                name="lokasi" 
                                value="{{ old('lokasi', $galeri->lokasi) }}"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('lokasi') border-red-500 @enderror"
+                               class="w-full px-4 py-2 border border-gray-300 dark:border-slate-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('lokasi') border-red-500 @enderror"
                                placeholder="Contoh: Aula Utama, Lapangan Sekolah">
                         @error('lokasi')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
                 
                 {{-- Status Publish --}}
-                <div class="bg-gray-50 p-4 rounded-lg">
+                <div class="bg-gray-50 dark:bg-slate-900/50 p-4 rounded-lg">
                     <label class="flex items-center">
                         <input type="checkbox" 
                                name="is_published" 
                                value="1"
-                               class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                               class="rounded border-gray-300 dark:border-slate-500 text-blue-600 dark:text-blue-500 focus:ring-blue-500"
                                {{ old('is_published', $galeri->is_published) ? 'checked' : '' }}>
-                        <span class="ml-2 text-sm text-gray-700">
+                        <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">
                             Publish
                         </span>
-                        <span class="ml-2 text-xs text-gray-500">
+                        <span class="ml-2 text-xs text-gray-500 dark:text-gray-400">
                             (Jika tidak dicentang, galeri akan disimpan sebagai draft)
                         </span>
                     </label>
@@ -254,7 +254,7 @@
             </div>
             
             {{-- Action Buttons --}}
-            <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-slate-200 z-50 md:relative md:p-0 md:bg-transparent md:border-none md:z-auto md:mt-8 md:flex md:justify-end md:space-x-3 md:pt-6 md:border-t">
+            <div class="fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-600 z-50 md:relative md:p-0 md:bg-transparent md:border-none md:z-auto md:mt-8 md:flex md:justify-end md:space-x-3 md:pt-6 md:border-t">
                 <div class="flex flex-col sm:flex-row md:flex-row gap-3">
                     <button type="submit" 
                             id="btnSubmit"
@@ -262,7 +262,7 @@
                         Update Galeri
                     </button>
                     <a href="{{ route($routePrefix . '.galeri.index') }}" 
-                       class="w-full sm:w-auto text-center px-6 py-3 md:py-2 border border-slate-300 text-slate-700 font-bold rounded-lg hover:bg-slate-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 order-2 sm:order-1">
+                       class="w-full sm:w-auto text-center px-6 py-3 md:py-2 border border-slate-300 dark:border-slate-500 text-slate-700 dark:text-slate-300 font-bold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 order-2 sm:order-1">
                         Batal
                     </a>
                 </div>
@@ -345,17 +345,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Drag and drop events
     dropzone.addEventListener('dragover', function(e) {
         e.preventDefault();
-        this.classList.add('border-blue-500', 'bg-blue-50');
+        this.classList.add('border-blue-500', 'bg-blue-50 dark:bg-blue-900/10');
     });
     
     dropzone.addEventListener('dragleave', function(e) {
         e.preventDefault();
-        this.classList.remove('border-blue-500', 'bg-blue-50');
+        this.classList.remove('border-blue-500', 'bg-blue-50 dark:bg-blue-900/10');
     });
     
     dropzone.addEventListener('drop', function(e) {
         e.preventDefault();
-        this.classList.remove('border-blue-500', 'bg-blue-50');
+        this.classList.remove('border-blue-500', 'bg-blue-50 dark:bg-blue-900/10');
         
         const files = e.dataTransfer.files;
         if (files.length > 0) {
@@ -419,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 previewItem.className = 'preview-item relative group';
                 
                 previewItem.innerHTML = `
-                    <div class="aspect-w-1 aspect-h-1 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+                    <div class="aspect-w-1 aspect-h-1 bg-gray-100 dark:bg-slate-700 rounded-lg overflow-hidden border border-gray-200 dark:border-slate-600">
                         <img src="${e.target.result}" 
                              class="w-full h-32 object-cover"
                              alt="Preview ${index + 1}">

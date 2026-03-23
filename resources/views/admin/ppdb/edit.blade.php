@@ -18,22 +18,22 @@
 @endpush
 
 @section('content')
-<nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 uppercase tracking-widest">
+<nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-widest">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
         <li><a class="hover:text-primary" href="{{ route('admin.ppdb.index') }}">PPDB</a></li>
         <li><span class="mx-2">/</span></li>
         <li><a class="hover:text-primary" href="{{ route('admin.ppdb.index') }}">Pendaftaran</a></li>
         <li><span class="mx-2">/</span></li>
-        <li class="text-slate-600">Edit Data</li>
+        <li class="text-slate-600 dark:text-slate-400">Edit Data</li>
     </ol>
 </nav>
 
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
     <div>
-        <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Edit Data PPDB</h1>
-        <p class="text-sm text-slate-500 mt-1">Edit data pendaftaran: {{ $spmb->no_pendaftaran ?? '-' }}</p>
+        <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Edit Data PPDB</h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Edit data pendaftaran: {{ $spmb->no_pendaftaran ?? '-' }}</p>
     </div>
-    <a href="{{ route('admin.ppdb.index') }}" class="flex items-center gap-2 px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all">
+    <a href="{{ route('admin.ppdb.index') }}" class="flex items-center gap-2 px-4 py-2.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-xl font-bold text-sm hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
         <span class="material-symbols-outlined text-lg">arrow_back</span>
         Kembali ke Daftar
     </a>
@@ -54,21 +54,21 @@
     @endphp
 
     <!-- Identitas Calon Siswa -->
-    <div class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-100 dark:border-slate-700 shadow-sm">
         <div class="flex items-center gap-3 mb-6">
             <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
                 <span class="material-symbols-outlined">person</span>
             </div>
             <div>
-                <h3 class="text-lg font-bold text-slate-800 tracking-tight">Identitas Calon Siswa</h3>
-                <p class="text-xs text-slate-400">Data pribadi utama calon siswa</p>
+                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight">Identitas Calon Siswa</h3>
+                <p class="text-xs text-slate-400 dark:text-slate-500">Data pribadi utama calon siswa</p>
             </div>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Nama Lengkap Anak -->
             <div>
-                <label for="nama_lengkap_anak" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="nama_lengkap_anak" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Nama Lengkap Anak *
                 </label>
                 <input type="text" 
@@ -79,13 +79,13 @@
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('nama_lengkap_anak') border-red-500 @enderror"
                        placeholder="Nama sesuai akta kelahiran">
                 @error('nama_lengkap_anak')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Nama Panggilan -->
             <div>
-                <label for="nama_panggilan_anak" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="nama_panggilan_anak" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Nama Panggilan
                 </label>
                 <input type="text" 
@@ -98,7 +98,7 @@
 
             <!-- NIK Anak -->
             <div>
-                <label for="nik_anak" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="nik_anak" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     NIK Anak *
                 </label>
                 <input type="text" 
@@ -110,15 +110,15 @@
                        maxlength="20"
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('nik_anak') border-red-500 @enderror"
                        placeholder="NIK">
-                <p class="text-xs text-gray-500 mt-1">Nomor Induk Kependudukan</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Nomor Induk Kependudukan</p>
                 @error('nik_anak')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Tempat Lahir -->
             <div>
-                <label for="tempat_lahir_anak" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="tempat_lahir_anak" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Tempat Lahir *
                 </label>
                 <input type="text" 
@@ -132,7 +132,7 @@
 
             <!-- Tanggal Lahir -->
             <div>
-                <label for="tanggal_lahir_anak" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="tanggal_lahir_anak" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Tanggal Lahir *
                 </label>
                 <input type="date" 
@@ -140,12 +140,12 @@
                        name="tanggal_lahir_anak" 
                        value="{{ old('tanggal_lahir_anak') }}"
                        required
-                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('tanggal_lahir_anak') border-red-500 @enderror">
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('tanggal_lahir_anak') border-red-500 @enderror" [color-scheme:light] dark:[color-scheme:dark]>
             </div>
 
             <!-- Jenis Kelamin -->
             <div>
-                <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Jenis Kelamin *
                 </label>
                 <select id="jenis_kelamin" 
@@ -160,7 +160,7 @@
 
             <!-- Agama -->
             <div>
-                <label for="agama" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="agama" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Agama *
                 </label>
                 <select id="agama" 
@@ -180,7 +180,7 @@
 
             <!-- Anak Ke -->
             <div>
-                <label for="anak_ke" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="anak_ke" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Anak Ke *
                 </label>
                 <input type="number" 
@@ -195,7 +195,7 @@
 
             <!-- Tinggal Bersama -->
             <div>
-                <label for="tinggal_bersama" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="tinggal_bersama" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Tinggal Bersama *
                 </label>
                 <select id="tinggal_bersama" 
@@ -214,7 +214,7 @@
 
             <!-- Status Tempat Tinggal -->
             <div>
-                <label for="status_tempat_tinggal" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="status_tempat_tinggal" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Status Tempat Tinggal *
                 </label>
                 <select id="status_tempat_tinggal" 
@@ -230,7 +230,7 @@
 
             <!-- Bahasa Sehari-hari -->
             <div>
-                <label for="bahasa_sehari_hari" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="bahasa_sehari_hari" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Bahasa Sehari-hari *
                 </label>
                 <input type="text" 
@@ -244,7 +244,7 @@
 
             <!-- Jarak Rumah ke Sekolah -->
             <div>
-                <label for="jarak_rumah_ke_sekolah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="jarak_rumah_ke_sekolah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Jarak Rumah ke Sekolah (meter)
                 </label>
                 <input type="number" 
@@ -257,7 +257,7 @@
 
             <!-- Waktu Tempuh -->
             <div>
-                <label for="waktu_tempuh_ke_sekolah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="waktu_tempuh_ke_sekolah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Waktu Tempuh (menit)
                 </label>
                 <input type="number" 
@@ -270,7 +270,7 @@
 
             <!-- Berat Badan -->
             <div>
-                <label for="berat_badan" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="berat_badan" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Berat Badan (kg)
                 </label>
                 <input type="number" 
@@ -284,7 +284,7 @@
 
             <!-- Tinggi Badan -->
             <div>
-                <label for="tinggi_badan" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="tinggi_badan" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Tinggi Badan (cm)
                 </label>
                 <input type="number" 
@@ -298,7 +298,7 @@
 
             <!-- Golongan Darah -->
             <div>
-                <label for="golongan_darah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="golongan_darah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Golongan Darah
                 </label>
                 <select id="golongan_darah" 
@@ -314,7 +314,7 @@
 
             <!-- Penyakit Pernah Diderita -->
             <div class="md:col-span-2">
-                <label for="penyakit_pernah_diderita" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="penyakit_pernah_diderita" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Penyakit yang Pernah Diderita
                 </label>
                 <textarea id="penyakit_pernah_diderita" 
@@ -326,7 +326,7 @@
 
             <!-- Imunisasi -->
             <div class="md:col-span-2">
-                <label for="imunisasi_pernah_diterima" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="imunisasi_pernah_diterima" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Imunisasi yang Pernah Diterima
                 </label>
                 <textarea id="imunisasi_pernah_diterima" 
@@ -339,21 +339,21 @@
     </div>
 
     <!-- Alamat Lengkap -->
-    <div class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm mt-6">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-100 dark:border-slate-700 shadow-sm mt-6">
         <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
+            <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-500">
                 <span class="material-symbols-outlined">location_on</span>
             </div>
             <div>
-                <h3 class="text-lg font-bold text-slate-800 tracking-tight">Alamat Lengkap</h3>
-                <p class="text-xs text-slate-400">Alamat sesuai domisili saat ini</p>
+                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight">Alamat Lengkap</h3>
+                <p class="text-xs text-slate-400 dark:text-slate-500">Alamat sesuai domisili saat ini</p>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Provinsi -->
             <div>
-                <label for="provinsi_rumah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="provinsi_rumah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Provinsi *
                 </label>
                 <input type="text" 
@@ -366,7 +366,7 @@
 
             <!-- Kota/Kabupaten -->
             <div>
-                <label for="kota_kabupaten_rumah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="kota_kabupaten_rumah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Kota/Kabupaten *
                 </label>
                 <input type="text" 
@@ -379,7 +379,7 @@
 
             <!-- Kecamatan -->
             <div>
-                <label for="kecamatan_rumah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="kecamatan_rumah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Kecamatan *
                 </label>
                 <input type="text" 
@@ -392,7 +392,7 @@
 
             <!-- Kelurahan -->
             <div>
-                <label for="kelurahan_rumah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="kelurahan_rumah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Kelurahan/Desa *
                 </label>
                 <input type="text" 
@@ -405,7 +405,7 @@
 
             <!-- Nama jalan -->
             <div class="md:col-span-2">
-                <label for="nama_jalan_rumah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="nama_jalan_rumah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Nama Jalan *
                 </label>
                 <input type="text" 
@@ -424,8 +424,8 @@
                        name="alamat_kk_sama" 
                        value="1"
                        {{ old('alamat_kk_sama') ? 'checked' : '' }}
-                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
-                <label for="alamat_kk_sama" class="ml-2 text-sm text-gray-700">
+                       class="w-4 h-4 text-blue-600 dark:text-blue-500 bg-gray-100 dark:bg-slate-700 border-gray-300 rounded focus:ring-blue-500">
+                <label for="alamat_kk_sama" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
                     Alamat di Kartu Keluarga (KK) sama dengan alamat di atas
                 </label>
             </div>
@@ -434,7 +434,7 @@
         <!-- Alamat KK (akan muncul jika checkbox tidak dicentang) -->
         <div id="alamatKKContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 {{ old('alamat_kk_sama') ? 'hidden' : '' }}">
             <div>
-                <label for="provinsi_kk" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="provinsi_kk" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Provinsi (KK)
                 </label>
                 <input type="text" 
@@ -445,7 +445,7 @@
             </div>
 
             <div>
-                <label for="kota_kabupaten_kk" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="kota_kabupaten_kk" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Kota/Kabupaten (KK)
                 </label>
                 <input type="text" 
@@ -456,7 +456,7 @@
             </div>
 
             <div>
-                <label for="kecamatan_kk" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="kecamatan_kk" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Kecamatan (KK)
                 </label>
                 <input type="text" 
@@ -467,7 +467,7 @@
             </div>
 
             <div>
-                <label for="kelurahan_kk" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="kelurahan_kk" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Kelurahan/Desa (KK)
                 </label>
                 <input type="text" 
@@ -478,7 +478,7 @@
             </div>
 
             <div class="md:col-span-2">
-                <label for="nama_jalan_kk" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="nama_jalan_kk" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Nama Jalan (KK)
                 </label>
                 <input type="text" 
@@ -490,7 +490,7 @@
             </div>
 
             <div class="md:col-span-2">
-                <label for="alamat_kk" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="alamat_kk" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Alamat KK Lengkap
                 </label>
                 <textarea id="alamat_kk" 
@@ -503,21 +503,21 @@
     </div>
 
     <!-- Data Ayah -->
-    <div class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm mt-6">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-100 dark:border-slate-700 shadow-sm mt-6">
         <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center text-green-600">
+            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center text-green-600 dark:text-green-500">
                 <span class="material-symbols-outlined">person</span>
             </div>
             <div>
-                <h3 class="text-lg font-bold text-slate-800 tracking-tight">Data Ayah</h3>
-                <p class="text-xs text-slate-400">Informasi ayah calon siswa</p>
+                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight">Data Ayah</h3>
+                <p class="text-xs text-slate-400 dark:text-slate-500">Informasi ayah calon siswa</p>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Nama Ayah -->
             <div>
-                <label for="nama_lengkap_ayah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="nama_lengkap_ayah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Nama Lengkap Ayah *
                 </label>
                 <input type="text" 
@@ -530,7 +530,7 @@
 
             <!-- NIK Ayah -->
             <div>
-                <label for="nik_ayah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="nik_ayah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     NIK Ayah *
                 </label>
                 <input type="text" 
@@ -545,7 +545,7 @@
 
             <!-- Tempat Lahir Ayah -->
             <div>
-                <label for="tempat_lahir_ayah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="tempat_lahir_ayah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Tempat Lahir Ayah *
                 </label>
                 <input type="text" 
@@ -558,7 +558,7 @@
 
             <!-- Tanggal Lahir Ayah -->
             <div>
-                <label for="tanggal_lahir_ayah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="tanggal_lahir_ayah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Tanggal Lahir Ayah *
                 </label>
                 <input type="date" 
@@ -566,12 +566,12 @@
                        name="tanggal_lahir_ayah" 
                        value="{{ old('tanggal_lahir_ayah') }}"
                        required
-                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" [color-scheme:light] dark:[color-scheme:dark]>
             </div>
 
             <!-- Pendidikan Ayah -->
             <div>
-                <label for="pendidikan_ayah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="pendidikan_ayah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Pendidikan Ayah
                 </label>
                 <select id="pendidikan_ayah" 
@@ -593,7 +593,7 @@
 
             <!-- Pekerjaan Ayah -->
             <div>
-                <label for="pekerjaan_ayah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="pekerjaan_ayah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Pekerjaan Ayah
                 </label>
                 <select id="pekerjaan_ayah" 
@@ -609,7 +609,7 @@
 
             <!-- Bidang Pekerjaan Ayah -->
             <div>
-                <label for="bidang_pekerjaan_ayah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="bidang_pekerjaan_ayah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Bidang Pekerjaan
                 </label>
                 <input type="text" 
@@ -622,7 +622,7 @@
 
             <!-- Penghasilan Ayah -->
             <div>
-                <label for="penghasilan_per_bulan_ayah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="penghasilan_per_bulan_ayah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Penghasilan per Bulan
                 </label>
                 <select id="penghasilan_per_bulan_ayah" 
@@ -639,7 +639,7 @@
 
             <!-- No Telepon Ayah -->
             <div>
-                <label for="nomor_telepon_ayah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="nomor_telepon_ayah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Nomor Telepon/WA Ayah *
                 </label>
                 <input type="tel" 
@@ -654,7 +654,7 @@
 
             <!-- Email Ayah -->
             <div>
-                <label for="email_ayah" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="email_ayah" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Email Ayah
                 </label>
                 <input type="email" 
@@ -668,21 +668,21 @@
     </div>
 
     <!-- Data Ibu -->
-    <div class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm mt-6">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-100 dark:border-slate-700 shadow-sm mt-6">
         <div class="flex items-center gap-3 mb-6">
             <div class="w-10 h-10 bg-pink-100 rounded-xl flex items-center justify-center text-pink-600">
                 <span class="material-symbols-outlined">person</span>
             </div>
             <div>
-                <h3 class="text-lg font-bold text-slate-800 tracking-tight">Data Ibu</h3>
-                <p class="text-xs text-slate-400">Informasi ibu calon siswa</p>
+                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight">Data Ibu</h3>
+                <p class="text-xs text-slate-400 dark:text-slate-500">Informasi ibu calon siswa</p>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Nama Ibu -->
             <div>
-                <label for="nama_lengkap_ibu" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="nama_lengkap_ibu" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Nama Lengkap Ibu *
                 </label>
                 <input type="text" 
@@ -695,7 +695,7 @@
 
             <!-- NIK Ibu -->
             <div>
-                <label for="nik_ibu" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="nik_ibu" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     NIK Ibu *
                 </label>
                 <input type="text" 
@@ -710,7 +710,7 @@
 
             <!-- Tempat Lahir Ibu -->
             <div>
-                <label for="tempat_lahir_ibu" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="tempat_lahir_ibu" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Tempat Lahir Ibu *
                 </label>
                 <input type="text" 
@@ -723,7 +723,7 @@
 
             <!-- Tanggal Lahir Ibu -->
             <div>
-                <label for="tanggal_lahir_ibu" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="tanggal_lahir_ibu" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Tanggal Lahir Ibu *
                 </label>
                 <input type="date" 
@@ -731,12 +731,12 @@
                        name="tanggal_lahir_ibu" 
                        value="{{ old('tanggal_lahir_ibu') }}"
                        required
-                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" [color-scheme:light] dark:[color-scheme:dark]>
             </div>
 
             <!-- Pendidikan Ibu -->
             <div>
-                <label for="pendidikan_ibu" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="pendidikan_ibu" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Pendidikan Ibu
                 </label>
                 <select id="pendidikan_ibu" 
@@ -758,7 +758,7 @@
 
             <!-- Pekerjaan Ibu -->
             <div>
-                <label for="pekerjaan_ibu" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="pekerjaan_ibu" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Pekerjaan Ibu
                 </label>
                 <select id="pekerjaan_ibu" 
@@ -775,7 +775,7 @@
 
             <!-- Bidang Pekerjaan Ibu -->
             <div>
-                <label for="bidang_pekerjaan_ibu" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="bidang_pekerjaan_ibu" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Bidang Pekerjaan
                 </label>
                 <input type="text" 
@@ -788,7 +788,7 @@
 
             <!-- Penghasilan Ibu -->
             <div>
-                <label for="penghasilan_per_bulan_ibu" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="penghasilan_per_bulan_ibu" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Penghasilan per Bulan
                 </label>
                 <select id="penghasilan_per_bulan_ibu" 
@@ -805,7 +805,7 @@
 
             <!-- No Telepon Ibu -->
             <div>
-                <label for="nomor_telepon_ibu" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="nomor_telepon_ibu" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Nomor Telepon/WA Ibu *
                 </label>
                 <input type="tel" 
@@ -820,7 +820,7 @@
 
             <!-- Email Ibu -->
             <div>
-                <label for="email_ibu" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="email_ibu" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Email Ibu
                 </label>
                 <input type="email" 
@@ -834,14 +834,14 @@
     </div>
 
     <!-- Data Wali -->
-    <div class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm mt-6">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-100 dark:border-slate-700 shadow-sm mt-6">
         <div class="flex items-center gap-3 mb-6">
             <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600">
                 <span class="material-symbols-outlined">person</span>
             </div>
             <div>
-                <h3 class="text-lg font-bold text-slate-800 tracking-tight">Data Wali (Jika Ada)</h3>
-                <p class="text-xs text-slate-400">Isi jika anak tinggal dengan wali</p>
+                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight">Data Wali (Jika Ada)</h3>
+                <p class="text-xs text-slate-400 dark:text-slate-500">Isi jika anak tinggal dengan wali</p>
             </div>
         </div>
 
@@ -851,8 +851,8 @@
                    name="punya_wali" 
                    value="1"
                    {{ old('punya_wali') ? 'checked' : '' }}
-                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
-            <label for="punya_wali" class="ml-2 text-sm text-gray-700">
+                   class="w-4 h-4 text-blue-600 dark:text-blue-500 bg-gray-100 dark:bg-slate-700 border-gray-300 rounded focus:ring-blue-500">
+            <label for="punya_wali" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
                 Centang jika memiliki wali
             </label>
         </div>
@@ -860,7 +860,7 @@
         <div id="dataWaliContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6 {{ old('punya_wali') ? '' : 'hidden' }}">
             <!-- Nama Wali -->
             <div>
-                <label for="nama_lengkap_wali" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="nama_lengkap_wali" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Nama Lengkap Wali
                 </label>
                 <input type="text" 
@@ -872,7 +872,7 @@
 
             <!-- Hubungan dengan Anak -->
             <div>
-                <label for="hubungan_dengan_anak" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="hubungan_dengan_anak" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Hubungan dengan Anak
                 </label>
                 <select id="hubungan_dengan_anak" 
@@ -890,7 +890,7 @@
 
             <!-- NIK Wali -->
             <div>
-                <label for="nik_wali" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="nik_wali" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     NIK Wali
                 </label>
                 <input type="text" 
@@ -904,7 +904,7 @@
 
             <!-- Tempat Lahir Wali -->
             <div>
-                <label for="tempat_lahir_wali" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="tempat_lahir_wali" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Tempat Lahir Wali
                 </label>
                 <input type="text" 
@@ -916,19 +916,19 @@
 
             <!-- Tanggal Lahir Wali -->
             <div>
-                <label for="tanggal_lahir_wali" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="tanggal_lahir_wali" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Tanggal Lahir Wali
                 </label>
                 <input type="date" 
                        id="tanggal_lahir_wali"
                        name="tanggal_lahir_wali" 
                        value="{{ old('tanggal_lahir_wali') }}"
-                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" [color-scheme:light] dark:[color-scheme:dark]>
             </div>
 
             <!-- Pendidikan Wali -->
             <div>
-                <label for="pendidikan_wali" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="pendidikan_wali" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Pendidikan Wali
                 </label>
                 <select id="pendidikan_wali" 
@@ -950,7 +950,7 @@
 
             <!-- Pekerjaan Wali -->
             <div>
-                <label for="pekerjaan_wali" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="pekerjaan_wali" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Pekerjaan Wali
                 </label>
                 <select id="pekerjaan_wali"
@@ -966,7 +966,7 @@
 
             <!-- No Telepon Wali -->
             <div>
-                <label for="nomor_telepon_wali" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="nomor_telepon_wali" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Nomor Telepon/WA Wali
                 </label>
                 <input type="tel" 
@@ -979,7 +979,7 @@
 
             <!-- Email Wali -->
             <div>
-                <label for="email_wali" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="email_wali" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Email Wali
                 </label>
                 <input type="email" 
@@ -992,21 +992,21 @@
     </div>
 
     <!-- Informasi Tambahan -->
-    <div class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm mt-6">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-100 dark:border-slate-700 shadow-sm mt-6">
         <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600">
+            <div class="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center text-orange-600 dark:text-orange-500">
                 <span class="material-symbols-outlined">info</span>
             </div>
             <div>
-                <h3 class="text-lg font-bold text-slate-800 tracking-tight">Informasi Tambahan</h3>
-                <p class="text-xs text-slate-400">Informasi seputar pendaftaran</p>
+                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight">Informasi Tambahan</h3>
+                <p class="text-xs text-slate-400 dark:text-slate-500">Informasi seputar pendaftaran</p>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Tahun Ajaran -->
             <div>
-                <label for="tahun_ajaran_id" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="tahun_ajaran_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Tahun Ajaran *
                 </label>
                 <select id="tahun_ajaran_id" 
@@ -1024,7 +1024,7 @@
 
             <!-- Jenis Daftar -->
             <div>
-                <label for="jenis_daftar" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="jenis_daftar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Jenis Pendaftaran *
                 </label>
                 <select id="jenis_daftar" 
@@ -1039,7 +1039,7 @@
 
             <!-- Sumber Informasi -->
             <div>
-                <label for="sumber_informasi_ppdb" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="sumber_informasi_ppdb" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Sumber Informasi PPDB
                 </label>
                 <select id="sumber_informasi_ppdb" 
@@ -1057,7 +1057,7 @@
 
             <!-- Punya Saudara Sekolah TK -->
             <div>
-                <label for="punya_saudara_sekolah_tk" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="punya_saudara_sekolah_tk" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Apakah anak memiliki saudara yang bersekolah di TK ini?
                 </label>
                 <select id="punya_saudara_sekolah_tk" 
@@ -1072,21 +1072,21 @@
     </div>
 
     <!-- Dokumen Pendukung -->
-    <div class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm mt-6">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-100 dark:border-slate-700 shadow-sm mt-6">
         <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center text-yellow-600">
+            <div class="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center text-yellow-600 dark:text-yellow-500">
                 <span class="material-symbols-outlined">description</span>
             </div>
             <div>
-                <h3 class="text-lg font-bold text-slate-800 tracking-tight">Dokumen Pendukung</h3>
-                <p class="text-xs text-slate-400">Upload dokumen yang diperlukan (PDF/JPG/PNG, maks. 2MB)</p>
+                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight">Dokumen Pendukung</h3>
+                <p class="text-xs text-slate-400 dark:text-slate-500">Upload dokumen yang diperlukan (PDF/JPG/PNG, maks. 2MB)</p>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Akta Kelahiran -->
             <div>
-                <label for="akte_kelahiran" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="akte_kelahiran" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Akta Kelahiran *
                 </label>
                 <input type="file" 
@@ -1094,11 +1094,11 @@
                        name="akte_kelahiran" 
                        accept=".pdf,.jpg,.jpeg,.png"
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('akte_kelahiran') border-red-500 @enderror">
-                <p class="text-xs text-gray-500 mt-1">Format: PDF, JPG, PNG (maks. 2MB)</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Format: PDF, JPG, PNG (maks. 2MB)</p>
                 @if(isset($dokumenData['akte_kelahiran']))
-                <div class="mt-2 p-2 bg-green-50 rounded-lg flex items-center gap-2">
-                    <span class="material-symbols-outlined text-green-600">check_circle</span>
-                    <span class="text-sm text-green-700">{{ $dokumenData['akte_kelahiran']->nama_file }}</span>
+                <div class="mt-2 p-2 bg-green-50 dark:bg-green-900/10 rounded-lg flex items-center gap-2">
+                    <span class="material-symbols-outlined text-green-600 dark:text-green-500">check_circle</span>
+                    <span class="text-sm text-green-700 dark:text-green-400">{{ $dokumenData['akte_kelahiran']->nama_file }}</span>
                     <a href="{{ asset('storage/' . $dokumenData['akte_kelahiran']->path_file) }}" target="_blank" class="text-xs text-primary underline">Lihat</a>
                 </div>
                 @endif
@@ -1106,7 +1106,7 @@
 
             <!-- Kartu Keluarga -->
             <div>
-                <label for="kartu_keluarga" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="kartu_keluarga" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Kartu Keluarga *
                 </label>
                 <input type="file" 
@@ -1114,11 +1114,11 @@
                        name="kartu_keluarga" 
                        accept=".pdf,.jpg,.jpeg,.png"
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('kartu_keluarga') border-red-500 @enderror">
-                <p class="text-xs text-gray-500 mt-1">Format: PDF, JPG, PNG (maks. 2MB)</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Format: PDF, JPG, PNG (maks. 2MB)</p>
                 @if(isset($dokumenData['kartu_keluarga']))
-                <div class="mt-2 p-2 bg-green-50 rounded-lg flex items-center gap-2">
-                    <span class="material-symbols-outlined text-green-600">check_circle</span>
-                    <span class="text-sm text-green-700">{{ $dokumenData['kartu_keluarga']->nama_file }}</span>
+                <div class="mt-2 p-2 bg-green-50 dark:bg-green-900/10 rounded-lg flex items-center gap-2">
+                    <span class="material-symbols-outlined text-green-600 dark:text-green-500">check_circle</span>
+                    <span class="text-sm text-green-700 dark:text-green-400">{{ $dokumenData['kartu_keluarga']->nama_file }}</span>
                     <a href="{{ asset('storage/' . $dokumenData['kartu_keluarga']->path_file) }}" target="_blank" class="text-xs text-primary underline">Lihat</a>
                 </div>
                 @endif
@@ -1126,7 +1126,7 @@
 
             <!-- KTP Orang Tua -->
             <div>
-                <label for="ktp_orang_tua" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="ktp_orang_tua" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     KTP Orang Tua/Wali *
                 </label>
                 <input type="file" 
@@ -1134,11 +1134,11 @@
                        name="ktp_orang_tua" 
                        accept=".pdf,.jpg,.jpeg,.png"
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('ktp_orang_tua') border-red-500 @enderror">
-                <p class="text-xs text-gray-500 mt-1">Format: PDF, JPG, PNG (maks. 2MB)</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Format: PDF, JPG, PNG (maks. 2MB)</p>
                 @if(isset($dokumenData['ktp_orang_tua']))
-                <div class="mt-2 p-2 bg-green-50 rounded-lg flex items-center gap-2">
-                    <span class="material-symbols-outlined text-green-600">check_circle</span>
-                    <span class="text-sm text-green-700">{{ $dokumenData['ktp_orang_tua']->nama_file }}</span>
+                <div class="mt-2 p-2 bg-green-50 dark:bg-green-900/10 rounded-lg flex items-center gap-2">
+                    <span class="material-symbols-outlined text-green-600 dark:text-green-500">check_circle</span>
+                    <span class="text-sm text-green-700 dark:text-green-400">{{ $dokumenData['ktp_orang_tua']->nama_file }}</span>
                     <a href="{{ asset('storage/' . $dokumenData['ktp_orang_tua']->path_file) }}" target="_blank" class="text-xs text-primary underline">Lihat</a>
                 </div>
                 @endif
@@ -1148,7 +1148,7 @@
 
     <!-- Submit Buttons -->
     <div class="flex items-center justify-end gap-4 mt-6 pb-12">
-        <a href="{{ route('admin.ppdb.index') }}" class="px-8 py-3 bg-white text-slate-600 border border-slate-200 rounded-2xl font-bold text-sm hover:bg-slate-50 transition-all shadow-sm">
+        <a href="{{ route('admin.ppdb.index') }}" class="px-8 py-3 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm">
             Batal
         </a>
         <button type="submit" class="px-8 py-3 bg-primary text-white rounded-2xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
@@ -1158,10 +1158,10 @@
 </form>
 
 <!-- Status Information -->
-<div class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm mt-6">
+<div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-100 dark:border-slate-700 shadow-sm mt-6">
     <div class="flex items-center gap-2 mb-8">
         <span class="material-symbols-outlined text-primary">info</span>
-        <h3 class="text-lg font-bold text-slate-800 tracking-tight">Status Information</h3>
+        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight">Status Information</h3>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-1 gap-6 max-w-2xl">
         <div class="flex gap-4">
@@ -1169,8 +1169,8 @@
                 <div class="w-3 h-3 rounded-full bg-orange-400 mt-1"></div>
             </div>
             <div class="flex flex-col">
-                <span class="text-sm font-bold text-slate-800 tracking-tight leading-tight">Menunggu Verifikasi</span>
-                <span class="text-xs text-slate-500 mt-0.5">Pendaftaran baru masuk dan perlu diperiksa.</span>
+                <span class="text-sm font-bold text-slate-800 dark:text-slate-100 tracking-tight leading-tight">Menunggu Verifikasi</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pendaftaran baru masuk dan perlu diperiksa.</span>
             </div>
         </div>
         <div class="flex gap-4">
@@ -1178,8 +1178,8 @@
                 <div class="w-3 h-3 rounded-full bg-yellow-400 mt-1"></div>
             </div>
             <div class="flex flex-col">
-                <span class="text-sm font-bold text-slate-800 tracking-tight leading-tight">Revisi Dokumen</span>
-                <span class="text-xs text-slate-500 mt-0.5">Menunggu perbaikan berkas dari orang tua.</span>
+                <span class="text-sm font-bold text-slate-800 dark:text-slate-100 tracking-tight leading-tight">Revisi Dokumen</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Menunggu perbaikan berkas dari orang tua.</span>
             </div>
         </div>
         <div class="flex gap-4">
@@ -1187,8 +1187,8 @@
                 <div class="w-3 h-3 rounded-full bg-blue-500 mt-1"></div>
             </div>
             <div class="flex flex-col">
-                <span class="text-sm font-bold text-slate-800 tracking-tight leading-tight">Dokumen Verified</span>
-                <span class="text-xs text-slate-500 mt-0.5">Berkas lengkap dan valid.</span>
+                <span class="text-sm font-bold text-slate-800 dark:text-slate-100 tracking-tight leading-tight">Dokumen Verified</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Berkas lengkap dan valid.</span>
             </div>
         </div>
         <div class="flex gap-4">
@@ -1196,8 +1196,8 @@
                 <div class="w-3 h-3 rounded-full bg-green-500 mt-1"></div>
             </div>
             <div class="flex flex-col">
-                <span class="text-sm font-bold text-slate-800 tracking-tight leading-tight">Lulus</span>
-                <span class="text-xs text-slate-500 mt-0.5">Calon siswa diterima.</span>
+                <span class="text-sm font-bold text-slate-800 dark:text-slate-100 tracking-tight leading-tight">Lulus</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Calon siswa diterima.</span>
             </div>
         </div>
         <div class="flex gap-4">
@@ -1205,8 +1205,8 @@
                 <div class="w-3 h-3 rounded-full bg-red-500 mt-1"></div>
             </div>
             <div class="flex flex-col">
-                <span class="text-sm font-bold text-slate-800 tracking-tight leading-tight">Tidak Lulus</span>
-                <span class="text-xs text-slate-500 mt-0.5">Calon siswa tidak diterima.</span>
+                <span class="text-sm font-bold text-slate-800 dark:text-slate-100 tracking-tight leading-tight">Tidak Lulus</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Calon siswa tidak diterima.</span>
             </div>
         </div>
     </div>

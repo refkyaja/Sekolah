@@ -11,8 +11,29 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                "primary": "#308ce8",
+                "secondary": "#fbbf24",
+                "accent": "#f472b6",
+                "accent-blue":      "#e0f2fe",
+                "accent-yellow":    "#fef3c7",
+                "accent-pink":      "#fce7f3",
+                "accent-purple":    "#ede9fe",
+                "accent-green":     "#dcfce7",
+                "cta-pink":         "#e85d97",
+                "background-light": "#f6f7f8",
+                "background-dark":  "#111921",
+            },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Lexend', ...defaultTheme.fontFamily.sans],
+                display: ['Lexend', 'sans-serif'],
+            },
+            borderRadius: {
+                "DEFAULT": "1rem",
+                "lg":      "1.5rem",
+                "xl":      "2.5rem",
+                "2xl":     "3rem",
+                "full":    "9999px",
             },
         },
     },

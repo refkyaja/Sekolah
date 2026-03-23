@@ -1,8 +1,5 @@
 @extends('layouts.admin')
 
-@section('title', 'Tambah Jadwal Pelajaran')
-@section('breadcrumb', 'Jadwal Pelajaran / Tambah')
-
 @section('content')
 <div class="max-w-3xl mx-auto">
     <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-5 sm:p-8">

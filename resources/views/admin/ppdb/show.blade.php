@@ -134,13 +134,13 @@
 @endpush
 
 @section('content')
-<nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 uppercase tracking-widest">
+<nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-widest">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
         <li><a class="hover:text-primary" href="{{ route($routePrefix . '.ppdb.index') }}">PPDB</a></li>
         <li><span class="mx-2">/</span></li>
         <li><a class="hover:text-primary" href="{{ route($routePrefix . '.ppdb.index') }}">Pendaftaran</a></li>
         <li><span class="mx-2">/</span></li>
-        <li class="text-slate-600">Detail Pendaftaran</li>
+        <li class="text-slate-600 dark:text-slate-400">Detail Pendaftaran</li>
     </ol>
 </nav>
 
@@ -149,36 +149,36 @@ $statusBadge = '';
 $statusText = $spmb->status_pendaftaran ?? 'Menunggu Verifikasi';
 switch($statusText) {
     case 'Lulus':
-        $statusBadge = 'bg-green-100 text-green-700';
+        $statusBadge = 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400';
         $statusLabel = 'LULUS';
         break;
     case 'Tidak Lulus':
-        $statusBadge = 'bg-red-100 text-red-700';
+        $statusBadge = 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400';
         $statusLabel = 'TIDAK LULUS';
         break;
     case 'Dokumen Verified':
-        $statusBadge = 'bg-blue-100 text-blue-700';
+        $statusBadge = 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400';
         $statusLabel = 'DOKUMEN VERIFIED';
         break;
     case 'Revisi Dokumen':
-        $statusBadge = 'bg-amber-100 text-amber-700';
+        $statusBadge = 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400';
         $statusLabel = 'REVISI DOKUMEN';
         break;
     default:
-        $statusBadge = 'bg-orange-100 text-orange-700';
+        $statusBadge = 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400';
         $statusLabel = 'MENUNGGU VERIFIKASI';
 }
 @endphp
 
 @if($spmb->catatan_admin)
-<div class="bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-8">
+<div class="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 rounded-2xl p-6 mb-8">
     <div class="flex items-start gap-4">
-        <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined text-amber-600">info</span>
+        <div class="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-amber-600 dark:text-amber-500">info</span>
         </div>
         <div class="flex-1">
-            <h4 class="font-bold text-slate-800 mb-1">Catatan untuk Siswa</h4>
-            <p class="text-slate-600 text-sm">{{ $spmb->catatan_admin }}</p>
+            <h4 class="font-bold text-slate-800 dark:text-slate-100 mb-1">Catatan untuk Siswa</h4>
+            <p class="text-slate-600 dark:text-slate-400 text-sm">{{ $spmb->catatan_admin }}</p>
         </div>
     </div>
 </div>
@@ -206,17 +206,17 @@ switch($statusText) {
         </div>
         <div>
             <div class="flex items-center gap-3">
-                <h1 class="text-3xl font-bold text-slate-900 tracking-tight">{{ $spmb->nama_lengkap_anak ?? '-' }}</h1>
+                <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">{{ $spmb->nama_lengkap_anak ?? '-' }}</h1>
                 <span class="inline-flex items-center px-4 py-1 rounded-full text-xs font-bold {{ $statusBadge }} uppercase tracking-widest">{{ $statusLabel }}</span>
             </div>
-            <p class="text-sm font-medium text-slate-500 mt-1 flex items-center gap-2">
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-2">
                 <span class="material-symbols-outlined text-sm">confirmation_number</span>
                 {{ $spmb->no_pendaftaran ?? '-' }}
             </p>
         </div>
     </div>
     <div class="flex items-center gap-3">
-        <a href="{{ route($routePrefix . '.ppdb.index') }}" class="flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all shadow-sm">
+        <a href="{{ route($routePrefix . '.ppdb.index') }}" class="flex items-center gap-2 px-6 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-400 rounded-xl font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm">
             <span class="material-symbols-outlined text-lg">arrow_back</span>
             Kembali
         </a>
@@ -232,97 +232,97 @@ switch($statusText) {
     <!-- Left Column -->
     <div class="space-y-8">
         <!-- Data Pendaftaran -->
-        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center gap-3">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-3">
                 <span class="material-symbols-outlined text-primary">app_registration</span>
-                <h3 class="font-bold text-slate-800">Data Pendaftaran</h3>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100">Data Pendaftaran</h3>
             </div>
             <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Kode Pendaftaran</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Kode Pendaftaran</p>
                     <p class="text-sm font-bold text-primary">{{ $spmb->no_pendaftaran ?? '-' }}</p>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Tanggal Daftar</p>
-                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->created_at ? $spmb->created_at->format('d M Y, H:i') : '-' }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Tanggal Daftar</p>
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->created_at ? $spmb->created_at->format('d M Y, H:i') : '-' }}</p>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Status</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Status</p>
                     <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-bold {{ $statusBadge }} uppercase tracking-wider">{{ $statusLabel }}</span>
                 </div>
             </div>
         </div>
 
         <!-- Identitas Anak -->
-        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center gap-3">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-3">
                 <span class="material-symbols-outlined text-primary">child_care</span>
-                <h3 class="font-bold text-slate-800">Identitas Anak</h3>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100">Identitas Anak</h3>
             </div>
             <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
                 <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">NIK</p>
-                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->nik_anak ?? '-' }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">NIK</p>
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nik_anak ?? '-' }}</p>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Nama Lengkap</p>
-                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->nama_lengkap_anak ?? '-' }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Nama Lengkap</p>
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nama_lengkap_anak ?? '-' }}</p>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Nama Panggilan</p>
-                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->nama_panggilan_anak ?? '-' }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Nama Panggilan</p>
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nama_panggilan_anak ?? '-' }}</p>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Tempat, Tanggal Lahir</p>
-                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->tempat_lahir_anak ?? '-' }}, {{ $spmb->tanggal_lahir_anak ? \Carbon\Carbon::parse($spmb->tanggal_lahir_anak)->format('d M Y') : '-' }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Tempat, Tanggal Lahir</p>
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->tempat_lahir_anak ?? '-' }}, {{ $spmb->tanggal_lahir_anak ? \Carbon\Carbon::parse($spmb->tanggal_lahir_anak)->format('d M Y') : '-' }}</p>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Jenis Kelamin</p>
-                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->jenis_kelamin ?? '-' }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Jenis Kelamin</p>
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->jenis_kelamin ?? '-' }}</p>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Agama</p>
-                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->agama ?? '-' }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Agama</p>
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->agama ?? '-' }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Alamat Lengkap -->
-        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center gap-3">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-3">
                 <span class="material-symbols-outlined text-primary">location_on</span>
-                <h3 class="font-bold text-slate-800">Alamat Lengkap</h3>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100">Alamat Lengkap</h3>
             </div>
             <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
                 <div class="md:col-span-2">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Alamat Lengkap</p>
-                    <p class="text-sm font-semibold text-slate-700 leading-relaxed">{{ $spmb->nama_jalan_rumah ?? '-' }}, RT {{ $spmb->rt ?? '-' }} RW {{ $spmb->rw ?? '-' }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Alamat Lengkap</p>
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300 leading-relaxed">{{ $spmb->nama_jalan_rumah ?? '-' }}, RT {{ $spmb->rt ?? '-' }} RW {{ $spmb->rw ?? '-' }}</p>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Provinsi</p>
-                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->provinsi_rumah ?? '-' }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Provinsi</p>
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->provinsi_rumah ?? '-' }}</p>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Kota/Kabupaten</p>
-                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->kota_kabupaten_rumah ?? '-' }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Kota/Kabupaten</p>
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->kota_kabupaten_rumah ?? '-' }}</p>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Kecamatan</p>
-                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->kecamatan_rumah ?? '-' }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Kecamatan</p>
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->kecamatan_rumah ?? '-' }}</p>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Kelurahan</p>
-                    <p class="text-sm font-semibold text-slate-700">{{ $spmb->kelurahan_rumah ?? '-' }}</p>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Kelurahan</p>
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->kelurahan_rumah ?? '-' }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Catatan Pendaftaran -->
-        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/50 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <span class="material-symbols-outlined text-primary">history_edu</span>
-                    <h3 class="font-bold text-slate-800">Catatan Pendaftaran</h3>
+                    <h3 class="font-bold text-slate-800 dark:text-slate-100">Catatan Pendaftaran</h3>
                 </div>
                 @if($canAddCatatan)
                     <button onclick="openCatatanModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-lavender/40 text-primary rounded-lg text-xs font-bold hover:bg-lavender/60 transition-all">
@@ -336,21 +336,21 @@ switch($statusText) {
                 <div class="relative pl-8 space-y-8 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
                     @foreach($catatanUtama as $riwayat)
                     <div class="relative">
-                        <div class="absolute -left-[29px] top-1 w-5 h-5 rounded-full {{ $loop->first ? 'bg-slate-900' : 'bg-white' }} {{ $loop->first ? 'border-4 border-slate-200' : 'border-2 border-slate-300' }} shadow-sm z-10"></div>
+                        <div class="absolute -left-[29px] top-1 w-5 h-5 rounded-full {{ $loop->first ? 'bg-slate-900' : 'bg-white dark:bg-slate-800' }} {{ $loop->first ? 'border-4 border-slate-200 dark:border-slate-600' : 'border-2 border-slate-300' }} shadow-sm z-10"></div>
                         <div class="flex flex-col gap-2">
                             <div class="flex items-center justify-between">
-                                <h4 class="text-sm font-bold text-slate-800">{{ $riwayat->status_baru ?? 'Pendaftaran Baru' }}</h4>
-                                <span class="text-[10px] font-medium text-slate-400 uppercase tracking-widest">{{ $riwayat->created_at ? $riwayat->created_at->format('d M Y, H:i') : '-' }}</span>
+                                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100">{{ $riwayat->status_baru ?? 'Pendaftaran Baru' }}</h4>
+                                <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-widest">{{ $riwayat->created_at ? $riwayat->created_at->format('d M Y, H:i') : '-' }}</span>
                             </div>
-                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                                <p class="text-sm text-slate-600 leading-relaxed">{{ $riwayat->keterangan ?? 'Tidak ada keterangan' }}</p>
+                            <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
+                                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{{ $riwayat->keterangan ?? 'Tidak ada keterangan' }}</p>
                             </div>
                             @if($riwayat->user)
                             <div class="flex items-center gap-2">
                                 <div class="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
                                     <span class="material-symbols-outlined text-[12px] text-primary">person</span>
                                 </div>
-                                <p class="text-[10px] font-bold text-slate-500">{{ $riwayat->user->name ?? 'Admin' }} ({{ $riwayat->role_pengubah ?? 'admin' }})</p>
+                                <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400">{{ $riwayat->user->name ?? 'Admin' }} ({{ $riwayat->role_pengubah ?? 'admin' }})</p>
                             </div>
                             @endif
                         </div>
@@ -358,29 +358,29 @@ switch($statusText) {
                     @endforeach
                 </div>
                 @if($catatanLainnya->count() > 0)
-                <details class="mt-6 rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
-                    <summary class="cursor-pointer list-none text-sm font-bold text-slate-700">
+                <details class="mt-6 rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50/80 p-4">
+                    <summary class="cursor-pointer list-none text-sm font-bold text-slate-700 dark:text-slate-300">
                         Lainnya
-                        <span class="ml-2 text-xs font-medium text-slate-400">({{ $catatanLainnya->count() }} catatan lama)</span>
+                        <span class="ml-2 text-xs font-medium text-slate-400 dark:text-slate-500">({{ $catatanLainnya->count() }} catatan lama)</span>
                     </summary>
                     <div class="relative mt-4 pl-8 space-y-8 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
                         @foreach($catatanLainnya as $riwayat)
                         <div class="relative">
-                            <div class="absolute -left-[29px] top-1 w-5 h-5 rounded-full bg-white border-2 border-slate-300 shadow-sm z-10"></div>
+                            <div class="absolute -left-[29px] top-1 w-5 h-5 rounded-full bg-white dark:bg-slate-800 border-2 border-slate-300 shadow-sm z-10"></div>
                             <div class="flex flex-col gap-2">
                                 <div class="flex items-center justify-between">
-                                    <h4 class="text-sm font-bold text-slate-800">{{ $riwayat->status_baru ?? 'Pendaftaran Baru' }}</h4>
-                                    <span class="text-[10px] font-medium text-slate-400 uppercase tracking-widest">{{ $riwayat->created_at ? $riwayat->created_at->format('d M Y, H:i') : '-' }}</span>
+                                    <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100">{{ $riwayat->status_baru ?? 'Pendaftaran Baru' }}</h4>
+                                    <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-widest">{{ $riwayat->created_at ? $riwayat->created_at->format('d M Y, H:i') : '-' }}</span>
                                 </div>
-                                <div class="bg-white rounded-xl p-4 border border-slate-100">
-                                    <p class="text-sm text-slate-600 leading-relaxed">{{ $riwayat->keterangan ?? 'Tidak ada keterangan' }}</p>
+                                <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
+                                    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{{ $riwayat->keterangan ?? 'Tidak ada keterangan' }}</p>
                                 </div>
                                 @if($riwayat->user)
                                 <div class="flex items-center gap-2">
                                     <div class="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
                                         <span class="material-symbols-outlined text-[12px] text-primary">person</span>
                                     </div>
-                                    <p class="text-[10px] font-bold text-slate-500">{{ $riwayat->user->name ?? 'Admin' }} ({{ $riwayat->role_pengubah ?? 'admin' }})</p>
+                                    <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400">{{ $riwayat->user->name ?? 'Admin' }} ({{ $riwayat->role_pengubah ?? 'admin' }})</p>
                                 </div>
                                 @endif
                             </div>
@@ -391,8 +391,8 @@ switch($statusText) {
                 @endif
                 @else
                 <div class="text-center py-8">
-                    <span class="material-symbols-outlined text-4xl text-slate-300 mb-2">history</span>
-                    <p class="text-sm text-slate-500">Belum ada riwayat catatan</p>
+                    <span class="material-symbols-outlined text-4xl text-slate-300 dark:text-slate-600 mb-2">history</span>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Belum ada riwayat catatan</p>
                 </div>
                 @endif
             </div>
@@ -402,63 +402,63 @@ switch($statusText) {
     <!-- Right Column -->
     <div class="space-y-8">
         <!-- Data Orang Tua -->
-        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center gap-3">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-3">
                 <span class="material-symbols-outlined text-primary">family_restroom</span>
-                <h3 class="font-bold text-slate-800">Data Orang Tua</h3>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100">Data Orang Tua</h3>
             </div>
             <div class="p-6 space-y-8">
                 <!-- Data Ayah -->
                 <div>
                     <div class="flex items-center gap-2 mb-4">
                         <div class="w-1.5 h-4 bg-primary rounded-full"></div>
-                        <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest">Data Ayah</h4>
+                        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Data Ayah</h4>
                     </div>
                     <div class="space-y-4">
                         <div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nama Ayah</p>
-                            <p class="text-sm font-semibold text-slate-700">{{ $spmb->nama_lengkap_ayah ?? '-' }}</p>
+                            <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Nama Ayah</p>
+                            <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nama_lengkap_ayah ?? '-' }}</p>
                         </div>
                         <div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">NIK Ayah</p>
-                            <p class="text-sm font-semibold text-slate-700">{{ $spmb->nik_ayah ?? '-' }}</p>
+                            <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">NIK Ayah</p>
+                            <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nik_ayah ?? '-' }}</p>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pekerjaan</p>
-                                <p class="text-sm font-semibold text-slate-700">{{ $spmb->pekerjaan_ayah ?? '-' }}</p>
+                                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Pekerjaan</p>
+                                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->pekerjaan_ayah ?? '-' }}</p>
                             </div>
                             <div>
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">No HP</p>
-                                <p class="text-sm font-semibold text-slate-700">{{ $spmb->nomor_telepon_ayah ?? '-' }}</p>
+                                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">No HP</p>
+                                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nomor_telepon_ayah ?? '-' }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Data Ibu -->
-                <div class="pt-6 border-t border-slate-100">
+                <div class="pt-6 border-t border-slate-100 dark:border-slate-700">
                     <div class="flex items-center gap-2 mb-4">
                         <div class="w-1.5 h-4 bg-pink-500 rounded-full"></div>
-                        <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest">Data Ibu</h4>
+                        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Data Ibu</h4>
                     </div>
                     <div class="space-y-4">
                         <div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nama Ibu</p>
-                            <p class="text-sm font-semibold text-slate-700">{{ $spmb->nama_lengkap_ibu ?? '-' }}</p>
+                            <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Nama Ibu</p>
+                            <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nama_lengkap_ibu ?? '-' }}</p>
                         </div>
                         <div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">NIK Ibu</p>
-                            <p class="text-sm font-semibold text-slate-700">{{ $spmb->nik_ibu ?? '-' }}</p>
+                            <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">NIK Ibu</p>
+                            <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nik_ibu ?? '-' }}</p>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pekerjaan</p>
-                                <p class="text-sm font-semibold text-slate-700">{{ $spmb->pekerjaan_ibu ?? '-' }}</p>
+                                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Pekerjaan</p>
+                                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->pekerjaan_ibu ?? '-' }}</p>
                             </div>
                             <div>
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">No HP</p>
-                                <p class="text-sm font-semibold text-slate-700">{{ $spmb->nomor_telepon_ibu ?? '-' }}</p>
+                                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">No HP</p>
+                                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nomor_telepon_ibu ?? '-' }}</p>
                             </div>
                         </div>
                     </div>
@@ -467,24 +467,24 @@ switch($statusText) {
         </div>
 
         <!-- Dokumen Terlampir -->
-        <div id="section-dokumen" class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50">
+        <div id="section-dokumen" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/50">
                 <div class="flex items-center justify-between mb-2">
                     <div class="flex items-center gap-3">
                         <span class="material-symbols-outlined text-primary">description</span>
-                        <h3 class="font-bold text-slate-800">Dokumen Terlampir</h3>
+                        <h3 class="font-bold text-slate-800 dark:text-slate-100">Dokumen Terlampir</h3>
                     </div>
                     
                     @php
                     $allVerified = ($spmb->verifikasi_akte ?? false) && ($spmb->verifikasi_kk ?? false) && ($spmb->verifikasi_ktp ?? false);
                     @endphp
                     @if($allVerified)
-                    <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full flex items-center gap-1">
+                    <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold rounded-full flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm">check_circle</span>
                         Lengkap
                     </span>
                     @else
-                    <span class="px-3 py-1 bg-amber-100 text-amber-700 text-xs font-bold rounded-full flex items-center gap-1">
+                    <span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold rounded-full flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm">hourglass_empty</span>
                         Belum Lengkap
                     </span>
@@ -495,7 +495,7 @@ switch($statusText) {
                 $progress = $spmb->progress_verifikasi;
                 @endphp
                 <div class="flex items-center gap-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500 whitespace-nowrap">{{ $progress['terverifikasi'] }}/{{ $progress['total'] }} Dokumen Terverifikasi</span>
+                    <span class="text-xs font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">{{ $progress['terverifikasi'] }}/{{ $progress['total'] }} Dokumen Terverifikasi</span>
                     <div class="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden max-w-xs">
                         <div class="h-full bg-primary transition-all" style="width: {{ $progress['persentase'] }}%"></div>
                     </div>
@@ -521,31 +521,31 @@ switch($statusText) {
                 $fileName = $docData->nama_file ?? 'Belum diupload';
                 $displayName = strlen($fileName) > 20 ? substr($fileName, 0, 17) . '...' : $fileName;
                 @endphp
-                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border {{ $isVerified ? 'border-green-200' : 'border-slate-200' }}">
+                <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border {{ $isVerified ? 'border-green-200' : 'border-slate-200 dark:border-slate-600' }}">
                     <div class="flex items-center gap-3 flex-1 min-w-0">
-                        <div class="w-10 h-10 {{ $isVerified ? 'bg-green-100' : 'bg-slate-200' }} rounded-xl flex items-center justify-center flex-shrink-0">
-                            <span class="material-symbols-outlined {{ $isVerified ? 'text-green-600' : 'text-slate-500' }} text-xl">{{ $doc['icon'] }}</span>
+                        <div class="w-10 h-10 {{ $isVerified ? 'bg-green-100 dark:bg-green-900/30' : 'bg-slate-200' }} rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined {{ $isVerified ? 'text-green-600 dark:text-green-500' : 'text-slate-500 dark:text-slate-400' }} text-xl">{{ $doc['icon'] }}</span>
                         </div>
                         <div class="min-w-0 flex-1">
-                            <p class="text-sm font-bold text-slate-800 truncate">{{ $doc['label'] }}</p>
-                            <p class="text-xs text-slate-500 truncate">{{ $displayName }}</p>
+                            <p class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">{{ $doc['label'] }}</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ $displayName }}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 ml-2 flex-shrink-0">
                         @if($isVerified)
-                        <span class="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded-full flex items-center gap-1 whitespace-nowrap">
+                        <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-bold rounded-full flex items-center gap-1 whitespace-nowrap">
                             <span class="material-symbols-outlined text-xs">check_circle</span>
                             Verified
                         </span>
                         @else
-                        <span class="px-2 py-1 bg-amber-100 text-amber-700 text-[10px] font-bold rounded-full flex items-center gap-1 whitespace-nowrap">
+                        <span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[10px] font-bold rounded-full flex items-center gap-1 whitespace-nowrap">
                             <span class="material-symbols-outlined text-xs">hourglass_empty</span>
                             Pending
                         </span>
                         @endif
                         
                         @if($hasUploadedDoc)
-                        <button type="button" onclick="openDokumenModal('{{ asset('storage/' . $docData->path_file) }}')" class="p-1.5 bg-white text-primary rounded-lg border border-primary/20 hover:bg-primary hover:text-white transition-all" title="Lihat Dokumen">
+                        <button type="button" onclick="openDokumenModal('{{ asset('storage/' . $docData->path_file) }}')" class="p-1.5 bg-white dark:bg-slate-800 text-primary rounded-lg border border-primary/20 hover:bg-primary hover:text-white transition-all" title="Lihat Dokumen">
                             <span class="material-symbols-outlined text-sm">visibility</span>
                         </button>
                         @endif
@@ -571,7 +571,7 @@ switch($statusText) {
                                 </button>
                             </form>
                             @else
-                            <button type="button" disabled class="p-1.5 bg-slate-200 text-slate-400 rounded-lg cursor-not-allowed" title="Dokumen belum diupload">
+                            <button type="button" disabled class="p-1.5 bg-slate-200 text-slate-400 dark:text-slate-500 rounded-lg cursor-not-allowed" title="Dokumen belum diupload">
                                 <span class="material-symbols-outlined text-sm">check</span>
                             </button>
                             @endif
@@ -588,149 +588,149 @@ switch($statusText) {
 <!-- MOBILE VERSION (Single Column with Custom Order) -->
 <div class="mobile-layout space-y-8">
     <!-- Data Pendaftaran - Order 1 -->
-    <div class="mobile-order-1 bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center gap-3">
+    <div class="mobile-order-1 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-3">
             <span class="material-symbols-outlined text-primary">app_registration</span>
-            <h3 class="font-bold text-slate-800">Data Pendaftaran</h3>
+            <h3 class="font-bold text-slate-800 dark:text-slate-100">Data Pendaftaran</h3>
         </div>
         <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Kode Pendaftaran</p>
+                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Kode Pendaftaran</p>
                 <p class="text-sm font-bold text-primary">{{ $spmb->no_pendaftaran ?? '-' }}</p>
             </div>
             <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Tanggal Daftar</p>
-                <p class="text-sm font-semibold text-slate-700">{{ $spmb->created_at ? $spmb->created_at->format('d M Y, H:i') : '-' }}</p>
+                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Tanggal Daftar</p>
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->created_at ? $spmb->created_at->format('d M Y, H:i') : '-' }}</p>
             </div>
             <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Status</p>
+                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Status</p>
                 <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-bold {{ $statusBadge }} uppercase tracking-wider">{{ $statusLabel }}</span>
             </div>
         </div>
     </div>
 
     <!-- Identitas Anak - Order 2 -->
-    <div class="mobile-order-2 bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center gap-3">
+    <div class="mobile-order-2 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-3">
             <span class="material-symbols-outlined text-primary">child_care</span>
-            <h3 class="font-bold text-slate-800">Identitas Anak</h3>
+            <h3 class="font-bold text-slate-800 dark:text-slate-100">Identitas Anak</h3>
         </div>
         <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
             <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">NIK</p>
-                <p class="text-sm font-semibold text-slate-700">{{ $spmb->nik_anak ?? '-' }}</p>
+                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">NIK</p>
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nik_anak ?? '-' }}</p>
             </div>
             <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Nama Lengkap</p>
-                <p class="text-sm font-semibold text-slate-700">{{ $spmb->nama_lengkap_anak ?? '-' }}</p>
+                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Nama Lengkap</p>
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nama_lengkap_anak ?? '-' }}</p>
             </div>
             <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Nama Panggilan</p>
-                <p class="text-sm font-semibold text-slate-700">{{ $spmb->nama_panggilan_anak ?? '-' }}</p>
+                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Nama Panggilan</p>
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nama_panggilan_anak ?? '-' }}</p>
             </div>
             <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Tempat, Tanggal Lahir</p>
-                <p class="text-sm font-semibold text-slate-700">{{ $spmb->tempat_lahir_anak ?? '-' }}, {{ $spmb->tanggal_lahir_anak ? \Carbon\Carbon::parse($spmb->tanggal_lahir_anak)->format('d M Y') : '-' }}</p>
+                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Tempat, Tanggal Lahir</p>
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->tempat_lahir_anak ?? '-' }}, {{ $spmb->tanggal_lahir_anak ? \Carbon\Carbon::parse($spmb->tanggal_lahir_anak)->format('d M Y') : '-' }}</p>
             </div>
             <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Jenis Kelamin</p>
-                <p class="text-sm font-semibold text-slate-700">{{ $spmb->jenis_kelamin ?? '-' }}</p>
+                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Jenis Kelamin</p>
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->jenis_kelamin ?? '-' }}</p>
             </div>
             <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Agama</p>
-                <p class="text-sm font-semibold text-slate-700">{{ $spmb->agama ?? '-' }}</p>
+                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Agama</p>
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->agama ?? '-' }}</p>
             </div>
         </div>
     </div>
 
     <!-- Alamat Lengkap - Order 3 -->
-    <div class="mobile-order-3 bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center gap-3">
+    <div class="mobile-order-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-3">
             <span class="material-symbols-outlined text-primary">location_on</span>
-            <h3 class="font-bold text-slate-800">Alamat Lengkap</h3>
+            <h3 class="font-bold text-slate-800 dark:text-slate-100">Alamat Lengkap</h3>
         </div>
         <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
             <div class="md:col-span-2">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Alamat Lengkap</p>
-                <p class="text-sm font-semibold text-slate-700 leading-relaxed">{{ $spmb->nama_jalan_rumah ?? '-' }}, RT {{ $spmb->rt ?? '-' }} RW {{ $spmb->rw ?? '-' }}</p>
+                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Alamat Lengkap</p>
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300 leading-relaxed">{{ $spmb->nama_jalan_rumah ?? '-' }}, RT {{ $spmb->rt ?? '-' }} RW {{ $spmb->rw ?? '-' }}</p>
             </div>
             <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Provinsi</p>
-                <p class="text-sm font-semibold text-slate-700">{{ $spmb->provinsi_rumah ?? '-' }}</p>
+                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Provinsi</p>
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->provinsi_rumah ?? '-' }}</p>
             </div>
             <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Kota/Kabupaten</p>
-                <p class="text-sm font-semibold text-slate-700">{{ $spmb->kota_kabupaten_rumah ?? '-' }}</p>
+                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Kota/Kabupaten</p>
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->kota_kabupaten_rumah ?? '-' }}</p>
             </div>
             <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Kecamatan</p>
-                <p class="text-sm font-semibold text-slate-700">{{ $spmb->kecamatan_rumah ?? '-' }}</p>
+                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Kecamatan</p>
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->kecamatan_rumah ?? '-' }}</p>
             </div>
             <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Kelurahan</p>
-                <p class="text-sm font-semibold text-slate-700">{{ $spmb->kelurahan_rumah ?? '-' }}</p>
+                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Kelurahan</p>
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->kelurahan_rumah ?? '-' }}</p>
             </div>
         </div>
     </div>
 
     <!-- Data Orang Tua - Order 4 -->
-    <div class="mobile-order-4 bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center gap-3">
+    <div class="mobile-order-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-3">
             <span class="material-symbols-outlined text-primary">family_restroom</span>
-            <h3 class="font-bold text-slate-800">Data Orang Tua</h3>
+            <h3 class="font-bold text-slate-800 dark:text-slate-100">Data Orang Tua</h3>
         </div>
         <div class="p-6 space-y-8">
             <!-- Data Ayah -->
             <div>
                 <div class="flex items-center gap-2 mb-4">
                     <div class="w-1.5 h-4 bg-primary rounded-full"></div>
-                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest">Data Ayah</h4>
+                    <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Data Ayah</h4>
                 </div>
                 <div class="space-y-4">
                     <div>
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nama Ayah</p>
-                        <p class="text-sm font-semibold text-slate-700">{{ $spmb->nama_lengkap_ayah ?? '-' }}</p>
+                        <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Nama Ayah</p>
+                        <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nama_lengkap_ayah ?? '-' }}</p>
                     </div>
                     <div>
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">NIK Ayah</p>
-                        <p class="text-sm font-semibold text-slate-700">{{ $spmb->nik_ayah ?? '-' }}</p>
+                        <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">NIK Ayah</p>
+                        <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nik_ayah ?? '-' }}</p>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pekerjaan</p>
-                            <p class="text-sm font-semibold text-slate-700">{{ $spmb->pekerjaan_ayah ?? '-' }}</p>
+                            <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Pekerjaan</p>
+                            <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->pekerjaan_ayah ?? '-' }}</p>
                         </div>
                         <div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">No HP</p>
-                            <p class="text-sm font-semibold text-slate-700">{{ $spmb->nomor_telepon_ayah ?? '-' }}</p>
+                            <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">No HP</p>
+                            <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nomor_telepon_ayah ?? '-' }}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Data Ibu -->
-            <div class="pt-6 border-t border-slate-100">
+            <div class="pt-6 border-t border-slate-100 dark:border-slate-700">
                 <div class="flex items-center gap-2 mb-4">
                     <div class="w-1.5 h-4 bg-pink-500 rounded-full"></div>
-                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest">Data Ibu</h4>
+                    <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Data Ibu</h4>
                 </div>
                 <div class="space-y-4">
                     <div>
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nama Ibu</p>
-                        <p class="text-sm font-semibold text-slate-700">{{ $spmb->nama_lengkap_ibu ?? '-' }}</p>
+                        <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Nama Ibu</p>
+                        <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nama_lengkap_ibu ?? '-' }}</p>
                     </div>
                     <div>
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">NIK Ibu</p>
-                        <p class="text-sm font-semibold text-slate-700">{{ $spmb->nik_ibu ?? '-' }}</p>
+                        <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">NIK Ibu</p>
+                        <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nik_ibu ?? '-' }}</p>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pekerjaan</p>
-                            <p class="text-sm font-semibold text-slate-700">{{ $spmb->pekerjaan_ibu ?? '-' }}</p>
+                            <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Pekerjaan</p>
+                            <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->pekerjaan_ibu ?? '-' }}</p>
                         </div>
                         <div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">No HP</p>
-                            <p class="text-sm font-semibold text-slate-700">{{ $spmb->nomor_telepon_ibu ?? '-' }}</p>
+                            <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">No HP</p>
+                            <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->nomor_telepon_ibu ?? '-' }}</p>
                         </div>
                     </div>
                 </div>
@@ -739,24 +739,24 @@ switch($statusText) {
     </div>
 
     <!-- Dokumen Terlampir - Order 5 -->
-    <div class="mobile-order-5 bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50">
+    <div class="mobile-order-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/50">
             <div class="flex items-center justify-between mb-2">
                 <div class="flex items-center gap-3">
                     <span class="material-symbols-outlined text-primary">description</span>
-                    <h3 class="font-bold text-slate-800">Dokumen Terlampir</h3>
+                    <h3 class="font-bold text-slate-800 dark:text-slate-100">Dokumen Terlampir</h3>
                 </div>
                 
                 @php
                 $allVerified = ($spmb->verifikasi_akte ?? false) && ($spmb->verifikasi_kk ?? false) && ($spmb->verifikasi_ktp ?? false);
                 @endphp
                 @if($allVerified)
-                <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full flex items-center gap-1">
+                <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold rounded-full flex items-center gap-1">
                     <span class="material-symbols-outlined text-sm">check_circle</span>
                     Lengkap
                 </span>
                 @else
-                <span class="px-3 py-1 bg-amber-100 text-amber-700 text-xs font-bold rounded-full flex items-center gap-1">
+                <span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold rounded-full flex items-center gap-1">
                     <span class="material-symbols-outlined text-sm">hourglass_empty</span>
                     Belum Lengkap
                 </span>
@@ -767,7 +767,7 @@ switch($statusText) {
             $progress = $spmb->progress_verifikasi;
             @endphp
             <div class="flex items-center gap-3 mt-1">
-                <span class="text-xs font-medium text-slate-500 whitespace-nowrap">{{ $progress['terverifikasi'] }}/{{ $progress['total'] }} Dokumen Terverifikasi</span>
+                <span class="text-xs font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">{{ $progress['terverifikasi'] }}/{{ $progress['total'] }} Dokumen Terverifikasi</span>
                 <div class="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden max-w-xs">
                     <div class="h-full bg-primary transition-all" style="width: {{ $progress['persentase'] }}%"></div>
                 </div>
@@ -793,31 +793,31 @@ switch($statusText) {
             $fileName = $docData->nama_file ?? 'Belum diupload';
             $displayName = strlen($fileName) > 20 ? substr($fileName, 0, 17) . '...' : $fileName;
             @endphp
-            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border {{ $isVerified ? 'border-green-200' : 'border-slate-200' }}">
+            <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border {{ $isVerified ? 'border-green-200' : 'border-slate-200 dark:border-slate-600' }}">
                 <div class="flex items-center gap-3 flex-1 min-w-0">
-                    <div class="w-10 h-10 {{ $isVerified ? 'bg-green-100' : 'bg-slate-200' }} rounded-xl flex items-center justify-center flex-shrink-0">
-                        <span class="material-symbols-outlined {{ $isVerified ? 'text-green-600' : 'text-slate-500' }} text-xl">{{ $doc['icon'] }}</span>
+                    <div class="w-10 h-10 {{ $isVerified ? 'bg-green-100 dark:bg-green-900/30' : 'bg-slate-200' }} rounded-xl flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined {{ $isVerified ? 'text-green-600 dark:text-green-500' : 'text-slate-500 dark:text-slate-400' }} text-xl">{{ $doc['icon'] }}</span>
                     </div>
                     <div class="min-w-0 flex-1">
-                        <p class="text-sm font-bold text-slate-800 truncate">{{ $doc['label'] }}</p>
-                        <p class="text-xs text-slate-500 truncate">{{ $displayName }}</p>
+                        <p class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">{{ $doc['label'] }}</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ $displayName }}</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2 ml-2 flex-shrink-0">
                     @if($isVerified)
-                    <span class="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded-full flex items-center gap-1 whitespace-nowrap">
+                    <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-bold rounded-full flex items-center gap-1 whitespace-nowrap">
                         <span class="material-symbols-outlined text-xs">check_circle</span>
                         Verified
                     </span>
                     @else
-                    <span class="px-2 py-1 bg-amber-100 text-amber-700 text-[10px] font-bold rounded-full flex items-center gap-1 whitespace-nowrap">
+                    <span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[10px] font-bold rounded-full flex items-center gap-1 whitespace-nowrap">
                         <span class="material-symbols-outlined text-xs">hourglass_empty</span>
                         Pending
                     </span>
                     @endif
                     
                     @if($hasUploadedDoc)
-                    <button type="button" onclick="openDokumenModal('{{ asset('storage/' . $docData->path_file) }}')" class="p-1.5 bg-white text-primary rounded-lg border border-primary/20 hover:bg-primary hover:text-white transition-all" title="Lihat Dokumen">
+                    <button type="button" onclick="openDokumenModal('{{ asset('storage/' . $docData->path_file) }}')" class="p-1.5 bg-white dark:bg-slate-800 text-primary rounded-lg border border-primary/20 hover:bg-primary hover:text-white transition-all" title="Lihat Dokumen">
                         <span class="material-symbols-outlined text-sm">visibility</span>
                     </button>
                     @endif
@@ -843,7 +843,7 @@ switch($statusText) {
                             </button>
                         </form>
                         @else
-                        <button type="button" disabled class="p-1.5 bg-slate-200 text-slate-400 rounded-lg cursor-not-allowed" title="Dokumen belum diupload">
+                        <button type="button" disabled class="p-1.5 bg-slate-200 text-slate-400 dark:text-slate-500 rounded-lg cursor-not-allowed" title="Dokumen belum diupload">
                             <span class="material-symbols-outlined text-sm">check</span>
                         </button>
                         @endif
@@ -856,11 +856,11 @@ switch($statusText) {
     </div>
 
     <!-- Catatan Pendaftaran - Order 6 -->
-    <div class="mobile-order-6 bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+    <div class="mobile-order-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/50 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <span class="material-symbols-outlined text-primary">history_edu</span>
-                <h3 class="font-bold text-slate-800">Catatan Pendaftaran</h3>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100">Catatan Pendaftaran</h3>
             </div>
             @if($canAddCatatan)
                 <button onclick="openCatatanModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-lavender/40 text-primary rounded-lg text-xs font-bold hover:bg-lavender/60 transition-all">
@@ -874,21 +874,21 @@ switch($statusText) {
             <div class="relative pl-8 space-y-8 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
                 @foreach($catatanUtama as $riwayat)
                 <div class="relative">
-                    <div class="absolute -left-[29px] top-1 w-5 h-5 rounded-full {{ $loop->first ? 'bg-slate-900' : 'bg-white' }} {{ $loop->first ? 'border-4 border-slate-200' : 'border-2 border-slate-300' }} shadow-sm z-10"></div>
+                    <div class="absolute -left-[29px] top-1 w-5 h-5 rounded-full {{ $loop->first ? 'bg-slate-900' : 'bg-white dark:bg-slate-800' }} {{ $loop->first ? 'border-4 border-slate-200 dark:border-slate-600' : 'border-2 border-slate-300' }} shadow-sm z-10"></div>
                     <div class="flex flex-col gap-2">
                         <div class="flex items-center justify-between">
-                            <h4 class="text-sm font-bold text-slate-800">{{ $riwayat->status_baru ?? 'Pendaftaran Baru' }}</h4>
-                            <span class="text-[10px] font-medium text-slate-400 uppercase tracking-widest">{{ $riwayat->created_at ? $riwayat->created_at->format('d M Y, H:i') : '-' }}</span>
+                            <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100">{{ $riwayat->status_baru ?? 'Pendaftaran Baru' }}</h4>
+                            <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-widest">{{ $riwayat->created_at ? $riwayat->created_at->format('d M Y, H:i') : '-' }}</span>
                         </div>
-                        <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                            <p class="text-sm text-slate-600 leading-relaxed">{{ $riwayat->keterangan ?? 'Tidak ada keterangan' }}</p>
+                        <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
+                            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{{ $riwayat->keterangan ?? 'Tidak ada keterangan' }}</p>
                         </div>
                         @if($riwayat->user)
                         <div class="flex items-center gap-2">
                             <div class="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
                                 <span class="material-symbols-outlined text-[12px] text-primary">person</span>
                             </div>
-                            <p class="text-[10px] font-bold text-slate-500">{{ $riwayat->user->name ?? 'Admin' }} ({{ $riwayat->role_pengubah ?? 'admin' }})</p>
+                            <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400">{{ $riwayat->user->name ?? 'Admin' }} ({{ $riwayat->role_pengubah ?? 'admin' }})</p>
                         </div>
                         @endif
                     </div>
@@ -896,29 +896,29 @@ switch($statusText) {
                 @endforeach
             </div>
             @if($catatanLainnya->count() > 0)
-            <details class="mt-6 rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
-                <summary class="cursor-pointer list-none text-sm font-bold text-slate-700">
+            <details class="mt-6 rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50/80 p-4">
+                <summary class="cursor-pointer list-none text-sm font-bold text-slate-700 dark:text-slate-300">
                     Lainnya
-                    <span class="ml-2 text-xs font-medium text-slate-400">({{ $catatanLainnya->count() }} catatan lama)</span>
+                    <span class="ml-2 text-xs font-medium text-slate-400 dark:text-slate-500">({{ $catatanLainnya->count() }} catatan lama)</span>
                 </summary>
                 <div class="relative mt-4 pl-8 space-y-8 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
                     @foreach($catatanLainnya as $riwayat)
                     <div class="relative">
-                        <div class="absolute -left-[29px] top-1 w-5 h-5 rounded-full bg-white border-2 border-slate-300 shadow-sm z-10"></div>
+                        <div class="absolute -left-[29px] top-1 w-5 h-5 rounded-full bg-white dark:bg-slate-800 border-2 border-slate-300 shadow-sm z-10"></div>
                         <div class="flex flex-col gap-2">
                             <div class="flex items-center justify-between">
-                                <h4 class="text-sm font-bold text-slate-800">{{ $riwayat->status_baru ?? 'Pendaftaran Baru' }}</h4>
-                                <span class="text-[10px] font-medium text-slate-400 uppercase tracking-widest">{{ $riwayat->created_at ? $riwayat->created_at->format('d M Y, H:i') : '-' }}</span>
+                                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100">{{ $riwayat->status_baru ?? 'Pendaftaran Baru' }}</h4>
+                                <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-widest">{{ $riwayat->created_at ? $riwayat->created_at->format('d M Y, H:i') : '-' }}</span>
                             </div>
-                            <div class="bg-white rounded-xl p-4 border border-slate-100">
-                                <p class="text-sm text-slate-600 leading-relaxed">{{ $riwayat->keterangan ?? 'Tidak ada keterangan' }}</p>
+                            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
+                                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{{ $riwayat->keterangan ?? 'Tidak ada keterangan' }}</p>
                             </div>
                             @if($riwayat->user)
                             <div class="flex items-center gap-2">
                                 <div class="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
                                     <span class="material-symbols-outlined text-[12px] text-primary">person</span>
                                 </div>
-                                <p class="text-[10px] font-bold text-slate-500">{{ $riwayat->user->name ?? 'Admin' }} ({{ $riwayat->role_pengubah ?? 'admin' }})</p>
+                                <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400">{{ $riwayat->user->name ?? 'Admin' }} ({{ $riwayat->role_pengubah ?? 'admin' }})</p>
                             </div>
                             @endif
                         </div>
@@ -929,53 +929,53 @@ switch($statusText) {
             @endif
             @else
             <div class="text-center py-8">
-                <span class="material-symbols-outlined text-4xl text-slate-300 mb-2">history</span>
-                <p class="text-sm text-slate-500">Belum ada riwayat catatan</p>
+                <span class="material-symbols-outlined text-4xl text-slate-300 dark:text-slate-600 mb-2">history</span>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Belum ada riwayat catatan</p>
             </div>
             @endif
         </div>
     </div>
 
     <!-- Status Information - Order 7 -->
-    <div class="mobile-order-7 bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
+    <div class="mobile-order-7 bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-100 dark:border-slate-700 shadow-sm">
         <div class="flex items-center gap-2 mb-8">
             <span class="material-symbols-outlined text-primary">info</span>
-            <h3 class="text-lg font-bold text-slate-800 tracking-tight">Status Information Definitions</h3>
+            <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight">Status Information Definitions</h3>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div class="flex items-start gap-4">
                 <div class="w-2 h-10 bg-orange-400 rounded-full mt-1"></div>
                 <div>
-                    <h4 class="text-sm font-bold text-slate-800">Menunggu Verifikasi</h4>
-                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">Pendaftaran baru masuk dan perlu diperiksa.</p>
+                    <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100">Menunggu Verifikasi</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">Pendaftaran baru masuk dan perlu diperiksa.</p>
                 </div>
             </div>
             <div class="flex items-start gap-4">
                 <div class="w-2 h-10 bg-yellow-400 rounded-full mt-1"></div>
                 <div>
-                    <h4 class="text-sm font-bold text-slate-800">Revisi Dokumen</h4>
-                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">Menunggu perbaikan berkas dari orang tua.</p>
+                    <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100">Revisi Dokumen</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">Menunggu perbaikan berkas dari orang tua.</p>
                 </div>
             </div>
             <div class="flex items-start gap-4">
                 <div class="w-2 h-10 bg-blue-500 rounded-full mt-1"></div>
                 <div>
-                    <h4 class="text-sm font-bold text-slate-800">Dokumen Verified</h4>
-                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">Berkas lengkap dan valid.</p>
+                    <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100">Dokumen Verified</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">Berkas lengkap dan valid.</p>
                 </div>
             </div>
             <div class="flex items-start gap-4">
                 <div class="w-2 h-10 bg-green-500 rounded-full mt-1"></div>
                 <div>
-                    <h4 class="text-sm font-bold text-slate-800">Lulus</h4>
-                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">Calon siswa diterima.</p>
+                    <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100">Lulus</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">Calon siswa diterima.</p>
                 </div>
             </div>
             <div class="flex items-start gap-4">
                 <div class="w-2 h-10 bg-red-500 rounded-full mt-1"></div>
                 <div>
-                    <h4 class="text-sm font-bold text-slate-800">Tidak Lulus</h4>
-                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">Calon siswa tidak diterima.</p>
+                    <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100">Tidak Lulus</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">Calon siswa tidak diterima.</p>
                 </div>
             </div>
         </div>
@@ -985,10 +985,10 @@ switch($statusText) {
 <!-- Add Catatan Modal dengan Checkbox -->
 @if($canAddCatatan)
 <div id="catatanModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
-    <div class="bg-white rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl">
         <div class="flex items-center justify-between mb-6">
-            <h3 class="text-xl font-bold text-slate-800">Tambah Catatan</h3>
-            <button onclick="closeCatatanModal()" class="text-slate-400 hover:text-slate-600">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100">Tambah Catatan</h3>
+            <button onclick="closeCatatanModal()" class="text-slate-400 dark:text-slate-500 hover:text-slate-600">
                 <span class="material-symbols-outlined">close</span>
             </button>
         </div>
@@ -997,7 +997,7 @@ switch($statusText) {
             @csrf
             
             <div class="mb-6">
-                <label class="block text-sm font-medium text-slate-700 mb-3">Pilih Dokumen yang akan direvisi:</label>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Pilih Dokumen yang akan direvisi:</label>
                 
                 @php
                     $verifiedAkte = $spmb->verifikasi_akte ?? false;
@@ -1007,18 +1007,18 @@ switch($statusText) {
                 
                 <div class="space-y-3">
                     <!-- Checkbox untuk Akta Kelahiran -->
-                    <label class="flex items-center justify-between p-3 bg-slate-50 rounded-xl cursor-pointer hover:bg-slate-100 transition-all border {{ $verifiedAkte ? 'border-green-200' : 'border-slate-200' }}">
+                    <label class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-xl cursor-pointer hover:bg-slate-100 transition-all border {{ $verifiedAkte ? 'border-green-200' : 'border-slate-200 dark:border-slate-600' }}">
                         <div class="flex items-center gap-3">
                             <input type="checkbox" name="jenis_dokumen[]" value="akte_kelahiran" class="w-4 h-4 text-primary rounded focus:ring-primary/20">
-                            <span class="text-sm font-medium text-slate-700">Akta Kelahiran</span>
+                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Akta Kelahiran</span>
                         </div>
                         @if($verifiedAkte)
-                            <span class="flex items-center gap-1 text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded-full">
+                            <span class="flex items-center gap-1 text-xs font-bold text-green-600 dark:text-green-500 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-full">
                                 <span class="material-symbols-outlined text-sm">check_circle</span>
                                 Verified
                             </span>
                         @else
-                            <span class="flex items-center gap-1 text-xs font-bold text-amber-600 bg-amber-100 px-2 py-1 rounded-full">
+                            <span class="flex items-center gap-1 text-xs font-bold text-amber-600 dark:text-amber-500 bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded-full">
                                 <span class="material-symbols-outlined text-sm">hourglass_empty</span>
                                 Pending
                             </span>
@@ -1026,18 +1026,18 @@ switch($statusText) {
                     </label>
                     
                     <!-- Checkbox untuk Kartu Keluarga -->
-                    <label class="flex items-center justify-between p-3 bg-slate-50 rounded-xl cursor-pointer hover:bg-slate-100 transition-all border {{ $verifiedKK ? 'border-green-200' : 'border-slate-200' }}">
+                    <label class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-xl cursor-pointer hover:bg-slate-100 transition-all border {{ $verifiedKK ? 'border-green-200' : 'border-slate-200 dark:border-slate-600' }}">
                         <div class="flex items-center gap-3">
                             <input type="checkbox" name="jenis_dokumen[]" value="kartu_keluarga" class="w-4 h-4 text-primary rounded focus:ring-primary/20">
-                            <span class="text-sm font-medium text-slate-700">Kartu Keluarga</span>
+                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Kartu Keluarga</span>
                         </div>
                         @if($verifiedKK)
-                            <span class="flex items-center gap-1 text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded-full">
+                            <span class="flex items-center gap-1 text-xs font-bold text-green-600 dark:text-green-500 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-full">
                                 <span class="material-symbols-outlined text-sm">check_circle</span>
                                 Verified
                             </span>
                         @else
-                            <span class="flex items-center gap-1 text-xs font-bold text-amber-600 bg-amber-100 px-2 py-1 rounded-full">
+                            <span class="flex items-center gap-1 text-xs font-bold text-amber-600 dark:text-amber-500 bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded-full">
                                 <span class="material-symbols-outlined text-sm">hourglass_empty</span>
                                 Pending
                             </span>
@@ -1045,18 +1045,18 @@ switch($statusText) {
                     </label>
                     
                     <!-- Checkbox untuk KTP Orang Tua -->
-                    <label class="flex items-center justify-between p-3 bg-slate-50 rounded-xl cursor-pointer hover:bg-slate-100 transition-all border {{ $verifiedKTP ? 'border-green-200' : 'border-slate-200' }}">
+                    <label class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-xl cursor-pointer hover:bg-slate-100 transition-all border {{ $verifiedKTP ? 'border-green-200' : 'border-slate-200 dark:border-slate-600' }}">
                         <div class="flex items-center gap-3">
                             <input type="checkbox" name="jenis_dokumen[]" value="ktp_orang_tua" class="w-4 h-4 text-primary rounded focus:ring-primary/20">
-                            <span class="text-sm font-medium text-slate-700">KTP Orang Tua</span>
+                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">KTP Orang Tua</span>
                         </div>
                         @if($verifiedKTP)
-                            <span class="flex items-center gap-1 text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded-full">
+                            <span class="flex items-center gap-1 text-xs font-bold text-green-600 dark:text-green-500 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-full">
                                 <span class="material-symbols-outlined text-sm">check_circle</span>
                                 Verified
                             </span>
                         @else
-                            <span class="flex items-center gap-1 text-xs font-bold text-amber-600 bg-amber-100 px-2 py-1 rounded-full">
+                            <span class="flex items-center gap-1 text-xs font-bold text-amber-600 dark:text-amber-500 bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded-full">
                                 <span class="material-symbols-outlined text-sm">hourglass_empty</span>
                                 Pending
                             </span>
@@ -1066,10 +1066,10 @@ switch($statusText) {
                     <!-- Divider -->
                     <div class="relative py-2">
                         <div class="absolute inset-0 flex items-center">
-                            <div class="w-full border-t border-slate-200"></div>
+                            <div class="w-full border-t border-slate-200 dark:border-slate-600"></div>
                         </div>
                         <div class="relative flex justify-center">
-                            <span class="bg-white px-2 text-xs text-slate-400">ATAU</span>
+                            <span class="bg-white dark:bg-slate-800 px-2 text-xs text-slate-400 dark:text-slate-500">ATAU</span>
                         </div>
                     </div>
                     
@@ -1082,7 +1082,7 @@ switch($statusText) {
                         @php
                             $totalVerified = ($verifiedAkte ? 1 : 0) + ($verifiedKK ? 1 : 0) + ($verifiedKTP ? 1 : 0);
                         @endphp
-                        <span class="text-xs font-bold text-slate-600 bg-slate-200 px-2 py-1 rounded-full">
+                        <span class="text-xs font-bold text-slate-600 dark:text-slate-400 bg-slate-200 px-2 py-1 rounded-full">
                             {{ $totalVerified }}/3 Verified
                         </span>
                     </label>
@@ -1090,12 +1090,12 @@ switch($statusText) {
             </div>
             
             <div class="mb-6">
-                <label class="block text-sm font-medium text-slate-700 mb-2">Catatan untuk Siswa</label>
-                <textarea name="catatan_admin" rows="4" class="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm" placeholder="Catatan ini akan dilihat oleh siswa..."></textarea>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Catatan untuk Siswa</label>
+                <textarea name="catatan_admin" rows="4" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-primary/20 text-sm" placeholder="Catatan ini akan dilihat oleh siswa..."></textarea>
             </div>
             
             <div class="flex gap-3">
-                <button type="button" onclick="closeCatatanModal()" class="flex-1 px-6 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all">
+                <button type="button" onclick="closeCatatanModal()" class="flex-1 px-6 py-3 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-400 rounded-xl font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
                     Batal
                 </button>
                 <button type="submit" class="flex-1 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all">
@@ -1109,14 +1109,14 @@ switch($statusText) {
 
 <!-- Dokumen Preview Modal -->
 <div id="dokumenModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl">
-        <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-            <h3 class="text-lg font-bold text-slate-800">Preview Dokumen</h3>
-            <button onclick="closeDokumenModal()" class="text-slate-400 hover:text-slate-600 p-1">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-700">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">Preview Dokumen</h3>
+            <button onclick="closeDokumenModal()" class="text-slate-400 dark:text-slate-500 hover:text-slate-600 p-1">
                 <span class="material-symbols-outlined">close</span>
             </button>
         </div>
-        <div class="p-4 overflow-auto max-h-[calc(90vh-80px)] flex items-center justify-center bg-slate-100">
+        <div class="p-4 overflow-auto max-h-[calc(90vh-80px)] flex items-center justify-center bg-slate-100 dark:bg-slate-700">
             <iframe id="dokumenFrame" src="" class="w-full h-[70vh] rounded-lg border-0"></iframe>
         </div>
     </div>

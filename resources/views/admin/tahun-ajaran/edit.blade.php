@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto">
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
         <div class="p-6 md:p-8">
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
                 <div class="flex items-center gap-4">
@@ -14,13 +14,13 @@
                         <span class="material-symbols-outlined">edit_calendar</span>
                     </div>
                     <div>
-                        <h2 class="text-lg font-bold text-slate-800">Edit Tahun Ajaran</h2>
-                        <p class="text-sm text-slate-500">Perbarui data periode akademik yang dipilih.</p>
+                        <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100">Edit Tahun Ajaran</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Perbarui data periode akademik yang dipilih.</p>
                     </div>
                 </div>
 
                 <a href="{{ route('admin.tahun-ajaran.index') }}"
-                   class="inline-flex w-full md:w-auto items-center justify-center gap-2 px-4 py-2.5 bg-white text-slate-700 rounded-xl border border-slate-200 hover:bg-slate-50 transition-all font-bold text-sm shadow-sm">
+                   class="inline-flex w-full md:w-auto items-center justify-center gap-2 px-4 py-2.5 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all font-bold text-sm shadow-sm">
                     <span class="material-symbols-outlined text-xl">arrow_back</span>
                     Kembali
                 </a>
@@ -32,11 +32,11 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="md:col-span-2">
-                        <label for="tahun_ajaran" class="block text-sm font-bold text-slate-700 mb-2">
+                        <label for="tahun_ajaran" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
                             Tahun Ajaran <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
-                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">event_repeat</span>
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-xl">event_repeat</span>
                             <input
                                 id="tahun_ajaran"
                                 name="tahun_ajaran"
@@ -45,9 +45,9 @@
                                 type="text"
                                 placeholder="Contoh: 2024/2025"
                                 @class([
-                                    'w-full pl-12 pr-4 py-3 bg-slate-50 border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm',
+                                    'w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-900/50 border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm dark:text-slate-200',
                                     'border-rose-500' => $errors->has('tahun_ajaran'),
-                                    'border-slate-200' => !$errors->has('tahun_ajaran'),
+                                    'border-slate-200 dark:border-slate-700' => !$errors->has('tahun_ajaran'),
                                 ])
                             />
                         </div>
@@ -56,11 +56,11 @@
                     </div>
 
                     <div>
-                        <label for="tanggal_mulai" class="block text-sm font-bold text-slate-700 mb-2">
+                        <label for="tanggal_mulai" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
                             Tanggal Mulai <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
-                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">calendar_today</span>
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-xl">calendar_today</span>
                             <input
                                 id="tanggal_mulai"
                                 name="tanggal_mulai"
@@ -68,21 +68,22 @@
                                 required
                                 type="date"
                                 @class([
-                                    'w-full pl-12 pr-4 py-3 bg-slate-50 border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm',
+                                    'w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-900/50 border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm dark:text-slate-200',
                                     'border-rose-500' => $errors->has('tanggal_mulai'),
-                                    'border-slate-200' => !$errors->has('tanggal_mulai'),
+                                    'border-slate-200 dark:border-slate-700' => !$errors->has('tanggal_mulai'),
                                 ])
+                                [style.color-scheme]="'dark'"
                             />
                         </div>
                         @error('tanggal_mulai') <p class="text-[10px] text-rose-500 font-bold mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label for="tanggal_selesai" class="block text-sm font-bold text-slate-700 mb-2">
+                        <label for="tanggal_selesai" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
                             Tanggal Selesai <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
-                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">event_busy</span>
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-xl">event_busy</span>
                             <input
                                 id="tanggal_selesai"
                                 name="tanggal_selesai"
@@ -90,25 +91,26 @@
                                 required
                                 type="date"
                                 @class([
-                                    'w-full pl-12 pr-4 py-3 bg-slate-50 border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm',
+                                    'w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-900/50 border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm dark:text-slate-200',
                                     'border-rose-500' => $errors->has('tanggal_selesai'),
-                                    'border-slate-200' => !$errors->has('tanggal_selesai'),
+                                    'border-slate-200 dark:border-slate-700' => !$errors->has('tanggal_selesai'),
                                 ])
+                                [style.color-scheme]="'dark'"
                             />
                         </div>
                         @error('tanggal_selesai') <p class="text-[10px] text-rose-500 font-bold mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="md:col-span-2">
-                        <label class="block text-sm font-bold text-slate-700 mb-3">
+                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-3">
                             Semester <span class="text-red-500">*</span>
                         </label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <label class="relative flex items-center p-4 border rounded-xl cursor-pointer hover:bg-slate-50 transition-all"
+                            <label class="relative flex items-center p-4 border border-slate-200 dark:border-slate-700 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all"
                                    for="semester_ganjil">
                                 <input
                                     id="semester_ganjil"
-                                    class="w-4 h-4 text-primary border-slate-300 focus:ring-primary/20"
+                                    class="w-4 h-4 text-primary border-slate-300 dark:border-slate-600 focus:ring-primary/20 dark:bg-slate-900"
                                     name="semester"
                                     type="radio"
                                     value="Ganjil"
@@ -116,16 +118,16 @@
                                     required
                                 />
                                 <div class="ml-4">
-                                    <span class="block text-sm font-bold text-slate-800">Ganjil</span>
-                                    <span class="block text-xs text-slate-500">Semester 1</span>
+                                    <span class="block text-sm font-bold text-slate-800 dark:text-slate-200">Ganjil</span>
+                                    <span class="block text-xs text-slate-500 dark:text-slate-400">Semester 1</span>
                                 </div>
                             </label>
 
-                            <label class="relative flex items-center p-4 border rounded-xl cursor-pointer hover:bg-slate-50 transition-all"
+                            <label class="relative flex items-center p-4 border border-slate-200 dark:border-slate-700 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all"
                                    for="semester_genap">
                                 <input
                                     id="semester_genap"
-                                    class="w-4 h-4 text-primary border-slate-300 focus:ring-primary/20"
+                                    class="w-4 h-4 text-primary border-slate-300 dark:border-slate-600 focus:ring-primary/20 dark:bg-slate-900"
                                     name="semester"
                                     type="radio"
                                     value="Genap"
@@ -133,8 +135,8 @@
                                     required
                                 />
                                 <div class="ml-4">
-                                    <span class="block text-sm font-bold text-slate-800">Genap</span>
-                                    <span class="block text-xs text-slate-500">Semester 2</span>
+                                    <span class="block text-sm font-bold text-slate-800 dark:text-slate-200">Genap</span>
+                                    <span class="block text-xs text-slate-500 dark:text-slate-400">Semester 2</span>
                                 </div>
                             </label>
                         </div>
@@ -142,34 +144,34 @@
                     </div>
 
                     <div class="md:col-span-2">
-                        <label class="block text-sm font-bold text-slate-700 mb-3">Aktifkan Periode?</label>
-                        <div class="p-4 border border-slate-200 rounded-xl bg-slate-50 flex items-center justify-between gap-4">
+                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-3">Aktifkan Periode?</label>
+                        <div class="p-4 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between gap-4">
                             <div class="flex items-center gap-3">
-                                <span class="material-symbols-outlined text-slate-500">offline_pin</span>
-                                <p class="text-sm text-slate-600 font-medium">Jadikan periode ini sebagai periode aktif sistem</p>
+                                <span class="material-symbols-outlined text-slate-500 dark:text-slate-400">offline_pin</span>
+                                <p class="text-sm text-slate-600 dark:text-slate-300 font-medium">Jadikan periode ini sebagai periode aktif sistem</p>
                             </div>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" name="is_aktif" value="1" {{ old('is_aktif', $tahunAjaran->is_aktif) ? 'checked' : '' }} class="sr-only peer">
-                                <div class="w-14 h-7 bg-slate-200 peer-focus:outline-none peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary shadow-inner rounded-full"></div>
+                                <div class="w-14 h-7 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary shadow-inner rounded-full"></div>
                             </label>
                         </div>
                     </div>
 
                     <div class="md:col-span-2">
-                        <label for="keterangan" class="block text-sm font-bold text-slate-700 mb-2">Keterangan (Opsional)</label>
+                        <label for="keterangan" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Keterangan (Opsional)</label>
                         <textarea
                             id="keterangan"
                             name="keterangan"
                             rows="3"
                             placeholder="Tambahkan catatan khusus periode ini..."
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm"
+                            class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm dark:text-slate-200"
                         >{{ old('keterangan', $tahunAjaran->keterangan) }}</textarea>
                     </div>
                 </div>
 
-                <div class="pt-8 mt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-end gap-3">
+                <div class="pt-8 mt-8 border-t border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-end gap-3">
                     <a href="{{ route('admin.tahun-ajaran.index') }}"
-                       class="w-full sm:w-auto px-8 py-3 bg-slate-100 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all text-center">
+                       class="w-full sm:w-auto px-8 py-3 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl font-bold text-sm hover:bg-slate-200 dark:hover:bg-slate-600 transition-all text-center">
                         Batal
                     </a>
                     <button

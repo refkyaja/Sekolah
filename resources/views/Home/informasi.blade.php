@@ -4,8 +4,8 @@
 
 @section('content')
 <section class="px-4 md:px-10 py-6">
-    <div data-home-animate="zoom-in" class="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-xl md:rounded-3xl shadow-lg mt-8 md:mt-16">
-        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1600&auto=format&fit=crop');"></div>
+    <div data-home-animate="zoom-in" class="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-xl md:rounded-3xl shadow-lg mt-4 md:mt-8">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/informasi.jpeg') }}');"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-8 md:p-12">
             <nav data-home-animate="fade-up" class="flex gap-2 text-white/80 text-sm mb-4">
                 <span><a href="{{ route('home') }}" class="hover:text-white transition-colors">Beranda</a></span>

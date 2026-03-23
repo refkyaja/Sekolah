@@ -49,6 +49,7 @@ class BukuTamuIndex extends Component
             $query->where(function($q) {
                 $q->where('nama', 'like', '%' . $this->search . '%')
                   ->orWhere('instansi', 'like', '%' . $this->search . '%')
+                  ->orWhere('jabatan', 'like', '%' . $this->search . '%')
                   ->orWhere('tujuan_kunjungan', 'like', '%' . $this->search . '%');
             });
         }

@@ -19,6 +19,13 @@ class ProfileController extends Controller
         return view('kepala-sekolah.profile.index', compact('user'));
     }
 
+    public function settings()
+    {
+        $user = auth()->user();
+        return view('kepala-sekolah.profile.settings', compact('user'));
+    }
+
+
     /**
      * Update the user's profile.
      */
