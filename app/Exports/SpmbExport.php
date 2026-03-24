@@ -23,18 +23,25 @@ class SpmbExport implements FromCollection, WithHeadings
     {
         return [
             'No',
-            'No Pendaftaran',
+            'NIK Anak',
             'Nama Lengkap',
-            'NIK',
-            'NISN',
+            'Tempat, Tanggal Lahir',
+            'Umur',
             'Jenis Kelamin',
-            'Tempat Lahir',
-            'Tanggal Lahir',
+            'Agama',
             'Nama Ayah',
+            'NIK Ayah',
+            'Pekerjaan Ayah',
+            'No HP Ayah',
             'Nama Ibu',
-            'No Telepon',
-            'Status',
-            'Tahun Ajaran',
+            'NIK Ibu',
+            'Pekerjaan Ibu',
+            'No HP Ibu',
+            'Alamat Lengkap',
+            'Nama Wali',
+            'NIK Wali',
+            'Pekerjaan Wali',
+            'No HP Wali',
         ];
     }
 }

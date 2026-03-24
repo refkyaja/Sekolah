@@ -45,8 +45,8 @@ class DashboardController extends Controller
                 $now = now();
                 $pengumumanSelesai = $setting->pengumuman_selesai;
                 
-                // Tampilkan notifikasi lulus jika waktu pengumuman sudah selesai
-                if ($pengumumanSelesai && $now->gte($pengumumanSelesai)) {
+                // Tampilkan notifikasi lulus jika sudah dipublish DAN (waktu pengumuman sudah selesai atau manual publish)
+                if ($spmb->is_published && (!$pengumumanSelesai || $now->gte($pengumumanSelesai))) {
                     $showPengumumanLulus = true;
                 }
             }
@@ -62,7 +62,7 @@ class DashboardController extends Controller
                 $currentStep = 3; // Dokumen terunggah (nunggu verif)
                 if ($spmb->dokumen_lengkap) {
                     $currentStep = 4; // Dokumen lengkap (nunggu pengumuman)
-                    if ($spmb->status_pendaftaran === 'Lulus' || $spmb->status_pendaftaran === 'Tidak Lulus') {
+                    if (($spmb->status_pendaftaran === 'Lulus' || $spmb->status_pendaftaran === 'Tidak Lulus') && $spmb->is_published) {
                         $currentStep = 5; // Selesai
                     }
                 }
@@ -74,7 +74,7 @@ class DashboardController extends Controller
             'akte' => $spmb ? ($spmb->verifikasi_akte ? 'verified' : 'pending') : 'pending',
             'kk'   => $spmb ? ($spmb->verifikasi_kk   ? 'verified' : 'pending') : 'pending',
             'ktp'  => $spmb ? ($spmb->verifikasi_ktp  ? 'verified' : 'pending') : 'pending',
-            'foto' => $spmb ? ($spmb->foto_calon_siswa ? 'uploaded' : 'pending') : 'pending',
+            'bukti_pembayaran' => $spmb ? ($spmb->verifikasi_bukti_transfer ? 'verified' : 'pending') : 'pending',
         ];
         
         // Pengumuman/berita terbaru (latestPublished() sudah include published() scope)
@@ -183,6 +183,11 @@ class DashboardController extends Controller
 
         $setting = $settingQuery->latest('id')->first();
 
+        // Status override: Jika belum dipublish, paksa status ke 'Menunggu Verifikasi' atau 'Pengumuman Belum Tersedia'
+        if (!$spmb->is_published) {
+            $spmb->status_pendaftaran = 'Menunggu Pengumuman';
+        }
+
         return view('siswa.pengumuman', compact('siswa', 'spmb', 'setting'));
     }
 
@@ -214,10 +219,9 @@ class DashboardController extends Controller
         // Map current docs
         $docs = $spmb->dokumen->groupBy('jenis_dokumen')->map->first();
 
-        // Read-only logic for documents:
-        // Read-only if (status is NOT 'Revisi Dokumen') AND (all 3 documents are uploaded)
-        $countUploaded = $spmb->dokumen->whereIn('jenis_dokumen', ['akte_kelahiran', 'kartu_keluarga', 'ktp_orang_tua'])->count();
-        $readOnly = ($spmb->status_pendaftaran !== 'Revisi Dokumen' && $countUploaded >= 3);
+        // Read-only if (status is NOT 'Revisi Dokumen') AND (all 4 documents are uploaded)
+        $countUploaded = $spmb->dokumen->whereIn('jenis_dokumen', ['akte_kelahiran', 'kartu_keluarga', 'ktp_orang_tua', 'bukti_pembayaran'])->count();
+        $readOnly = ($spmb->status_pendaftaran !== 'Revisi Dokumen' && $countUploaded >= 4);
 
         return view('siswa.dokumen', compact('siswa', 'spmb', 'docs', 'setting', 'readOnly'));
     }
@@ -228,7 +232,7 @@ class DashboardController extends Controller
     public function storeDokumen(Request $request)
     {
         $request->validate([
-            'jenis_dokumen' => 'required|in:akte_kelahiran,kartu_keluarga,ktp_orang_tua',
+            'jenis_dokumen' => 'required|in:akte_kelahiran,kartu_keluarga,ktp_orang_tua,bukti_pembayaran',
             'file_dokumen' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120', // Up to 5MB
         ]);
 
@@ -253,6 +257,7 @@ class DashboardController extends Controller
         if ($type == 'akte_kelahiran') $verifField .= 'akte';
         elseif ($type == 'kartu_keluarga') $verifField .= 'kk';
         elseif ($type == 'ktp_orang_tua') $verifField .= 'ktp';
+        elseif ($type == 'bukti_pembayaran') $verifField .= 'bukti_transfer';
 
         if ($spmb->$verifField) {
             return back()->with('error', 'Dokumen ini sudah diverifikasi dan tidak dapat diubah.');
@@ -260,7 +265,13 @@ class DashboardController extends Controller
 
         if ($request->hasFile('file_dokumen')) {
             $file = $request->file('file_dokumen');
-            $prefix = ($type == 'akte_kelahiran') ? 'akte' : (($type == 'kartu_keluarga') ? 'kk' : 'ktp');
+            $prefix = match($type) {
+                'akte_kelahiran' => 'akte',
+                'kartu_keluarga' => 'kk',
+                'ktp_orang_tua' => 'ktp',
+                'bukti_pembayaran' => 'bukti',
+                default => 'doc'
+            };
             $filename = $prefix . '_' . $spmb->id . '_' . time() . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('dokumen/spmb', $filename, 'public');
 
@@ -284,6 +295,7 @@ class DashboardController extends Controller
                     'akte_kelahiran' => 'Akta Kelahiran',
                     'kartu_keluarga' => 'Kartu Keluarga',
                     'ktp_orang_tua' => 'KTP Orang Tua',
+                    'bukti_pembayaran' => 'Bukti Pembayaran',
                     default => $type
                 };
                 
@@ -308,6 +320,7 @@ class DashboardController extends Controller
                     'akte_kelahiran' => 'Akta Kelahiran',
                     'kartu_keluarga' => 'Kartu Keluarga',
                     'ktp_orang_tua' => 'KTP Orang Tua',
+                    'bukti_pembayaran' => 'Bukti Pembayaran',
                     default => $type
                 };
                 
@@ -388,5 +401,62 @@ class DashboardController extends Controller
     {
         $siswa = auth('siswa')->user();
         return view('siswa.success', compact('siswa'));
+    }
+
+    /**
+     * Tampilkan data kehadiran siswa.
+     */
+    public function kehadiran(Request $request)
+    {
+        $siswa = auth('siswa')->user();
+        $absensi = \App\Models\Absensi::where('siswa_id', $siswa->id)
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        $viewMode = $request->query('mode', 'calendar');
+
+        return view('siswa.kehadiran', compact('siswa', 'absensi', 'viewMode'));
+    }
+
+    /**
+     * Tampilkan materi KBM.
+     */
+    public function materi(Request $request)
+    {
+        $siswa = auth('siswa')->user();
+        $kelompok = $request->query('kelompok', $siswa->kelompok ?? 'A');
+        
+        $kelompokFull = "Kelompok " . $kelompok;
+
+        $materi = \App\Models\MateriKbm::where(function($q) use ($kelompokFull) {
+                $q->where('kelas', $kelompokFull)
+                  ->orWhere('kelas', 'Semua Kelas');
+            })
+            ->latest('tanggal_publish')
+            ->paginate(10);
+
+        return view('siswa.materi', compact('siswa', 'materi', 'kelompok'));
+    }
+
+    /**
+     * Tampilkan jadwal pelajaran.
+     */
+    public function jadwal()
+    {
+        $siswa = auth('siswa')->user();
+        $ta = \App\Models\TahunAjaran::where('is_aktif', true)->first() ?? \App\Models\TahunAjaran::latest()->first();
+
+        $jadwal = [];
+        if ($ta) {
+            $jadwal = \App\Models\JadwalPelajaran::where('kelompok', $siswa->kelompok ?? 'A')
+                ->where('tahun_ajaran_id', $ta->id)
+                ->where('semester', $ta->semester)
+                ->get()
+                ->groupBy('hari');
+        }
+
+        $hariList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+
+        return view('siswa.jadwal', compact('siswa', 'jadwal', 'ta', 'hariList'));
     }
 }

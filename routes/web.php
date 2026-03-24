@@ -28,12 +28,14 @@ use App\Http\Controllers\Admin\MateriKbmController;
 use App\Http\Controllers\Admin\JadwalPelajaranController as AdminJadwalPelajaranController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\KegiatanController;
+use App\Http\Controllers\Admin\SiswaAccountController;
 use App\Http\Controllers\Admin\KalenderAkademikController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
 Route::get('/kurikulum', [KurikulumController::class, 'index'])->name('kurikulum');
 Route::get('/ppdb', [PpdbController::class, 'index'])->name('ppdb.index');
+Route::get('/pendaftar', [HomeController::class, 'pendaftar'])->name('pendaftar.index');
 Route::post('/ppdb', [PpdbController::class, 'store'])->name('ppdb.store');
 Route::get('/informasi', [InformasiController::class, 'index'])->name('informasi');
 
@@ -228,7 +230,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'active'
     // PPDB Routes (Alias for SPMB)
     Route::prefix('ppdb')->name('ppdb.')->group(function () {
         Route::get('/dashboard', [AdminSpmbController::class, 'dashboard'])->name('dashboard');
-        Route::get('/export', [AdminSpmbController::class, 'export'])->name('export');
+        Route::get('/export', [AdminSpmbController::class, 'exportIndex'])->name('export');
+        Route::get('/export/data', [AdminSpmbController::class, 'export'])->name('exportData');
+        Route::get('/export/all', [AdminSpmbController::class, 'exportAll'])->name('exportAll');
+
         Route::post('/export-selected', [AdminSpmbController::class, 'exportSelected'])->name('exportSelected');
         Route::post('/batch-action', [AdminSpmbController::class, 'batchAction'])->name('batchAction');
         Route::get('/create', [AdminSpmbController::class, 'create'])->name('create');
@@ -252,6 +257,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'active'
         Route::post('/{spmb}/assign-kelas', [AdminSpmbController::class, 'assignKelas'])->name('assignKelas');
         Route::post('/{spmb}/konversi', [AdminSpmbController::class, 'konversiKeSiswa'])->name('konversiKeSiswa');
         Route::put('/{spmb}/update-all', [AdminSpmbController::class, 'updateAll'])->name('updateAll');
+        Route::post('/bulk-update-status', [AdminSpmbController::class, 'bulkUpdateStatus'])->name('bulk-update-status');
     });
 
     // Berita Management
@@ -320,6 +326,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'active'
     Route::patch('accounts/{account}/toggle-status', [App\Http\Controllers\Admin\AccountController::class, 'toggleStatus'])->name('accounts.toggle-status');
     Route::post('accounts/{account}/reset-password', [App\Http\Controllers\Admin\AccountController::class, 'resetPassword'])->name('accounts.reset-password');
     Route::post('accounts/bulk-action', [App\Http\Controllers\Admin\AccountController::class, 'bulkAction'])->name('accounts.bulk-action');
+
+    // Siswa Account Management
+    Route::prefix('siswa-accounts')->name('siswa-accounts.')->group(function () {
+        Route::post('/{siswa_account}/toggle-status', [\App\Http\Controllers\Admin\SiswaAccountController::class, 'toggleStatus'])->name('toggle-status');
+        Route::post('/{siswa_account}/reset-password', [\App\Http\Controllers\Admin\SiswaAccountController::class, 'resetPassword'])->name('reset-password');
+    });
+    Route::resource('siswa-accounts', \App\Http\Controllers\Admin\SiswaAccountController::class)->except(['create', 'store']);
 }); // <--- PENUTUP GROUP ADMIN PINDAH KE SINI
 
 // ==================== ROUTES OPERATOR ====================
@@ -383,7 +396,13 @@ Route::prefix('operator')->name('operator.')->middleware(['auth', 'verified', 'a
         Route::get('/{spmb}', [App\Http\Controllers\Admin\SpmbController::class, 'show'])->name('show');
         Route::get('/pengaturan', [App\Http\Controllers\Admin\SpmbController::class, 'pengaturan'])->name('pengaturan');
         Route::get('/riwayat', [App\Http\Controllers\Admin\SpmbController::class, 'riwayat'])->name('riwayat');
-        Route::get('/export', [App\Http\Controllers\Admin\SpmbController::class, 'export'])->name('export');
+        Route::get('/pengumuman', [App\Http\Controllers\Admin\SpmbController::class, 'pengumuman'])->name('pengumuman');
+        Route::get('/export', [App\Http\Controllers\Admin\SpmbController::class, 'exportIndex'])->name('export');
+        Route::get('/export/data', [App\Http\Controllers\Admin\SpmbController::class, 'export'])->name('exportData');
+        Route::get('/export/all', [App\Http\Controllers\Admin\SpmbController::class, 'exportAll'])->name('exportAll');
+
+
+        Route::post('/bulk-update-status', [App\Http\Controllers\Admin\SpmbController::class, 'bulkUpdateStatus'])->name('bulk-update-status');
     });
     
     // Galeri Routes (Read-only)
@@ -478,7 +497,13 @@ Route::prefix('kepala-sekolah')->name('kepala-sekolah.')->middleware(['auth', 'v
         Route::get('/{spmb}', [App\Http\Controllers\Admin\SpmbController::class, 'show'])->name('show');
         Route::get('/pengaturan', [App\Http\Controllers\Admin\SpmbController::class, 'pengaturan'])->name('pengaturan');
         Route::get('/riwayat', [App\Http\Controllers\Admin\SpmbController::class, 'riwayat'])->name('riwayat');
-        Route::get('/export', [App\Http\Controllers\Admin\SpmbController::class, 'export'])->name('export');
+        Route::get('/pengumuman', [App\Http\Controllers\Admin\SpmbController::class, 'pengumuman'])->name('pengumuman');
+        Route::get('/export', [App\Http\Controllers\Admin\SpmbController::class, 'exportIndex'])->name('export');
+        Route::get('/export/data', [App\Http\Controllers\Admin\SpmbController::class, 'export'])->name('exportData');
+        Route::get('/export/all', [App\Http\Controllers\Admin\SpmbController::class, 'exportAll'])->name('exportAll');
+
+
+        Route::post('/bulk-update-status', [App\Http\Controllers\Admin\SpmbController::class, 'bulkUpdateStatus'])->name('bulk-update-status');
     });
     
     // Galeri Routes (Read-only)
@@ -573,6 +598,11 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
         Route::post('/dokumen/submit', [\App\Http\Controllers\Siswa\DashboardController::class, 'submitPendaftaran'])->name('dokumen.submit');
         Route::get('/pengumuman', [\App\Http\Controllers\Siswa\DashboardController::class, 'pengumuman'])->name('pengumuman');
         Route::get('/success', [\App\Http\Controllers\Siswa\DashboardController::class, 'success'])->name('success');
+
+        // Academic routes
+        Route::get('/kehadiran', [\App\Http\Controllers\Siswa\DashboardController::class, 'kehadiran'])->name('kehadiran');
+        Route::get('/materi', [\App\Http\Controllers\Siswa\DashboardController::class, 'materi'])->name('materi');
+        Route::get('/jadwal', [\App\Http\Controllers\Siswa\DashboardController::class, 'jadwal'])->name('jadwal');
     });
 });
 
@@ -599,6 +629,10 @@ Route::prefix('api')->name('api.')->group(function () {
         Route::post('/read-all', [\App\Http\Controllers\NotificationController::class, 'markAllRead'])->name('read-all');
     });
 });
+
+// Socialite Login Routes (Admin/Guru)
+Route::get('login/google', [App\Http\Controllers\Auth\SocialiteController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('login/google/callback', [App\Http\Controllers\Auth\SocialiteController::class, 'handleCallback'])->name('login.google.callback');
 
 Route::get('/dashboard', [BaseDashboardController::class, 'index'])->name('dashboard');
 

@@ -143,6 +143,8 @@ class Spmb extends Model
         'nomor_induk_siswa',
         'is_lulus',
         'is_mengulang',
+        'is_published',
+        'is_converted',
         'catatan_admin',
         'catatan_admin_at',
         'foto_calon_siswa',
@@ -174,7 +176,24 @@ class Spmb extends Model
         'is_aktif' => 'boolean',
         'is_lulus' => 'boolean',
         'is_mengulang' => 'boolean',
+        'is_published' => 'boolean',
+        'is_converted' => 'boolean',
     ];
+
+    /**
+     * Hitung Usia Anak
+     */
+    public function getUsiaAttribute()
+    {
+        if (!$this->tanggal_lahir_anak) {
+            return '-';
+        }
+
+        $tanggalLahir = \Carbon\Carbon::parse($this->tanggal_lahir_anak);
+        $diff = $tanggalLahir->diff(now());
+        
+        return $diff->y . ' Tahun ' . $diff->m . ' Bulan';
+    }
 
     /**
      * KONSTANTA untuk options dropdown - SATU SUMBER KEBENARAN
@@ -272,11 +291,6 @@ class Spmb extends Model
         return $this->hasMany(SpmbRiwayatStatus::class, 'spmb_id');
     }
 
-    public function buktiTransfer()
-    {
-        return $this->hasMany(SpmbBuktiTransfer::class, 'spmb_id');
-    }
-
     public function siswa()
     {
         return $this->hasOne(Siswa::class, 'spmb_id');
@@ -359,12 +373,13 @@ class Spmb extends Model
 
     public function getProgressVerifikasiAttribute()
     {
-        $total = 3; // Akte, KK, KTP
+        $total = 4; // Akta, KK, KTP, Bukti Pembayaran
         $terverifikasi = 0;
         
         if ($this->verifikasi_akte) $terverifikasi++;
         if ($this->verifikasi_kk) $terverifikasi++;
         if ($this->verifikasi_ktp) $terverifikasi++;
+        if ($this->verifikasi_bukti_transfer) $terverifikasi++;
         
         return [
             'total' => $total,
@@ -375,7 +390,10 @@ class Spmb extends Model
 
     public function getDokumenLengkapAttribute()
     {
-        return $this->verifikasi_akte && $this->verifikasi_kk && $this->verifikasi_ktp;
+        return $this->verifikasi_akte && 
+               $this->verifikasi_kk && 
+               $this->verifikasi_ktp && 
+               $this->verifikasi_bukti_transfer;
     }
 
     public function getDokumenTerunggahAttribute()
@@ -383,7 +401,8 @@ class Spmb extends Model
         $types = $this->dokumen->pluck('jenis_dokumen')->toArray();
         return in_array('akte_kelahiran', $types) && 
                in_array('kartu_keluarga', $types) && 
-               in_array('ktp_orang_tua', $types);
+               in_array('ktp_orang_tua', $types) &&
+               in_array('bukti_pembayaran', $types);
     }
 
     public function hasUploadedDocument(string $jenisDokumen): bool
@@ -533,7 +552,8 @@ class Spmb extends Model
     {
         return $query->where('verifikasi_akte', true)
                      ->where('verifikasi_kk', true)
-                     ->where('verifikasi_ktp', true);
+                     ->where('verifikasi_ktp', true)
+                     ->where('verifikasi_bukti_transfer', true);
     }
 
     public function scopeDokumenBelumLengkap($query)
@@ -541,7 +561,8 @@ class Spmb extends Model
         return $query->where(function($q) {
             $q->where('verifikasi_akte', false)
               ->orWhere('verifikasi_kk', false)
-              ->orWhere('verifikasi_ktp', false);
+              ->orWhere('verifikasi_ktp', false)
+              ->orWhere('verifikasi_bukti_transfer', false);
         });
     }
 
@@ -723,5 +744,47 @@ class Spmb extends Model
             'kelompok_b' => (clone $query)->where('kelas', 'Kelompok B')->count(),
             'total' => (clone $query)->count(),
         ];
+    }
+    /**
+     * Get label for export field
+     */
+    public static function getExportFieldLabel($field)
+    {
+        return [
+            'no_pendaftaran' => 'No. Pendaftaran',
+            'nama_lengkap_anak' => 'Nama Lengkap',
+            'nik_anak' => 'NIK',
+            'nisn' => 'NISN',
+            'jenis_kelamin' => 'JK',
+            'tempat_lahir_anak' => 'Tempat Lahir',
+            'tanggal_lahir_anak' => 'Tgl Lahir',
+            'nama_ayah' => 'Nama Ayah',
+            'nama_ibu' => 'Nama Ibu',
+            'nomor_telepon' => 'No. Telp',
+            'status_pendaftaran' => 'Status',
+            'tahun_ajaran' => 'Th. Ajaran',
+        ][$field] ?? $field;
+    }
+
+    /**
+     * Get value for export field
+     */
+    public static function getExportFieldValue($item, $field)
+    {
+        return match($field) {
+            'no_pendaftaran' => $item->no_pendaftaran,
+            'nama_lengkap_anak' => $item->nama_lengkap_anak,
+            'nik_anak' => $item->nik_anak,
+            'nisn' => $item->nisn ?? '-',
+            'jenis_kelamin' => $item->jenis_kelamin == 'Laki-laki' ? 'L' : 'P',
+            'tempat_lahir_anak' => $item->tempat_lahir_anak,
+            'tanggal_lahir_anak' => $item->tanggal_lahir_anak ? (\Illuminate\Support\Carbon::parse($item->tanggal_lahir_anak))->format('d-m-Y') : '-',
+            'nama_ayah' => $item->nama_lengkap_ayah ?? '-',
+            'nama_ibu' => $item->nama_lengkap_ibu ?? '-',
+            'nomor_telepon' => $item->nomor_telepon_ayah ?? $item->nomor_telepon_ibu ?? '-',
+            'status_pendaftaran' => $item->status_pendaftaran,
+            'tahun_ajaran' => $item->tahun_ajaran_id ? ($item->tahunAjaran ? $item->tahunAjaran->tahun_ajaran : '-') : '-',
+            default => $item->$field ?? '-',
+        };
     }
 }

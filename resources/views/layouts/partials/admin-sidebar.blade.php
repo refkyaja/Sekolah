@@ -139,8 +139,8 @@
                 <span class="text-sm nav-text whitespace-nowrap">Pendaftaran</span>
             </a>
 
-            <a class="{{ $navBaseClass }} {{ request()->get('status') == 'Diterima' ? $navActiveClass : $navDefaultClass }}"
-               href="{{ route($rolePrefix.'.ppdb.index', ['status' => 'Diterima']) }}"
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.ppdb.pengumuman') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.ppdb.pengumuman') }}"
                title="Pengumuman">
                 <span class="material-symbols-outlined text-lg">campaign</span>
                 <span class="text-sm nav-text whitespace-nowrap">Pengumuman</span>
@@ -205,6 +205,13 @@
                title="Kelola User">
                 <span class="material-symbols-outlined text-lg">manage_accounts</span>
                 <span class="text-sm nav-text whitespace-nowrap">Kelola User</span>
+            </a>
+
+            <a class="{{ $navBaseClass }} {{ request()->routeIs($rolePrefix.'.siswa-accounts.*') ? $navActiveClass : $navDefaultClass }}"
+               href="{{ route($rolePrefix.'.siswa-accounts.index') }}"
+               title="Akun Calon Siswa">
+                <span class="material-symbols-outlined text-lg">person_search</span>
+                <span class="text-sm nav-text whitespace-nowrap">Akun Calon Siswa</span>
             </a>
 
             <a class="{{ $navBaseClass }} {{ $navDefaultClass }}"

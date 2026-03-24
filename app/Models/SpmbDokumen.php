@@ -67,10 +67,10 @@ class SpmbDokumen extends Model
     public function getJenisLabelAttribute()
     {
         $labels = [
-            'akte' => 'Akta Kelahiran',
-            'kk' => 'Kartu Keluarga',
-            'ktp' => 'KTP Orang Tua',
-            'bukti_transfer' => 'Bukti Transfer',
+            'akte_kelahiran' => 'Akta Kelahiran',
+            'kartu_keluarga' => 'Kartu Keluarga',
+            'ktp_orang_tua' => 'KTP Orang Tua',
+            'bukti_pembayaran' => 'Bukti Pembayaran',
             'kartu_bantuan' => 'Kartu Bantuan',
         ];
 

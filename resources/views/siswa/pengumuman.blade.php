@@ -32,7 +32,7 @@
                 } elseif($statusPendaftaran === 'Tidak Lulus') {
                     $statusColor = 'red';
                     $statusIcon = 'cancel';
-                } elseif($statusPendaftaran === 'Menunggu Verifikasi') {
+                } elseif($statusPendaftaran === 'Menunggu Verifikasi' || $statusPendaftaran === 'Menunggu Pengumuman') {
                     $statusColor = 'amber';
                     $statusIcon = 'hourglass_empty';
                 } elseif($statusPendaftaran === 'Revisi Dokumen') {
@@ -54,6 +54,8 @@
                         Selamat! Anda Diterima
                     @elseif($statusPendaftaran === 'Tidak Lulus')
                         Mohon Maaf, Anda Belum Lulus
+                    @elseif($statusPendaftaran === 'Menunggu Pengumuman')
+                        Menunggu Pengumuman
                     @else
                         Data Sedang Diproses
                     @endif
@@ -65,6 +67,8 @@
                         Kami menghargai minat Anda untuk bergabung. Namun, berdasarkan hasil seleksi yang dilakukan, saat ini kami belum dapat memproses pendaftaran Anda lebih lanjut. Tetap semangat!
                     @elseif($statusPendaftaran === 'Menunggu Verifikasi')
                         Pendaftaran Anda telah kami terima dengan baik. Saat ini tim panitia sedang melakukan verifikasi terhadap data dan dokumen yang Anda unggah. Mohon tunggu proses pemeriksaan.
+                    @elseif($statusPendaftaran === 'Menunggu Pengumuman')
+                        Proses verifikasi dokumen Anda telah selesai. Hasil seleksi akan segera diumumkan secara resmi melalui halaman ini. Mohon periksa kembali secara berkala.
                     @elseif($statusPendaftaran === 'Revisi Dokumen')
                         Terdapat beberapa dokumen yang membutuhkan perbaikan. Harap periksa email Anda atau hubungi admin untuk detail dokumen yang harus diunggah kembali.
                     @endif

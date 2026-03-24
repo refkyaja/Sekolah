@@ -41,8 +41,8 @@
                             Dashboard
                         </a>
                     @endguest
-                    <a href="#alur-ppdb" class="inline-flex items-center justify-center gap-2 bg-white/15 text-white border border-white/20 px-5 md:px-8 py-2.5 md:py-4 rounded-full font-bold text-sm md:text-lg hover:bg-white/20 transition-all">
-                        Lihat Alur
+                    <a href="{{ route('pendaftar.index') }}" class="inline-flex items-center justify-center gap-2 bg-white/15 text-white border border-white/20 px-5 md:px-8 py-2.5 md:py-4 rounded-full font-bold text-sm md:text-lg hover:bg-white/20 transition-all">
+                        Lihat Pendaftar
                     </a>
                 </div>
             </div>
@@ -134,6 +134,11 @@
                             class="flex items-center gap-5 p-5 rounded-2xl bg-white dark:bg-slate-800 shadow-sm border border-slate-100 dark:border-slate-700 hover:border-primary/30 transition-colors">
                             <span class="material-symbols-outlined text-primary bg-primary/5 p-2 rounded-lg">badge</span>
                             <p class="font-semibold text-lg">Scan / foto KTP orang tua / wali</p>
+                        </div>
+                        <div
+                            class="flex items-center gap-5 p-5 rounded-2xl bg-white dark:bg-slate-800 shadow-sm border border-slate-100 dark:border-slate-700 hover:border-primary/30 transition-colors">
+                            <span class="material-symbols-outlined text-primary bg-primary/5 p-2 rounded-lg">receipt_long</span>
+                            <p class="font-semibold text-lg">Scan / foto Bukti Pembayaran</p>
                         </div>
                     </div>
                 </div>
@@ -382,7 +387,7 @@
                         <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 text-slate-400">expand_more</span>
                     </summary>
                     <div class="px-6 pb-6 pt-0 ml-12 text-slate-600 dark:text-slate-400 leading-relaxed">
-                        Dokumen yang wajib diunggah adalah Scan/Foto Kartu Keluarga (KK), Akta Kelahiran, dan KTP Orang Tua/Wali dalam format gambar atau PDF yang jelas terbaca.
+                        Dokumen yang wajib diunggah adalah Scan/Foto Kartu Keluarga (KK), Akta Kelahiran, KTP Orang Tua/Wali, dan Bukti Pembayaran dalam format gambar atau PDF yang jelas terbaca.
                     </div>
                 </details>
 

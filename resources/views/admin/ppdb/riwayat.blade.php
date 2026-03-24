@@ -127,47 +127,4 @@
 </div>
 @endif
 
-<div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-100 dark:border-slate-700 shadow-sm">
-    <div class="flex items-center gap-2 mb-8">
-        <span class="material-symbols-outlined text-primary">info</span>
-        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight">Status Definitions</h3>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-8">
-        <div class="flex gap-4">
-            <div class="w-2 h-10 bg-yellow-500 rounded-full mt-1"></div>
-            <div>
-                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 uppercase tracking-tight">Menunggu Verifikasi</h4>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">Pendaftaran baru menunggu verifikasi dokumen.</p>
-            </div>
-        </div>
-        <div class="flex gap-4">
-            <div class="w-2 h-10 bg-amber-500 rounded-full mt-1"></div>
-            <div>
-                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 uppercase tracking-tight">Revisi Dokumen</h4>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">Dokumen perlu diperbaiki/diunggah ulang.</p>
-            </div>
-        </div>
-        <div class="flex gap-4">
-            <div class="w-2 h-10 bg-blue-500 rounded-full mt-1"></div>
-            <div>
-                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 uppercase tracking-tight">Dokumen Verified</h4>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">Dokumen lengkap dan valid.</p>
-            </div>
-        </div>
-        <div class="flex gap-4">
-            <div class="w-2 h-10 bg-green-500 rounded-full mt-1"></div>
-            <div>
-                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 uppercase tracking-tight">Lulus</h4>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">Calon siswa diterima.</p>
-            </div>
-        </div>
-        <div class="flex gap-4">
-            <div class="w-2 h-10 bg-red-500 rounded-full mt-1"></div>
-            <div>
-                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 uppercase tracking-tight">Tidak Lulus</h4>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">Calon siswa tidak diterima.</p>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection

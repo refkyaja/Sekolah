@@ -22,6 +22,18 @@
     </button>
 </div>
 
+@php
+    $siswa = auth('siswa')->user();
+    $spmb = null;
+    if ($siswa->spmb_id) {
+        $spmb = \App\Models\Spmb::find($siswa->spmb_id);
+    }
+    if (!$spmb && $siswa->nik) {
+        $spmb = \App\Models\Spmb::where('nik_anak', $siswa->nik)->orderBy('created_at', 'desc')->first();
+    }
+    $isLulus = $spmb && $spmb->status_pendaftaran === 'Lulus';
+@endphp
+
 <nav class="flex-1 px-4 space-y-1 mt-4 overflow-y-auto sidebar-scroll">
     <!-- Dashboard -->
     <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('siswa.dashboard') ? 'bg-primary/10 text-primary font-medium' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors' }}" 
@@ -30,26 +42,62 @@
         <span class="nav-text">Dashboard</span>
     </a>
 
-    <!-- Formulir -->
-    <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('siswa.formulir') ? 'bg-primary/10 text-primary font-medium' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors' }}" 
-       href="{{ route('siswa.formulir') }}" title="Formulir">
-        <span class="material-symbols-outlined">description</span>
-        <span class="nav-text">Formulir</span>
-    </a>
+    @if($isLulus)
+        <!-- Academic Menus for Graduated Students -->
+        <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('siswa.kehadiran') ? 'bg-primary/10 text-primary font-medium' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors' }}" 
+           href="{{ route('siswa.kehadiran') }}" title="Kehadiran">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <span class="nav-text">Kehadiran</span>
+        </a>
 
-    <!-- Dokumen -->
-    <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('siswa.dokumen') ? 'bg-primary/10 text-primary font-medium' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors' }}" 
-       href="{{ route('siswa.dokumen') }}" title="Dokumen">
-        <span class="material-symbols-outlined">folder_open</span>
-        <span class="nav-text">Dokumen</span>
-    </a>
+        <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('siswa.materi') ? 'bg-primary/10 text-primary font-medium' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors' }}" 
+           href="{{ route('siswa.materi') }}" title="Materi KBM">
+            <span class="material-symbols-outlined">library_books</span>
+            <span class="nav-text">Materi KBM</span>
+        </a>
 
-    <!-- Pengumuman -->
-    <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('siswa.pengumuman') ? 'bg-primary/10 text-primary font-medium' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors' }}" 
-       href="{{ route('siswa.pengumuman') }}" title="Pengumuman">
-        <span class="material-symbols-outlined">notifications</span>
-        <span class="nav-text">Pengumuman</span>
-    </a>
+        <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('siswa.jadwal') ? 'bg-primary/10 text-primary font-medium' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors' }}" 
+           href="{{ route('siswa.jadwal') }}" title="Jadwal Pelajaran">
+            <span class="material-symbols-outlined">schedule</span>
+            <span class="nav-text">Jadwal Pelajaran</span>
+        </a>
+
+        <!-- PPDB Dropdown -->
+        <div x-data="{ open: {{ request()->routeIs('siswa.formulir', 'siswa.dokumen', 'siswa.pengumuman') ? 'true' : 'false' }} }" class="space-y-1">
+            <button @click="open = !open" 
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors {{ request()->routeIs('siswa.formulir', 'siswa.dokumen', 'siswa.pengumuman') ? 'bg-slate-50 dark:bg-slate-800/50' : '' }}">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined">assignment_ind</span>
+                    <span class="nav-text">PPDB</span>
+                </div>
+                <span class="material-symbols-outlined text-sm transition-transform duration-200" :class="open ? 'rotate-180' : ''">expand_more</span>
+            </button>
+            <div x-show="open" x-collapse x-cloak class="pl-12 space-y-1">
+                <a href="{{ route('siswa.formulir') }}" class="block py-2 text-sm {{ request()->routeIs('siswa.formulir') ? 'text-primary font-medium' : 'text-slate-500 hover:text-primary transition-colors' }}">Pendaftaran</a>
+                <a href="{{ route('siswa.dokumen') }}" class="block py-2 text-sm {{ request()->routeIs('siswa.dokumen') ? 'text-primary font-medium' : 'text-slate-500 hover:text-primary transition-colors' }}">Dokumen</a>
+                <a href="{{ route('siswa.pengumuman') }}" class="block py-2 text-sm {{ request()->routeIs('siswa.pengumuman') ? 'text-primary font-medium' : 'text-slate-500 hover:text-primary transition-colors' }}">Pengumuman</a>
+            </div>
+        </div>
+    @else
+        <!-- Standard PPDB Menus -->
+        <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('siswa.formulir') ? 'bg-primary/10 text-primary font-medium' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors' }}" 
+           href="{{ route('siswa.formulir') }}" title="Formulir">
+            <span class="material-symbols-outlined">description</span>
+            <span class="nav-text">Formulir</span>
+        </a>
+
+        <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('siswa.dokumen') ? 'bg-primary/10 text-primary font-medium' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors' }}" 
+           href="{{ route('siswa.dokumen') }}" title="Dokumen">
+            <span class="material-symbols-outlined">folder_open</span>
+            <span class="nav-text">Dokumen</span>
+        </a>
+
+        <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('siswa.pengumuman') ? 'bg-primary/10 text-primary font-medium' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors' }}" 
+           href="{{ route('siswa.pengumuman') }}" title="Pengumuman">
+            <span class="material-symbols-outlined">notifications</span>
+            <span class="nav-text">Pengumuman</span>
+        </a>
+    @endif
 </nav>
 
 @auth('siswa')

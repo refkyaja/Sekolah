@@ -7,7 +7,7 @@
     $currentStep  = $currentStep  ?? 1;
     $spmb         = $spmb         ?? null;
     $isLulus      = $isLulus      ?? false;
-    $dokumenStatus = $dokumenStatus ?? ['akte' => 'pending', 'kk' => 'pending', 'ktp' => 'pending', 'foto' => 'pending'];
+    $dokumenStatus = $dokumenStatus ?? ['akte' => 'pending', 'kk' => 'pending', 'ktp' => 'pending', 'bukti_pembayaran' => 'pending'];
 
     // Hitung label tahun ajaran
     $tahunAjaran = ($spmb && $spmb->tahunAjaran)
@@ -105,6 +105,122 @@ document.addEventListener('click', function(e) {
     }
 });
 </script>
+
+@if($isLulus)
+{{-- Active Student Dashboard Content --}}
+<section class="mb-8 overflow-hidden rounded-[2rem] bg-gradient-to-br from-indigo-600 via-primary to-violet-700 text-white shadow-2xl shadow-primary/20">
+    <div class="flex flex-col gap-6 p-8 md:flex-row md:items-center md:justify-between">
+        <div class="max-w-3xl">
+            <p class="mb-3 text-xs font-black uppercase tracking-[0.35em] text-white/75">Portal Siswa Aktif</p>
+            <h3 class="text-2xl font-black tracking-tight md:text-3xl">Selamat Belajar, {{ $siswa->nama_lengkap }}!</h3>
+            <p class="mt-3 max-w-2xl text-sm leading-7 text-white/85 md:text-base">
+                Anda terdaftar di {{ $siswa->kelas ?? 'Kelompok ' . ($siswa->kelompok ?? 'A') }}. 
+                Gunakan dashboard ini untuk memantau kehadiran, materi KBM, dan jadwal pelajaran Anda.
+            </p>
+        </div>
+        <div class="flex gap-3">
+            <a href="{{ route('siswa.kehadiran') }}" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-black uppercase tracking-widest text-slate-900 transition-all hover:-translate-y-0.5 hover:bg-slate-100">
+                <span class="material-symbols-outlined text-lg">calendar_month</span>
+                Absensi
+            </a>
+        </div>
+    </div>
+</section>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    {{-- Left Column: Schedule & Materials --}}
+    <div class="lg:col-span-2 space-y-8">
+        {{-- Today's Schedule --}}
+        <section class="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">schedule</span>
+                    Jadwal Hari Ini
+                </h3>
+                <a href="{{ route('siswa.jadwal') }}" class="text-xs font-bold text-primary hover:underline uppercase tracking-wider">Lihat Semua</a>
+            </div>
+            
+            <div class="space-y-4">
+                @forelse($todaySchedule as $item)
+                    <div class="flex items-center justify-between p-4 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 hover:border-primary/20 transition-colors">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">
+                                {{ \Carbon\Carbon::parse($item->jam_mulai)->format('H:i') }}
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-800 dark:text-white">{{ $item->mata_pelajaran }}</p>
+                                <p class="text-xs text-slate-500">{{ $item->guru ?? 'Guru Pengajar' }} • {{ $item->lokasi ?? 'Ruang Kelas' }}</p>
+                            </div>
+                        </div>
+                        <span class="material-symbols-outlined text-slate-300">chevron_right</span>
+                    </div>
+                @empty
+                    <div class="p-8 text-center bg-slate-50 dark:bg-slate-800/30 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700">
+                        <span class="material-symbols-outlined text-4xl text-slate-200 mb-2">event_busy</span>
+                        <p class="text-sm text-slate-500">Tidak ada jadwal pelajaran hari ini.</p>
+                    </div>
+                @endforelse
+            </div>
+        </section>
+
+        {{-- Latest Materials --}}
+        <section class="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">library_books</span>
+                    Materi Terbaru
+                </h3>
+                <a href="{{ route('siswa.materi') }}" class="text-xs font-bold text-primary hover:underline uppercase tracking-wider">Semua Materi</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                @forelse($materiTerbaru as $item)
+                    <div class="p-4 rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-800/20 hover:shadow-md transition-shadow relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <span class="material-symbols-outlined text-4xl">description</span>
+                        </div>
+                        <span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[9px] font-black text-slate-500 uppercase tracking-widest">{{ $item->mata_pelajaran }}</span>
+                        <h4 class="font-bold text-sm text-slate-800 dark:text-white mt-2 mb-1 line-clamp-1">{{ $item->judul_materi }}</h4>
+                        <p class="text-[10px] text-slate-400 mb-4">{{ $item->tanggal_publish->translatedFormat('d F Y') }}</p>
+                        <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank" class="text-xs font-bold text-primary flex items-center gap-1 hover:underline">
+                            Download <span class="material-symbols-outlined text-xs">download</span>
+                        </a>
+                    </div>
+                @empty
+                    <div class="col-span-full p-8 text-center bg-slate-50 dark:bg-slate-800/30 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700">
+                        <p class="text-sm text-slate-500">Belum ada materi terbaru.</p>
+                    </div>
+                @endforelse
+            </div>
+        </section>
+    </div>
+
+    {{-- Right Column: Notifications & Profile Summary --}}
+    <div class="space-y-8">
+        @livewire('siswa-notification-widget')
+        
+        <section class="bg-primary/5 dark:bg-primary/10 rounded-3xl p-6 border border-primary/10">
+            <h4 class="text-xs font-black uppercase tracking-widest text-primary mb-4">Ringkasan Profil</h4>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-500">Kelompok</span>
+                    <span class="font-bold text-slate-800 dark:text-white">{{ $siswa->kelompok ?? 'A' }}</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-500">NIS</span>
+                    <span class="font-bold text-slate-800 dark:text-white">{{ $siswa->nis ?? '-' }}</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-500">Wali Kelas</span>
+                    <span class="font-bold text-slate-800 dark:text-white">{{ $siswa->guru_kelas ?? '-' }}</span>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+@else
+{{-- Existing PPDB Content --}}
 
 <section class="mb-8 overflow-hidden rounded-[2rem] bg-gradient-to-br {{ $heroTone }} text-white shadow-2xl shadow-primary/20">
     <div class="flex flex-col gap-6 p-8 md:flex-row md:items-center md:justify-between">
@@ -351,6 +467,28 @@ document.addEventListener('click', function(e) {
                         <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 text-xs font-bold uppercase tracking-wider">Pending</span>
                     @endif
                 </div>
+
+                {{-- Bukti Pembayaran --}}
+                <div class="flex items-center justify-between p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-600 flex items-center justify-center">
+                            <span class="material-symbols-outlined">receipt_long</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold">Bukti Pembayaran</p>
+                            @if ($spmb && $spmb->tanggal_verifikasi_bukti_transfer)
+                                <p class="text-xs text-slate-500">Diverifikasi {{ $spmb->tanggal_verifikasi_bukti_transfer->format('d M Y') }}</p>
+                            @else
+                                <p class="text-xs text-slate-500">Menunggu verifikasi admin</p>
+                            @endif
+                        </div>
+                    </div>
+                    @if ($spmb && $spmb->verifikasi_bukti_transfer)
+                        <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold uppercase tracking-wider">Verified</span>
+                    @else
+                        <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 text-xs font-bold uppercase tracking-wider">Pending</span>
+                    @endif
+                </div>
             </div>
         </section>
 
@@ -383,4 +521,5 @@ document.addEventListener('click', function(e) {
     </div>
 </div>
 
+@endif
 @endsection

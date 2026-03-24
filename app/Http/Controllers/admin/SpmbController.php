@@ -12,7 +12,6 @@ use App\Models\Siswa;
 use App\Models\SpmbArsip;
 use App\Models\TahunAjaran;
 use App\Models\SpmbDokumen;
-use App\Models\SpmbBuktiTransfer;
 use App\Models\SpmbRiwayatStatus;
 use App\Models\SpmbSetting;
 use Illuminate\Http\Request;
@@ -29,6 +28,11 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 class SpmbController extends Controller
 {
     use AuthorizesModuleAccess;
+
+    private $defaultExportFields = [
+        'no_pendaftaran', 'nama_lengkap_anak', 'nik_anak', 'jenis_kelamin',
+        'tempat_lahir_anak', 'tanggal_lahir_anak', 'status_pendaftaran'
+    ];
 
     protected function ppdbRoutePrefix(): string
     {
@@ -200,9 +204,9 @@ class SpmbController extends Controller
         $tahunAjaran = $tahunAjaranId ? TahunAjaran::find($tahunAjaranId) : null;
 
         if ($format === 'pdf') {
-            return $this->exportPdf($data, $tahunAjaran);
+            return $this->exportPdf($data, $tahunAjaran, false);
         } else {
-            return $this->exportExcel($data, $tahunAjaran);
+            return $this->exportExcel($data, $tahunAjaran, false);
         }
     }
 
@@ -264,18 +268,25 @@ class SpmbController extends Controller
         $exportData = $data->map(function ($item, $index) {
             return [
                 'No' => $index + 1,
-                'No Pendaftaran' => $item->no_pendaftaran,
+                'NIK Anak' => "'" . $item->nik_anak,
                 'Nama Lengkap' => $item->nama_lengkap_anak,
-                'NIK' => "'" . $item->nik_anak, // Prefix with ' to force text format
-                'NISN' => $item->nisn ? "'" . $item->nisn : '-',
+                'Tempat, Tanggal Lahir' => ($item->tempat_lahir_anak ?? '-') . ', ' . ($item->tanggal_lahir_anak ? $item->tanggal_lahir_anak->format('d-m-Y') : '-'),
+                'Umur' => $item->usia_label,
                 'Jenis Kelamin' => $item->jenis_kelamin,
-                'Tempat Lahir' => $item->tempat_lahir_anak,
-                'Tanggal Lahir' => $item->tanggal_lahir_anak ? $item->tanggal_lahir_anak->format('d-m-Y') : '-',
+                'Agama' => $item->agama ?? '-',
                 'Nama Ayah' => $item->nama_lengkap_ayah ?? '-',
+                'NIK Ayah' => $item->nik_ayah ? "'" . $item->nik_ayah : '-',
+                'Pekerjaan Ayah' => $item->pekerjaan_ayah ?? '-',
+                'No HP Ayah' => $item->nomor_telepon_ayah ? "'" . $item->nomor_telepon_ayah : '-',
                 'Nama Ibu' => $item->nama_lengkap_ibu ?? '-',
-                'No Telepon' => $item->nomor_telepon_ayah ?? $item->nomor_telepon_ibu ?? '-',
-                'Status' => $item->status_pendaftaran,
-                'Tahun Ajaran' => $item->tahunAjaran?->tahun_ajaran ?? '-',
+                'NIK Ibu' => $item->nik_ibu ? "'" . $item->nik_ibu : '-',
+                'Pekerjaan Ibu' => $item->pekerjaan_ibu ?? '-',
+                'No HP Ibu' => $item->nomor_telepon_ibu ? "'" . $item->nomor_telepon_ibu : '-',
+                'Alamat Lengkap' => trim(($item->nama_jalan_rumah ?? '') . ' ' . ($item->kelurahan_rumah ?? '') . ' ' . ($item->kecamatan_rumah ?? '') . ' ' . ($item->kota_kabupaten_rumah ?? '') . ' ' . ($item->provinsi_rumah ?? '')),
+                'Nama Wali' => $item->nama_lengkap_wali ?? '-',
+                'NIK Wali' => $item->nik_wali ? "'" . $item->nik_wali : '-',
+                'Pekerjaan Wali' => $item->pekerjaan_wali ?? '-',
+                'No HP Wali' => $item->nomor_telepon_wali ? "'" . $item->nomor_telepon_wali : '-',
             ];
         });
         
@@ -403,10 +414,12 @@ class SpmbController extends Controller
                 'akte_kelahiran' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
                 'kartu_keluarga' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
                 'ktp_orang_tua' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'bukti_pembayaran' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
             ], [
                 'akte_kelahiran.required' => 'Dokumen akte kelahiran wajib diupload',
                 'kartu_keluarga.required' => 'Dokumen Kartu Keluarga wajib diupload',
                 'ktp_orang_tua.required' => 'Dokumen KTP Orang Tua wajib diupload',
+                'bukti_pembayaran.required' => 'Dokumen Bukti Pembayaran wajib diupload',
             ]);
             
             // Set default values - use active tahun ajaran
@@ -463,9 +476,12 @@ class SpmbController extends Controller
     {
         $this->authorizeModule('ppdb', 'read');
 
-        $spmb->load(['tahunAjaran', 'dokumen', 'buktiTransfer', 'riwayatStatus.user', 'siswa']);
+        $spmb->load(['tahunAjaran', 'dokumen', 'riwayatStatus.user', 'siswa']);
         
-        return view('admin.ppdb.show', compact('spmb'));
+        $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+        $readOnly = $tahunAjaranAktif && $spmb->tahun_ajaran_id !== $tahunAjaranAktif->id;
+        
+        return view('admin.ppdb.show', compact('spmb', 'readOnly'));
     }
 
     /**
@@ -644,7 +660,6 @@ class SpmbController extends Controller
             DB::beginTransaction();
             
             $spmb->dokumen()->delete();
-            $spmb->buktiTransfer()->delete();
             $spmb->riwayatStatus()->delete();
             
             foreach ($spmb->dokumen as $dokumen) {
@@ -794,7 +809,9 @@ class SpmbController extends Controller
                 'akte_kelahiran' => 'Akta Kelahiran',
                 'kartu_keluarga' => 'Kartu Keluarga',
                 'ktp_orang_tua' => 'KTP Orang Tua',
+                'bukti_pembayaran' => 'Bukti Pembayaran',
             ];
+
             $selectedDokumenLabels = collect($request->jenis_dokumen ?? [])
                 ->map(fn ($jenis) => $dokumenLabels[$jenis] ?? null)
                 ->filter()
@@ -811,6 +828,7 @@ class SpmbController extends Controller
                         'akte_kelahiran' => 'verifikasi_akte',
                         'kartu_keluarga' => 'verifikasi_kk',
                         'ktp_orang_tua' => 'verifikasi_ktp',
+                        'bukti_pembayaran' => 'verifikasi_bukti_transfer',
                         default => null
                     };
                     if ($field) {
@@ -880,25 +898,34 @@ class SpmbController extends Controller
         $this->authorizeModule('ppdb', 'update');
 
         $request->validate([
-            'jenis' => 'required|in:akte_kelahiran,kartu_keluarga,ktp_orang_tua',
-            'action' => 'required|in:verify,unverify'
+            'jenis' => 'required|in:akte_kelahiran,kartu_keluarga,ktp_orang_tua,bukti_pembayaran',
+            'action' => 'required|in:verify,unverify,revision',
+            'keterangan' => 'nullable|string'
         ]);
         
         $field = '';
+        $docType = '';
         switch($request->jenis) {
             case 'akte_kelahiran':
                 $field = 'verifikasi_akte';
+                $docType = 'akte_kelahiran';
                 break;
             case 'kartu_keluarga':
                 $field = 'verifikasi_kk';
+                $docType = 'kartu_keluarga';
                 break;
             case 'ktp_orang_tua':
                 $field = 'verifikasi_ktp';
+                $docType = 'ktp_orang_tua';
+                break;
+            case 'bukti_pembayaran':
+                $field = 'verifikasi_bukti_transfer';
+                $docType = 'bukti_pembayaran';
                 break;
         }
 
-        if ($request->action === 'verify' && !$spmb->hasUploadedDocument($request->jenis)) {
-            $message = 'Dokumen belum diunggah, jadi tidak bisa diverifikasi.';
+        if (in_array($request->action, ['verify', 'revision']) && !$spmb->hasUploadedDocument($request->jenis)) {
+            $message = 'Dokumen belum diunggah, jadi tidak bisa diverifikasi/direvisi.';
 
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
@@ -911,12 +938,23 @@ class SpmbController extends Controller
         }
         
         if ($request->action === 'verify') {
-            $spmb->$field = true;
+            $spmb->setAttribute($field, true);
             $message = 'Dokumen berhasil diverifikasi.';
             
             // Auto-update status if all verified
-            if ($spmb->verifikasi_akte && $spmb->verifikasi_kk && $spmb->verifikasi_ktp) {
+            if ($spmb->verifikasi_akte && $spmb->verifikasi_kk && $spmb->verifikasi_ktp && $spmb->verifikasi_bukti_transfer) {
                 $spmb->status_pendaftaran = 'Dokumen Verified';
+            }
+        } elseif ($request->action === 'revision') {
+            $spmb->setAttribute($field, false);
+            $spmb->status_pendaftaran = 'Revisi Dokumen';
+            $message = 'Dokumen ditandai untuk revisi.';
+            
+            // Simpan catatan revisi ke dokumen spesifik
+            $dokumen = $spmb->dokumen()->where('jenis_dokumen', $docType)->first();
+            if ($dokumen) {
+                $dokumen->keterangan = $request->keterangan;
+                $dokumen->save();
             }
         } else {
             $spmb->$field = false;
@@ -939,6 +977,7 @@ class SpmbController extends Controller
                     'verifikasi_akte' => $spmb->verifikasi_akte,
                     'verifikasi_kk' => $spmb->verifikasi_kk,
                     'verifikasi_ktp' => $spmb->verifikasi_ktp,
+                    'verifikasi_bukti_transfer' => $spmb->verifikasi_bukti_transfer,
                     'status_pendaftaran' => $spmb->status_pendaftaran
                 ]
             ]);
@@ -1139,7 +1178,7 @@ class SpmbController extends Controller
             $isPengumumanPublished = $setting && $setting->is_published;
             
             $query = Spmb::with(['tahunAjaran'])
-                ->where('status_pendaftaran', 'Lulus');
+                ->whereIn('status_pendaftaran', ['Dokumen Verified', 'Lulus', 'Tidak Lulus', 'Menunggu Verifikasi']);
             
             if ($tahunAjaranId) {
                 $query->where('tahun_ajaran_id', $tahunAjaranId);
@@ -1153,7 +1192,9 @@ class SpmbController extends Controller
                 });
             }
             
-            $siswaLulus = $query->orderBy('nama_lengkap_anak', 'asc')->paginate(10);
+            $siswaLulus = $query->orderBy('status_pendaftaran', 'desc')
+                ->orderBy('nama_lengkap_anak', 'asc')
+                ->paginate(20);
             
             $totalLulus = Spmb::where('status_pendaftaran', 'Lulus')
                 ->when($tahunAjaranId, fn($q) => $q->where('tahun_ajaran_id', $tahunAjaranId))
@@ -1187,11 +1228,43 @@ class SpmbController extends Controller
     }
 
     /**
+     * Update hasil seleksi (Lulus / Tidak Lulus)
+     */
+    public function updateHasilSeleksi(Request $request, Spmb $spmb)
+    {
+        $this->authorizeModule('pengumuman', 'update');
+
+        $request->validate([
+            'status' => 'required|in:Lulus,Tidak Lulus,Menunggu Verifikasi,Dokumen Verified'
+        ]);
+
+        $spmb->status_pendaftaran = $request->status;
+        $spmb->save();
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Hasil seleksi berhasil diperbarui.',
+                'status' => $spmb->status_pendaftaran
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Hasil seleksi berhasil diperbarui.');
+    }
+
+    /**
      * Publish Pengumuman
      */
     public function publishPengumuman(Request $request)
     {
         $this->authorizeModule('pengumuman', 'update');
+
+        $request->validate([
+            'ids' => 'nullable|array',
+            'ids.*' => 'exists:spmb,id',
+            'konversi_siswa' => 'nullable|boolean',
+            'kelompok_tujuan' => 'nullable|in:A,B'
+        ]);
 
         try {
             $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
@@ -1201,99 +1274,99 @@ class SpmbController extends Controller
                 return back()->with('error', 'Tidak ada tahun ajaran aktif!');
             }
             
-            $konversiSiswa = $request->has('konversi_siswa') && $request->konversi_siswa == 1;
+            $ids = $request->ids;
             
-            $semuaSiswa = Spmb::where('tahun_ajaran_id', $tahunAjaranId)->get();
+            if (empty($ids)) {
+                // Jika tidak ada ID yang dipilih, publish semua yang 'Lulus' atau 'Tidak Lulus' di TA aktif
+                $ids = Spmb::where('tahun_ajaran_id', $tahunAjaranId)
+                    ->whereIn('status_pendaftaran', ['Lulus', 'Tidak Lulus'])
+                    ->pluck('id')
+                    ->toArray();
+
+                if (empty($ids)) {
+                    return back()->with('error', 'Tidak ada data pendaftar dengan status Lulus/Tidak Lulus yang bisa dipublish.');
+                }
+            }
+            
+            $konversiSiswa = $request->has('konversi_siswa') && $request->konversi_siswa == 1;
+            $kelompokTujuan = $request->get('kelompok_tujuan', 'A');
+            
+            $siswaToPublish = Spmb::whereIn('id', $ids)->get();
             
             $jumlahDikonversi = 0;
-            $jumlahDiarsipkan = 0;
+            $jumlahPublished = 0;
             
-            foreach ($semuaSiswa as $spmb) {
-                $oldStatus = $spmb->status_pendaftaran;
+            foreach ($siswaToPublish as $spmb) {
+                // Ensure state is clear: is_published = true
+                $spmb->is_published = true;
+                $spmb->save();
+                $jumlahPublished++;
                 
-                // Arsipkan ke tabel riwayat terlebih dahulu
-                SpmbArsip::create([
-                    'spmb_asli_id' => $spmb->id,
-                    'no_pendaftaran' => $spmb->no_pendaftaran,
-                    'tahun_ajaran_id' => $spmb->tahun_ajaran_id,
-                    'nama_lengkap_anak' => $spmb->nama_lengkap_anak,
-                    'nik_anak' => $spmb->nik_anak,
-                    'jenis_kelamin' => $spmb->jenis_kelamin,
-                    'tanggal_lahir_anak' => $spmb->tanggal_lahir_anak,
-                    'status_pendaftaran' => $oldStatus,
-                    'is_aktif' => false,
-                    'data_lengkap' => $spmb->toArray(),
-                ]);
-                
-                $jumlahDiarsipkan++;
-                
-                if ($oldStatus === 'Lulus') {
-                    // Update status dengan riwayat
-                    $spmb->setStatus('Lulus', auth()->id(), 'Pengumuman kelulusan dipublish');
-                    
-                    // Konversi ke siswa jika checkbox dicentang
-                    if ($konversiSiswa && !$spmb->siswa) {
-                        $existingSiswa = Siswa::where('nik', $spmb->nik_anak)->first();
-                        if (!$existingSiswa) {
-                            $tahunAjaran = $tahunAjaranAktif ? $tahunAjaranAktif->tahun_ajaran : date('Y');
-                            $jk = $spmb->jenis_kelamin === 'Perempuan' ? 'P' : 'L';
-                            
-                            $siswaBaru = Siswa::create([
-                                'nama_lengkap' => $spmb->nama_lengkap_anak,
-                                'nama_panggilan' => $spmb->nama_panggilan_anak,
-                                'nik' => $spmb->nik_anak,
-                                'tempat_lahir' => $spmb->tempat_lahir_anak,
-                                'tanggal_lahir' => $spmb->tanggal_lahir_anak,
-                                'jenis_kelamin' => $jk,
-                                'agama' => $spmb->agama,
-                                'alamat' => $spmb->nama_jalan_rumah,
-                                'provinsi' => $spmb->provinsi_rumah,
-                                'kota_kabupaten' => $spmb->kota_kabupaten_rumah,
-                                'kecamatan' => $spmb->kecamatan_rumah,
-                                'kelurahan' => $spmb->kelurahan_rumah,
-                                'tahun_ajaran' => $tahunAjaran,
-                                'tahun_ajaran_id' => $tahunAjaranId,
-                                'status_siswa' => 'Aktif',
-                                'spmb_id' => $spmb->id,
-                            ]);
-                            
-                            $spmb->update(['siswa_id' => $siswaBaru->id]);
-                            $jumlahDikonversi++;
-                        }
+                // Double Insert Prevention: Check is_converted and status_pendaftaran
+                if ($spmb->status_pendaftaran === 'Lulus' && $konversiSiswa && !$spmb->is_converted) {
+                    $existingSiswa = Siswa::where('nik', $spmb->nik_anak)
+                        ->orWhere('spmb_id', $spmb->id)
+                        ->first();
+                        
+                    if (!$existingSiswa) {
+                        $tahunAjaran = $tahunAjaranAktif ? $tahunAjaranAktif->tahun_ajaran : date('Y');
+                        $jk = $spmb->jenis_kelamin === 'Perempuan' ? 'P' : 'L';
+                        
+                        $siswaBaru = Siswa::create([
+                            'nama_lengkap' => $spmb->nama_lengkap_anak,
+                            'nama_panggilan' => $spmb->nama_panggilan_anak,
+                            'nik' => $spmb->nik_anak,
+                            'tempat_lahir' => $spmb->tempat_lahir_anak,
+                            'tanggal_lahir' => $spmb->tanggal_lahir_anak,
+                            'jenis_kelamin' => $jk,
+                            'agama' => $spmb->agama,
+                            'alamat' => $spmb->nama_jalan_rumah,
+                            'provinsi' => $spmb->provinsi_rumah,
+                            'kota_kabupaten' => $spmb->kota_kabupaten_rumah,
+                            'kecamatan' => $spmb->kecamatan_rumah,
+                            'kelurahan' => $spmb->kelurahan_rumah,
+                            'tahun_ajaran' => $tahunAjaran,
+                            'tahun_ajaran_id' => $tahunAjaranId,
+                            'status_siswa' => 'aktif',
+                            'kelompok' => $kelompokTujuan,
+                            'spmb_id' => $spmb->id,
+                        ]);
+                        
+                        // Mark as converted
+                        $spmb->update([
+                            'siswa_id' => $siswaBaru->id,
+                            'is_converted' => true
+                        ]);
+                        $jumlahDikonversi++;
+                    } else {
+                        // If already exists but flag not set, sync it
+                        $spmb->update([
+                            'siswa_id' => $existingSiswa->id,
+                            'is_converted' => true
+                        ]);
                     }
-                } else {
-                    // Update status Tidak Lulus dengan riwayat
-                    $spmb->setStatus('Tidak Lulus', auth()->id(), 'Pengumuman kelulusan dipublish - Tidak Lulus');
                 }
-                
-                // Hapus data SPMB asli setelah diarsipkan
-                $spmb->delete();
             }
             
             $setting = SpmbSetting::where('tahun_ajaran', $tahunAjaranAktif->tahun_ajaran)->first();
             if ($setting) {
                 $setting->update([
                     'status_pengumuman' => 'published',
+                    'is_published' => true,
                     'published_at' => now(),
                     'published_by' => auth()->id(),
                 ]);
             }
             
-            $message = 'Pengumuman berhasil dipublish!';
-            if ($konversiSiswa) {
-                if ($jumlahDikonversi > 0) {
-                    $message .= " {$jumlahDikonversi} siswa telah ditambahkan ke Data Siswa.";
-                } else {
-                    $message .= " Semua siswa lulus sudah ada di Data Siswa.";
-                }
+            $message = "Berhasil mempublish {$jumlahPublished} pengumuman!";
+            if ($konversiSiswa && $jumlahDikonversi > 0) {
+                $message .= " {$jumlahDikonversi} siswa telah ditambahkan ke Data Siswa (Kelompok {$kelompokTujuan}).";
             }
-            $message .= " {$jumlahDiarsipkan} data pendaftaran telah dicatat di Riwayat.";
             
-            return back()->with('success', $message);
+            return redirect()->back()->with('success', $message);
             
         } catch (\Exception $e) {
-            Log::error('SpmbController@publishPengumuman Error: ' . $e->getMessage());
-            return back()->with('error', 'Gagal publish pengumuman: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
@@ -1665,7 +1738,8 @@ class SpmbController extends Controller
         $dokumenTypes = [
             'akte' => 'akte_kelahiran',
             'kk' => 'kartu_keluarga',
-            'ktp' => 'ktp_orang_tua'
+            'ktp' => 'ktp_orang_tua',
+            'bukti_pembayaran' => 'bukti_pembayaran'
         ];
         
         foreach ($dokumenTypes as $jenis => $field) {
@@ -1797,7 +1871,29 @@ class SpmbController extends Controller
             'status_pendaftaran' => 'Lulus'
         ]);
 
-        return redirect()->back()->with('success', count($ids) . ' p berhasil diluluskan.');
+        return redirect()->back()->with('success', count($ids) . ' p pendaftar berhasil diluluskan.');
+    }
+
+    /**
+     * Bulk update status pendaftaran (Lulus/Tidak Lulus)
+     */
+    public function bulkUpdateStatus(Request $request)
+    {
+        $this->authorizeModule('ppdb', 'update');
+
+        $request->validate([
+            'selected_ids' => 'required|string',
+            'status' => 'required|in:Lulus,Tidak Lulus'
+        ]);
+
+        $ids = explode(',', $request->selected_ids);
+        $status = $request->status;
+        
+        Spmb::whereIn('id', $ids)->update([
+            'status_pendaftaran' => $status
+        ]);
+
+        return redirect()->back()->with('success', count($ids) . " pendaftar berhasil diupdate ke status {$status}.");
     }
 
     /**
@@ -1811,6 +1907,5 @@ class SpmbController extends Controller
         
         Spmb::whereIn('id', $ids)->delete();
 
-        return redirect()->back()->with('success', count($ids) . ' data berhasil dihapus.');
     }
 }

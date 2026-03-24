@@ -24,7 +24,9 @@ class Siswa extends Authenticatable
         'username',
         'email',
         'password',
-        'google_id',
+        'is_active',
+        'provider',
+        'provider_id',
         
         // Data siswa
         'nik',
@@ -134,6 +136,7 @@ class Siswa extends Authenticatable
         'tanggal_masuk' => 'date',
         'tanggal_keluar' => 'date',
         'punya_wali' => 'boolean',
+        'is_active' => 'boolean',
         'berat_badan' => 'decimal:2',
         'tinggi_badan' => 'decimal:2',
         'password' => 'hashed',

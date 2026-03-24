@@ -20,114 +20,107 @@
 @endpush
 
 @section('content')
-<nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 uppercase tracking-widest">
+<nav aria-label="Breadcrumb" class="flex mb-4 text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-widest">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
-            <a href="{{ route('admin.ppdb.index') }}">PPDB</a>
+        <li><a class="hover:text-primary dark:hover:text-primary transition-colors" href="{{ route('admin.ppdb.index') }}">PPDB</a></li>
         <li><span class="mx-2">/</span></li>
-        <li class="text-slate-600">Export Data</li>
+        <li class="text-slate-600 dark:text-slate-400">Export Data</li>
     </ol>
 </nav>
 
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
     <div>
-        <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Export Data PPDB</h1>
-        <p class="text-sm text-slate-500 mt-1">Eksport data calon siswa berdasarkan tahun ajaran.</p>
+        <h1 class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Export Data PPDB</h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Eksport data calon siswa berdasarkan tahun ajaran.</p>
     </div>
     <div class="flex items-center gap-3">
-        <a href="{{ route('admin.ppdb.index') }}" class="flex items-center gap-2 px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-medium text-sm hover:bg-slate-200 transition-all">
+        <a href="{{ route('admin.ppdb.index') }}" class="flex items-center gap-2 px-4 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl font-medium text-sm hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
             <span class="material-symbols-outlined text-lg">arrow_back</span>
             Kembali
         </a>
     </div>
 </div>
 
-<div class="bg-white rounded-2xl p-6 mb-8 border border-slate-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-    <div class="flex flex-wrap items-center gap-4">
-        <div class="relative w-full md:w-72">
-            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
-            <input 
-                name="search" 
-                value="{{ request('search') }}"
-                class="w-full pl-11 pr-4 py-2.5 bg-background-light border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all" 
-                placeholder="Cari Tahun Ajaran..." 
-                type="text"
-            />
+<div class="bg-white dark:bg-slate-900 rounded-2xl p-6 mb-8 border border-slate-100 dark:border-slate-800 shadow-sm">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-1 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-lg">download</span>
+                Eksport Seluruh Data
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Eksport data pendaftar dari seluruh tahun ajaran dalam satu file.</p>
         </div>
-        <div class="relative">
-            <select name="tahun_ajaran_id" class="appearance-none pl-4 pr-10 py-2.5 bg-background-light border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm font-medium text-slate-600 cursor-pointer">
-                <option value="">Semua Tahun Ajaran</option>
-                @foreach($tahunAjaran as $ta)
-                    <option value="{{ $ta->id }}" {{ request('tahun_ajaran_id') == $ta->id ? 'selected' : '' }}>
-                        {{ $ta->tahun_ajaran }}
-                    </option>
-                @endforeach
-            </select>
-            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-lg">expand_more</span>
-        </div>
-    </div>
-    <div class="relative group export-dropdown">
-        <button type="button" class="flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-xl font-bold text-sm hover:bg-purple-700 transition-all shadow-lg shadow-primary/20">
-            <span class="material-symbols-outlined text-lg">download</span>
-            Export All Data
-            <span class="material-symbols-outlined text-lg">arrow_drop_down</span>
-        </button>
-        <div class="absolute right-0 mt-2 w-48 bg-white border border-slate-100 rounded-xl shadow-xl overflow-hidden z-30 hidden group-hover:block">
-            <a href="{{ route('admin.ppdb.export', ['format' => 'pdf']) }}" class="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2 border-b border-slate-50">
-                <span class="material-symbols-outlined text-red-500 text-lg">picture_as_pdf</span>
-                Export as PDF
-            </a>
-            <a href="{{ route('admin.ppdb.export', ['format' => 'excel']) }}" class="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
-                <span class="material-symbols-outlined text-green-600 text-lg">table_chart</span>
-                Export as Excel
-            </a>
+        <div class="flex gap-3">
+            <button type="button" onclick="doExport('pdf')" class="flex items-center gap-2 px-6 py-2.5 bg-red-600 text-white rounded-xl font-bold text-sm hover:bg-red-700 transition-all shadow-lg shadow-red-200/50">
+                <span class="material-symbols-outlined text-lg">picture_as_pdf</span>
+                Export All (PDF)
+            </button>
+            <button type="button" onclick="doExport('excel')" class="flex items-center gap-2 px-6 py-2.5 bg-green-600 text-white rounded-xl font-bold text-sm hover:bg-green-700 transition-all shadow-lg shadow-green-200/50">
+                <span class="material-symbols-outlined text-lg">table_chart</span>
+                Export All (Excel)
+            </button>
         </div>
     </div>
 </div>
 
-<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+<div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden">
+    <!-- Search Filter Section -->
+    <div class="p-6 border-b border-slate-50 dark:border-slate-800">
+        <div class="relative w-full md:w-72">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-lg">search</span>
+            <input 
+                id="tahunSearch"
+                class="w-full pl-11 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500" 
+                placeholder="Cari Tahun Ajaran..." 
+                type="text"
+                onkeyup="filterTahun()"
+            />
+        </div>
+    </div>
+    
     <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
             <thead>
-                <tr class="bg-slate-50/50">
-                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">No</th>
-                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">Tahun Ajaran</th>
-                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 text-center">Total Pendaftar</th>
-                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 text-center">Lulus Seleksi</th>
-                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 text-center">Tidak Lulus</th>
-                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 text-center">Menunggu</th>
-                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 text-right">Actions</th>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/50">
+                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800">No</th>
+                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800">Tahun Ajaran</th>
+                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800 text-center">Total Pendaftar</th>
+                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800 text-center">Lulus Seleksi</th>
+                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800 text-center">Tidak Lulus</th>
+                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800 text-center">Menunggu</th>
+                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800 text-right">Actions</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-50">
+            <tbody class="divide-y divide-slate-50 dark:divide-slate-800">
                 @forelse($statistikPerTahun as $index => $stat)
-                <tr class="hover:bg-slate-50/80 transition-colors">
-                    <td class="px-6 py-5 text-sm font-medium text-slate-600">{{ $index + 1 }}</td>
+                <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/60 transition-colors">
+                    <td class="px-6 py-5 text-sm font-medium text-slate-600 dark:text-slate-400">{{ $index + 1 }}</td>
                     <td class="px-6 py-5">
-                        <span class="text-sm font-bold text-slate-800">{{ $stat['tahun_ajaran'] }}</span>
+                        <span class="text-sm font-bold text-slate-800 dark:text-slate-100 tahun-text">{{ $stat['tahun_ajaran'] }}</span>
                         @if($stat['is_active'])
-                        <span class="ml-2 px-2 py-0.5 bg-green-100 text-green-600 text-[10px] font-bold rounded-full uppercase">Active</span>
+                        <span class="ml-2 px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-[10px] font-bold rounded-full uppercase">Active</span>
                         @endif
                     </td>
-                    <td class="px-6 py-5 text-sm text-center font-semibold text-slate-700">{{ $stat['total'] }}</td>
+                    <td class="px-6 py-5 text-sm text-center font-semibold text-slate-700 dark:text-slate-200">{{ $stat['total'] }}</td>
                     <td class="px-6 py-5 text-sm text-center font-semibold text-green-600">{{ $stat['lulus'] }}</td>
                     <td class="px-6 py-5 text-sm text-center font-semibold text-red-600">{{ $stat['tidak_lulus'] }}</td>
                     <td class="px-6 py-5 text-sm text-center font-semibold text-yellow-600">{{ $stat['menunggu'] }}</td>
                     <td class="px-6 py-5">
                         <div class="flex items-center justify-end gap-3">
-                            <a href="{{ route('admin.ppdb.export', ['tahun_ajaran_id' => $stat['tahun_ajaran_id'], 'format' => 'pdf']) }}" class="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-xs font-bold transition-all border border-red-100">
+                            <button type="button" onclick="doExport('pdf', '{{ $stat['tahun_ajaran_id'] }}')" class="flex items-center gap-2 px-4 py-2 bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/20 rounded-lg text-xs font-bold transition-all border border-red-100 dark:border-red-900/30">
                                 <span class="material-symbols-outlined text-lg leading-none">picture_as_pdf</span>
                                 Export PDF
-                            </a>
-                            <a href="{{ route('admin.ppdb.export', ['tahun_ajaran_id' => $stat['tahun_ajaran_id'], 'format' => 'excel']) }}" class="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg text-xs font-bold transition-all border border-green-100">
+                            </button>
+                            <button type="button" onclick="doExport('excel', '{{ $stat['tahun_ajaran_id'] }}')" class="flex items-center gap-2 px-4 py-2 bg-green-50 dark:bg-green-900/10 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/20 rounded-lg text-xs font-bold transition-all border border-green-100 dark:border-green-900/30">
                                 <span class="material-symbols-outlined text-lg leading-none">table_chart</span>
                                 Export Excel
-                            </a>
+                            </button>
                         </div>
                     </td>
                 </tr>
                 @empty
-                <tr>
-                    <td colspan="7" class="px-6 py-12 text-center text-slate-400">
+                <tr class="empty-row">
+                    <td colspan="7" class="px-6 py-12 text-center text-slate-400 dark:text-slate-600">
                         <span class="material-symbols-outlined text-5xl mb-2">folder_open</span>
                         <p class="text-sm">Tidak ada data tahun ajaran</p>
                     </td>
@@ -136,8 +129,33 @@
             </tbody>
         </table>
     </div>
-    <div class="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
-        <p class="text-xs font-medium text-slate-400">Showing 1 to {{ count($statistikPerTahun) }} of {{ count($statistikPerTahun) }} academic years</p>
+    <div class="px-6 py-4 bg-slate-50/50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <p class="text-xs font-medium text-slate-400 dark:text-slate-500">Showing 1 to {{ count($statistikPerTahun) }} of {{ count($statistikPerTahun) }} academic years</p>
     </div>
 </div>
+@push('scripts')
+<script>
+function doExport(format, tahunAjaranId = null) {
+    let url = tahunAjaranId ? "{{ route('admin.ppdb.exportData') }}" : "{{ route('admin.ppdb.exportAll') }}";
+    const params = new URLSearchParams();
+    params.append('format', format);
+    
+    if (tahunAjaranId) {
+        params.append('tahun_ajaran_id', tahunAjaranId);
+    }
+
+    window.location.href = url + '?' + params.toString();
+}
+
+function filterTahun() {
+    const input = document.getElementById('tahunSearch').value.toLowerCase();
+    const rows = document.querySelectorAll('tbody tr:not(.empty-row)');
+    
+    rows.forEach(row => {
+        const text = row.querySelector('.tahun-text').textContent.toLowerCase();
+        row.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
+@endpush
 @endsection

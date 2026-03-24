@@ -1111,6 +1111,19 @@
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('ktp_orang_tua') border-red-500 @enderror">
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Format: PDF, JPG, PNG (maks. 2MB)</p>
             </div>
+
+            <!-- Bukti Pembayaran -->
+            <div>
+                <label for="bukti_pembayaran" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Bukti Pembayaran *
+                </label>
+                <input type="file" 
+                       id="bukti_pembayaran"
+                       name="bukti_pembayaran" 
+                       accept=".pdf,.jpg,.jpeg,.png"
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('bukti_pembayaran') border-red-500 @enderror">
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Format: PDF, JPG, PNG (maks. 2MB)</p>
+            </div>
         </div>
     </div>
 

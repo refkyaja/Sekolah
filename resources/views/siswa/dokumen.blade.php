@@ -55,7 +55,7 @@
 <section class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
     <div class="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center justify-between">
         <h3 class="font-bold text-lg">Daftar Dokumen Wajib</h3>
-        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">3 Dokumen Diperlukan</span>
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">4 Dokumen Diperlukan</span>
     </div>
     <div class="divide-y divide-slate-100 dark:divide-slate-800">
         @php
@@ -80,6 +80,13 @@
                     'desc' => 'Format: JPG atau PNG. Ukuran maks. 5MB.',
                     'icon' => 'badge',
                     'verif_field' => 'verifikasi_ktp'
+                ],
+                [
+                    'id' => 'bukti_pembayaran',
+                    'title' => 'Bukti Pembayaran',
+                    'desc' => 'Bukti transfer biaya pendaftaran. Format JPG, PNG, atau PDF. Maks. 5MB.',
+                    'icon' => 'receipt_long',
+                    'verif_field' => 'verifikasi_bukti_transfer'
                 ]
             ];
         @endphp
@@ -174,10 +181,10 @@
 <div class="fixed bottom-6 right-6 flex flex-col gap-2 pointer-events-none lg:pointer-events-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl shadow-2xl flex items-center gap-4">
         @php
-            $countUploaded = $spmb->dokumen->whereIn('jenis_dokumen', ['akte_kelahiran', 'kartu_keluarga', 'ktp_orang_tua'])->count();
+            $countUploaded = $spmb->dokumen->whereIn('jenis_dokumen', ['akte_kelahiran', 'kartu_keluarga', 'ktp_orang_tua', 'bukti_pembayaran'])->count();
         @endphp
-        <div class="w-2 h-2 rounded-full bg-primary {{ $countUploaded < 3 ? 'animate-pulse' : '' }}"></div>
-        <p class="text-sm font-medium">Progress: {{ $countUploaded }}/3 Dokumen Terunggah</p>
+        <div class="w-2 h-2 rounded-full bg-primary {{ $countUploaded < 4 ? 'animate-pulse' : '' }}"></div>
+        <p class="text-sm font-medium">Progress: {{ $countUploaded }}/4 Dokumen Terunggah</p>
     </div>
 </div>
 @endsection

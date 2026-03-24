@@ -22,8 +22,10 @@ class SocialiteController extends Controller
         try {
             $googleUser = Socialite::driver('google_admin')->user();
 
-            // Check if user exists by google_id
-            $user = User::where('google_id', $googleUser->getId())->first();
+            // Check if user exists by provider_id
+            $user = User::where('provider', 'google')
+                ->where('provider_id', $googleUser->getId())
+                ->first();
 
             if ($user) {
                 Auth::login($user);
@@ -37,7 +39,8 @@ class SocialiteController extends Controller
             if ($user) {
                 // Link account
                 $user->update([
-                    'google_id' => $googleUser->getId(),
+                    'provider' => 'google',
+                    'provider_id' => $googleUser->getId(),
                     'foto' => $user->foto ?? $googleUser->getAvatar(),
                 ]);
 
@@ -46,14 +49,15 @@ class SocialiteController extends Controller
                 return redirect()->intended(route('dashboard'));
             }
 
-            // Create new user (Optional: you might want to restrict this to certain domains or roles)
+            // Create new user (Auto register based on request)
             $user = User::create([
                 'name' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
-                'google_id' => $googleUser->getId(),
+                'provider' => 'google',
+                'provider_id' => $googleUser->getId(),
                 'foto' => $googleUser->getAvatar(),
                 'password' => Hash::make(Str::random(16)),
-                'role' => 'guru', // Default role for social signup, adjust as needed
+                'role' => 'guru', // Default role for social signup
                 'is_active' => true,
             ]);
 

@@ -1,11 +1,11 @@
-<header class="h-20 flex items-center justify-between px-8 bg-transparent flex-shrink-0">
-    <button type="button" id="mobileMenuButton" class="lg:hidden p-2.5 rounded-2xl hover:bg-white transition-all" aria-label="Buka menu">
-        <span class="material-symbols-outlined text-slate-600">menu</span>
+<header class="h-20 flex items-center justify-between px-8 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex-shrink-0">
+    <button type="button" id="mobileMenuButton" class="lg:hidden p-2.5 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" aria-label="Buka menu">
+        <span class="material-symbols-outlined text-slate-600 dark:text-slate-300">menu</span>
     </button>
 
     <div class="relative flex-1 max-w-md mx-auto lg:mx-0 lg:mr-auto lg:ml-0">
-        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-        <input class="w-full pl-12 pr-4 py-2.5 bg-white border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm shadow-sm transition-all" placeholder="Search for students, teachers, documents..." type="text"/>
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500">search</span>
+        <input class="w-full pl-12 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm dark:text-slate-200 shadow-sm transition-all" placeholder="Search for students, teachers, documents..." type="text"/>
     </div>
 
     <div class="flex items-center gap-6">

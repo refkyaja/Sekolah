@@ -106,6 +106,16 @@ class AuthController extends Controller
         ];
 
         if (Auth::guard('siswa')->attempt($credentials, $request->filled('remember-me'))) {
+            $siswa = Auth::guard('siswa')->user();
+            
+            // Cek apakah akun aktif
+            if (!$siswa->is_active) {
+                Auth::guard('siswa')->logout();
+                return back()->withErrors([
+                    'email' => 'Akun Anda telah dinonaktifkan oleh administrator.',
+                ]);
+            }
+
             $request->session()->forget('url.intended');
             $request->session()->regenerate();
 
@@ -146,10 +156,19 @@ class AuthController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
 
-            // Check if student exists by google_id
-            $siswa = Siswa::where('google_id', $googleUser->getId())->first();
+            // Check if student exists by provider_id
+            $siswa = Siswa::where('provider', 'google')
+                ->where('provider_id', $googleUser->getId())
+                ->first();
 
             if ($siswa) {
+                // Cek apakah akun aktif
+                if (!$siswa->is_active) {
+                    return redirect()->route('siswa.login')->withErrors([
+                        'email' => 'Akun Anda telah dinonaktifkan oleh administrator.',
+                    ]);
+                }
+                
                 // Log them in
                 Auth::guard('siswa')->login($siswa);
                 $request->session()->regenerate();
@@ -161,13 +180,18 @@ class AuthController extends Controller
                 $siswa = Siswa::where('email', $googleUser->getEmail())->first();
 
                 if ($siswa) {
-                    // Update their google_id and log them in
-                    $siswa->google_id = $googleUser->getId();
-                    // Update photo if empty
-                    if (!$siswa->foto) {
-                        $siswa->foto = $googleUser->getAvatar();
+                    // Cek apakah akun aktif
+                    if (!$siswa->is_active) {
+                        return redirect()->route('siswa.login')->withErrors([
+                            'email' => 'Akun Anda telah dinonaktifkan oleh administrator.',
+                        ]);
                     }
-                    $siswa->save();
+                    // Update their provider info and log them in
+                    $siswa->update([
+                        'provider' => 'google',
+                        'provider_id' => $googleUser->getId(),
+                        'foto' => $siswa->foto ?? $googleUser->getAvatar(),
+                    ]);
 
                     Auth::guard('siswa')->login($siswa);
                     $request->session()->regenerate();
@@ -181,7 +205,8 @@ class AuthController extends Controller
             $siswa = Siswa::create([
                 'nama_lengkap' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
-                'google_id' => $googleUser->getId(),
+                'provider' => 'google',
+                'provider_id' => $googleUser->getId(),
                 'foto' => $googleUser->getAvatar(),
                 'password' => Hash::make(Str::random(16)),
                 'status_siswa' => 'aktif',

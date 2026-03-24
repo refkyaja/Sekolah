@@ -11,6 +11,7 @@ use App\Models\BukuTamu;
 use App\Models\Spmb;
 use App\Models\SpmbDokumen;
 use App\Models\TahunAjaran;
+use App\Models\SpmbSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -128,6 +129,56 @@ class HomeController extends Controller
         return view('home.ppdb', compact('tahunAjaranAktif', 'spmbSetting', 'statusPendaftaran'));
     }
 
+    public function pendaftar(Request $request)
+    {
+        $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+        
+        $spmbSetting = null;
+        if ($tahunAjaranAktif) {
+            $spmbSetting = \App\Models\SpmbSetting::where('tahun_ajaran_id', $tahunAjaranAktif->id)->first();
+        }
+
+        $sort = $request->query('sort', 'terbaru');
+        $tab = $request->query('tab', 'pendaftar');
+
+        $pendaftars = [];
+        if ($tahunAjaranAktif) {
+            $query = \App\Models\Spmb::where('tahun_ajaran_id', $tahunAjaranAktif->id);
+            
+            // Logic Pengumuman: Hanya tampilkan yang sudah dipublish
+            if ($tab == 'pengumuman') {
+                $query->where('is_published', true)
+                      ->whereIn('status_pendaftaran', ['Lulus', 'Tidak Lulus']);
+            }
+            
+            switch ($sort) {
+                case 'upload_terlama':
+                    $query->orderBy('created_at', 'asc');
+                    break;
+                case 'az':
+                    $query->orderBy('nama_lengkap_anak', 'asc');
+                    break;
+                case 'za':
+                    $query->orderBy('nama_lengkap_anak', 'desc');
+                    break;
+                case 'termuda':
+                    $query->orderBy('tanggal_lahir_anak', 'desc');
+                    break;
+                case 'tertua':
+                    $query->orderBy('tanggal_lahir_anak', 'asc');
+                    break;
+                case 'upload_terbaru':
+                default:
+                    $query->orderBy('created_at', 'desc');
+                    break;
+            }
+
+            $pendaftars = $query->get();
+        }
+
+        return view('home.pendaftar', compact('tahunAjaranAktif', 'spmbSetting', 'pendaftars', 'tab', 'sort'));
+    }
+
     public function storePpdb(Request $request)
     {
         // Cek status pendaftaran terlebih dahulu
@@ -172,6 +223,19 @@ class HomeController extends Controller
         }
 
         $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Pendaftaran belum dibuka (Tidak ada tahun ajaran aktif).');
+        }
+
+        $setting = SpmbSetting::where('tahun_ajaran_id', $tahunAjaranAktif->id)->first();
+        if (!$setting || $setting->status_pendaftaran !== 'open') {
+            return redirect()->back()->with('error', 'Pendaftaran PPDB saat ini sedang ditutup.');
+        }
+
+        $now = now();
+        if ($now->lt($setting->pendaftaran_mulai) || $now->gt($setting->pendaftaran_selesai)) {
+            return redirect()->back()->with('error', 'Maaf, masa pendaftaran PPDB telah berakhir atau belum dimulai.');
+        }
 
         $validated = $request->validate([
             // Data Pribadi
@@ -256,6 +320,7 @@ class HomeController extends Controller
             'akte_kelahiran' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'kartu_keluarga' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'ktp_orang_tua' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'bukti_pembayaran' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
 
             // Konfirmasi
             'konfirmasi_data' => 'required|accepted',
@@ -302,6 +367,19 @@ class HomeController extends Controller
             $file->storeAs('dokumen/spmb', $filename, 'public');
             $spmb->dokumen()->create([
                 'jenis_dokumen' => 'ktp_orang_tua',
+                'path_file' => 'dokumen/spmb/' . $filename,
+                'nama_file' => $file->getClientOriginalName(),
+                'mime_type' => $file->getMimeType(),
+                'ukuran_file' => $file->getSize(),
+            ]);
+        }
+
+        if ($request->hasFile('bukti_pembayaran')) {
+            $file = $request->file('bukti_pembayaran');
+            $filename = 'bukti_' . $spmb->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('dokumen/spmb', $filename, 'public');
+            $spmb->dokumen()->create([
+                'jenis_dokumen' => 'bukti_pembayaran',
                 'path_file' => 'dokumen/spmb/' . $filename,
                 'nama_file' => $file->getClientOriginalName(),
                 'mime_type' => $file->getMimeType(),

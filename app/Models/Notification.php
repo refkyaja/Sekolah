@@ -53,13 +53,13 @@ class Notification extends Model
      */
     public function scopeForAuthUser(Builder $query, User $user): Builder
     {
-        return $query->where(function ($q) use ($user) {
+        return $query->where(function (Builder $q) use ($user) {
             // Personal: ditujukan langsung ke user ini
             $q->where('target_user_id', $user->id)
               // Atau: role user termasuk dalam target_roles
-              ->orWhere(function ($q2) use ($user) {
+              ->orWhere(function (Builder $q2) use ($user) {
                   $q2->whereNull('target_user_id')
-                     ->where(function ($q3) use ($user) {
+                     ->where(function (Builder $q3) use ($user) {
                          // target_roles null = semua role bisa lihat
                          $q3->whereNull('target_roles')
                             ->orWhereJsonContains('target_roles', $user->role);

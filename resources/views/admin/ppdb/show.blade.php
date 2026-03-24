@@ -15,7 +15,8 @@
         'guru' => 'guru',
         default => 'admin',
     };
-    $canUpdatePpdb = $user->canAccessModule('ppdb', 'update');
+    $readOnly = $readOnly ?? false;
+    $canUpdatePpdb = $user->canAccessModule('ppdb', 'update') && !$readOnly;
     $canAddCatatan = $canUpdatePpdb && \Illuminate\Support\Facades\Route::has($routePrefix . '.ppdb.catatan');
     $canVerifyDokumen = $canUpdatePpdb && \Illuminate\Support\Facades\Route::has($routePrefix . '.ppdb.verifikasiDokumen');
 @endphp
@@ -277,6 +278,10 @@ switch($statusText) {
                     <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->tempat_lahir_anak ?? '-' }}, {{ $spmb->tanggal_lahir_anak ? \Carbon\Carbon::parse($spmb->tanggal_lahir_anak)->format('d M Y') : '-' }}</p>
                 </div>
                 <div>
+                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Umur</p>
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->usia }}</p>
+                </div>
+                <div>
                     <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Jenis Kelamin</p>
                     <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->jenis_kelamin ?? '-' }}</p>
                 </div>
@@ -476,7 +481,7 @@ switch($statusText) {
                     </div>
                     
                     @php
-                    $allVerified = ($spmb->verifikasi_akte ?? false) && ($spmb->verifikasi_kk ?? false) && ($spmb->verifikasi_ktp ?? false);
+                    $allVerified = ($spmb->verifikasi_akte ?? false) && ($spmb->verifikasi_kk ?? false) && ($spmb->verifikasi_ktp ?? false) && ($spmb->verifikasi_bukti_transfer ?? false);
                     @endphp
                     @if($allVerified)
                     <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold rounded-full flex items-center gap-1">
@@ -507,7 +512,8 @@ switch($statusText) {
                 $docTypes = [
                     'akte_kelahiran' => ['label' => 'Akta Kelahiran', 'icon' => 'article'],
                     'kartu_keluarga' => ['label' => 'Kartu Keluarga', 'icon' => 'group'],
-                    'ktp_orang_tua' => ['label' => 'KTP Orang Tua', 'icon' => 'badge']
+                    'ktp_orang_tua' => ['label' => 'KTP Orang Tua', 'icon' => 'badge'],
+                    'bukti_pembayaran' => ['label' => 'Bukti Pembayaran', 'icon' => 'receipt_long']
                 ];
                 @endphp
                 
@@ -515,69 +521,88 @@ switch($statusText) {
                 @php
                 $docData = $spmb->dokumen->firstWhere('jenis_dokumen', $key);
                 $hasUploadedDoc = $docData && filled($docData->path_file);
-                $verifiedField = 'verifikasi_' . ($key === 'akte_kelahiran' ? 'akte' : ($key === 'kartu_keluarga' ? 'kk' : 'ktp'));
+                $verifiedField = 'verifikasi_' . ($key === 'akte_kelahiran' ? 'akte' : ($key === 'kartu_keluarga' ? 'kk' : ($key === 'ktp_orang_tua' ? 'ktp' : 'bukti_transfer')));
                 $isVerified = $spmb->$verifiedField ?? false;
                 
                 $fileName = $docData->nama_file ?? 'Belum diupload';
                 $displayName = strlen($fileName) > 20 ? substr($fileName, 0, 17) . '...' : $fileName;
+                $catatanDoc = $docData->keterangan ?? null;
                 @endphp
-                <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border {{ $isVerified ? 'border-green-200' : 'border-slate-200 dark:border-slate-600' }}">
-                    <div class="flex items-center gap-3 flex-1 min-w-0">
-                        <div class="w-10 h-10 {{ $isVerified ? 'bg-green-100 dark:bg-green-900/30' : 'bg-slate-200' }} rounded-xl flex items-center justify-center flex-shrink-0">
-                            <span class="material-symbols-outlined {{ $isVerified ? 'text-green-600 dark:text-green-500' : 'text-slate-500 dark:text-slate-400' }} text-xl">{{ $doc['icon'] }}</span>
+                <div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border {{ $isVerified ? 'border-green-200' : ($catatanDoc ? 'border-amber-200' : 'border-slate-200 dark:border-slate-600') }} transition-all">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-3 flex-1 min-w-0">
+                            <div class="w-10 h-10 {{ $isVerified ? 'bg-green-100 dark:bg-green-900/30' : 'bg-slate-200' }} rounded-xl flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-outlined {{ $isVerified ? 'text-green-600 dark:text-green-500' : 'text-slate-500 dark:text-slate-400' }} text-xl">{{ $doc['icon'] }}</span>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <p class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">{{ $doc['label'] }}</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ $displayName }}</p>
+                            </div>
                         </div>
-                        <div class="min-w-0 flex-1">
-                            <p class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">{{ $doc['label'] }}</p>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ $displayName }}</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2 ml-2 flex-shrink-0">
-                        @if($isVerified)
-                        <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-bold rounded-full flex items-center gap-1 whitespace-nowrap">
-                            <span class="material-symbols-outlined text-xs">check_circle</span>
-                            Verified
-                        </span>
-                        @else
-                        <span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[10px] font-bold rounded-full flex items-center gap-1 whitespace-nowrap">
-                            <span class="material-symbols-outlined text-xs">hourglass_empty</span>
-                            Pending
-                        </span>
-                        @endif
-                        
-                        @if($hasUploadedDoc)
-                        <button type="button" onclick="openDokumenModal('{{ asset('storage/' . $docData->path_file) }}')" class="p-1.5 bg-white dark:bg-slate-800 text-primary rounded-lg border border-primary/20 hover:bg-primary hover:text-white transition-all" title="Lihat Dokumen">
-                            <span class="material-symbols-outlined text-sm">visibility</span>
-                        </button>
-                        @endif
-                        
-                        @if($canVerifyDokumen)
+                        <div class="flex items-center gap-2 ml-2 flex-shrink-0">
                             @if($isVerified)
-                            <form action="{{ route($routePrefix . '.ppdb.verifikasiDokumen', $spmb) }}" method="POST" class="inline" onsubmit="return confirm('Batalkan verifikasi dokumen {{ $doc['label'] }}? Status akan dikembalikan ke Pending.');">
-                                @csrf
-                                <input type="hidden" name="jenis" value="{{ $key }}">
-                                <input type="hidden" name="action" value="unverify">
-                                <button type="submit" class="p-1.5 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-all" title="Batalkan Verifikasi">
-                                    <span class="material-symbols-outlined text-sm">undo</span>
-                                </button>
-                            </form>
+                                <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-bold rounded-full flex items-center gap-1 whitespace-nowrap">
+                                    <span class="material-symbols-outlined text-xs">check_circle</span>
+                                    Verified
+                                </span>
+                            @elseif($catatanDoc)
+                                <span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[10px] font-bold rounded-full flex items-center gap-1 whitespace-nowrap">
+                                    <span class="material-symbols-outlined text-xs">edit_note</span>
+                                    Butuh Revisi
+                                </span>
                             @else
+                                <span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[10px] font-bold rounded-full flex items-center gap-1 whitespace-nowrap">
+                                    <span class="material-symbols-outlined text-xs">hourglass_empty</span>
+                                    Pending
+                                </span>
+                            @endif
+                            
                             @if($hasUploadedDoc)
-                            <form action="{{ route($routePrefix . '.ppdb.verifikasiDokumen', $spmb) }}" method="POST" class="inline">
-                                @csrf
-                                <input type="hidden" name="jenis" value="{{ $key }}">
-                                <input type="hidden" name="action" value="verify">
-                                <button type="submit" class="p-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all" title="Verifikasi Dokumen">
-                                    <span class="material-symbols-outlined text-sm">check</span>
-                                </button>
-                            </form>
-                            @else
-                            <button type="button" disabled class="p-1.5 bg-slate-200 text-slate-400 dark:text-slate-500 rounded-lg cursor-not-allowed" title="Dokumen belum diupload">
-                                <span class="material-symbols-outlined text-sm">check</span>
+                            <button type="button" onclick="openDokumenModal('{{ asset('storage/' . $docData->path_file) }}')" class="p-1.5 bg-white dark:bg-slate-800 text-primary rounded-lg border border-primary/20 hover:bg-primary hover:text-white transition-all" title="Lihat Dokumen">
+                                <span class="material-symbols-outlined text-sm">visibility</span>
                             </button>
                             @endif
+                            
+                            @if($canVerifyDokumen)
+                                @if($isVerified)
+                                    <form action="{{ route($routePrefix . '.ppdb.verifikasiDokumen', $spmb) }}" method="POST" class="inline" onsubmit="return confirm('Batalkan verifikasi dokumen {{ $doc['label'] }}? Status akan dikembalikan ke Pending.');">
+                                        @csrf
+                                        <input type="hidden" name="jenis" value="{{ $key }}">
+                                        <input type="hidden" name="action" value="unverify">
+                                        <button type="submit" class="p-1.5 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-all" title="Batalkan Verifikasi">
+                                            <span class="material-symbols-outlined text-sm">undo</span>
+                                        </button>
+                                    </form>
+                                @else
+                                    @if($hasUploadedDoc)
+                                        <div class="flex gap-1">
+                                            <form action="{{ route($routePrefix . '.ppdb.verifikasiDokumen', $spmb) }}" method="POST" class="inline">
+                                                @csrf
+                                                <input type="hidden" name="jenis" value="{{ $key }}">
+                                                <input type="hidden" name="action" value="verify">
+                                                <button type="submit" class="p-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all" title="Verifikasi Dokumen">
+                                                    <span class="material-symbols-outlined text-sm">check</span>
+                                                </button>
+                                            </form>
+                                            <button type="button" onclick="openRevisiModal('{{ $key }}', '{{ $doc['label'] }}', '{{ $catatanDoc }}')" class="p-1.5 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-all" title="Minta Revisi">
+                                                <span class="material-symbols-outlined text-sm">edit_note</span>
+                                            </button>
+                                        </div>
+                                    @else
+                                        <button type="button" disabled class="p-1.5 bg-slate-200 text-slate-400 dark:text-slate-500 rounded-lg cursor-not-allowed" title="Dokumen belum diupload">
+                                            <span class="material-symbols-outlined text-sm">check</span>
+                                        </button>
+                                    @endif
+                                @endif
                             @endif
-                        @endif
+                        </div>
                     </div>
+                    @if($catatanDoc)
+                    <div class="mt-2 text-[11px] bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 p-2 rounded-lg border border-amber-100 dark:border-amber-900/30 flex items-start gap-1.5">
+                        <span class="material-symbols-outlined text-xs mt-0.5">info</span>
+                        <p><span class="font-bold uppercase tracking-wider text-[9px] mr-1">Catatan Admin:</span> {{ $catatanDoc }}</p>
+                    </div>
+                    @endif
                 </div>
                 @endforeach
             </div>
@@ -631,6 +656,10 @@ switch($statusText) {
             <div>
                 <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Tempat, Tanggal Lahir</p>
                 <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->tempat_lahir_anak ?? '-' }}, {{ $spmb->tanggal_lahir_anak ? \Carbon\Carbon::parse($spmb->tanggal_lahir_anak)->format('d M Y') : '-' }}</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Usia Saat Ini</p>
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $spmb->usia }}</p>
             </div>
             <div>
                 <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Jenis Kelamin</p>
@@ -748,7 +777,7 @@ switch($statusText) {
                 </div>
                 
                 @php
-                $allVerified = ($spmb->verifikasi_akte ?? false) && ($spmb->verifikasi_kk ?? false) && ($spmb->verifikasi_ktp ?? false);
+                $allVerified = ($spmb->verifikasi_akte ?? false) && ($spmb->verifikasi_kk ?? false) && ($spmb->verifikasi_ktp ?? false) && ($spmb->verifikasi_bukti_transfer ?? false);
                 @endphp
                 @if($allVerified)
                 <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold rounded-full flex items-center gap-1">
@@ -779,7 +808,8 @@ switch($statusText) {
             $docTypes = [
                 'akte_kelahiran' => ['label' => 'Akta Kelahiran', 'icon' => 'article'],
                 'kartu_keluarga' => ['label' => 'Kartu Keluarga', 'icon' => 'group'],
-                'ktp_orang_tua' => ['label' => 'KTP Orang Tua', 'icon' => 'badge']
+                'ktp_orang_tua' => ['label' => 'KTP Orang Tua', 'icon' => 'badge'],
+                'bukti_pembayaran' => ['label' => 'Bukti Pembayaran', 'icon' => 'receipt_long']
             ];
             @endphp
             
@@ -787,7 +817,7 @@ switch($statusText) {
             @php
             $docData = $spmb->dokumen->firstWhere('jenis_dokumen', $key);
             $hasUploadedDoc = $docData && filled($docData->path_file);
-            $verifiedField = 'verifikasi_' . ($key === 'akte_kelahiran' ? 'akte' : ($key === 'kartu_keluarga' ? 'kk' : 'ktp'));
+            $verifiedField = 'verifikasi_' . ($key === 'akte_kelahiran' ? 'akte' : ($key === 'kartu_keluarga' ? 'kk' : ($key === 'ktp_orang_tua' ? 'ktp' : 'bukti_transfer')));
             $isVerified = $spmb->$verifiedField ?? false;
             
             $fileName = $docData->nama_file ?? 'Belum diupload';
@@ -871,10 +901,10 @@ switch($statusText) {
         </div>
         <div class="p-6">
             @if($catatanTimeline->count() > 0)
-            <div class="relative pl-8 space-y-8 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
+            <div class="relative pl-8 space-y-8 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100 dark:before:bg-slate-700">
                 @foreach($catatanUtama as $riwayat)
                 <div class="relative">
-                    <div class="absolute -left-[29px] top-1 w-5 h-5 rounded-full {{ $loop->first ? 'bg-slate-900' : 'bg-white dark:bg-slate-800' }} {{ $loop->first ? 'border-4 border-slate-200 dark:border-slate-600' : 'border-2 border-slate-300' }} shadow-sm z-10"></div>
+                    <div class="absolute -left-[29px] top-1 w-5 h-5 rounded-full {{ $loop->first ? 'bg-slate-900 dark:bg-slate-100' : 'bg-white dark:bg-slate-800' }} {{ $loop->first ? 'border-4 border-slate-200 dark:border-slate-700' : 'border-2 border-slate-300 dark:border-slate-600' }} shadow-sm z-10"></div>
                     <div class="flex flex-col gap-2">
                         <div class="flex items-center justify-between">
                             <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100">{{ $riwayat->status_baru ?? 'Pendaftaran Baru' }}</h4>
@@ -896,15 +926,18 @@ switch($statusText) {
                 @endforeach
             </div>
             @if($catatanLainnya->count() > 0)
-            <details class="mt-6 rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50/80 p-4">
-                <summary class="cursor-pointer list-none text-sm font-bold text-slate-700 dark:text-slate-300">
-                    Lainnya
-                    <span class="ml-2 text-xs font-medium text-slate-400 dark:text-slate-500">({{ $catatanLainnya->count() }} catatan lama)</span>
+            <details class="mt-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 shadow-inner p-5 transition-all outline-none group">
+                <summary class="cursor-pointer list-none text-sm font-bold text-slate-700 dark:text-slate-100 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span>Lainnya</span>
+                        <span class="text-xs font-medium text-slate-400 dark:text-slate-500">({{ $catatanLainnya->count() }} catatan lama)</span>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
                 </summary>
-                <div class="relative mt-4 pl-8 space-y-8 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
+                <div class="relative mt-4 pl-8 space-y-8 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100 dark:before:bg-slate-700">
                     @foreach($catatanLainnya as $riwayat)
                     <div class="relative">
-                        <div class="absolute -left-[29px] top-1 w-5 h-5 rounded-full bg-white dark:bg-slate-800 border-2 border-slate-300 shadow-sm z-10"></div>
+                        <div class="absolute -left-[29px] top-1 w-5 h-5 rounded-full bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 shadow-sm z-10"></div>
                         <div class="flex flex-col gap-2">
                             <div class="flex items-center justify-between">
                                 <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100">{{ $riwayat->status_baru ?? 'Pendaftaran Baru' }}</h4>
@@ -1003,6 +1036,7 @@ switch($statusText) {
                     $verifiedAkte = $spmb->verifikasi_akte ?? false;
                     $verifiedKK = $spmb->verifikasi_kk ?? false;
                     $verifiedKTP = $spmb->verifikasi_ktp ?? false;
+                    $verifiedBukti = $spmb->verifikasi_bukti_transfer ?? false;
                 @endphp
                 
                 <div class="space-y-3">
@@ -1062,6 +1096,25 @@ switch($statusText) {
                             </span>
                         @endif
                     </label>
+
+                    <!-- Checkbox untuk Bukti Pembayaran -->
+                    <label class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-xl cursor-pointer hover:bg-slate-100 transition-all border {{ $verifiedBukti ? 'border-green-200' : 'border-slate-200 dark:border-slate-600' }}">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" name="jenis_dokumen[]" value="bukti_pembayaran" class="w-4 h-4 text-primary rounded focus:ring-primary/20">
+                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Bukti Pembayaran</span>
+                        </div>
+                        @if($verifiedBukti)
+                            <span class="flex items-center gap-1 text-xs font-bold text-green-600 dark:text-green-500 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-full">
+                                <span class="material-symbols-outlined text-sm">check_circle</span>
+                                Verified
+                            </span>
+                        @else
+                            <span class="flex items-center gap-1 text-xs font-bold text-amber-600 dark:text-amber-500 bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded-full">
+                                <span class="material-symbols-outlined text-sm">hourglass_empty</span>
+                                Pending
+                            </span>
+                        @endif
+                    </label>
                     
                     <!-- Divider -->
                     <div class="relative py-2">
@@ -1080,10 +1133,10 @@ switch($statusText) {
                             <span class="text-sm font-bold text-primary">Pilih Semua Dokumen</span>
                         </div>
                         @php
-                            $totalVerified = ($verifiedAkte ? 1 : 0) + ($verifiedKK ? 1 : 0) + ($verifiedKTP ? 1 : 0);
+                            $totalVerified = ($verifiedAkte ? 1 : 0) + ($verifiedKK ? 1 : 0) + ($verifiedKTP ? 1 : 0) + ($verifiedBukti ? 1 : 0);
                         @endphp
                         <span class="text-xs font-bold text-slate-600 dark:text-slate-400 bg-slate-200 px-2 py-1 rounded-full">
-                            {{ $totalVerified }}/3 Verified
+                            {{ $totalVerified }}/4 Verified
                         </span>
                     </label>
                 </div>
@@ -1106,6 +1159,42 @@ switch($statusText) {
     </div>
 </div>
 @endif
+
+<!-- Revisi Modal -->
+<div id="revisiModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-8 relative overflow-hidden animate-in fade-in zoom-in duration-300">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center">
+                <span class="material-symbols-outlined text-amber-600 dark:text-amber-500 text-2xl">edit_note</span>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100">Minta Revisi Dokumen</h3>
+                <p id="revisiDocLabel" class="text-sm text-slate-500 dark:text-slate-400">Pilih dokumen untuk direvisi</p>
+            </div>
+        </div>
+        
+        <form id="revisiForm" action="{{ route($routePrefix . '.ppdb.verifikasiDokumen', $spmb) }}" method="POST">
+            @csrf
+            <input type="hidden" name="jenis" id="revisiJenisInput">
+            <input type="hidden" name="action" value="revision">
+            
+            <div class="mb-6">
+                <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Alasan Revisi / Catatan Admin</label>
+                <textarea name="keterangan" id="revisiCatatanInput" rows="4" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-primary/20 text-sm focus:border-primary transition-all outline-none" placeholder="Jelaskan alasan revisi atau apa yang perlu diperbaiki..."></textarea>
+                <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-2 italic">* Catatan ini akan dilihat oleh siswa di dashboard mereka.</p>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3">
+                <button type="button" onclick="closeRevisiModal()" class="px-6 py-3 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-400 rounded-xl font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                    Batal
+                </button>
+                <button type="submit" class="px-6 py-3 bg-amber-500 text-white rounded-xl font-bold text-sm hover:bg-amber-600 transition-all shadow-lg shadow-amber-500/25">
+                    Minta Revisi
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <!-- Dokumen Preview Modal -->
 <div id="dokumenModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
@@ -1181,6 +1270,30 @@ switch($statusText) {
         }
     }
 
+    function openRevisiModal(jenis, label, catatan = '') {
+        const modal = document.getElementById('revisiModal');
+        const jenisInput = document.getElementById('revisiJenisInput');
+        const labelText = document.getElementById('revisiDocLabel');
+        const catatanInput = document.getElementById('revisiCatatanInput');
+        
+        if (modal && jenisInput && labelText) {
+            jenisInput.value = jenis;
+            labelText.innerText = 'Dokumen: ' + label;
+            catatanInput.value = catatan !== 'null' ? catatan : '';
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+    }
+
+    function closeRevisiModal() {
+        const modal = document.getElementById('revisiModal');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    }
+
     // Close modal on outside click
     document.getElementById('catatanModal')?.addEventListener('click', function(e) {
         if (e.target === this) {
@@ -1194,11 +1307,18 @@ switch($statusText) {
         }
     });
 
+    document.getElementById('revisiModal')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeRevisiModal();
+        }
+    });
+
     // Close modal on Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeCatatanModal();
             closeDokumenModal();
+            closeRevisiModal();
         }
     });
 </script>

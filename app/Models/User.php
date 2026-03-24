@@ -25,8 +25,9 @@ class User extends Authenticatable
         'no_telepon',          
         'alamat',              
         'foto',                
-        'google_id',
-        'last_login_at',       
+        'provider',
+        'provider_id',
+        'last_login_at',
         'last_login_ip',       
         'email_verified_at',   
     ];

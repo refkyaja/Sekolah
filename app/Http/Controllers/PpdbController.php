@@ -83,6 +83,19 @@ class PpdbController extends Controller
         }
 
         $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Pendaftaran belum dibuka (Tidak ada tahun ajaran aktif).');
+        }
+
+        $setting = SpmbSetting::where('tahun_ajaran_id', $tahunAjaranAktif->id)->first();
+        if (!$setting) {
+            return redirect()->back()->with('error', 'Pengaturan pendaftaran belum tersedia.');
+        }
+
+        $now = now();
+        if ($now->lt($setting->pendaftaran_mulai) || $now->gt($setting->pendaftaran_selesai)) {
+            return redirect()->back()->with('error', 'Maaf, masa pendaftaran PPDB telah berakhir atau belum dimulai.');
+        }
 
         $validated = $request->validate([
             // Data Pribadi
@@ -167,6 +180,7 @@ class PpdbController extends Controller
             'akte_kelahiran' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'kartu_keluarga' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'ktp_orang_tua' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'bukti_pembayaran' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
 
             // Konfirmasi
             'konfirmasi_data' => 'required|accepted',
@@ -213,6 +227,19 @@ class PpdbController extends Controller
             $file->storeAs('dokumen/spmb', $filename, 'public');
             $spmb->dokumen()->create([
                 'jenis_dokumen' => 'ktp_orang_tua',
+                'path_file' => 'dokumen/spmb/' . $filename,
+                'nama_file' => $file->getClientOriginalName(),
+                'mime_type' => $file->getMimeType(),
+                'ukuran_file' => $file->getSize(),
+            ]);
+        }
+
+        if ($request->hasFile('bukti_pembayaran')) {
+            $file = $request->file('bukti_pembayaran');
+            $filename = 'bukti_' . $spmb->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('dokumen/spmb', $filename, 'public');
+            $spmb->dokumen()->create([
+                'jenis_dokumen' => 'bukti_pembayaran',
                 'path_file' => 'dokumen/spmb/' . $filename,
                 'nama_file' => $file->getClientOriginalName(),
                 'mime_type' => $file->getMimeType(),

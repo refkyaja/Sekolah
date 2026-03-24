@@ -47,6 +47,9 @@
     .self-account {
         background-color: #f0f9ff;
     }
+    .dark .self-account {
+        background-color: rgba(71, 85, 105, 0.2);
+    }
 
     [wire\:loading] {
         opacity: 0.5;
