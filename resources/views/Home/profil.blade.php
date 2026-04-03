@@ -191,7 +191,7 @@
                             <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase mb-3">Staf Utama</p>
                             <ul class="text-sm space-y-2 font-medium text-slate-700">
                                 <li class="flex justify-between items-center"><span>Kepala Sekolah</span> <span class="text-primary font-bold">1 Orang</span></li>
-                                <li class="flex justify-between items-center"><span>Guru Kelas</span> <span class="text-primary font-bold">2 Orang</span></li>
+                                <li class="flex justify-between items-center"><span>Guru Kelompok</span> <span class="text-primary font-bold">2 Orang</span></li>
                                 <li class="flex justify-between items-center"><span>Guru Pendamping</span> <span class="text-primary font-bold">1 Orang</span></li>
                             </ul>
                         </div>
@@ -272,7 +272,7 @@
                                     <li class="flex items-start gap-2 transition-all duration-300 hover:translate-x-2">
                                         <span class="material-symbols-outlined text-primary text-sm mt-0.5">child_care</span>
                                         <div>
-                                            <p class="font-bold">Pembelajaran Berbasis Bermain</p>
+                                            <span class="font-medium">Kelompok A</span>
                                             <p class="text-slate-500 text-xs">Penguatan: Pend. Holistik Berbasis Karakter</p>
                                         </div>
                                     </li>

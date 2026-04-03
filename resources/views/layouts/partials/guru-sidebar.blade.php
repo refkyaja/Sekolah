@@ -43,6 +43,10 @@
                 <span class="material-symbols-outlined text-lg">how_to_reg</span>
                 <span class="text-sm nav-text whitespace-nowrap">Absensi Siswa</span>
             </a>
+            <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('guru.absensi.fill') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('guru.absensi.fill') }}" title="Isi Absensi Hari Ini">
+                <span class="material-symbols-outlined text-lg">edit_note</span>
+                <span class="text-sm nav-text whitespace-nowrap">Isi Absensi</span>
+            </a>
             <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('guru.kalender-akademik.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all" href="{{ route('guru.kalender-akademik.index') }}" title="Kalender Akademik">
                 <span class="material-symbols-outlined text-lg">event_note</span>
                 <span class="text-sm nav-text whitespace-nowrap">Kalender Akademik</span>

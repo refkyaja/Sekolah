@@ -140,12 +140,22 @@
 
         <main class="flex-1 ml-0 p-4 lg:p-8 transition-all duration-300"
              :class="sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-72'">
-            <!-- Mobile Menu Toggle -->
-            <button class="lg:hidden mb-4 p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 flex items-center gap-2"
-                    @click="mobileSidebarOpen = true">
-                <span class="material-symbols-outlined">menu</span>
-                <span class="text-sm font-medium">Menu</span>
-            </button>
+            <!-- Header -->
+            <header class="flex items-center justify-between mb-6 lg:mb-10 gap-4">
+                <div class="flex items-center gap-3 flex-1">
+                    <!-- Mobile Menu Toggle -->
+                    <button class="lg:hidden p-2.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 flex items-center transition-all hover:bg-slate-50 dark:hover:bg-slate-700 shadow-sm"
+                            @click="mobileSidebarOpen = true">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    
+                    {{-- Include Global Header Partial (Home Button + Clock) --}}
+                    @include('layouts.partials.waktu-header')
+                </div>
+
+                {{-- Opsi tambahan jika diperlukan di masa depan bisa diletakkan di sini --}}
+            </header>
+
             
             @if(session('success'))
             <div class="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl shadow-sm flex items-start gap-3">

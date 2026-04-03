@@ -8,13 +8,16 @@
                     Membentuk generasi cerdas, kreatif, dan berakhlak mulia melalui pendidikan usia dini berkualitas.
                 </p>
                 <div class="flex space-x-4">
-                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook text-xl"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube text-xl"></i></a>
+                    <a href="https://www.facebook.com/share/1J1iWSbiFM/" class="text-gray-400 hover:text-white"><i
+                            class="fab fa-facebook text-xl"></i></a>
+                    <a href="https://www.instagram.com/tk_pgri_harapan_bangsa_1?igsh=MWVnbmJrNHh4NzFycg==" class="text-gray-400 hover:text-white"><i
+                            class="fab fa-instagram text-xl"></i></a>
+                    <a href="https://www.youtube.com/@tkpgriharapanbangsa1408" class="text-gray-400 hover:text-white"><i
+                            class="fab fa-youtube text-xl"></i></a>
                 </div>
             </div>
 
-            <!-- Kontak -->
+            <!-- Kontak --> 
             <div>
                 <h4 class="text-lg font-bold mb-4">Kontak Kami</h4>
                 <div class="space-y-2 text-gray-400">
@@ -24,11 +27,11 @@
                     </p>
                     <p class="flex items-center">
                         <i class="fas fa-phone mr-3"></i>
-                        (022) 1234567
+                        0821-3030-3614
                     </p>
                     <p class="flex items-center">
                         <i class="fas fa-envelope mr-3"></i>
-                        info@tkharapanbangsa1.sch.id
+                        tkpgriharapanbangsa1@gmail.com
                     </p>
                 </div>
             </div>

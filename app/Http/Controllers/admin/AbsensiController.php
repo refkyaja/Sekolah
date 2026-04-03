@@ -25,14 +25,14 @@ class AbsensiController extends Controller
                 ->select(
                     'absensi.tanggal',
                     'siswas.kelompok',
-                    'tahun_ajarans.semester',
+                    DB::raw('MAX(tahun_ajarans.semester) as semester'),
                     DB::raw('COUNT(CASE WHEN absensi.status = "hadir" THEN 1 END) as hadir'),
                     DB::raw('COUNT(CASE WHEN absensi.status = "sakit" THEN 1 END) as sakit'),
                     DB::raw('COUNT(CASE WHEN absensi.status = "izin" THEN 1 END) as izin'),
                     DB::raw('COUNT(CASE WHEN absensi.status = "alpa" THEN 1 END) as alpa'),
                     DB::raw('MAX(absensi.created_at) as latest_created_at')
                 )
-                ->groupBy('absensi.tanggal', 'siswas.kelompok', 'tahun_ajarans.semester')
+                ->groupBy('absensi.tanggal', 'siswas.kelompok')
                 ->orderBy('absensi.tanggal', 'desc')
                 ->orderBy('siswas.kelompok', 'asc');
 

@@ -234,14 +234,14 @@
                     <h3 class="text-2xl font-bold mb-8">Kuota Penerimaan</h3>
                     <div class="space-y-6">
                         <div class="flex items-center justify-between border-b border-white/20 pb-4">
-                            <span class="font-medium">Kelas A</span>
+                            <span class="font-medium">Kelompok A</span>
                             <div class="text-right">
                                 <span class="text-3xl font-black block">25</span>
                                 <span class="text-xs uppercase font-bold text-white/70">Siswa</span>
                             </div>
                         </div>
                         <div class="flex items-center justify-between border-b border-white/20 pb-4">
-                            <span class="font-medium">Kelas B</span>
+                            <span class="font-medium">Kelompok B</span>
                             <div class="text-right">
                                 <span class="text-3xl font-black block">25</span>
                                 <span class="text-xs uppercase font-bold text-white/70">Siswa</span>

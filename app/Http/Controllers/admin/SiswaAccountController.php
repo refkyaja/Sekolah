@@ -47,6 +47,22 @@ class SiswaAccountController extends Controller
             }
         }
 
+        // Filter Status Kelulusan
+        if ($request->filled('status_siswa')) {
+            $query->where('status_siswa', $request->status_siswa);
+        }
+
+        // Filter Metode Login
+        if ($request->filled('login_method')) {
+            if ($request->login_method === 'google') {
+                $query->where('provider', 'google');
+            } else if ($request->login_method === 'manual') {
+                $query->where(function($q) {
+                    $q->whereNull('provider')->orWhere('provider', '!=', 'google');
+                });
+            }
+        }
+
         $siswas = $query->latest()->paginate(15)->withQueryString();
 
         return view('admin.siswa-accounts.index', compact('siswas'));

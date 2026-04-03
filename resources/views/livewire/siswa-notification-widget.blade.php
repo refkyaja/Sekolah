@@ -131,14 +131,24 @@
         </details>
         @endif
 
-        @if(count($notifications) > 0 && $unreadCount > 0)
-        <button
-            wire:click="markAllRead"
-            class="w-full mt-8 py-3 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-600 dark:border-slate-800 text-slate-500 dark:text-slate-400 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700 dark:hover:bg-slate-800/50 transition-colors"
-        >
-            Tandai Semua Dibaca
-        </button>
-        @endif
+        <div class="mt-8 flex gap-3">
+            @if($unreadCount > 0)
+            <button
+                wire:click="markAllRead"
+                class="flex-1 py-3 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                title="Tandai Semua Dibaca"
+            >
+                Tandai Dibaca
+            </button>
+            @endif
+            <a 
+                href="{{ route('siswa.notifications') }}"
+                class="flex-1 py-3 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/40"
+            >
+                Lihat Semua
+                <span class="material-symbols-outlined text-xs">arrow_forward</span>
+            </a>
+        </div>
     </div>
 
     @if(Auth::guard('siswa')->check())

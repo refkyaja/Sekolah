@@ -4,7 +4,7 @@
             <div class="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center shadow-lg transform -rotate-6">
                 <span class="material-icons text-white">school</span>
             </div>
-            <span class="text-2xl font-bold font-display tracking-tight text-primary dark:text-accent-blue">TK HARAPAN BANGSA 2</span>
+            <span class="text-2xl font-bold font-display tracking-tight text-primary dark:text-accent-blue">TK HARAPAN BANGSA 1</span>
         </div>
         
         <!-- Desktop Menu -->

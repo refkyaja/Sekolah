@@ -6,7 +6,7 @@
 <div class="p-6">
     <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Materi KBM</h1>
+            <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Materi KBM @if($siswa->status_siswa === 'lulus') <span class="text-[10px] uppercase tracking-widest font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded ml-2 align-middle border border-slate-200 dark:border-slate-700">(ARSIP)</span> @endif</h1>
             <p class="text-slate-500 dark:text-slate-400">Daftar materi pembelajaran yang dibagikan oleh guru.</p>
         </div>
         

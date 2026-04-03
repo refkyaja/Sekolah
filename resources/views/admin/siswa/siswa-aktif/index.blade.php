@@ -22,11 +22,21 @@
                 <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Data Siswa</h1>
                 <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Kelola dan atur informasi data siswa dengan kategori status akademik.</p>
             </div>
-            <a href="{{ route('admin.siswa.siswa-aktif.create') }}" 
-               class="flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-primary text-white rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 whitespace-nowrap">
-                <span class="material-symbols-outlined text-base sm:text-lg">add</span>
-                Tambah Siswa
-            </a>
+            <div class="flex items-center gap-3">
+                @php
+                    $roleRoutePrefix = auth()->check() ? (auth()->user()->role == 'admin' ? 'admin' : (auth()->user()->role == 'operator' ? 'operator' : 'kepala-sekolah')) : 'admin';
+                @endphp
+                <a href="{{ route($roleRoutePrefix . '.siswa.siswa-aktif.pembagian-kelas') }}" 
+                   class="flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-white dark:bg-slate-800 text-primary border border-primary/20 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm hover:bg-primary/5 transition-all shadow-sm whitespace-nowrap">
+                    <span class="material-symbols-outlined text-base sm:text-lg">grid_view</span>
+                    Pembagian Kelas
+                </a>
+                <a href="{{ route('admin.siswa.siswa-aktif.create') }}" 
+                   class="flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-primary text-white rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 whitespace-nowrap">
+                    <span class="material-symbols-outlined text-base sm:text-lg">add</span>
+                    Tambah Siswa
+                </a>
+            </div>
         </div>
 
         <!-- Tab navigasi -->

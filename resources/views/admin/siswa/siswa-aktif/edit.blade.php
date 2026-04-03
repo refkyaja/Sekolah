@@ -603,7 +603,7 @@
 
                     <!-- Kelas -->
                     <div>
-                        <label for="kelas" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kelas</label>
+                        <label for="kelas" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Kelompok</label>
                         <input type="text" name="kelas" id="kelas" 
                                value="{{ old('kelas', $siswa->kelas) }}"
                                class="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -611,7 +611,7 @@
 
                     <!-- Guru Kelas -->
                     <div>
-                        <label for="guru_kelas" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Guru Kelas</label>
+                        <label for="guru_kelas" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Guru Kelompok</label>
                         <input type="text" name="guru_kelas" id="guru_kelas" 
                                value="{{ old('guru_kelas', $siswa->guru_kelas) }}"
                                class="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">

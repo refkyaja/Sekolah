@@ -9,7 +9,7 @@
     <div class="relative z-10 max-w-lg">
         <h1 class="text-2xl sm:text-3xl font-bold text-white mb-2">Halo, {{ Auth::user()->name }}!</h1>
         <p class="text-white/80 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-            Selamat datang di dashboard Guru. Akses data siswa, kelola absensi, dan pantau kegiatan akademik kelas Anda.
+            Selamat datang di dashboard Guru. Akses data siswa, kelola absensi, dan pantau kegiatan akademik kelompok Anda.
         </p>
         <a href="#stats-section" 
            onclick="event.preventDefault(); document.getElementById('stats-section').scrollIntoView({ behavior: 'smooth', block: 'start' });"

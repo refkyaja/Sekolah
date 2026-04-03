@@ -60,6 +60,9 @@
                     <option value="{{ $kelas }}" {{ request('kelas') == $kelas ? 'selected' : '' }}>{{ $kelas }}</option>
                 @endforeach
             </select>
+            @error('kelas')
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            @enderror
 
             @if($canCreateMateri)
             <a href="{{ route($routePrefix . '.materi-kbm.create') }}"

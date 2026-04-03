@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Spmb;
 use App\Models\SpmbSetting;
 use App\Models\TahunAjaran;
+use Illuminate\Support\Facades\Hash;
+
 
 class DashboardController extends Controller
 {
@@ -77,13 +79,17 @@ class DashboardController extends Controller
             'bukti_pembayaran' => $spmb ? ($spmb->verifikasi_bukti_transfer ? 'verified' : 'pending') : 'pending',
         ];
         
-        // Pengumuman/berita terbaru (latestPublished() sudah include published() scope)
-        $pengumuman = \App\Models\Berita::latestPublished(3)->get();
+        // Pengumuman/berita terbaru
+        if ($siswa->status_siswa === 'lulus') {
+            $pengumuman = collect(); // Sembunyikan berita untuk alumni
+        } else {
+            $pengumuman = \App\Models\Berita::latestPublished(3)->get();
+        }
         
         // Fetch latest materials for this student
         $kelompokFull = "Kelompok " . ($siswa->kelompok ?? 'A');
         
-        $materiTerbaru = \App\Models\MateriKbm::where(function($q) use ($siswa, $kelompokFull) {
+        $materiQuery = \App\Models\MateriKbm::where(function($q) use ($siswa, $kelompokFull) {
             $q->where('kelas', $kelompokFull)
               ->orWhere('kelas', 'Semua Kelas');
         })
@@ -95,13 +101,22 @@ class DashboardController extends Controller
                         ->orWhere('kelompok', 'like', $siswa->kelompok . '%');
                 });
             }
-        })
-        ->latest('tanggal_publish')
+        });
+        
+        if ($siswa->status_siswa === 'lulus' && $siswa->tanggal_keluar) {
+            $materiQuery->where('tanggal_publish', '<=', $siswa->tanggal_keluar);
+        }
+        
+        $materiTerbaru = $materiQuery->latest('tanggal_publish')
         ->take(3)
         ->get();
 
         // Fetch today's schedule
-        $ta = \App\Models\TahunAjaran::where('is_aktif', true)->first() ?? \App\Models\TahunAjaran::first();
+        if ($siswa->status_siswa === 'lulus' && $siswa->tahun_ajaran_id) {
+            $ta = \App\Models\TahunAjaran::find($siswa->tahun_ajaran_id);
+        } else {
+            $ta = \App\Models\TahunAjaran::where('is_aktif', true)->first() ?? \App\Models\TahunAjaran::latest()->first();
+        }
         $hariIni = \Carbon\Carbon::now()->isoFormat('dddd');
         
         $todaySchedule = [];
@@ -132,6 +147,193 @@ class DashboardController extends Controller
     {
         $siswa = auth('siswa')->user();
         return view('siswa.profile', compact('siswa'));
+    }
+
+    /**
+     * Tampilkan daftar notifikasi lengkap untuk siswa.
+     */
+    public function notifications()
+    {
+        $siswa = auth('siswa')->user();
+        
+        $spmb = null;
+        if ($siswa->spmb_id) {
+            $spmb = \App\Models\Spmb::with('dokumen')->find($siswa->spmb_id);
+        }
+        
+        if (!$spmb && $siswa->nik) {
+            $spmb = \App\Models\Spmb::with('dokumen')
+                ->where('nik_anak', $siswa->nik)
+                ->latest('created_at')
+                ->first();
+        }
+
+        // 1. Ambil notifikasi dari Database
+        $dbNotifications = \App\Models\Notification::where(function ($q) use ($siswa) {
+            $q->where('target_user_id', $siswa->id)
+              ->orWhere(function ($q2) use ($siswa) {
+                  $q2->whereNull('target_user_id')
+                     ->whereJsonContains('target_roles', 'siswa')
+                     ->where(function ($q3) use ($siswa) {
+                         $q3->whereNull('data->recipient_siswa_id')
+                            ->orWhere('data->recipient_siswa_id', $siswa->id);
+                     });
+              });
+        })
+        ->orderByDesc('created_at')
+        ->limit(100) // Ambil 100 terakhir untuk halaman lengkap
+        ->get()
+        ->map(fn($n) => [
+            'id'        => $n->id,
+            'type'      => $n->type,
+            'title'     => $n->title,
+            'body'      => $n->body,
+            'data'      => $n->data,
+            'is_unread' => $n->isUnread(),
+            'created_at'=> $n->created_at,
+            'time_ago'  => $n->created_at->diffForHumans(),
+            'sort_at'   => $n->created_at?->timestamp ?? now()->timestamp,
+        ])->toArray();
+
+        // 2. Build System Notifications
+        $systemNotifications = [];
+        
+        // Welcome
+        $systemNotifications[] = [
+            'id' => 'system-welcome',
+            'type' => 'system_welcome',
+            'title' => 'Selamat datang di Portal PPDB',
+            'body' => 'Gunakan halaman ini untuk memantau seluruh riwayat pendaftaran Anda.',
+            'data' => ['url' => route('siswa.dashboard')],
+            'is_unread' => false,
+            'created_at' => $siswa->created_at,
+            'time_ago' => $siswa->created_at->diffForHumans(),
+            'sort_at' => $siswa->created_at->timestamp,
+        ];
+
+        if (!$spmb) {
+            $systemNotifications[] = [
+                'id' => 'system-start-registration',
+                'type' => 'system_start_registration',
+                'title' => 'Mulai Pendaftaran Anda',
+                'body' => 'Anda belum mengisi formulir pendaftaran. Silakan mulai sekarang.',
+                'data' => ['url' => route('siswa.formulir')],
+                'is_unread' => false,
+                'created_at' => now(),
+                'time_ago' => 'Baru saja',
+                'sort_at' => now()->timestamp,
+            ];
+        } else {
+            // Document Status
+            if (!$spmb->dokumen_terunggah) {
+                $systemNotifications[] = [
+                    'id' => 'system-formulir-' . $spmb->id,
+                    'type' => 'system_formulir',
+                    'title' => 'Formulir Diterima',
+                    'body' => 'Silakan lengkapi dokumen pendukung Anda.',
+                    'data' => ['url' => route('siswa.dokumen')],
+                    'is_unread' => false,
+                    'created_at' => $spmb->created_at,
+                    'time_ago' => $spmb->created_at->diffForHumans(),
+                    'sort_at' => $spmb->created_at->timestamp,
+                ];
+            } else {
+                $documentsAt = $spmb->dokumen->max('updated_at') ?? $spmb->created_at;
+                $systemNotifications[] = [
+                    'id' => 'system-documents-' . $spmb->id,
+                    'type' => 'system_documents',
+                    'title' => 'Dokumen Terverifikasi / Sedang Diperiksa',
+                    'body' => 'Semua dokumen wajib telah kami terima.',
+                    'data' => ['url' => route('siswa.pengumuman')],
+                    'is_unread' => false,
+                    'created_at' => $documentsAt,
+                    'time_ago' => $documentsAt->diffForHumans(),
+                    'sort_at' => $documentsAt->timestamp,
+                ];
+            }
+        }
+
+        // 3. Gabungkan dan Urutkan
+        $allNotifications = array_merge($systemNotifications, $dbNotifications);
+        usort($allNotifications, fn ($a, $b) => ($b['sort_at'] ?? 0) <=> ($a['sort_at'] ?? 0));
+
+        return view('siswa.notifications', compact('siswa', 'allNotifications'));
+    }
+
+    /**
+     * Update the student's profile photo.
+     */
+    public function updatePhoto(Request $request)
+    {
+        $request->validate([
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $siswa = auth('siswa')->user();
+        $oldPhoto = $siswa->foto;
+
+        // Hapus foto lama jika ada dan bukan URL eksternal
+        if ($oldPhoto && !\Str::startsWith($oldPhoto, ['http://', 'https://']) && \Storage::disk('public')->exists($oldPhoto)) {
+            \Storage::disk('public')->delete($oldPhoto);
+        }
+
+        // Upload foto baru
+        $path = $request->file('photo')->store('profile-photos', 'public');
+        $siswa->foto = $path;
+        $siswa->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Foto profil berhasil diperbarui',
+            'photo_url' => $siswa->foto_url
+        ]);
+    }
+
+    /**
+     * Update the student's password.
+     */
+    public function updatePassword(Request $request)
+    {
+        $siswa = auth('siswa')->user();
+
+        // 1. Restriction for Google/External login
+        if ($siswa->provider) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Akun Anda terhubung dengan Google. Silakan ubah password melalui pengaturan akun Google Anda.'
+            ], 422);
+        }
+
+        // 2. Validation
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed',
+        ], [
+            'current_password.required' => 'Password saat ini wajib diisi.',
+            'new_password.required' => 'Password baru wajib diisi.',
+            'new_password.min' => 'Password baru minimal 8 karakter.',
+            'new_password.confirmed' => 'Konfirmasi password baru tidak cocok.',
+        ]);
+
+        // 3. Verify current password
+        if (!Hash::check($request->current_password, $siswa->password)) {
+            return response()->json([
+                'success' => false,
+                'errors' => [
+                    'current_password' => ['Password saat ini tidak cocok.']
+                ],
+                'message' => 'Password saat ini salah.'
+            ], 422);
+        }
+
+        // 4. Update password
+        $siswa->password = Hash::make($request->new_password);
+        $siswa->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password berhasil diperbarui.'
+        ]);
     }
 
     public function formulir()
@@ -409,9 +611,13 @@ class DashboardController extends Controller
     public function kehadiran(Request $request)
     {
         $siswa = auth('siswa')->user();
-        $absensi = \App\Models\Absensi::where('siswa_id', $siswa->id)
-            ->orderBy('tanggal', 'desc')
-            ->get();
+        $query = \App\Models\Absensi::where('siswa_id', $siswa->id);
+        
+        if ($siswa->status_siswa === 'lulus' && $siswa->tanggal_keluar) {
+            $query->where('tanggal', '<=', $siswa->tanggal_keluar);
+        }
+        
+        $absensi = $query->orderBy('tanggal', 'desc')->get();
 
         $viewMode = $request->query('mode', 'calendar');
 
@@ -428,11 +634,16 @@ class DashboardController extends Controller
         
         $kelompokFull = "Kelompok " . $kelompok;
 
-        $materi = \App\Models\MateriKbm::where(function($q) use ($kelompokFull) {
+        $query = \App\Models\MateriKbm::where(function($q) use ($kelompokFull) {
                 $q->where('kelas', $kelompokFull)
                   ->orWhere('kelas', 'Semua Kelas');
-            })
-            ->latest('tanggal_publish')
+            });
+            
+        if ($siswa->status_siswa === 'lulus' && $siswa->tanggal_keluar) {
+            $query->where('tanggal_publish', '<=', $siswa->tanggal_keluar);
+        }
+
+        $materi = $query->latest('tanggal_publish')
             ->paginate(10);
 
         return view('siswa.materi', compact('siswa', 'materi', 'kelompok'));
@@ -444,7 +655,12 @@ class DashboardController extends Controller
     public function jadwal()
     {
         $siswa = auth('siswa')->user();
-        $ta = \App\Models\TahunAjaran::where('is_aktif', true)->first() ?? \App\Models\TahunAjaran::latest()->first();
+        
+        if ($siswa->status_siswa === 'lulus' && $siswa->tahun_ajaran_id) {
+            $ta = \App\Models\TahunAjaran::find($siswa->tahun_ajaran_id);
+        } else {
+            $ta = \App\Models\TahunAjaran::where('is_aktif', true)->first() ?? \App\Models\TahunAjaran::latest()->first();
+        }
 
         $jadwal = [];
         if ($ta) {

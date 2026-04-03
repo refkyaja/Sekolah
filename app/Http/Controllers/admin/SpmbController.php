@@ -1013,32 +1013,32 @@ class SpmbController extends Controller
     }
 
     /**
-     * Assign kelas
+     * Assign kelompok
      */
-    public function assignKelas(Request $request, Spmb $spmb)
+    public function assignKelompok(Request $request, Spmb $spmb)
     {
         $this->authorizeModule('ppdb', 'update');
 
         $request->validate([
-            'kelas' => 'required|string|max:50',
-            'guru_kelas' => 'required|string|max:255',
+            'kelompok' => 'required|string|max:50',
+            'guru_kelompok' => 'required|string|max:255',
         ]);
 
         try {
-            $spmb->assignKelas($request->kelas, $request->guru_kelas, auth()->id());
+            $spmb->assignKelompok($request->kelompok, $request->guru_kelompok, auth()->id());
             
             return response()->json([
                 'success' => true,
-                'message' => 'Kelas berhasil ditetapkan.',
+                'message' => 'Kelompok berhasil ditetapkan.',
                 'spmb' => $spmb->fresh()
             ]);
             
         } catch (\Exception $e) {
-            Log::error('AssignKelas Error: ' . $e->getMessage());
+            Log::error('AssignKelompok Error: ' . $e->getMessage());
             
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal assign kelas: ' . $e->getMessage()
+                'message' => 'Gagal assign kelompok: ' . $e->getMessage()
             ], 500);
         }
     }
@@ -1304,46 +1304,11 @@ class SpmbController extends Controller
                 
                 // Double Insert Prevention: Check is_converted and status_pendaftaran
                 if ($spmb->status_pendaftaran === 'Lulus' && $konversiSiswa && !$spmb->is_converted) {
-                    $existingSiswa = Siswa::where('nik', $spmb->nik_anak)
-                        ->orWhere('spmb_id', $spmb->id)
-                        ->first();
-                        
-                    if (!$existingSiswa) {
-                        $tahunAjaran = $tahunAjaranAktif ? $tahunAjaranAktif->tahun_ajaran : date('Y');
-                        $jk = $spmb->jenis_kelamin === 'Perempuan' ? 'P' : 'L';
-                        
-                        $siswaBaru = Siswa::create([
-                            'nama_lengkap' => $spmb->nama_lengkap_anak,
-                            'nama_panggilan' => $spmb->nama_panggilan_anak,
-                            'nik' => $spmb->nik_anak,
-                            'tempat_lahir' => $spmb->tempat_lahir_anak,
-                            'tanggal_lahir' => $spmb->tanggal_lahir_anak,
-                            'jenis_kelamin' => $jk,
-                            'agama' => $spmb->agama,
-                            'alamat' => $spmb->nama_jalan_rumah,
-                            'provinsi' => $spmb->provinsi_rumah,
-                            'kota_kabupaten' => $spmb->kota_kabupaten_rumah,
-                            'kecamatan' => $spmb->kecamatan_rumah,
-                            'kelurahan' => $spmb->kelurahan_rumah,
-                            'tahun_ajaran' => $tahunAjaran,
-                            'tahun_ajaran_id' => $tahunAjaranId,
-                            'status_siswa' => 'aktif',
-                            'kelompok' => $kelompokTujuan,
-                            'spmb_id' => $spmb->id,
-                        ]);
-                        
-                        // Mark as converted
-                        $spmb->update([
-                            'siswa_id' => $siswaBaru->id,
-                            'is_converted' => true
-                        ]);
+                    try {
+                        $this->autoConvertToSiswa($spmb, $kelompokTujuan);
                         $jumlahDikonversi++;
-                    } else {
-                        // If already exists but flag not set, sync it
-                        $spmb->update([
-                            'siswa_id' => $existingSiswa->id,
-                            'is_converted' => true
-                        ]);
+                    } catch (\Exception $e) {
+                        Log::warning('Skip conversion for ID ' . $spmb->id . ': ' . $e->getMessage());
                     }
                 }
             }
@@ -1557,7 +1522,7 @@ class SpmbController extends Controller
     /**
      * Auto convert to siswa
      */
-    private function autoConvertToSiswa($spmb)
+    private function autoConvertToSiswa($spmb, $kelompokRequested = null)
     {
         try {
             // CEK DUPLIKAT NIK
@@ -1572,7 +1537,6 @@ class SpmbController extends Controller
             }
             
             $usia = Carbon::parse($spmb->tanggal_lahir_anak)->age;
-            $kelompok = ($usia >= 3 && $usia <= 4) ? 'A' : 'B';
             
             $tahunAjaranId = $spmb->tahun_ajaran_id;
             $tahunAjaranString = $spmb->tahunAjaran->tahun_ajaran ?? date('Y') . '/' . (date('Y') + 1);
@@ -1635,17 +1599,20 @@ class SpmbController extends Controller
                 'no_hp_ortu' => $spmb->nomor_telepon_ayah ?? $spmb->nomor_telepon_ibu,
                 'email_ortu' => $spmb->email_ayah ?? $spmb->email_ibu,
                 
-                'kelompok' => $kelompok,
+                'kelompok' => $kelompokRequested ?? $spmb->kelompok ?? $spmb->kelas ?? null,
                 'tahun_ajaran_id' => $tahunAjaranId,
                 'tahun_ajaran' => $tahunAjaranString,
                 'status_siswa' => 'aktif',
                 'tanggal_masuk' => now(),
                 'jalur_masuk' => $this->mapJalurPendaftaran($spmb->jenis_daftar),
+                'is_active' => true,
             ];
 
             $siswa = Siswa::create($siswaData);
             
             $spmb->is_aktif = true;
+            $spmb->is_converted = true;
+            $spmb->siswa_id = $siswa->id;
             $spmb->nomor_induk_siswa = $this->generateNIS($tahunAjaranId);
             $spmb->save();
             
@@ -1763,9 +1730,9 @@ class SpmbController extends Controller
     }
 
     /**
-     * Preview pembagian kelas
+     * Preview pembagian kelompok
      */
-    public function classDivisionPreview(Request $request)
+    public function kelompokDivisionPreview(Request $request)
     {
         $this->authorizeModule('ppdb', 'update');
 
@@ -1781,7 +1748,7 @@ class SpmbController extends Controller
             
             $students = Spmb::where('status_pendaftaran', 'Lulus')
                 ->where('tahun_ajaran_id', $tahunAjaranId)
-                ->whereNull('kelas')
+                ->whereNull('kelompok')
                 ->orderBy('tanggal_lahir_anak', 'desc')
                 ->get(['id', 'nama_lengkap_anak as nama', 'tanggal_lahir_anak']);
             
@@ -1802,7 +1769,7 @@ class SpmbController extends Controller
             ]);
             
         } catch (\Exception $e) {
-            Log::error('Class division preview error: ' . $e->getMessage());
+            Log::error('Kelompok division preview error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan: ' . $e->getMessage()
@@ -1811,49 +1778,108 @@ class SpmbController extends Controller
     }
 
     /**
-     * Eksekusi pembagian kelas
+     * Get data for interactive grouping modal
      */
-    public function executeClassDivision(Request $request)
+    public function getSiswaGroupingData()
+    {
+        $this->authorizeModule('ppdb', 'read');
+
+        try {
+            $tahunAjaranAktif = TahunAjaran::where('is_aktif', true)->first();
+            $tahunAjaranId = $tahunAjaranAktif ? $tahunAjaranAktif->id : null;
+
+            // Get all active students without a group or in a current group
+            $siswas = Siswa::where('status_siswa', 'aktif')
+                ->where('deleted_at', null)
+                ->get(['id', 'nama_lengkap as nama', 'tanggal_lahir', 'kelompok', 'spmb_id']);
+
+            $formatted = $siswas->map(function($siswa) {
+                $usia = 0;
+                $usiaString = 'Umur tidak diketahui';
+                $dob = 'N/A';
+
+                if ($siswa->tanggal_lahir) {
+                    try {
+                        $birthDate = Carbon::parse($siswa->tanggal_lahir);
+                        $usia = $birthDate->age;
+                        $usiaString = $usia . ' tahun';
+                        $dob = $birthDate->format('d/m/Y');
+                    } catch (\Exception $e) {
+                        // Keep defaults if parse fails
+                    }
+                }
+
+                return [
+                    'id' => $siswa->id,
+                    'spmb_id' => $siswa->spmb_id,
+                    'nama' => $siswa->nama,
+                    'usia' => $usia,
+                    'usia_string' => $usiaString,
+                    'tanggal_lahir' => $dob,
+                    'kelompok' => $siswa->kelompok
+                ];
+            });
+
+            return response()->json([
+                'success' => true,
+                'students' => $formatted
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('SpmbController@getSiswaGroupingData Error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memuat data: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Save interactive grouping result
+     */
+    public function saveSiswaGrouping(Request $request)
     {
         $this->authorizeModule('ppdb', 'update');
 
         DB::beginTransaction();
-        
         try {
-            $tahunAjaranId = $request->tahun_ajaran_id;
-            $kelompokAIds = $request->kelompok_a;
-            $kelompokBIds = $request->kelompok_b;
-            
-            if (!$tahunAjaranId) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Tahun ajaran tidak dipilih'
-                ]);
+            $kelompokAIds = $request->kelompok_a ?? [];
+            $kelompokBIds = $request->kelompok_b ?? [];
+
+            // Update Kelompok A
+            if (!empty($kelompokAIds)) {
+                Siswa::whereIn('id', $kelompokAIds)->update(['kelompok' => 'A']);
+                // Update corresponding SPMB
+                $spmbIds = Siswa::whereIn('id', $kelompokAIds)->pluck('spmb_id')->filter();
+                if ($spmbIds->isNotEmpty()) {
+                    Spmb::whereIn('id', $spmbIds)->update(['kelompok' => 'Kelompok A']);
+                }
             }
-            
-            Spmb::whereIn('id', $kelompokAIds)
-                ->update(['kelas' => 'Kelompok A']);
-            
-            Spmb::whereIn('id', $kelompokBIds)
-                ->update(['kelas' => 'Kelompok B']);
-            
+
+            // Update Kelompok B
+            if (!empty($kelompokBIds)) {
+                Siswa::whereIn('id', $kelompokBIds)->update(['kelompok' => 'B']);
+                // Update corresponding SPMB
+                $spmbIds = Siswa::whereIn('id', $kelompokBIds)->pluck('spmb_id')->filter();
+                if ($spmbIds->isNotEmpty()) {
+                    Spmb::whereIn('id', $spmbIds)->update(['kelompok' => 'Kelompok B']);
+                }
+            }
+
             DB::commit();
-            
             return response()->json([
                 'success' => true,
-                'message' => 'Pembagian kelas berhasil',
-                'result' => [
-                    'kelompok_a' => count($kelompokAIds),
-                    'kelompok_b' => count($kelompokBIds),
-                ]
+                'message' => 'Pembagian kelompok berhasil disimpan.'
             ]);
-            
+
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Execute class division error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                'message' => 'Gagal menyimpan: ' . $e->getMessage()
             ], 500);
         }
     }

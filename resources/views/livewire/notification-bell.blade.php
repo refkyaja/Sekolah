@@ -95,8 +95,25 @@
 
         {{-- Footer --}}
         @if(count($notifications) > 0)
-        <div class="px-4 py-2.5 border-t border-slate-100 dark:border-slate-700 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 dark:bg-slate-800/50">
-            <p class="text-[11px] text-slate-400 dark:text-slate-500 text-center">Menampilkan {{ count($notifications) }} notifikasi terbaru</p>
+        <div class="px-4 py-3 border-t border-slate-100 dark:border-slate-700 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 dark:bg-slate-800/50 flex items-center justify-between">
+            <p class="text-[10px] text-slate-400 dark:text-slate-500">Total: {{ count($notifications) }} notifikasi</p>
+            <a 
+                @if(auth('siswa')->check())
+                    href="{{ route('siswa.notifications') }}"
+                @else
+                    href="javascript:void(0)" 
+                    onclick="Swal.fire({
+                        title: 'Pusat Notifikasi',
+                        text: 'Halaman khusus notifikasi sedang dalam tahap optimalisasi untuk peran Anda.',
+                        icon: 'info',
+                        confirmButtonColor: '#7f19e6',
+                        customClass: { popup: 'rounded-3xl' }
+                    })"
+                @endif
+                class="text-[10px] font-bold text-primary hover:underline"
+            >
+                Lihat Selengkapnya
+            </a>
         </div>
         @endif
     </div>

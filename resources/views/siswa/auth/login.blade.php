@@ -62,12 +62,14 @@
                         <div class="flex flex-col gap-2">
                             <div class="flex justify-between items-center">
                                 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Kata Sandi</label>
-                                <a class="text-sm font-semibold text-primary hover:underline" href="#">Lupa Password?</a>
+                                
                             </div>
                             <div class="relative flex items-center">
                                 <span class="material-symbols-outlined absolute left-4 text-slate-400">lock</span>
                                 <input name="password" class="w-full pl-12 pr-12 py-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="Masukkan kata sandi" type="password" required/>
-                            </div>
+                            </div><a class="text-xs font-bold text-primary hover:underline mt-2 self-end tracking-tight" href="{{ route('siswa.password.request') }}">
+                                Lupa Password?
+                            </a>
                         </div>
                         <button class="w-full py-4 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all mt-2" type="submit">
                             Masuk ke Portal

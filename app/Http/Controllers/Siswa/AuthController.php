@@ -69,7 +69,8 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        $activeTahunAjaran = TahunAjaran::where('is_aktif', true)->first();
+        $activeTahunAjaran = TahunAjaran::where('is_aktif', true)->first() ?? TahunAjaran::latest()->first();
+        $tahunAjaranValue = $activeTahunAjaran ? $activeTahunAjaran->tahun_ajaran : date('Y') . '/' . (date('Y') + 1);
 
         $siswa = Siswa::create([
             'nama_lengkap' => $request->nama_siswa,
@@ -80,7 +81,7 @@ class AuthController extends Controller
             'status_siswa' => 'aktif',
             'tanggal_masuk' => Carbon::now(),
             'tahun_ajaran_id' => $activeTahunAjaran ? $activeTahunAjaran->id : null,
-            'tahun_ajaran' => $activeTahunAjaran ? $activeTahunAjaran->tahun_ajaran : null,
+            'tahun_ajaran' => $tahunAjaranValue,
         ]);
 
         Auth::guard('siswa')->login($siswa);
@@ -200,7 +201,8 @@ class AuthController extends Controller
             }
 
             // Create new student record (Auto Signup)
-            $activeTahunAjaran = TahunAjaran::where('is_aktif', true)->first();
+            $activeTahunAjaran = TahunAjaran::where('is_aktif', true)->first() ?? TahunAjaran::latest()->first();
+            $tahunAjaranValue = $activeTahunAjaran ? $activeTahunAjaran->tahun_ajaran : date('Y') . '/' . (date('Y') + 1);
             
             $siswa = Siswa::create([
                 'nama_lengkap' => $googleUser->getName(),
@@ -212,7 +214,7 @@ class AuthController extends Controller
                 'status_siswa' => 'aktif',
                 'tanggal_masuk' => Carbon::now(),
                 'tahun_ajaran_id' => $activeTahunAjaran ? $activeTahunAjaran->id : null,
-                'tahun_ajaran' => $activeTahunAjaran ? $activeTahunAjaran->tahun_ajaran : null,
+                'tahun_ajaran' => $tahunAjaranValue,
             ]);
 
             Auth::guard('siswa')->login($siswa);

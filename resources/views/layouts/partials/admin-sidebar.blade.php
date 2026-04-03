@@ -230,6 +230,39 @@
             </a>
         </div>
         @endif
+
+        <div class="space-y-1">
+            <div class="nav-section-divider"></div>
+            <h3 class="nav-section-title px-4 text-[10px] font-black text-white/60 dark:text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2 whitespace-nowrap">F. Utilitas & Laporan</h3>
+
+            <a class="{{ $navBaseClass }} {{ $navDefaultClass }}"
+               href="javascript:void(0)"
+               onclick="Swal.fire({
+                   title: 'Manajemen Laporan',
+                   text: 'Modul laporan sedang dalam pengembangan. Silakan gunakan menu Export di PPDB untuk sementara.',
+                   icon: 'info',
+                   confirmButtonColor: '#7f19e6',
+                   customClass: { popup: 'rounded-3xl' }
+               })"
+               title="Laporan Terpadu">
+                <span class="material-symbols-outlined text-lg">summarize</span>
+                <span class="text-sm nav-text whitespace-nowrap">Laporan Terpadu</span>
+            </a>
+
+            <a class="{{ $navBaseClass }} {{ $navDefaultClass }}"
+               href="javascript:void(0)"
+               onclick="Swal.fire({
+                   title: 'Pengaturan Sistem',
+                   text: 'Halaman pengaturan sistem tersedia di Dashboard Admin -> Pengaturan PPDB.',
+                   icon: 'info',
+                   confirmButtonColor: '#7f19e6',
+                   customClass: { popup: 'rounded-3xl' }
+               })"
+               title="Pengaturan">
+                <span class="material-symbols-outlined text-lg">settings_applications</span>
+                <span class="text-sm nav-text whitespace-nowrap">Pengaturan Sistem</span>
+            </a>
+        </div>
     </div>
 
     <form method="POST" action="{{ route('logout') }}" id="logoutForm" class="p-4 border-t border-white/10 dark:border-slate-800">

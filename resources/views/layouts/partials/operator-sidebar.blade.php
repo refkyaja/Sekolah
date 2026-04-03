@@ -34,6 +34,12 @@
                 <span class="material-symbols-outlined text-lg">group</span>
                 <span class="text-sm nav-text whitespace-nowrap">Data Siswa</span>
             </a>
+            <a class="nav-item flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all group {{ request()->routeIs('operator.siswa.siswa-aktif.pembagian-kelas') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }}" 
+               href="{{ route('operator.siswa.siswa-aktif.pembagian-kelas') }}" 
+               title="Pembagian Kelompok">
+                <span class="material-symbols-outlined text-lg">grid_view</span>
+                <span class="text-sm nav-text whitespace-nowrap">Pembagian Kelompok</span>
+            </a>
             <a class="nav-item flex items-center gap-3 px-4 py-2.5 {{ request()->routeIs('operator.tahun-ajaran.*') ? 'bg-white/20 text-white font-medium shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white' }} rounded-xl transition-all group" href="{{ route('operator.tahun-ajaran.index') }}" title="Tahun Ajaran">
                 <span class="material-symbols-outlined text-lg">calendar_month</span>
                 <span class="text-sm nav-text whitespace-nowrap">Tahun Ajaran</span>

@@ -78,6 +78,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'active'
     // Pastikan ini di dalam Route::prefix('admin')->name('admin.')->group(function () { ... })
     Route::prefix('siswa')->name('siswa.')->group(function () {
         Route::prefix('siswa-aktif')->name('siswa-aktif.')->group(function () {
+            // Pembagian Kelas
+            Route::get('/pembagian-kelas', [SiswaController::class, 'pembagianKelas'])->name('pembagian-kelas');
+            Route::post('/pembagian-kelas/auto', [SiswaController::class, 'autoDivideKelas'])->name('pembagian-kelas.auto');
+            Route::post('/pembagian-kelas/simpan', [SiswaController::class, 'simpanPembagianKelas'])->name('pembagian-kelas.simpan');
+
             Route::get('/', [SiswaController::class, 'indexAktif'])->name('index');
             Route::get('/create', [SiswaController::class, 'createAktif'])->name('create');
             Route::post('/', [SiswaController::class, 'storeAktif'])->name('store');
@@ -166,9 +171,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'active'
         Route::get('/pengaturan', [AdminSpmbController::class, 'pengaturan'])->name('pengaturan');
         Route::post('/pengaturan', [AdminSpmbController::class, 'updatePengaturan'])->name('updatePengaturan');
         
-        // ✅ ROUTE PEMBAGIAN KELAS
-        Route::get('/class-division-preview', [AdminSpmbController::class, 'classDivisionPreview'])->name('classDivisionPreview');
-        Route::post('/execute-class-division', [AdminSpmbController::class, 'executeClassDivision'])->name('executeClassDivision');
+        // ✅ ROUTE PEMBAGIAN KELOMPOK
+        Route::get('/kelompok-division-preview', [AdminSpmbController::class, 'kelompokDivisionPreview'])->name('kelompokDivisionPreview');
+        Route::post('/execute-kelompok-division', [AdminSpmbController::class, 'executeKelompokDivision'])->name('executeKelompokDivision');
         
         // ✅ ROUTE INDEX (HARUS SETELAH ROUTE TANPA PARAMETER)
         Route::get('/', [AdminSpmbController::class, 'index'])->name('index');
@@ -243,6 +248,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'active'
         Route::get('/pengumuman', [AdminSpmbController::class, 'pengumuman'])->name('pengumuman');
         Route::post('/pengumuman/publish', [AdminSpmbController::class, 'publishPengumuman'])->name('pengumuman.publish');
         Route::get('/riwayat', [AdminSpmbController::class, 'riwayat'])->name('riwayat');
+        
+        // Interactive Grouping Modal Routes
+        Route::get('/get-grouping-data', [AdminSpmbController::class, 'getSiswaGroupingData'])->name('get-grouping-data');
+        Route::post('/save-grouping', [AdminSpmbController::class, 'saveSiswaGrouping'])->name('save-grouping');
+        
         Route::get('/riwayat/{tahunAjaran}', [AdminSpmbController::class, 'riwayatShow'])->name('riwayat.show')->where('tahunAjaran', '.*');
         Route::get('/', [AdminSpmbController::class, 'index'])->name('index');
         Route::get('/{spmb}', [AdminSpmbController::class, 'show'])->name('show');
@@ -349,8 +359,13 @@ Route::prefix('operator')->name('operator.')->middleware(['auth', 'verified', 'a
         Route::put('/change-password', [App\Http\Controllers\Operator\ProfileController::class, 'changePassword'])->name('change-password');
     });
     
-    // Siswa Routes (Read-only)
+    // Siswa Routes (Read-only + Pembagian Kelas)
     Route::prefix('siswa')->name('siswa.')->group(function () {
+        // Pembagian Kelas - Operator punya akses
+        Route::get('/siswa-aktif/pembagian-kelas', [App\Http\Controllers\Admin\SiswaController::class, 'pembagianKelas'])->name('siswa-aktif.pembagian-kelas');
+        Route::post('/siswa-aktif/pembagian-kelas/auto', [App\Http\Controllers\Admin\SiswaController::class, 'autoDivideKelas'])->name('siswa-aktif.pembagian-kelas.auto');
+        Route::post('/siswa-aktif/pembagian-kelas/simpan', [App\Http\Controllers\Admin\SiswaController::class, 'simpanPembagianKelas'])->name('siswa-aktif.pembagian-kelas.simpan');
+
         Route::get('/siswa-aktif', [App\Http\Controllers\Admin\SiswaController::class, 'indexAktif'])->name('siswa-aktif.index');
         Route::get('/siswa-aktif/{siswa}', [App\Http\Controllers\Admin\SiswaController::class, 'showAktif'])->name('siswa-aktif.show');
     });
@@ -401,6 +416,10 @@ Route::prefix('operator')->name('operator.')->middleware(['auth', 'verified', 'a
         Route::get('/export/data', [App\Http\Controllers\Admin\SpmbController::class, 'export'])->name('exportData');
         Route::get('/export/all', [App\Http\Controllers\Admin\SpmbController::class, 'exportAll'])->name('exportAll');
 
+        // Interactive Grouping Modal Routes
+        Route::get('/get-grouping-data', [App\Http\Controllers\Admin\SpmbController::class, 'getSiswaGroupingData'])->name('get-grouping-data');
+        Route::post('/save-grouping', [App\Http\Controllers\Admin\SpmbController::class, 'saveSiswaGrouping'])->name('save-grouping');
+
 
         Route::post('/bulk-update-status', [App\Http\Controllers\Admin\SpmbController::class, 'bulkUpdateStatus'])->name('bulk-update-status');
     });
@@ -433,7 +452,7 @@ Route::prefix('operator')->name('operator.')->middleware(['auth', 'verified', 'a
 // ==================== ROUTES KEPALA SEKOLAH ====================
 
 Route::prefix('kepala-sekolah')->name('kepala-sekolah.')->middleware(['auth', 'verified', 'active', 'kepala_sekolah'])->group(function () {
-    Route::get('/dashboard', fn() => view('kepala-sekolah.dashboard'))->name('dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\KepalaSekolah\DashboardController::class, 'index'])->name('dashboard');
     
     // Profile Routes
     Route::prefix('profile')->name('profile.')->group(function () {
@@ -444,8 +463,13 @@ Route::prefix('kepala-sekolah')->name('kepala-sekolah.')->middleware(['auth', 'v
         Route::put('/change-password', [App\Http\Controllers\KepalaSekolah\ProfileController::class, 'changePassword'])->name('change-password');
     });
     
-    // Siswa Routes (Read-only)
+    // Siswa Routes (Read-only + Pembagian Kelas)
     Route::prefix('siswa')->name('siswa.')->group(function () {
+        // Pembagian Kelas - Kepala Sekolah punya akses
+        Route::get('/siswa-aktif/pembagian-kelas', [App\Http\Controllers\Admin\SiswaController::class, 'pembagianKelas'])->name('siswa-aktif.pembagian-kelas');
+        Route::post('/siswa-aktif/pembagian-kelas/auto', [App\Http\Controllers\Admin\SiswaController::class, 'autoDivideKelas'])->name('siswa-aktif.pembagian-kelas.auto');
+        Route::post('/siswa-aktif/pembagian-kelas/simpan', [App\Http\Controllers\Admin\SiswaController::class, 'simpanPembagianKelas'])->name('siswa-aktif.pembagian-kelas.simpan');
+
         Route::get('/siswa-aktif', [App\Http\Controllers\Admin\SiswaController::class, 'indexAktif'])->name('siswa-aktif.index');
         Route::get('/siswa-aktif/{siswa}', [App\Http\Controllers\Admin\SiswaController::class, 'showAktif'])->name('siswa-aktif.show');
     });
@@ -502,6 +526,10 @@ Route::prefix('kepala-sekolah')->name('kepala-sekolah.')->middleware(['auth', 'v
         Route::get('/export/data', [App\Http\Controllers\Admin\SpmbController::class, 'export'])->name('exportData');
         Route::get('/export/all', [App\Http\Controllers\Admin\SpmbController::class, 'exportAll'])->name('exportAll');
 
+        // Interactive Grouping Modal Routes
+        Route::get('/get-grouping-data', [App\Http\Controllers\Admin\SpmbController::class, 'getSiswaGroupingData'])->name('get-grouping-data');
+        Route::post('/save-grouping', [App\Http\Controllers\Admin\SpmbController::class, 'saveSiswaGrouping'])->name('save-grouping');
+
 
         Route::post('/bulk-update-status', [App\Http\Controllers\Admin\SpmbController::class, 'bulkUpdateStatus'])->name('bulk-update-status');
     });
@@ -528,7 +556,7 @@ Route::prefix('kepala-sekolah')->name('kepala-sekolah.')->middleware(['auth', 'v
 // ==================== ROUTES GURU ====================
 
 Route::prefix('guru')->name('guru.')->middleware(['auth', 'verified', 'active', 'guru'])->group(function () {
-    Route::get('/dashboard', fn() => view('guru.dashboard'))->name('dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\Guru\DashboardController::class, 'index'])->name('dashboard');
     
     // Profile Routes
     Route::prefix('profile')->name('profile.')->group(function () {
@@ -545,10 +573,14 @@ Route::prefix('guru')->name('guru.')->middleware(['auth', 'verified', 'active', 
         Route::get('/siswa-aktif/{siswa}', [App\Http\Controllers\Admin\SiswaController::class, 'showAktif'])->name('siswa-aktif.show');
     });
     
-    // Absensi Routes (Read-only)
+    // Absensi Routes (Read-only + Input)
     Route::prefix('absensi')->name('absensi.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\AbsensiController::class, 'index'])->name('index');
+        Route::get('/fill', [App\Http\Controllers\Admin\AbsensiController::class, 'fill'])->name('fill');
+        Route::post('/store-batch', [App\Http\Controllers\Admin\AbsensiController::class, 'storeBatch'])->name('store-batch');
+        Route::get('/rekap', [App\Http\Controllers\Admin\AbsensiController::class, 'rekap'])->name('rekap');
         Route::get('/{id}/edit', [App\Http\Controllers\Admin\AbsensiController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [App\Http\Controllers\Admin\AbsensiController::class, 'update'])->name('update');
     });
     
     // Kalender Akademik Routes (Read-only)
@@ -588,10 +620,21 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
     Route::get('/register', [\App\Http\Controllers\Siswa\AuthController::class, 'register'])->name('register');
     Route::post('/register', [\App\Http\Controllers\Siswa\AuthController::class, 'storeRegister'])->name('storeRegister');
     Route::post('/logout', [\App\Http\Controllers\Siswa\AuthController::class, 'logout'])->name('logout');
+
+    // Password Reset Routes (OTP Flow)
+    Route::get('password/reset', [\App\Http\Controllers\Siswa\Auth\ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('password/otp', [\App\Http\Controllers\Siswa\Auth\ForgotPasswordController::class, 'sendOtp'])->name('password.otp');
+    Route::get('password/verify', [\App\Http\Controllers\Siswa\Auth\ForgotPasswordController::class, 'showOtpForm'])->name('password.verify');
+    Route::post('password/verify', [\App\Http\Controllers\Siswa\Auth\ForgotPasswordController::class, 'verifyOtp'])->name('password.verify.submit');
+    Route::get('password/new', [\App\Http\Controllers\Siswa\Auth\ResetPasswordController::class, 'showResetForm'])->name('password.new');
+    Route::post('password/reset', [\App\Http\Controllers\Siswa\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
     
-    Route::middleware(['auth:siswa'])->group(function () {
+    Route::middleware(['auth:siswa', 'active'])->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\Siswa\DashboardController::class, 'index'])->name('dashboard');
         Route::get('/profile', [\App\Http\Controllers\Siswa\DashboardController::class, 'profile'])->name('profile');
+        Route::post('/profile/update-photo', [\App\Http\Controllers\Siswa\DashboardController::class, 'updatePhoto'])->name('profile.update-photo');
+        Route::post('/profile/update-password', [\App\Http\Controllers\Siswa\DashboardController::class, 'updatePassword'])->name('profile.update-password');
+        Route::get('/notifications', [\App\Http\Controllers\Siswa\DashboardController::class, 'notifications'])->name('notifications');
         Route::get('/formulir', [\App\Http\Controllers\Siswa\DashboardController::class, 'formulir'])->name('formulir');
         Route::get('/dokumen', [\App\Http\Controllers\Siswa\DashboardController::class, 'dokumen'])->name('dokumen');
         Route::post('/dokumen/upload', [\App\Http\Controllers\Siswa\DashboardController::class, 'storeDokumen'])->name('dokumen.upload');

@@ -67,7 +67,7 @@
         </div>
         @if(isset($guru) && $guru)
             <div class="hidden md:flex flex-col text-right">
-                <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Wali Kelas</span>
+                <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Guru Kelompok</span>
                 <span class="text-xs font-bold text-slate-800 dark:text-slate-100">{{ $guru->nama }}</span>
             </div>
         @endif
@@ -81,6 +81,16 @@
     @if(isset($guru) && $guru)
         <input type="hidden" name="guru_id" value="{{ $guru->id }}">
     @endif
+
+    <!-- HIDDEN INPUTS TO PREVENT DUPLICATION -->
+    @foreach($siswa as $s_hidden)
+        @php 
+            $hiddenExistingStatus = optional($existing->get($s_hidden->id))->status ?? 'hadir'; 
+            $hiddenKeterangan = optional($existing->get($s_hidden->id))->keterangan ?? '';
+        @endphp
+        <input type="hidden" name="statuses[{{ $s_hidden->id }}]" id="hidden_status_{{ $s_hidden->id }}" value="{{ $hiddenExistingStatus }}">
+        <input type="hidden" name="keterangan[{{ $s_hidden->id }}]" id="hidden_keterangan_{{ $s_hidden->id }}" value="{{ $hiddenKeterangan }}">
+    @endforeach
 
     <!-- Desktop Table View -->
     <div class="hidden md:block bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden mb-20">
@@ -132,7 +142,7 @@
                         </td>
                         <td class="px-6 py-5">
                             <div class="flex items-center justify-center">
-                                <select name="statuses[{{ $s->id }}]" class="w-36 px-3 py-2 bg-slate-50 dark:bg-slate-900 border-none dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-primary/20 text-sm font-semibold cursor-pointer transition-all appearance-none text-center">
+                                <select id="desktop_status_{{ $s->id }}" onchange="document.getElementById('hidden_status_{{ $s->id }}').value = this.value; document.getElementById('mobile_status_{{ $s->id }}').value = this.value;" class="w-36 px-3 py-2 bg-slate-50 dark:bg-slate-900 border-none dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-primary/20 text-sm font-semibold cursor-pointer transition-all appearance-none text-center">
                                     <option value="hadir" {{ $existingStatus == 'hadir' ? 'selected' : '' }}>Hadir</option>
                                     <option value="sakit" {{ $existingStatus == 'sakit' ? 'selected' : '' }}>Sakit</option>
                                     <option value="izin" {{ $existingStatus == 'izin' ? 'selected' : '' }}>Izin</option>
@@ -141,7 +151,7 @@
                             </div>
                         </td>
                         <td class="px-6 py-5">
-                            <input class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-900 border-none dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-primary/20 text-xs transition-all" name="keterangan[{{ $s->id }}]" placeholder="Catatan..." type="text" value="{{ $keterangan }}"/>
+                            <input id="desktop_keterangan_{{ $s->id }}" oninput="document.getElementById('hidden_keterangan_{{ $s->id }}').value = this.value; document.getElementById('mobile_keterangan_{{ $s->id }}').value = this.value;" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-900 border-none dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-primary/20 text-xs transition-all" placeholder="Catatan..." type="text" value="{{ $keterangan }}"/>
                         </td>
                     </tr>
                     @endforeach
@@ -178,7 +188,7 @@
             <div class="flex flex-col gap-3">
                 <div class="w-full">
                     <label class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 ml-1">Status</label>
-                    <select name="statuses[{{ $s->id }}]" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-primary/20 text-sm font-bold cursor-pointer transition-all appearance-none text-slate-700 dark:text-slate-300">
+                    <select id="mobile_status_{{ $s->id }}" onchange="document.getElementById('hidden_status_{{ $s->id }}').value = this.value; document.getElementById('desktop_status_{{ $s->id }}').value = this.value;" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-primary/20 text-sm font-bold cursor-pointer transition-all appearance-none text-slate-700 dark:text-slate-300">
                         <option value="hadir" {{ $existingStatus == 'hadir' ? 'selected' : '' }}>Hadir</option>
                         <option value="sakit" {{ $existingStatus == 'sakit' ? 'selected' : '' }}>Sakit</option>
                         <option value="izin" {{ $existingStatus == 'izin' ? 'selected' : '' }}>Izin</option>
@@ -187,7 +197,7 @@
                 </div>
                 <div class="w-full">
                     <label class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 ml-1">Catatan</label>
-                    <input class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all" name="keterangan[{{ $s->id }}]" placeholder="Keterangan opsional..." type="text" value="{{ $keterangan }}"/>
+                    <input id="mobile_keterangan_{{ $s->id }}" oninput="document.getElementById('hidden_keterangan_{{ $s->id }}').value = this.value; document.getElementById('desktop_keterangan_{{ $s->id }}').value = this.value;" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-none dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-primary/20 text-sm transition-all" placeholder="Keterangan opsional..." type="text" value="{{ $keterangan }}"/>
                 </div>
             </div>
         </div>

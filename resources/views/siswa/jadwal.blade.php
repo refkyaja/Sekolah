@@ -5,7 +5,7 @@
 @section('content')
 <div class="p-6">
     <div class="mb-6">
-        <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Jadwal Pelajaran</h1>
+        <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Jadwal Pelajaran @if($siswa->status_siswa === 'lulus') <span class="text-[10px] uppercase tracking-widest font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded ml-2 align-middle border border-slate-200 dark:border-slate-700">(ARSIP)</span> @endif</h1>
         <p class="text-slate-500 dark:text-slate-400">
             Tahun Ajaran: {{ $ta->tahun_ajaran ?? '-' }} | Semester: {{ $ta->semester ?? '-' }}
         </p>
@@ -60,7 +60,7 @@
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                                             <span class="material-symbols-outlined text-xs text-slate-400">location_on</span>
-                                            {{ $item->lokasi ?? 'Ruang Kelas' }}
+                                            {{ $item->lokasi ?? 'Ruang Kelompok' }}
                                         </div>
                                     </td>
                                 </tr>

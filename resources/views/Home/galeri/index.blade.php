@@ -37,7 +37,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div data-home-animate="fade-up" class="mb-8 rounded-[2rem] bg-accent-yellow p-6 shadow-sm md:p-8">
             <p class="max-w-3xl text-sm leading-relaxed text-slate-700 md:text-base">
-                Dokumentasi kegiatan belajar, momen kelas, dan aktivitas sekolah yang sudah dipublikasikan dalam format visual yang mudah dijelajahi.
+                Dokumentasi kegiatan belajar, momen kelompok, dan aktivitas sekolah yang sudah dipublikasikan dalam format visual yang mudah dijelajahi.
             </p>
         </div>
 

@@ -133,10 +133,10 @@ class Spmb extends Model
         'kepsek_id',
         'tanggal_approval',
         
-        // Data Kelas
-        'kelas',
-        'guru_kelas',
-        'operator_input_kelas',
+        // Data Kelompok
+        'kelompok',
+        'guru_kelompok',
+        'operator_input_kelompok',
         
         // Data Siswa Aktif
         'is_aktif',
@@ -276,9 +276,9 @@ class Spmb extends Model
         return $this->belongsTo(User::class, 'kepsek_id');
     }
 
-    public function operatorKelas()
+    public function operatorKelompok()
     {
-        return $this->belongsTo(User::class, 'operator_input_kelas');
+        return $this->belongsTo(User::class, 'operator_input_kelompok');
     }
 
     public function dokumen()
@@ -571,14 +571,14 @@ class Spmb extends Model
         return $query->where('is_aktif', true);
     }
 
-    public function scopeBelumAdaKelas($query)
+    public function scopeBelumAdaKelompok($query)
     {
-        return $query->whereNull('kelas');
+        return $query->whereNull('kelompok');
     }
 
-    public function scopeSudahAdaKelas($query)
+    public function scopeSudahAdaKelompok($query)
     {
-        return $query->whereNotNull('kelas');
+        return $query->whereNotNull('kelompok');
     }
 
     // Methods
@@ -669,14 +669,56 @@ class Spmb extends Model
         return $this;
     }
 
-    public function assignKelas($kelas, $guruKelas, $operatorId)
+    public function assignKelompok($kelompok, $guruKelompok, $operatorId)
     {
-        $this->kelas = $kelas;
-        $this->guru_kelas = $guruKelas;
-        $this->operator_input_kelas = $operatorId;
+        $this->kelompok = $kelompok;
+        $this->guru_kelompok = $guruKelompok;
+        $this->operator_input_kelompok = $operatorId;
         $this->save();
-
+ 
         return $this;
+    }
+ 
+    /**
+     * Map kelompok attribute to kelas column for DB compatibility
+     */
+    public function getKelompokAttribute($value)
+    {
+        return $value ?? $this->attributes['kelas'] ?? null;
+    }
+ 
+    public function setKelompokAttribute($value)
+    {
+        $this->attributes['kelompok'] = $value;
+        if (array_key_exists('kelas', $this->attributes) || !Schema::hasColumn('spmb', 'kelompok')) {
+            $this->attributes['kelas'] = $value;
+        }
+    }
+ 
+    public function getGuruKelompokAttribute($value)
+    {
+        return $value ?? $this->attributes['guru_kelas'] ?? null;
+    }
+ 
+    public function setGuruKelompokAttribute($value)
+    {
+        $this->attributes['guru_kelompok'] = $value;
+        if (array_key_exists('guru_kelas', $this->attributes) || !Schema::hasColumn('spmb', 'guru_kelas')) {
+            $this->attributes['guru_kelas'] = $value;
+        }
+    }
+ 
+    public function getOperatorInputKelompokAttribute($value)
+    {
+        return $value ?? $this->attributes['operator_input_kelas'] ?? null;
+    }
+ 
+    public function setOperatorInputKelompokAttribute($value)
+    {
+        $this->attributes['operator_input_kelompok'] = $value;
+        if (array_key_exists('operator_input_kelas', $this->attributes) || !Schema::hasColumn('spmb', 'operator_input_kelas')) {
+            $this->attributes['operator_input_kelas'] = $value;
+        }
     }
 
     protected function getRoleUser($userId)

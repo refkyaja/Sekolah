@@ -139,7 +139,7 @@
                         </div>
                         <div>
                             <p class="text-[10px] font-bold text-slate-400 uppercase">WhatsApp</p>
-                            <p class="text-sm font-bold text-slate-700 dark:text-slate-200">0812-3456-7890</p>
+                            <p class="text-sm font-bold text-slate-700 dark:text-slate-200">0821-3030-3614</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
@@ -148,7 +148,7 @@
                         </div>
                         <div>
                             <p class="text-[10px] font-bold text-slate-400 uppercase">Email</p>
-                            <p class="text-sm font-bold text-slate-700 dark:text-slate-200">ppdb@sekolah.sch.id</p>
+                            <p class="text-sm font-bold text-slate-700 dark:text-slate-200">tkpgriharapanbangsa1@gmail.com</p>
                         </div>
                     </div>
                 </div>

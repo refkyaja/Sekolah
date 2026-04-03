@@ -95,15 +95,12 @@
                         </div>
                         <div>
                             <p class="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.15em] opacity-60 mb-0.5">Terdaftar Sejak</p>
-                            <p class="text-sm sm:text-base font-black">{{ $siswa->tanggal_masuk->translatedFormat('d F Y') }}</p>
+                            <p class="text-sm sm:text-base font-black">{{ $siswa->tanggal_masuk_formatted }}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-4 pt-6 sm:pt-0 border-t sm:border-t-0 sm:border-l border-white/50 sm:pl-10">
-                        <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white flex items-center justify-center text-primary shadow-sm flex-shrink-0">
-                            <span class="material-symbols-outlined text-xl sm:text-2xl">group</span>
-                        </div>
                         <div>
-                            <p class="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.15em] opacity-60 mb-0.5">Kelompok</p>
+                            <p class="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.15em] opacity-60 mb-0.5">Kelompok (A/B)</p>
                             <p class="text-sm sm:text-base font-black">Kelompok {{ $siswa->kelompok }}</p>
                         </div>
                     </div>
@@ -162,7 +159,7 @@
                         <div class="space-y-2">
                             <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Tempat, Tgl Lahir</p>
                             <p class="text-slate-900 dark:text-white font-bold text-lg">
-                                {{ $siswa->tempat_lahir }}, {{ $siswa->tanggal_lahir->translatedFormat('d F Y') }}
+                                {{ $siswa->tempat_lahir ?: '-' }}, {{ $siswa->tanggal_lahir_formatted }}
                             </p>
                         </div>
                         <div class="space-y-2">
@@ -491,12 +488,12 @@
                             
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12 pt-10 sm:pt-12 border-t border-slate-50 dark:border-slate-700/50">
                                 <div class="space-y-2">
-                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Nama Kelas</p>
-                                    <p class="text-slate-900 dark:text-white font-black text-xl sm:text-2xl tracking-tight leading-tight">{{ $siswa->kelas ?: 'Belum ditentukan' }}</p>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Nama Kelompok</p>
+                                    <p class="text-slate-900 dark:text-white font-black text-xl sm:text-2xl tracking-tight leading-tight">{{ $siswa->kelompok ?: 'Belum ditentukan' }}</p>
                                 </div>
                                 <div class="space-y-2">
-                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Guru Kelas</p>
-                                    <p class="text-slate-900 dark:text-white font-bold text-lg leading-snug">{{ $siswa->guru_kelas ?: 'Belum ditentukan' }}</p>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Guru Kelompok</p>
+                                    <p class="text-slate-900 dark:text-white font-bold text-lg leading-snug">{{ $siswa->guru_kelompok ?: 'Belum ditentukan' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -505,7 +502,7 @@
                     <div class="p-6 sm:p-10 bg-slate-50/50 dark:bg-slate-900/30 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10">
                         <div class="space-y-2">
                             <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Tanggal Masuk</p>
-                            <p class="text-slate-900 dark:text-white font-black text-base sm:text-lg">{{ $siswa->tanggal_masuk->translatedFormat('d F Y') }}</p>
+                            <p class="text-slate-900 dark:text-white font-black text-base sm:text-lg">{{ $siswa->tanggal_masuk_formatted }}</p>
                         </div>
                         <div class="space-y-2">
                             <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Jalur Pendaftaran</p>
@@ -533,13 +530,13 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 text-center sm:text-left">
                     <div class="space-y-1">
                         <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none">Terakhir Diperbarui</p>
-                        <p class="text-sm font-black text-slate-900 dark:text-white">{{ $siswa->updated_at->diffForHumans() }}</p>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{{ $siswa->updated_at->translatedFormat('d M Y, H:i') }}</p>
+                        <p class="text-sm font-black text-slate-900 dark:text-white">{{ $siswa->updated_at ? $siswa->updated_at->diffForHumans() : '-' }}</p>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{{ $siswa->updated_at ? $siswa->updated_at->translatedFormat('d M Y, H:i') : '-' }}</p>
                     </div>
                     <div class="space-y-1 pt-6 sm:pt-0 border-t sm:border-t-0 sm:border-l border-slate-50 dark:border-slate-700/50 sm:pl-8">
                         <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none">Dibuat Pada</p>
-                        <p class="text-sm font-black text-slate-900 dark:text-white">{{ $siswa->created_at->translatedFormat('d M Y') }}</p>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{{ $siswa->created_at->format('H:i') }} WIB</p>
+                        <p class="text-sm font-black text-slate-900 dark:text-white">{{ $siswa->created_at ? $siswa->created_at->translatedFormat('d M Y') : '-' }}</p>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{{ $siswa->created_at ? $siswa->created_at->format('H:i') : '-' }} WIB</p>
                     </div>
                 </div>
             </div>

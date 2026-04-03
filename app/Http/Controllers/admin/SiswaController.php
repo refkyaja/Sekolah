@@ -656,10 +656,144 @@ class SiswaController extends Controller
         return view('admin.siswa.siswa-lulus.by-tahun', compact('tahunAjaran'));
     }
 
+    // =====================================================================
+    // PEMBAGIAN KELAS
+    // =====================================================================
+
+    /**
+     * Halaman Pembagian Kelas — tampilkan siswa aktif dalam 2 kolom (A & B).
+     */
+    public function pembagianKelas(Request $request)
+    {
+        if (session()->has('pembagian_kelas')) {
+            $pembagian = session('pembagian_kelas');
+            $kelasA    = collect($pembagian['A'] ?? []);
+            $kelasB    = collect($pembagian['B'] ?? []);
+            $kelasBelum= collect($pembagian['Belum'] ?? []);
+        } else {
+            $siswas = Siswa::aktif()
+                ->orderBy('tanggal_lahir', 'desc')
+                ->get();
+
+            $kelasA = $siswas->where('kelompok', 'A')->values();
+            $kelasB = $siswas->where('kelompok', 'B')->values();
+            $kelasBelum = $siswas->whereNull('kelompok')->values();
+        }
+
+        $totalSiswa = Siswa::aktif()->count();
+
+        return view('admin.siswa.siswa-aktif.pembagian-kelas', compact('kelasA', 'kelasB', 'kelasBelum', 'totalSiswa'));
+    }
+
+    /**
+     * Auto-divide siswa ke Kelas A (termuda) dan Kelas B (tertua)
+     * berdasarkan tanggal_lahir (DESC = termuda di index 0).
+     * ceil(total/2) pertama → Kelas A, sisa → Kelas B.
+     */
+    public function autoDivideKelas(Request $request)
+    {
+        $siswas = Siswa::aktif()
+            ->whereNotNull('tanggal_lahir')
+            ->orderBy('tanggal_lahir', 'desc')
+            ->get();
+
+        $siswaTanpaTanggal = Siswa::aktif()->whereNull('tanggal_lahir')->get();
+
+        $total = $siswas->count() + $siswaTanpaTanggal->count();
+        $half  = (int) ceil($total / 2);
+
+        $semuaSiswa = $siswas->merge($siswaTanpaTanggal);
+
+        $kelasA = $semuaSiswa->slice(0, $half)->values();
+        $kelasB = $semuaSiswa->slice($half)->values();
+
+        session([
+            'pembagian_kelas' => [
+                'A' => $kelasA->toArray(),
+                'B' => $kelasB->toArray(),
+                'Belum' => [],
+            ]
+        ]);
+
+        $rolePrefix = match(auth()->user()->role) {
+            'kepala_sekolah' => 'kepala-sekolah',
+            'operator'       => 'operator',
+            default          => 'admin'
+        };
+
+        return redirect()
+            ->route($rolePrefix . '.siswa.siswa-aktif.pembagian-kelas')
+            ->with('info', "Pembagian otomatis selesai: Kelas A = {$kelasA->count()} siswa, Kelas B = {$kelasB->count()} siswa.");
+    }
+
+    /**
+     * Simpan hasil pembagian kelas ke database.
+     * POST: assignments[] = [{id, kelompok}, ...]
+     */
+    public function simpanPembagianKelas(Request $request)
+    {
+        $validated = $request->validate([
+            'assignments'             => 'present|array',
+            'assignments.*.id'        => 'required|exists:siswas,id',
+            'assignments.*.kelompok'  => 'nullable|in:A,B',
+        ]);
+
+        $grouped = collect($validated['assignments'])->groupBy('kelompok');
+        $countA  = isset($grouped['A']) ? $grouped['A']->count() : 0;
+        $countB  = isset($grouped['B']) ? $grouped['B']->count() : 0;
+        $countBelum = isset($grouped['']) ? $grouped['']->count() : 0;
+
+        if ($countBelum > 0) {
+            return back()->withInput()
+                ->with('error', "Masih ada {$countBelum} siswa yang belum mendapatkan kelompok. Semua siswa aktif wajib mendapatkan kelompok.");
+        }
+
+        if ($countA > 27 || $countB > 27) {
+            $over = [];
+            if ($countA > 27) $over[] = "Kelompok A ({$countA}/27)";
+            if ($countB > 27) $over[] = "Kelompok B ({$countB}/27)";
+            
+            return back()->withInput()
+                ->with('error', "Jumlah siswa melebihi batas maksimal 27: " . implode(', ', $over));
+        }
+
+        DB::beginTransaction();
+        try {
+            foreach ($validated['assignments'] ?? [] as $assignment) {
+                $kelompok = $assignment['kelompok'];
+                $kelasLabel = $kelompok ? 'Kelompok ' . $kelompok : null;
+                
+                Siswa::where('id', $assignment['id'])
+                    ->update([
+                        'kelompok' => $kelompok,
+                        'kelas' => $kelasLabel
+                    ]);
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('simpanPembagianKelas error', ['message' => $e->getMessage()]);
+            return back()->with('error', 'Gagal menyimpan pembagian kelas: ' . $e->getMessage());
+        }
+
+        session()->forget('pembagian_kelas');
+
+        $rolePrefix = match(auth()->user()->role) {
+            'kepala_sekolah' => 'kepala-sekolah',
+            'operator'       => 'operator',
+            default          => 'admin'
+        };
+
+        return redirect()
+            ->route($rolePrefix . '.siswa.siswa-aktif.index')
+            ->with('success', "Pembagian kelas berhasil disimpan. Kelas A: {$countA} siswa, Kelas B: {$countB} siswa.");
+    }
+
     /**
          * Export rekap lulus to CSV
      */
     public function exportRekapLulus(Request $request)
+
     {
         try {
             $rekap = Siswa::lulus()

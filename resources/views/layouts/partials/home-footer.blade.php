@@ -46,7 +46,7 @@
                 <div class="flex flex-col items-center lg:items-start gap-4">
                     
                     {{-- Facebook --}}
-                    <a href="https://facebook.com/usernamekamu" target="_blank"
+                    <a href="https://www.facebook.com/share/1J1iWSbiFM/" target="_blank"
                     class="inline-flex items-center gap-3 transition-all hover:translate-x-1 group"
                     aria-label="Facebook">
                         <div class="size-10 rounded-full bg-slate-800 flex items-center justify-center group-hover:bg-[#1877F2] transition-colors">
@@ -58,7 +58,7 @@
                     </a>
 
                     {{-- Instagram --}}
-                    <a href="https://instagram.com/usernamekamu" target="_blank"
+                    <a href="https://www.instagram.com/tk_pgri_harapan_bangsa_1?igsh=MWVnbmJrNHh4NzFycg==" target="_blank"
                     class="inline-flex items-center gap-3 transition-all hover:translate-x-1 group"
                     aria-label="Instagram">
                         <div class="size-10 rounded-full bg-slate-800 flex items-center justify-center group-hover:bg-[#E4405F] transition-colors">

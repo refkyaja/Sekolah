@@ -7,13 +7,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Notifications\Notifiable;
 
 // use Spatie\Activitylog\Traits\LogsActivity;
 // use Spatie\Activitylog\LogOptions;
 
 class Siswa extends Authenticatable
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Notifiable;
     protected $fillable = [
         // Relasi
         'spmb_id',
@@ -115,9 +116,9 @@ class Siswa extends Authenticatable
         'sumber_informasi_ppdb',
         'punya_saudara_sekolah_tk',
         
-        // Informasi kelas
-        'kelas',
-        'guru_kelas',
+        // Informasi Kelompok
+        'kelompok',
+        'guru_kelompok',
         
         // Catatan
         'catatan',
@@ -544,5 +545,16 @@ class Siswa extends Authenticatable
     public function isCuti()
     {
         return $this->status_siswa === self::STATUS_CUTI;
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new \App\Notifications\SiswaResetPasswordNotification($token));
     }
 }

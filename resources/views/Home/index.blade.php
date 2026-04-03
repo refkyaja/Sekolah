@@ -71,7 +71,7 @@
                 </div>
                 <div class="min-w-0">
                     <p class="text-[10px] font-bold text-slate-400 uppercase">Email</p>
-                    <p class="font-bold text-slate-800 text-sm md:text-base truncate">info@tkpgrihb1.sch.id</p>
+                    <p class="font-bold text-slate-800 text-sm md:text-base truncate">tkpgriharapanbangsa1@gmail.com</p>
                 </div>
             </div>
             <div class="flex items-center gap-4 border-t sm:border-t-0 sm:border-l border-slate-100 pt-6 sm:pt-0 sm:pl-8">
@@ -80,7 +80,7 @@
                 </div>
                 <div>
                     <p class="text-[10px] font-bold text-slate-400 uppercase">Telepon</p>
-                    <p class="font-bold text-slate-800 text-sm md:text-base">+62-812-3456-7890</p>
+                    <p class="font-bold text-slate-800 text-sm md:text-base">0821-3030-3614</p>
                 </div>
             </div>
         </div>
@@ -338,7 +338,7 @@
                         </div>
                         <div>
                             <h5 class="font-bold text-slate-900 text-lg">Telepon</h5>
-                            <p class="text-slate-600 text-sm md:text-base leading-relaxed">(022) 123-4567 | <br class="sm:hidden"/>WhatsApp: 0812-3456-7890</p>
+                            <p class="text-slate-600 text-sm md:text-base leading-relaxed">0821-3030-3614 | <br class="sm:hidden"/>WhatsApp: 0821-3030-3614</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-6">
@@ -347,7 +347,7 @@
                         </div>
                         <div>
                             <h5 class="font-bold text-slate-900 text-lg">Email</h5>
-                            <p class="text-slate-600 text-sm md:text-base leading-relaxed">info@tkpgrihb1.sch.id</p>
+                            <p class="text-slate-600 text-sm md:text-base leading-relaxed">tkpgriharapanbangsa1@gmail.com</p>
                         </div>
                     </div>
                 </div>
@@ -411,7 +411,7 @@
                     {{-- No HP/Kontak --}}
                     <div class="space-y-2">
                         <label class="text-[10px] md:text-xs font-bold text-slate-400 uppercase ml-4">No. HP / WhatsApp *</label>
-                        <input name="telepon" value="{{ old('telepon') }}" required class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base" placeholder="0812xxxx" type="tel"/>
+                        <input name="telepon" value="{{ old('telepon') }}" required class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base" placeholder="0821xxxx" type="tel"/>
                         <p class="error-telepon error-text text-xs text-red-500 ml-4 hidden"></p>
                     </div>
                 </div>

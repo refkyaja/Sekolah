@@ -106,16 +106,33 @@ document.addEventListener('click', function(e) {
 });
 </script>
 
-@if($isLulus)
+@if($isLulus || $siswa->status_siswa === 'lulus')
 {{-- Active Student Dashboard Content --}}
+
+@if($siswa->status_siswa === 'lulus')
+    <div class="mb-6 p-4 bg-sky-50 dark:bg-sky-900/40 border border-sky-200 dark:border-sky-800 rounded-2xl flex items-start gap-4">
+        <span class="material-symbols-outlined text-sky-600 dark:text-sky-400 text-3xl">history_edu</span>
+        <div>
+            <h4 class="text-sky-800 dark:text-sky-200 font-bold text-sm">Anda telah menjadi Alumni</h4>
+            <p class="text-sky-600 dark:text-sky-400 text-xs mt-1">Anda telah dinyatakan lulus dari sekolah. Data dan dokumen yang ditampilkan pada dashboard ini bersifat arsip selama Anda aktif sebagai siswa.</p>
+        </div>
+    </div>
+@endif
+
 <section class="mb-8 overflow-hidden rounded-[2rem] bg-gradient-to-br from-indigo-600 via-primary to-violet-700 text-white shadow-2xl shadow-primary/20">
     <div class="flex flex-col gap-6 p-8 md:flex-row md:items-center md:justify-between">
         <div class="max-w-3xl">
-            <p class="mb-3 text-xs font-black uppercase tracking-[0.35em] text-white/75">Portal Siswa Aktif</p>
-            <h3 class="text-2xl font-black tracking-tight md:text-3xl">Selamat Belajar, {{ $siswa->nama_lengkap }}!</h3>
+            <p class="mb-3 text-xs font-black uppercase tracking-[0.35em] text-white/75">{{ $siswa->status_siswa === 'lulus' ? 'Portal Alumni' : 'Portal Siswa Aktif' }}</p>
+            <h3 class="text-2xl font-black tracking-tight md:text-3xl">Selamat Datang, {{ $siswa->nama_lengkap }}!</h3>
             <p class="mt-3 max-w-2xl text-sm leading-7 text-white/85 md:text-base">
-                Anda terdaftar di {{ $siswa->kelas ?? 'Kelompok ' . ($siswa->kelompok ?? 'A') }}. 
+                @if($siswa->status_siswa === 'lulus')
+                Terima kasih atas segala memori berharga selama bersekolah. Anda dapat melihat kembali arsip kehadiran, materi, dan jadwal pelajaran semasa aktif di sini.
+                @elseif(!$siswa->kelompok)
+                Saat ini Anda belum dialokasikan ke kelompok mana pun. Silakan tunggu admin membagikan kelompok untuk Anda.
+                @else
+                Anda terdaftar di {{ $siswa->kelompok ?? 'Kelompok ' . $siswa->kelompok }}. 
                 Gunakan dashboard ini untuk memantau kehadiran, materi KBM, dan jadwal pelajaran Anda.
+                @endif
             </p>
         </div>
         <div class="flex gap-3">
@@ -149,7 +166,7 @@ document.addEventListener('click', function(e) {
                             </div>
                             <div>
                                 <p class="text-sm font-bold text-slate-800 dark:text-white">{{ $item->mata_pelajaran }}</p>
-                                <p class="text-xs text-slate-500">{{ $item->guru ?? 'Guru Pengajar' }} • {{ $item->lokasi ?? 'Ruang Kelas' }}</p>
+                                <p class="text-xs text-slate-500">{{ $item->guru ?? 'Guru Pengajar' }} • {{ $item->lokasi ?? 'Ruang Kelompok' }}</p>
                             </div>
                         </div>
                         <span class="material-symbols-outlined text-slate-300">chevron_right</span>
@@ -197,22 +214,30 @@ document.addEventListener('click', function(e) {
 
     {{-- Right Column: Notifications & Profile Summary --}}
     <div class="space-y-8">
-        @livewire('siswa-notification-widget')
+        @if($siswa->status_siswa !== 'lulus')
+            @livewire('siswa-notification-widget')
+        @endif
         
         <section class="bg-primary/5 dark:bg-primary/10 rounded-3xl p-6 border border-primary/10">
             <h4 class="text-xs font-black uppercase tracking-widest text-primary mb-4">Ringkasan Profil</h4>
             <div class="space-y-3">
                 <div class="flex justify-between items-center text-sm">
                     <span class="text-slate-500">Kelompok</span>
-                    <span class="font-bold text-slate-800 dark:text-white">{{ $siswa->kelompok ?? 'A' }}</span>
+                    <span class="font-bold text-slate-800 dark:text-white">
+                        @if($siswa->kelompok)
+                            Kelompok {{ $siswa->kelompok }}
+                        @else
+                            <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 text-xs font-bold">Belum Ditentukan</span>
+                        @endif
+                    </span>
                 </div>
                 <div class="flex justify-between items-center text-sm">
                     <span class="text-slate-500">NIS</span>
                     <span class="font-bold text-slate-800 dark:text-white">{{ $siswa->nis ?? '-' }}</span>
                 </div>
                 <div class="flex justify-between items-center text-sm">
-                    <span class="text-slate-500">Wali Kelas</span>
-                    <span class="font-bold text-slate-800 dark:text-white">{{ $siswa->guru_kelas ?? '-' }}</span>
+                    <span class="text-slate-500">Guru Kelompok</span>
+                    <span class="font-bold text-slate-800 dark:text-white">{{ $siswa->guru_kelompok ?? '-' }}</span>
                 </div>
             </div>
         </section>
@@ -495,7 +520,9 @@ document.addEventListener('click', function(e) {
     </div>{{-- end kolom kiri --}}
 
     <div class="lg:col-span-1" id="notification-system">
-        @livewire('siswa-notification-widget')
+        @if($siswa->status_siswa !== 'lulus')
+            @livewire('siswa-notification-widget')
+        @endif
     </div>{{-- end kolom kanan --}}
 
 </div>{{-- end grid --}}
@@ -508,18 +535,65 @@ document.addEventListener('click', function(e) {
         </div>
         <div>
             <h4 class="text-xl font-bold">Butuh bantuan pendaftaran?</h4>
-            <p class="text-white/80 text-sm">Tim support kami siap membantu Anda 24/7 melalui WhatsApp atau Email.</p>
+            <p class="text-white/80 text-sm">Hubungi kami di 0821-3030-3614 atau email ke tkpgriharapanbangsa1@gmail.com.</p>
         </div>
     </div>
     <div class="flex gap-3 w-full md:w-auto">
-        <button class="flex-1 md:flex-none px-6 py-3 bg-white text-primary font-bold rounded-xl hover:bg-slate-50 transition-colors">
+        <button 
+            onclick="window.open('https://wa.me/6282130303614', '_blank')"
+            class="flex-1 md:flex-none px-6 py-3 bg-white text-primary font-bold rounded-xl hover:bg-slate-50 transition-colors flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-sm">chat</span>
             Hubungi Admin
         </button>
-        <button class="flex-1 md:flex-none px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl backdrop-blur-sm transition-colors border border-white/20">
+        <button 
+            onclick="showFaqPopup()"
+            class="flex-1 md:flex-none px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl backdrop-blur-sm transition-colors border border-white/20 flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-sm">help</span>
             FAQ
         </button>
     </div>
 </div>
+
+<script>
+function showFaqPopup() {
+    Swal.fire({
+        title: 'Pusat Bantuan & FAQ',
+        html: `
+            <div class="text-left space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scroll">
+                <div>
+                    <h4 class="font-bold text-primary text-sm">Bagaimana cara mencetak bukti pendaftaran?</h4>
+                    <p class="text-xs text-slate-500 mt-1">Anda dapat mencetak bukti pendaftaran di menu 'Pengumuman' setelah status pendaftaran Anda diverifikasi oleh admin.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-primary text-sm">Dokumen apa saja yang wajib diunggah?</h4>
+                    <p class="text-xs text-slate-500 mt-1">Sesuai ketentuan, Anda wajib mengunggah Akta Kelahiran, Kartu Keluarga, KTP Orang Tua (Ayah/Ibu), dan Bukti Pembayaran Pendaftaran.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-primary text-sm">Berapa lama proses verifikasi dokumen?</h4>
+                    <p class="text-xs text-slate-500 mt-1">Proses verifikasi biasanya memakan waktu 1-3 hari kerja. Anda akan mendapatkan notifikasi sistem jika dokumen telah diperiksa.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-primary text-sm">Saya lupa password, apa yang harus dilakukan?</h4>
+                    <p class="text-xs text-slate-500 mt-1">Silakan hubungi admin sekolah melalui tombol WhatsApp 'Hubungi Admin' di dashboard untuk permintaan reset password.</p>
+                </div>
+            </div>
+            <style>
+                .custom-scroll::-webkit-scrollbar { width: 4px; }
+                .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+                .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+            </style>
+        `,
+        confirmButtonText: 'Tutup',
+        confirmButtonColor: '#7f19e6',
+        width: '32rem',
+        padding: '2rem',
+        customClass: {
+            container: 'z-[9999]',
+            popup: 'rounded-[2rem]'
+        }
+    });
+}
+</script>
 
 @endif
 @endsection
