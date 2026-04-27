@@ -1,15 +1,13 @@
-@extends('layouts.siswa')
-
-@section('title', 'Notifikasi - ' . config('app.name'))
+@extends($layout)
 
 @section('content')
 <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
     <div>
         <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-2">Pusat Notifikasi</h2>
-        <p class="text-slate-500 dark:text-slate-400">Pantau seluruh aktivitas dan pembaruan pendaftaran Anda di sini.</p>
+        <p class="text-slate-500 dark:text-slate-400">Pantau seluruh aktivitas dan pembaruan sistem di sini.</p>
     </div>
     
-    <a href="{{ route('siswa.dashboard') }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm">
+    <a href="{{ route(str_replace('_', '-', auth()->user()->role) . '.dashboard') }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm">
         <span class="material-symbols-outlined text-sm">arrow_back</span>
         Kembali ke Dashboard
     </a>
@@ -22,37 +20,33 @@
             Riwayat Notifikasi
         </h3>
         <span class="px-4 py-1.5 bg-primary/10 text-primary text-xs font-bold rounded-full">
-            {{ count($allNotifications) }} Notifikasi
+            {{ $notifications->total() }} Notifikasi
         </span>
     </div>
 
     <div class="divide-y divide-slate-50 dark:divide-slate-800/50">
-        @forelse($allNotifications as $notif)
+        @forelse($notifications as $notif)
             @php
-                $isSystem = str_starts_with($notif['id'], 'system-');
                 $icon = 'notifications';
                 $colorClass = 'bg-primary/10 text-primary';
                 
-                if ($notif['type'] === 'system_welcome') {
-                    $icon = 'celebration';
-                    $colorClass = 'bg-amber-100 text-amber-600';
-                } elseif ($notif['type'] === 'system_start_registration') {
-                    $icon = 'edit_note';
-                    $colorClass = 'bg-blue-100 text-blue-600';
-                } elseif ($notif['type'] === 'system_formulir') {
-                    $icon = 'description';
-                    $colorClass = 'bg-emerald-100 text-emerald-600';
-                } elseif ($notif['type'] === 'system_documents') {
-                    $icon = 'inventory_2';
-                    $colorClass = 'bg-indigo-100 text-indigo-600';
-                } elseif ($notif['type'] === 'system_announcement') {
-                    $icon = 'campaign';
-                    $colorClass = 'bg-primary text-white shadow-lg shadow-primary/20';
+                if (str_contains($notif->type, 'ppdb') || str_contains($notif->type, 'spmb')) {
+                    $icon = 'assignment';
+                    $colorClass = 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-500';
+                } elseif (str_contains($notif->type, 'lulus')) {
+                    $icon = 'check_circle';
+                    $colorClass = 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-500';
+                } elseif (str_contains($notif->type, 'revisi') || str_contains($notif->type, 'tolak')) {
+                    $icon = 'warning';
+                    $colorClass = 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-500';
+                } elseif (str_contains($notif->type, 'system')) {
+                    $icon = 'settings_suggest';
+                    $colorClass = 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400';
                 }
             @endphp
             
             <div class="p-6 md:p-8 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group relative">
-                @if($notif['is_unread'])
+                @if($notif->isUnread())
                     <div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
                 @endif
                 
@@ -63,21 +57,21 @@
                     
                     <div class="flex-1 min-w-0">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-1 mb-2">
-                            <h4 class="text-base md:text-lg font-bold {{ $notif['is_unread'] ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300' }}">
-                                {{ $notif['title'] }}
+                            <h4 class="text-base md:text-lg font-bold {{ $notif->isUnread() ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300' }}">
+                                {{ $notif->title }}
                             </h4>
                             <span class="text-xs font-medium text-slate-400 dark:text-slate-500 whitespace-nowrap">
-                                {{ $notif['time_ago'] }}
+                                {{ $notif->created_at->diffForHumans() }}
                             </span>
                         </div>
                         
-                        <p class="text-sm md:text-base text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
-                            {{ $notif['body'] }}
+                        <p class="text-sm md:text-base text-slate-500 dark:text-slate-400 leading-relaxed {{ isset($notif->data['url']) ? 'mb-4' : '' }}">
+                            {{ $notif->body }}
                         </p>
 
                     </div>
                     
-                    @if($notif['is_unread'])
+                    @if($notif->isUnread())
                         <div class="shrink-0 pt-1">
                             <span class="flex h-3 w-3 rounded-full bg-primary ring-4 ring-primary/20"></span>
                         </div>
@@ -90,15 +84,15 @@
                     <span class="material-symbols-outlined text-5xl text-slate-300 dark:text-slate-600">notifications_off</span>
                 </div>
                 <h4 class="text-xl font-bold text-slate-800 dark:text-white mb-2">Belum ada notifikasi</h4>
-                <p class="text-slate-500 dark:text-slate-400 max-w-sm mx-auto">Seluruh aktivitas pendaftaran Anda akan muncul di sini secara berurutan.</p>
+                <p class="text-slate-500 dark:text-slate-400 max-w-sm mx-auto">Seluruh aktivitas dan informasi penting akan muncul di sini.</p>
             </div>
         @endforelse
     </div>
     
-    <div class="p-8 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 text-center">
-        <p class="text-sm text-slate-400 dark:text-slate-500">
-            Menampilkan {{ count($allNotifications) }} notifikasi terbaru.
-        </p>
-    </div>
+    @if($notifications->hasPages())
+        <div class="p-8 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800">
+            {{ $notifications->links() }}
+        </div>
+    @endif
 </div>
 @endsection

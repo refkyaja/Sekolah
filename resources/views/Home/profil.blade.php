@@ -58,7 +58,7 @@
             <div class="h-1.5 w-20 bg-primary mx-auto rounded-full"></div>
         </div>
         <div class="grid md:grid-cols-2 gap-8">
-            <div data-home-animate="slide-rotate" class="bg-primary text-white p-8 md:p-10 rounded-3xl shadow-xl relative overflow-hidden group flex flex-col justify-center">
+            <div data-home-animate="fade-up" class="bg-primary text-white p-8 md:p-10 rounded-3xl shadow-xl relative overflow-hidden group flex flex-col justify-center">
                 <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-[150px] opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-500">lightbulb</span>
                 <div class="relative z-10">
                     <h3 class="text-3xl font-bold mb-6 flex items-center gap-3">
@@ -69,7 +69,7 @@
                     </p>
                 </div>
             </div>
-            <div data-home-animate="blur-in" class="bg-white p-8 md:p-10 rounded-3xl border border-slate-200 shadow-sm h-full rounded-tr-3xl">
+            <div data-home-animate="fade-up" class="bg-white p-8 md:p-10 rounded-3xl border border-slate-200 shadow-sm h-full rounded-tr-3xl">
                 <h3 class="text-2xl font-bold mb-6 text-primary flex items-center gap-3">
                     <span class="material-symbols-outlined text-3xl">flag</span> Misi
                 </h3>
@@ -136,218 +136,210 @@
     </section>
 
     <!-- 4. Profil Sekolah (Identity, Staff, KBM) -->
-    <section data-home-animate="fade-up" class="space-y-8 mt-16 md:mt-24">
-        <div data-home-animate="fade-up" class="text-center space-y-2 mb-10">
+    <section data-home-animate="fade-up" class="space-y-16 mt-16 md:mt-24">
+        <div data-home-animate="fade-up" class="text-center space-y-2">
             <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900">Profil Sekolah</h2>
             <div class="h-1.5 w-20 bg-primary mx-auto rounded-full"></div>
         </div>
-        <div class="grid lg:grid-cols-3 gap-8">
-            <!-- Identitas Sekolah -->
-            <div data-home-animate="slide-rotate" class="lg:col-span-1 space-y-6">
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-primary">info</span> Identitas Sekolah
-                    </h3>
-                    <div class="space-y-4">
-                        <div data-home-stagger class="space-y-4">
-                            <div class="pb-3 border-b border-slate-100 stagger-item">
-                                <p class="text-xs text-slate-400 font-medium uppercase">Nama Sekolah</p>
-                                <p class="font-semibold text-slate-900">TK PGRI HARAPAN BANGSA 1</p>
-                            </div>
-                            <div class="pb-3 border-b border-slate-100 stagger-item">
-                                <p class="text-xs text-slate-400 font-medium uppercase">NPSN</p>
-                                <p class="font-semibold text-slate-900">20255202</p>
-                            </div>
-                            <div class="pb-3 border-b border-slate-100 stagger-item">
-                                <p class="text-xs text-slate-400 font-medium uppercase">Jenjang Pendidikan</p>
-                                <p class="font-semibold text-slate-900">Taman Kanak-Kanak (TK)</p>
-                            </div>
-                            <div class="pb-3 border-b border-slate-100 stagger-item">
-                                <p class="text-xs text-slate-400 font-medium uppercase">Status Sekolah</p>
-                                <p class="font-semibold text-slate-900">Swasta</p>
-                            </div>
-                            <div class="pb-3 border-b border-slate-100 stagger-item">
-                                <p class="text-xs text-slate-400 font-medium uppercase">Akreditasi</p>
-                                <p class="font-semibold text-slate-900">B</p>
-                            </div>
-                            <div class="pb-3 stagger-item">
-                                <p class="text-xs text-slate-400 font-medium uppercase">Alamat Sekolah</p>
-                                <p class="font-semibold text-sm text-slate-900">JL. Terusan PSM No. 1A, Kel. Sukapura, Kec. Kiaracondong, Kota Bandung, Jawa Barat</p>
-                            </div>
-                        </div>
-                    </div>
+
+        <div class="space-y-12">
+            <!-- 4.1 Identitas Sekolah Table -->
+            <div data-home-animate="fade-up" class="overflow-hidden bg-white rounded-3xl border border-slate-200 shadow-sm">
+                <div class="bg-slate-50 px-8 py-5 border-b border-slate-200 flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">info</span>
+                    <h3 class="font-bold text-slate-900">Identitas Sekolah</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 w-1/3 md:w-1/4 bg-slate-50/30">Nama Sekolah</th>
+                                <td class="px-8 py-4 text-sm font-bold text-slate-900">TK PGRI HARAPAN BANGSA 1</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">NPSN</th>
+                                <td class="px-8 py-4 text-sm font-medium text-slate-700">20255202</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Jenjang Pendidikan</th>
+                                <td class="px-8 py-4 text-sm font-medium text-slate-700">Taman Kanak-Kanak (TK)</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Status Sekolah</th>
+                                <td class="px-8 py-4 text-sm font-medium text-slate-700">Swasta</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Status Akreditasi</th>
+                                <td class="px-8 py-4 text-sm font-bold text-primary">B</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Alamat Sekolah</th>
+                                <td class="px-8 py-4 text-sm font-medium text-slate-600 leading-relaxed">JL. Terusan PSM No. 1A, Kel. Sukapura, Kec. Kiaracondong, Kota Bandung, Jawa Barat</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <!-- Pendidik & KBM -->
-            <div class="lg:col-span-2 space-y-6">
-                <!-- Pendidik & Tenaga Kependidikan -->
-                <div data-home-animate="fade-up" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm transition-all duration-300 hover:shadow-xl">
-                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-primary">groups</span> Pendidik &amp; Tenaga Kependidikan
-                    </h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-8">
-                        <div data-home-animate="zoom-in" class="bg-slate-50 p-4 rounded-xl border border-slate-100 transition-all duration-300 hover:scale-105 hover:shadow-md">
-                            <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase mb-3">Staf Utama</p>
-                            <ul class="text-sm space-y-2 font-medium text-slate-700">
-                                <li class="flex justify-between items-center"><span>Kepala Sekolah</span> <span class="text-primary font-bold">1 Orang</span></li>
-                                <li class="flex justify-between items-center"><span>Guru Kelompok</span> <span class="text-primary font-bold">2 Orang</span></li>
-                                <li class="flex justify-between items-center"><span>Guru Pendamping</span> <span class="text-primary font-bold">1 Orang</span></li>
-                            </ul>
-                        </div>
-                        <div data-home-animate="zoom-in" class="bg-slate-50 p-4 rounded-xl border border-slate-100 transition-all duration-300 hover:scale-105 hover:shadow-md" style="transition-delay: 100ms">
-                            <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase mb-3">Kualifikasi</p>
-                            <div class="flex items-start gap-3 text-slate-700">
-                                <span class="material-symbols-outlined text-primary text-lg mt-0.5">workspace_premium</span>
-                                <p class="text-sm font-semibold leading-tight">Memiliki Sertifikat<br/>Pendidik: Ya</p>
-                            </div>
-                        </div>
-                        <div data-home-animate="zoom-in" class="bg-slate-50 p-4 rounded-xl border border-slate-100 transition-all duration-300 hover:scale-105 hover:shadow-md" style="transition-delay: 200ms">
-                            <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase mb-3">Kualitas</p>
-                            <ul class="text-sm space-y-2 font-medium text-slate-700">
-                                <li class="flex items-start gap-2">
-                                    <span class="material-symbols-outlined text-primary text-base mt-0.5">check_circle</span> 
-                                    <span class="leading-tight">Pembinaan &amp; Evaluasi:<br/>Rutin</span>
-                                </li>
-                                <li class="flex items-start gap-2">
-                                    <span class="material-symbols-outlined text-primary text-base mt-0.5">check_circle</span> 
-                                    <span class="leading-tight">Pengembangan Kompetensi:<br/>Rutin</span>
-                                </li>
-                            </ul>
-                        </div>
+            <!-- 4.2 Pendidik Table -->
+            <div data-home-animate="fade-up" class="overflow-hidden bg-white rounded-3xl border border-slate-200 shadow-sm">
+                <div class="bg-slate-50 px-8 py-5 border-b border-slate-200 flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">groups</span>
+                    <h3 class="font-bold text-slate-900">Pendidik dan Tenaga Kependidikan</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 w-1/3 md:w-1/4 bg-slate-50/30">Kepala Sekolah</th>
+                                <td class="px-8 py-4 text-sm font-bold text-slate-900">1 Orang</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Guru Kelas</th>
+                                <td class="px-8 py-4 text-sm font-bold text-slate-900">2 Orang</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Guru Pendamping</th>
+                                <td class="px-8 py-4 text-sm font-bold text-slate-900">1 Orang</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Memiliki Sertifikat Pendidik</th>
+                                <td class="px-8 py-4 text-sm font-bold text-green-600">Ya</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Pembinaan dan Evaluasi</th>
+                                <td class="px-8 py-4 text-sm font-medium text-slate-700">Rutin</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Pengembangan Kompetensi</th>
+                                <td class="px-8 py-4 text-sm font-medium text-slate-700">Rutin</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 4.3 KBM Table -->
+            <div data-home-animate="fade-up" class="overflow-hidden bg-white rounded-3xl border border-slate-200 shadow-sm">
+                <div class="bg-slate-50 px-8 py-5 border-b border-slate-200 flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">auto_stories</span>
+                    <h3 class="font-bold text-slate-900">Kegiatan Belajar Mengajar (KBM)</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 w-1/3 md:w-1/4 bg-slate-50/30">Waktu Penyelenggaraan</th>
+                                <td class="px-8 py-4 text-sm font-medium text-slate-700">5 Hari dalam seminggu</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Awal Tahun Ajaran</th>
+                                <td class="px-8 py-4 text-sm font-bold text-primary">Juli</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Jumlah Siswa per Tahun</th>
+                                <td class="px-8 py-4 text-sm font-bold text-slate-900">± 50 Siswa</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Jumlah Rombongan Belajar</th>
+                                <td class="px-8 py-4 text-sm font-bold text-slate-900">2</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Jenis Kurikulum</th>
+                                <td class="px-8 py-4 text-sm font-bold text-slate-900">Merdeka Belajar</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Acuan</th>
+                                <td class="px-8 py-4 text-sm font-medium text-slate-700">Kemendikdasmen</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Penguatan</th>
+                                <td class="px-8 py-4 text-sm font-medium text-slate-700 leading-relaxed">
+                                    <p class="font-bold text-slate-900">Pendidikan Holistik Berbasis Karakter</p>
+                                    <p class="text-xs text-slate-500 mt-1 italic">- Penerapan Layanan PAUD HIBER</p>
+                                </td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Status Sekolah</th>
+                                <td class="px-8 py-4 text-sm font-bold text-primary italic">Piloting PAUD Percontohan Rujukan Dinas Pendidikan</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Proses Pembelajaran</th>
+                                <td class="px-8 py-4 text-sm font-medium text-slate-700">Pembelajaran Berbasis Bermain</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Program Parenting</th>
+                                <td class="px-8 py-4 text-sm font-bold text-green-600">Ya</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Laporan Perkembangan Rutin</th>
+                                <td class="px-8 py-4 text-sm font-bold text-green-600">Ya</td>
+                            </tr>
+                            <tr class="group hover:bg-slate-50/50 transition-colors">
+                                <th class="px-8 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Kegiatan Ekstrakurikuler</th>
+                                <td class="px-8 py-4 text-sm font-medium text-slate-700">Ada</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4.4 Tenaga Pendidik Section -->
+    <section data-home-animate="fade-up" class="space-y-10 mt-16 md:mt-24">
+        <div data-home-animate="fade-up" class="text-center space-y-2">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900">Tenaga Pendidik</h2>
+            <p class="text-slate-600 font-medium">Mengenal lebih dekat para pendidik kami yang berdedikasi</p>
+            <div class="h-1.5 w-20 bg-primary mx-auto rounded-full mt-4"></div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Guru 1 -->
+            <div data-home-animate="zoom-in" class="group text-center space-y-4">
+                <div class="relative inline-block">
+                    <div class="size-48 rounded-full overflow-hidden border-8 border-white shadow-xl group-hover:scale-105 transition-transform duration-500 relative z-10">
+                        <img src="{{ asset('images/guru-a.jpeg') }}" alt="Vera Irawaty, S.Pd" class="w-full h-full object-cover">
                     </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        <div data-home-animate="flip-in" class="text-center group transition-all duration-300 hover:-translate-y-2">
-                            <div class="size-20 bg-slate-100 rounded-full mx-auto mb-2 overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 relative group-hover:shadow-xl">
-                                <!-- UBAH SRC DI BAWAH UNTUK FOTO KEPALA SEKOLAH -->
-                                <img alt="Kepala Sekolah" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" data-alt="Portrait of a female teacher" src="{{ asset('images/kepala-sekolah.jpeg') }}"/>
-                            </div>
-                            <p class="font-bold text-sm text-slate-900">Tina Wati, S.Pd</p>
-                            <p class="text-[10px] text-slate-400">Kepala Sekolah</p>
-                        </div>
-                        <div data-home-animate="flip-in" class="text-center group transition-all duration-300 hover:-translate-y-2" style="transition-delay: 100ms">
-                            <div class="size-20 bg-slate-100 rounded-full mx-auto mb-2 overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 relative group-hover:shadow-xl">
-                                <!-- UBAH SRC DI BAWAH UNTUK FOTO GURU KELOMPOK A -->
-                                <img alt="Guru Kelompok A" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" data-alt="Portrait of a female teacher" src="{{ asset('images/guru-a.jpeg') }}"/>
-                            </div>
-                            <p class="font-bold text-sm text-slate-900">Vera Irawaty, S.Pd</p>
-                            <p class="text-[10px] text-slate-400">Guru Kelompok A</p>
-                        </div>
-                        <div data-home-animate="flip-in" class="text-center group transition-all duration-300 hover:-translate-y-2" style="transition-delay: 200ms">
-                            <div class="size-20 bg-slate-100 rounded-full mx-auto mb-2 overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 relative group-hover:shadow-xl">
-                                <!-- UBAH SRC DI BAWAH UNTUK FOTO GURU KELOMPOK B -->
-                                <img alt="Guru Kelompok B" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" data-alt="Portrait of a female teacher" src="{{ asset('images/guru-b.jpeg') }}"/>
-                            </div>
-                            <p class="font-bold text-sm text-slate-900">Nena, S.Pd</p>
-                            <p class="text-[10px] text-slate-400">Guru Kelompok B</p>
-                        </div>
-                        <div data-home-animate="flip-in" class="text-center group transition-all duration-300 hover:-translate-y-2" style="transition-delay: 300ms">
-                            <div class="size-20 bg-slate-100 rounded-full mx-auto mb-2 overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 relative group-hover:shadow-xl">
-                                <!-- UBAH SRC DI BAWAH UNTUK FOTO GURU PENDAMPING -->
-                                <img alt="Guru Pendamping" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" data-alt="Portrait of a female teacher" src="{{ asset('images/guru-p.jpeg') }}"/>
-                            </div>
-                            <p class="font-bold text-sm text-slate-900">Serly Marliyana, SE</p>
-                            <p class="text-[10px] text-slate-400">Guru Pendamping</p>
-                        </div>
+                    <div class="absolute -bottom-2 -right-2 size-12 bg-primary text-white rounded-full flex items-center justify-center shadow-lg z-20 border-4 border-white">
+                        <span class="material-symbols-outlined font-bold">verified</span>
                     </div>
                 </div>
+                <div class="space-y-1">
+                    <h3 class="text-xl font-bold text-slate-900 group-hover:text-primary transition-colors">Vera Irawaty, S.Pd</h3>
+                    <p class="text-sm font-bold text-slate-400 uppercase tracking-widest">Guru Kelompok A</p>
+                </div>
+            </div>
 
-                <!-- Kegiatan Belajar Mengajar (KBM) -->
-                <div data-home-animate="blur-in" class="bg-primary/5 p-6 rounded-2xl border border-primary/20 transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
-                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-primary">
-                        <span class="material-symbols-outlined animate-pulse">auto_stories</span> Kegiatan Belajar Mengajar (KBM)
-                    </h3>
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <div class="space-y-4">
-                            <div data-home-animate="fade-right">
-                                <p class="text-xs text-slate-400 font-bold uppercase mb-1">Kurikulum &amp; Metode</p>
-                                <ul class="text-sm space-y-2 text-slate-800">
-                                    <li class="flex items-start gap-2 transition-all duration-300 hover:translate-x-2">
-                                        <span class="material-symbols-outlined text-primary text-sm mt-0.5">verified</span>
-                                        <div>
-                                            <p class="font-bold">Kurikulum Merdeka Belajar</p>
-                                            <p class="text-slate-500 text-xs">Acuan: Kemendikdaskan</p>
-                                        </div>
-                                    </li>
-                                    <li class="flex items-start gap-2 transition-all duration-300 hover:translate-x-2">
-                                        <span class="material-symbols-outlined text-primary text-sm mt-0.5">child_care</span>
-                                        <div>
-                                            <span class="font-medium">Kelompok A</span>
-                                            <p class="text-slate-500 text-xs">Penguatan: Pend. Holistik Berbasis Karakter</p>
-                                        </div>
-                                    </li>
-                                    <li class="flex items-start gap-2 transition-all duration-300 hover:translate-x-2">
-                                        <span class="material-symbols-outlined text-primary text-sm mt-0.5">stars</span>
-                                        <div>
-                                            <p class="font-bold">Piloting PAUD Percontohan Rujukan</p>
-                                            <p class="text-slate-500 text-xs">Dinas Pendidikan (Penerapan Layanan PAUD HIBER)</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="space-y-4">
-                            <div data-home-animate="fade-left">
-                                <p class="text-xs text-slate-400 font-bold uppercase mb-1">Informasi Siswa</p>
-                                <div class="bg-white p-3 rounded-lg border border-slate-100 transition-all duration-300 hover:shadow-md">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="text-sm text-slate-600">Jumlah Siswa / Thn</span>
-                                        <span class="font-bold text-primary">± 50 Siswa</span>
-                                    </div>
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="text-sm text-slate-600">Rombongan Belajar</span>
-                                        <span class="font-bold text-primary">2 Rombel</span>
-                                    </div>
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-sm text-slate-600">Awal Tahun Ajaran</span>
-                                        <span class="font-bold text-primary">Juli</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div data-home-animate="fade-left">
-                                <p class="text-xs text-slate-400 font-bold uppercase mb-1">Program Rutin</p>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-2 py-1 bg-white border border-slate-200 text-[10px] font-bold text-slate-700 rounded-full flex items-center gap-1 transition-all duration-300 hover:scale-110 hover:bg-primary hover:text-white hover:border-primary">
-                                        <span class="material-symbols-outlined text-xs text-primary group-hover:text-white">family_restroom</span> Program Parenting
-                                    </span>
-                                    <span class="px-2 py-1 bg-white border border-slate-200 text-[10px] font-bold text-slate-700 rounded-full flex items-center gap-1 transition-all duration-300 hover:scale-110 hover:bg-primary hover:text-white hover:border-primary">
-                                        <span class="material-symbols-outlined text-xs text-primary group-hover:text-white">description</span> Laporan Rutin
-                                    </span>
-                                    <span class="px-2 py-1 bg-white border border-slate-200 text-[10px] font-bold text-slate-700 rounded-full flex items-center gap-1 transition-all duration-300 hover:scale-110 hover:bg-primary hover:text-white hover:border-primary">
-                                        <span class="material-symbols-outlined text-xs text-primary group-hover:text-white">palette</span> Ekstrakurikuler Ada
-                                    </span>
-                                </div>
-                            </div>
-                            <div>
-                                <p class="text-xs text-slate-400 font-bold uppercase mb-1">Program Rutin</p>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-2 py-1 bg-white border border-slate-200 text-[10px] font-bold text-slate-700 rounded-full flex items-center gap-1">
-                                        <span class="material-symbols-outlined text-xs text-primary">family_restroom</span> Program Parenting
-                                    </span>
-                                    <span class="px-2 py-1 bg-white border border-slate-200 text-[10px] font-bold text-slate-700 rounded-full flex items-center gap-1">
-                                        <span class="material-symbols-outlined text-xs text-primary">description</span> Laporan Rutin
-                                    </span>
-                                    <span class="px-2 py-1 bg-white border border-slate-200 text-[10px] font-bold text-slate-700 rounded-full flex items-center gap-1">
-                                        <span class="material-symbols-outlined text-xs text-primary">palette</span> Ekstrakurikuler Ada
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Guru 2 -->
+            <div data-home-animate="zoom-in" class="group text-center space-y-4" style="transition-delay: 100ms">
+                <div class="relative inline-block">
+                    <div class="size-48 rounded-full overflow-hidden border-8 border-white shadow-xl group-hover:scale-105 transition-transform duration-500 relative z-10">
+                        <img src="{{ asset('images/guru-b.jpeg') }}" alt="Nena, S.Pd" class="w-full h-full object-cover">
                     </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                        <div class="flex items-center gap-2 p-2 bg-white rounded-lg shadow-sm">
-                            <span class="material-symbols-outlined text-primary text-sm">calendar_month</span>
-                            <span class="text-xs font-medium text-slate-700">5 Hari / Minggu</span>
-                        </div>
-                        <div class="flex items-center gap-2 p-2 bg-white rounded-lg shadow-sm">
-                            <span class="material-symbols-outlined text-primary text-sm">event_repeat</span>
-                            <span class="text-xs font-medium text-slate-700">Tahun Ajaran: Juli</span>
-                        </div>
-                        <div class="flex items-center gap-2 p-2 bg-white rounded-lg shadow-sm">
-                            <span class="material-symbols-outlined text-primary text-sm">check_circle</span>
-                            <span class="text-xs font-medium text-slate-700">Terverifikasi</span>
-                        </div>
+                    <div class="absolute -bottom-2 -right-2 size-12 bg-primary text-white rounded-full flex items-center justify-center shadow-lg z-20 border-4 border-white">
+                        <span class="material-symbols-outlined font-bold">verified</span>
                     </div>
+                </div>
+                <div class="space-y-1">
+                    <h3 class="text-xl font-bold text-slate-900 group-hover:text-primary transition-colors">Nena, S.Pd</h3>
+                    <p class="text-sm font-bold text-slate-400 uppercase tracking-widest">Guru Kelompok B</p>
+                </div>
+            </div>
+
+            <!-- Guru 3 -->
+            <div data-home-animate="zoom-in" class="group text-center space-y-4" style="transition-delay: 200ms">
+                <div class="relative inline-block">
+                    <div class="size-48 rounded-full overflow-hidden border-8 border-white shadow-xl group-hover:scale-105 transition-transform duration-500 relative z-10">
+                        <img src="{{ asset('images/guru-p.jpeg') }}" alt="Serly Marliyana, SE" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute -bottom-2 -right-2 size-12 bg-primary text-white rounded-full flex items-center justify-center shadow-lg z-20 border-4 border-white">
+                        <span class="material-symbols-outlined font-bold">verified</span>
+                    </div>
+                </div>
+                <div class="space-y-1">
+                    <h3 class="text-xl font-bold text-slate-900 group-hover:text-primary transition-colors">Serly Marliyana, SE</h3>
+                    <p class="text-sm font-bold text-slate-400 uppercase tracking-widest">Guru Pendamping</p>
                 </div>
             </div>
         </div>

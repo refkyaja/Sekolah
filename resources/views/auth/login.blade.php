@@ -165,7 +165,7 @@
                     <div class="floating">
                         <!-- Logo Image -->
                         <div class="logo-container">
-                            <img src="/images/logo.png" alt="Logo" class="w-24 h-24 object-contain">
+                            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-24 h-24 object-contain">
                             <!-- Atau gunakan logo dari internet untuk contoh -->
                             <!-- <img src="https://placehold.co/200x200/4f46e5/white?text=LOGO" alt="Logo" class="w-24 h-24"> -->
                         </div>
@@ -209,7 +209,7 @@
                         <!-- Logo for mobile -->
                         <div class="lg:hidden text-center mb-8">
                             <div class="logo-container inline-block mb-4">
-                                <img src="/images/logo.png" alt="Logo" class="w-20 h-20 object-contain">
+                                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-20 w-20 object-contain">
                                 <!-- <img src="https://placehold.co/200x200/4f46e5/white?text=LOGO" alt="Logo" class="w-20 h-20"> -->
                             </div>
                             <h2 class="text-2xl font-bold text-white">Login Admin</h2>

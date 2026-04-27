@@ -72,8 +72,7 @@
                         <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest">No</th>
                         <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest">Siswa / Akun</th>
                         <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Data PPDB</th>
-                        <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Kelulusan & Akun</th>
-                        <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Status Akun</th>
+                        <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Kelulusan & Status</th>
                         <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest">Dibuat Pada</th>
                         <th class="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">Aksi</th>
                     </tr>

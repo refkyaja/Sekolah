@@ -541,92 +541,14 @@
                 </div>
             </div>
 
-            <!-- Quick Actions -->
-            <div class="bg-slate-900 dark:bg-slate-950 rounded-[2rem] p-6 sm:p-8 shadow-2xl flex flex-col justify-center">
-                <div class="flex flex-col sm:flex-row gap-6 items-center justify-between text-center sm:text-left">
-                    <div>
-                        <h4 class="text-white font-black text-lg tracking-tight">Tindakan Cepat</h4>
-                        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">Kelola status & data siswa</p>
-                    </div>
-                    <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                        <button onclick="showStatusModal()" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-amber-500 text-white font-black text-xs uppercase tracking-widest shadow-lg shadow-amber-500/20 hover:scale-105 transition-all active:scale-95 flex items-center justify-center gap-2">
-                            <span class="material-symbols-outlined text-lg">sync</span> Update Status
-                        </button>
-                        <button onclick="confirmDelete('{{ $siswa->id }}', '{{ $siswa->nama_lengkap }}')" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-rose-600 text-white font-black text-xs uppercase tracking-widest shadow-lg shadow-rose-600/20 hover:scale-105 transition-all active:scale-95 flex items-center justify-center gap-2">
-                            <span class="material-symbols-outlined text-lg">delete</span> Hapus
-                        </button>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>
 
-    <!-- Status Modal -->
-    <div id="statusModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="hideStatusModal()"></div>
-        <div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-[2.5rem] shadow-2xl relative z-10 overflow-hidden border border-slate-100 dark:border-slate-700 animate-in fade-in zoom-in duration-300">
-            <div class="p-6 sm:p-8 border-b border-slate-50 dark:border-slate-700/50 flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-2xl">sync</span>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-black text-slate-900 dark:text-white tracking-tight">Update Status</h3>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Ubah status akademik siswa</p>
-                    </div>
-                </div>
-                <button onclick="hideStatusModal()" class="w-10 h-10 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 transition-colors flex items-center justify-center">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-            
-            <form action="{{ route('admin.siswa.siswa-aktif.updateStatus', $siswa) }}" method="POST" class="p-6 sm:p-8 space-y-6">
-                @csrf
-                @method('PATCH')
-                
-                <div class="space-y-4">
-                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Pilih Status Baru</label>
-                    <div class="grid grid-cols-1 gap-3">
-                        @foreach(['aktif' => 'Aktif', 'non-aktif' => 'Non-Aktif', 'pindah' => 'Pindah', 'keluar' => 'Keluar'] as $value => $label)
-                            <label class="relative flex items-center group cursor-pointer">
-                                <input type="radio" name="status_siswa" value="{{ $value }}" {{ $siswa->status_siswa == $value ? 'checked' : '' }} class="peer h-0 w-0 opacity-0">
-                                <div class="flex-1 px-6 py-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 peer-checked:border-primary peer-checked:bg-primary/5 transition-all group-hover:bg-slate-50 dark:group-hover:bg-slate-700/50">
-                                    <div class="flex items-center justify-between">
-                                        <span class="font-black text-slate-700 dark:text-slate-300 peer-checked:text-primary">{{ $label }}</span>
-                                        <div class="w-5 h-5 rounded-full border-2 border-slate-200 dark:border-slate-600 peer-checked:border-primary peer-checked:bg-primary flex items-center justify-center transition-all">
-                                            <div class="w-2 h-2 rounded-full bg-white opacity-0 peer-checked:opacity-100 transition-opacity"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </label>
-                        @endforeach
-                    </div>
-                </div>
-                
-                <div class="space-y-3">
-                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Alasan / Catatan Perubahan</label>
-                    <textarea name="catatan" rows="3" placeholder="Tambahkan informasi tambahan jika diperlukan..."
-                              class="w-full px-6 py-5 bg-slate-50 dark:bg-slate-900 border-2 border-transparent focus:border-primary focus:ring-0 rounded-2xl text-slate-900 dark:text-white font-bold transition-all placeholder:text-slate-300 resize-none"></textarea>
-                </div>
 
-                <div class="flex gap-3 pt-4">
-                    <button type="button" onclick="hideStatusModal()" class="flex-1 px-6 py-4 rounded-2xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-black text-xs uppercase tracking-widest hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
-                        Batal
-                    </button>
-                    <button type="submit" class="flex-1 px-6 py-4 rounded-2xl bg-primary text-white font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] transition-all active:scale-95">
-                        Simpan Perubahan
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
 
-<!-- Form Hapus -->
-<form id="deleteForm" method="POST" class="hidden">
-    @csrf
-    @method('DELETE')
-</form>
+
 
 <script>
     function showTab(tabName) {
@@ -656,46 +578,11 @@
         activeBtn.classList.remove('text-slate-500', 'dark:text-slate-400');
     }
 
-    function showStatusModal() {
-        const modal = document.getElementById('statusModal');
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-    }
 
-    function hideStatusModal() {
-        const modal = document.getElementById('statusModal');
-        modal.classList.add('hidden');
-        document.body.style.overflow = '';
-    }
 
     // Removed toggleTanggalKeluar as it's not part of the new modal structure.
 
-    function confirmDelete(id, name) {
-        Swal.fire({
-            title: 'Hapus Data Siswa?',
-            html: `Apakah Anda yakin ingin menghapus data <b>${name}</b>?<br><small class="text-rose-500 font-bold uppercase mt-2 block tracking-widest">Tindakan ini tidak dapat dibatalkan!</small>`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#e11d48',
-            cancelButtonColor: '#64748b',
-            confirmButtonText: 'YA, HAPUS DATA',
-            cancelButtonText: 'BATALKAN',
-            background: document.documentElement.classList.contains('dark') ? '#0f172a' : '#ffffff',
-            color: document.documentElement.classList.contains('dark') ? '#f8fafc' : '#0f172a',
-            customClass: {
-                popup: 'rounded-[2.5rem] border-none shadow-2xl p-8',
-                confirmButton: 'rounded-2xl px-8 py-4 font-black text-[10px] tracking-[0.2em]',
-                cancelButton: 'rounded-2xl px-8 py-4 font-black text-[10px] tracking-[0.2em] bg-slate-100 text-slate-600',
-                title: 'text-2xl font-black'
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const form = document.getElementById('deleteForm');
-                form.action = `/admin/siswa-aktif/${id}`;
-                form.submit();
-            }
-        });
-    }
+
 
     // Auto-init
     document.addEventListener('DOMContentLoaded', () => {

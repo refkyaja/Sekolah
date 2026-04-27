@@ -29,7 +29,7 @@
         x-transition:leave-start="opacity-100 scale-100 translate-y-0"
         x-transition:leave-end="opacity-0 scale-95 translate-y-1"
         x-cloak
-        class="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-800 dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 dark:border-slate-800 z-[60] overflow-hidden"
+        class="fixed inset-x-4 top-24 sm:absolute sm:inset-auto sm:right-0 sm:top-full sm:mt-2 sm:w-96 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 z-[999] overflow-hidden"
         style="display: none;"
     >
         {{-- Header Dropdown --}}
@@ -52,7 +52,7 @@
         </div>
 
         {{-- List Notifikasi --}}
-        <div class="max-h-72 overflow-y-auto divide-y divide-slate-50 dark:divide-slate-700/50 dark:divide-slate-800">
+        <div class="max-h-[min(400px,65vh)] sm:max-h-96 overflow-y-auto divide-y divide-slate-50 dark:divide-slate-700/50 dark:divide-slate-800">
             @forelse($notifications as $notif)
             <div
                 wire:key="{{ $notif['id'] }}"
@@ -101,14 +101,7 @@
                 @if(auth('siswa')->check())
                     href="{{ route('siswa.notifications') }}"
                 @else
-                    href="javascript:void(0)" 
-                    onclick="Swal.fire({
-                        title: 'Pusat Notifikasi',
-                        text: 'Halaman khusus notifikasi sedang dalam tahap optimalisasi untuk peran Anda.',
-                        icon: 'info',
-                        confirmButtonColor: '#7f19e6',
-                        customClass: { popup: 'rounded-3xl' }
-                    })"
+                    href="{{ route(str_replace('_', '-', auth()->user()->role) . '.notifications') }}"
                 @endif
                 class="text-[10px] font-bold text-primary hover:underline"
             >

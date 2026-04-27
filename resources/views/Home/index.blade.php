@@ -405,28 +405,28 @@
                     {{-- Nama --}}
                     <div class="space-y-2">
                         <label class="text-[10px] md:text-xs font-bold text-slate-400 uppercase ml-4">Nama Lengkap *</label>
-                        <input name="nama" value="{{ old('nama') }}" required class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base" placeholder="Masukkan nama Anda" type="text"/>
+                        <input name="nama" value="{{ old('nama') }}" required class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base shadow-sm" placeholder="Masukkan nama Anda" type="text"/>
                         <p class="error-nama error-text text-xs text-red-500 ml-4 hidden"></p>
                     </div>
-                    {{-- No HP/Kontak --}}
+                    {{-- Email --}}
                     <div class="space-y-2">
-                        <label class="text-[10px] md:text-xs font-bold text-slate-400 uppercase ml-4">No. HP / WhatsApp *</label>
-                        <input name="telepon" value="{{ old('telepon') }}" required class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base" placeholder="0821xxxx" type="tel"/>
-                        <p class="error-telepon error-text text-xs text-red-500 ml-4 hidden"></p>
+                        <label class="text-[10px] md:text-xs font-bold text-slate-400 uppercase ml-4">Email (Opsional)</label>
+                        <input name="email" value="{{ old('email') }}" class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base shadow-sm" placeholder="alamat@email.com" type="email"/>
+                        <p class="error-email error-text text-xs text-red-500 ml-4 hidden"></p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {{-- Tanggal Datang --}}
+                    {{-- No HP/Kontak --}}
                     <div class="space-y-2">
-                        <label class="text-[10px] md:text-xs font-bold text-slate-400 uppercase ml-4">Tanggal Datang *</label>
-                        <input name="tanggal_kunjungan" value="{{ old('tanggal_kunjungan', date('Y-m-d')) }}" required class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base" type="date"/>
-                        <p class="error-tanggal_kunjungan error-text text-xs text-red-500 ml-4 hidden"></p>
+                        <label class="text-[10px] md:text-xs font-bold text-slate-400 uppercase ml-4">No. HP / WhatsApp *</label>
+                        <input name="telepon" value="{{ old('telepon') }}" required class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base shadow-sm" placeholder="0821xxxx" type="tel"/>
+                        <p class="error-telepon error-text text-xs text-red-500 ml-4 hidden"></p>
                     </div>
                     {{-- Jabatan --}}
                     <div class="space-y-2">
                         <label class="text-[10px] md:text-xs font-bold text-slate-400 uppercase ml-4">Jabatan *</label>
-                        <input name="jabatan" value="{{ old('jabatan') }}" required class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base" placeholder="Contoh: Orang Tua / Pegawai / Umum" type="text"/>
+                        <input name="jabatan" value="{{ old('jabatan') }}" required class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base shadow-sm" placeholder="Contoh: Orang Tua / Umum" type="text"/>
                         <p class="error-jabatan error-text text-xs text-red-500 ml-4 hidden"></p>
                     </div>
                 </div>
@@ -435,20 +435,26 @@
                     {{-- Instansi --}}
                     <div class="space-y-2">
                         <label class="text-[10px] md:text-xs font-bold text-slate-400 uppercase ml-4">Instansi/Lembaga *</label>
-                        <input name="instansi" value="{{ old('instansi') }}" required class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base" placeholder="Nama perusahaan / kementerian" type="text"/>
+                        <input name="instansi" value="{{ old('instansi') }}" required class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base shadow-sm" placeholder="Nama asal instansi" type="text"/>
                         <p class="error-instansi error-text text-xs text-red-500 ml-4 hidden"></p>
                     </div>
-                    {{-- Maksud dan Tujuan --}}
+                    {{-- Tanggal Datang --}}
                     <div class="space-y-2">
-                        <label class="text-[10px] md:text-xs font-bold text-slate-400 uppercase ml-4">Maksud dan Tujuan *</label>
-                        <input name="tujuan_kunjungan" value="{{ old('tujuan_kunjungan') }}" required class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base" placeholder="Contoh: Kunjungan Dinas / Urusan PPDB" type="text"/>
-                        <p class="error-tujuan_kunjungan error-text text-xs text-red-500 ml-4 hidden"></p>
+                        <label class="text-[10px] md:text-xs font-bold text-slate-400 uppercase ml-4">Tanggal Datang *</label>
+                        <input name="tanggal_kunjungan" value="{{ old('tanggal_kunjungan', date('Y-m-d')) }}" required class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base shadow-sm" type="date"/>
+                        <p class="error-tanggal_kunjungan error-text text-xs text-red-500 ml-4 hidden"></p>
                     </div>
                 </div>
 
                 <div class="space-y-2">
+                    <label class="text-[10px] md:text-xs font-bold text-slate-400 uppercase ml-4">Maksud dan Tujuan *</label>
+                    <input name="tujuan_kunjungan" value="{{ old('tujuan_kunjungan') }}" required class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base shadow-sm" placeholder="Contoh: Kunjungan Dinas / Urusan PPDB" type="text"/>
+                    <p class="error-tujuan_kunjungan error-text text-xs text-red-500 ml-4 hidden"></p>
+                </div>
+
+                <div class="space-y-2">
                     <label class="text-[10px] md:text-xs font-bold text-slate-400 uppercase ml-4">Pesan dan Kesan *</label>
-                    <textarea name="pesan_kesan" required rows="4" class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base" placeholder="Tuliskan pengalaman atau masukan Anda...">{{ old('pesan_kesan') }}</textarea>
+                    <textarea name="pesan_kesan" required rows="4" class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/20 text-slate-800 text-base shadow-sm" placeholder="Tuliskan pengalaman atau masukan Anda...">{{ old('pesan_kesan') }}</textarea>
                     <p class="error-pesan_kesan error-text text-xs text-red-500 ml-4 hidden"></p>
                 </div>
 

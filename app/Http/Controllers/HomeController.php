@@ -54,6 +54,7 @@ class HomeController extends Controller
     {
         $rules = [
             'nama' => 'required|string|max:100',
+            'email' => 'nullable|email|max:100',
             'telepon' => 'required|string|max:20',
             'tanggal_kunjungan' => 'required|date',
             'jabatan' => 'required|string|max:100',
@@ -79,6 +80,7 @@ class HomeController extends Controller
 
         BukuTamu::create([
             'nama' => $request->nama,
+            'email' => $request->email,
             'telepon' => $request->telepon,
             'tanggal_kunjungan' => $request->tanggal_kunjungan,
             'jabatan' => $request->jabatan,

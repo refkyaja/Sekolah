@@ -19,23 +19,18 @@
     }
 
     .theme-option {
-        border: 1px solid rgba(226, 232, 240, 0.9);
-        border-radius: 1.25rem;
-        padding: 1rem;
+        border: 2px solid transparent;
         transition: all 0.2s ease;
         cursor: pointer;
-        background: #fff;
-    }
-
-    .dark .theme-option {
-        background: rgba(15, 23, 42, 0.92);
-        border-color: rgba(51, 65, 85, 0.9);
     }
 
     .theme-option.is-active {
         border-color: #6B46C1;
-        box-shadow: 0 0 0 4px rgba(107, 70, 193, 0.12);
-        transform: translateY(-1px);
+        background: rgba(107, 70, 193, 0.05) !important;
+    }
+
+    .theme-option.is-active .material-symbols-outlined {
+        opacity: 1;
     }
 
     .setting-switch {
@@ -78,7 +73,7 @@
             <div>
                 <p class="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-2">Pengaturan Akun</p>
                 <h2 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">Atur panel sesuai kebutuhan Anda</h2>
-                <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Versi sederhana: tampilan, notifikasi, dan keamanan akun.</p>
+                <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Versi sederhana: tampilan dan notifikasi.</p>
             </div>
             <div class="rounded-2xl bg-slate-50 dark:bg-slate-800/80 px-5 py-4">
                 <p class="text-xs uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500">Login terakhir</p>
@@ -102,18 +97,27 @@
                 </div>
             </div>
 
-            <div class="grid gap-4 md:grid-cols-3" id="themeOptions">
-                <button type="button" class="theme-option text-left" data-theme-option="light">
-                    <p class="text-sm font-bold text-slate-900 dark:text-slate-100">Light</p>
-                    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tampilan terang klasik.</p>
+            <div class="space-y-4" id="themeOptions">
+                <button type="button" class="w-full flex items-center justify-between gap-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 px-4 py-4 text-left theme-option" data-theme-option="light">
+                    <div>
+                        <p class="font-semibold text-slate-900 dark:text-slate-100">Light</p>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Tampilan terang klasik.</p>
+                    </div>
+                    <span class="material-symbols-outlined text-primary opacity-0 transition-opacity">check_circle</span>
                 </button>
-                <button type="button" class="theme-option text-left" data-theme-option="dark">
-                    <p class="text-sm font-bold text-slate-900 dark:text-slate-100">Dark</p>
-                    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Nyaman untuk ruangan redup.</p>
+                <button type="button" class="w-full flex items-center justify-between gap-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 px-4 py-4 text-left theme-option" data-theme-option="dark">
+                    <div>
+                        <p class="font-semibold text-slate-900 dark:text-slate-100">Dark</p>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Nyaman untuk ruangan redup.</p>
+                    </div>
+                    <span class="material-symbols-outlined text-primary opacity-0 transition-opacity">check_circle</span>
                 </button>
-                <button type="button" class="theme-option text-left" data-theme-option="system">
-                    <p class="text-sm font-bold text-slate-900 dark:text-slate-100">System</p>
-                    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Ikuti pengaturan perangkat.</p>
+                <button type="button" class="w-full flex items-center justify-between gap-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 px-4 py-4 text-left theme-option" data-theme-option="system">
+                    <div>
+                        <p class="font-semibold text-slate-900 dark:text-slate-100">System</p>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Ikuti pengaturan perangkat.</p>
+                    </div>
+                    <span class="material-symbols-outlined text-primary opacity-0 transition-opacity">check_circle</span>
                 </button>
             </div>
         </section>
@@ -155,29 +159,7 @@
         </section>
     </div>
 
-    <section class="settings-card p-6 md:p-8">
-        <div class="flex items-center gap-3 mb-6">
-            <span class="material-symbols-outlined text-primary">security</span>
-            <div>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">Keamanan Akun</h3>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Akses cepat ke pengelolaan keamanan akun.</p>
-            </div>
-        </div>
 
-        <div class="grid gap-4 md:grid-cols-2">
-            <a href="{{ route('admin.profile.index') }}?tab=password" class="rounded-2xl bg-slate-50 dark:bg-slate-800/80 p-5 transition hover:-translate-y-0.5 hover:shadow-lg">
-                <p class="text-sm font-bold text-slate-900 dark:text-slate-100">Ubah Password</p>
-                <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Buka halaman profil dan langsung masuk ke tab password.</p>
-            </a>
-
-            <div class="rounded-2xl bg-slate-50 dark:bg-slate-800/80 p-5">
-                <p class="text-sm font-bold text-slate-900 dark:text-slate-100">Status Login</p>
-                <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
-                    {{ $user->last_login_at ? 'Terakhir masuk ' . $user->last_login_at->diffForHumans() : 'Belum ada catatan login yang tersedia.' }}
-                </p>
-            </div>
-        </div>
-    </section>
 </div>
 @endsection
 

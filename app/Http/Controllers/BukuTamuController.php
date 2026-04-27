@@ -16,17 +16,16 @@ class BukuTamuController extends Controller
 
     public function store(Request $request)
 {
-    // 1. Rules dasar
     $rules = [
         'nama' => 'required|string|max:100',
-        'instansi' => 'required|string|max:100',
-        'jabatan' => 'nullable|string|max:100',
         'email' => 'nullable|email|max:100',
-        'telepon' => 'nullable|string|max:20',
+        'instansi' => 'required|string|max:100',
+        'jabatan' => 'required|string|max:100',
+        'telepon' => 'required|string|max:20',
         'tanggal_kunjungan' => 'required|date|after_or_equal:today',
         'jam_kunjungan' => 'required|date_format:H:i',
         'tujuan_kunjungan' => 'required|string|max:500',
-        'pesan_kesan' => 'nullable|string|max:1000',
+        'pesan_kesan' => 'required|string|max:1000',
     ];
 
     // 2. Captcha hanya aktif di production
@@ -38,10 +37,13 @@ class BukuTamuController extends Controller
     $validator = Validator::make($request->all(), $rules, [
         'nama.required' => 'Nama harus diisi',
         'instansi.required' => 'Instansi/Asal harus diisi',
+        'jabatan.required' => 'Jabatan harus diisi',
+        'telepon.required' => 'Nomor telepon harus diisi',
         'tanggal_kunjungan.required' => 'Tanggal kunjungan harus diisi',
         'tanggal_kunjungan.after_or_equal' => 'Tanggal kunjungan tidak boleh kurang dari hari ini',
         'jam_kunjungan.required' => 'Jam kunjungan harus diisi',
         'tujuan_kunjungan.required' => 'Tujuan kunjungan harus diisi',
+        'pesan_kesan.required' => 'Pesan dan kesan harus diisi',
         'g-recaptcha-response.required' => 'Captcha harus diisi',
     ]);
 
@@ -53,9 +55,9 @@ class BukuTamuController extends Controller
 
     BukuTamu::create([
         'nama' => $request->nama,
+        'email' => $request->email,
         'instansi' => $request->instansi,
         'jabatan' => $request->jabatan,
-        'email' => $request->email,
         'telepon' => $request->telepon,
         'tanggal_kunjungan' => $request->tanggal_kunjungan,
         'jam_kunjungan' => $request->jam_kunjungan,

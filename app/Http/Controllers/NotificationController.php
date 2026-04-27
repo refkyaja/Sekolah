@@ -202,4 +202,29 @@ class NotificationController extends Controller
             return null;
         }
     }
+
+    /**
+     * Tampilkan halaman Pusat Notifikasi (Blade view).
+     */
+    public function showCenter()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        // Ambil semua notifikasi untuk user ini dengan pagination
+        $notifications = Notification::forAuthUser($user)
+            ->latest()
+            ->paginate(15);
+
+        // Tentukan layout berdasarkan role
+        $layout = match($user->role) {
+            'admin'          => 'layouts.admin',
+            'operator'       => 'layouts.operator',
+            'guru'           => 'layouts.guru',
+            'kepala_sekolah' => 'layouts.kepala-sekolah',
+            default          => 'layouts.admin', // Fallback
+        };
+
+        return view('profile.notifications', compact('notifications', 'layout'));
+    }
 }

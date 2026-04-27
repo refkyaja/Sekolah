@@ -8,9 +8,7 @@
 
             {{-- Logo --}}
             <a href="{{ route('home') }}" class="flex items-center gap-3" data-home-animate="fade-right" style="--animate-delay: 40ms;">
-                <div class="size-10 bg-primary rounded-xl flex items-center justify-center text-white shrink-0">
-                    <span class="material-symbols-outlined text-2xl">school</span>
-                </div>
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-10 md:h-12 w-auto object-contain shrink-0">
                 <div>
                     <h1 class="text-lg md:text-xl font-extrabold leading-none text-primary">TK PGRI</h1>
                     <p class="text-[9px] md:text-[10px] font-bold tracking-widest text-slate-400 uppercase">Harapan Bangsa 1</p>
@@ -347,4 +345,4 @@
         if (e.target === this) closeLoginModal();
     });
 </script>
-@endpush
+@endpush

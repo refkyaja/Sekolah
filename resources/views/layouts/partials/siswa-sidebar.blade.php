@@ -2,9 +2,7 @@
      :class="[mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0', sidebarCollapsed ? 'lg:w-20' : 'lg:w-72']">
 <div class="sidebar-header p-6 flex items-center justify-between">
     <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white">
-            <span class="material-symbols-outlined">school</span>
-        </div>
+        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-12 w-12 flex-shrink-0 object-contain">
         <div class="logo-text">
             <h1 class="text-sm font-bold leading-tight uppercase">TK PGRI</h1>
             <p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider">Harapan Bangsa 1</p>

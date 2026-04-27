@@ -66,6 +66,7 @@ Route::prefix('buku-tamu')->name('buku-tamu.')->group(function () {
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'active', 'admin'])->group(function () {
     
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'showCenter'])->name('notifications');
 
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\ProfileController::class, 'index'])->name('index');
@@ -349,6 +350,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'active'
 
 Route::prefix('operator')->name('operator.')->middleware(['auth', 'verified', 'active', 'operator'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Operator\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'showCenter'])->name('notifications');
     
     // Profile Routes
     Route::prefix('profile')->name('profile.')->group(function () {
@@ -453,6 +455,7 @@ Route::prefix('operator')->name('operator.')->middleware(['auth', 'verified', 'a
 
 Route::prefix('kepala-sekolah')->name('kepala-sekolah.')->middleware(['auth', 'verified', 'active', 'kepala_sekolah'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\KepalaSekolah\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'showCenter'])->name('notifications');
     
     // Profile Routes
     Route::prefix('profile')->name('profile.')->group(function () {
@@ -557,6 +560,7 @@ Route::prefix('kepala-sekolah')->name('kepala-sekolah.')->middleware(['auth', 'v
 
 Route::prefix('guru')->name('guru.')->middleware(['auth', 'verified', 'active', 'guru'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Guru\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'showCenter'])->name('notifications');
     
     // Profile Routes
     Route::prefix('profile')->name('profile.')->group(function () {

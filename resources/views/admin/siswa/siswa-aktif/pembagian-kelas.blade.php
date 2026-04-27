@@ -1,7 +1,5 @@
 @extends('layouts.admin')
 
-@section('title', 'Pembagian Kelompok')
-
 @section('content')
 <div
     x-data="pembagianKelas()"
@@ -339,11 +337,6 @@
             </div>
 
             <div class="flex items-center gap-3">
-                <button type="button" @click="showNames = !showNames"
-                        class="px-4 py-2.5 rounded-xl text-indigo-600 font-bold text-sm bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-900/20 dark:hover:bg-indigo-900/40 transition-all flex items-center gap-2">
-                    <span class="material-symbols-outlined text-base" x-text="showNames ? 'visibility_off' : 'visibility'"></span>
-                    <span x-text="showNames ? 'Sembunyikan Nama' : 'Lihat Daftar Nama'"></span>
-                </button>
                 <a href="{{ route($rolePrefix . '.siswa.siswa-aktif.index') }}"
                    class="px-5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold text-sm hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
                     Batal

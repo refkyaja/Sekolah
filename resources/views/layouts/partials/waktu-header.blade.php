@@ -10,7 +10,8 @@
     {{-- Widget Waktu Realtime --}}
     <div class="flex items-center gap-2 px-4 py-2.5 bg-slate-100/80 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700/50 shadow-sm w-fit transition-all hover:bg-slate-200/80 dark:hover:bg-slate-700/80">
         <span class="material-symbols-outlined text-primary/80 dark:text-primary/70 text-lg">calendar_month</span>
-        <span id="waktu" class="text-[11px] md:text-sm font-semibold tracking-wide text-slate-700 dark:text-slate-200"></span>
+        <span id="waktu-desktop" class="hidden md:inline text-sm font-semibold tracking-wide text-slate-700 dark:text-slate-200"></span>
+        <span id="waktu-mobile" class="inline md:hidden text-[11px] font-semibold tracking-wide text-slate-700 dark:text-slate-200"></span>
     </div>
 </div>
 
@@ -18,11 +19,13 @@
 @push('scripts')
 <script>
     function updateWaktu() {
-        const waktuElement = document.getElementById('waktu');
-        if (!waktuElement) return;
+        const desktopElement = document.getElementById('waktu-desktop');
+        const mobileElement = document.getElementById('waktu-mobile');
+        if (!desktopElement && !mobileElement) return;
 
         const now = new Date();
 
+        // Format Desktop: Hari, Tanggal Bulan Tahun | HH:mm:ss WIB
         const optionsTanggal = {
             weekday: 'long',
             year: 'numeric',
@@ -31,13 +34,25 @@
         };
 
         const tanggal = now.toLocaleDateString('id-ID', optionsTanggal);
-        const jam = now.toLocaleTimeString('id-ID');
+        const jamLengkap = now.toLocaleTimeString('id-ID', { hour12: false });
 
-        waktuElement.innerHTML = `${tanggal} <span class="mx-1.5 text-slate-400 dark:text-slate-500">|</span> ${jam} WIB`;
+        if (desktopElement) {
+            desktopElement.innerHTML = `${tanggal} <span class="mx-1.5 text-slate-400 dark:text-slate-500">|</span> ${jamLengkap} WIB`;
+        }
+
+        // Format Mobile: HH:mm
+        if (mobileElement) {
+            const jamMenit = now.toLocaleTimeString('id-ID', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: false 
+            });
+            mobileElement.innerHTML = jamMenit;
+        }
     }
 
     // Hanya jalankan jika elemen ada
-    if (document.getElementById('waktu')) {
+    if (document.getElementById('waktu-desktop') || document.getElementById('waktu-mobile')) {
         setInterval(updateWaktu, 1000);
         updateWaktu();
     }

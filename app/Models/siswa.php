@@ -148,6 +148,7 @@ class Siswa extends Authenticatable
     const STATUS_LULUS = 'lulus';
     const STATUS_PINDAH = 'pindah';
     const STATUS_CUTI = 'cuti';
+    const STATUS_CALON = 'calon';
 
     // Array status yang tersedia
     const STATUSES = [
@@ -155,6 +156,7 @@ class Siswa extends Authenticatable
         self::STATUS_LULUS => 'Lulus',
         self::STATUS_PINDAH => 'Pindah',
         self::STATUS_CUTI => 'Cuti',
+        self::STATUS_CALON => 'Calon Siswa',
     ];
 
 
@@ -390,6 +392,14 @@ class Siswa extends Authenticatable
     }
 
     /**
+     * Scope calon siswa
+     */
+    public function scopeCalon($query)
+    {
+        return $query->where('status_siswa', self::STATUS_CALON);
+    }
+
+    /**
      * Scope by status
      */
     public function scopeByStatus($query, $status)
@@ -545,6 +555,14 @@ class Siswa extends Authenticatable
     public function isCuti()
     {
         return $this->status_siswa === self::STATUS_CUTI;
+    }
+
+    /**
+     * Cek apakah siswa calon
+     */
+    public function isCalon()
+    {
+        return $this->status_siswa === self::STATUS_CALON;
     }
 
     /**

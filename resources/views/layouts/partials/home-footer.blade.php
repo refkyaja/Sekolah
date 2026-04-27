@@ -8,10 +8,8 @@
             {{-- Branding --}}
             <div class="space-y-6 w-full">
                 <div class="flex items-center justify-center lg:justify-start gap-3">
-                    <div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
-                        <span class="material-symbols-outlined text-xl">school</span>
-                    </div>
-                    <h1 class="text-xl font-black text-white">TK PGRI Harapan Bangsa 1  </h1>
+                <img src="{{ asset('images/logo.png') }}" alt="Logo Sekolah" class="h-12 md:h-14 w-auto object-contain shrink-0">
+                    <h1 class="text-xl font-black text-white whitespace-nowrap">TK PGRI Harapan Bangsa 1</h1>
                 </div>
                 <p class="text-sm leading-relaxed max-w-xs mx-auto lg:mx-0">
                     Membangun fondasi masa depan cerah anak anda melalui pendidikan usia dini yang holistik dan kreatif di Kota Bandung.

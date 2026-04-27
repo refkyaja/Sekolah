@@ -719,7 +719,7 @@ class SpmbController extends Controller
 
             $spmb->save();
 
-            if ($newStatus === 'Lulus' && $oldStatus !== 'Lulus' && !$spmb->siswa()->exists()) {
+            if ($newStatus === 'Lulus' && $oldStatus !== 'Lulus' && !$spmb->is_converted) {
                 try {
                     $siswa = $this->autoConvertToSiswa($spmb);
                     
@@ -1525,27 +1525,30 @@ class SpmbController extends Controller
     private function autoConvertToSiswa($spmb, $kelompokRequested = null)
     {
         try {
-            // CEK DUPLIKAT NIK
-            $existingSiswa = Siswa::where('nik', $spmb->nik_anak)->first();
-                
-            if ($existingSiswa) {
-                throw new \Exception("Siswa dengan NIK {$spmb->nik_anak} sudah terdaftar sebagai {$existingSiswa->nama_lengkap}");
-            }
+            Log::info('autoConvertToSiswa called for SPMB ID: ' . $spmb->id);
             
+            // 1. Cari siswa yang sudah ada (terhubung via spmb_id atau email)
+            $siswa = $spmb->siswa;
+            if (!$siswa && $spmb->email_ayah) {
+                $siswa = Siswa::where('email', $spmb->email_ayah)->first();
+            }
+            if (!$siswa && $spmb->email_ibu) {
+                $siswa = Siswa::where('email', $spmb->email_ibu)->first();
+            }
+            if (!$siswa && $spmb->nik_anak) {
+                $siswa = Siswa::where('nik', $spmb->nik_anak)->first();
+            }
+
             if (!$spmb->tanggal_lahir_anak) {
                 throw new \Exception('Tanggal lahir tidak valid');
             }
             
-            $usia = Carbon::parse($spmb->tanggal_lahir_anak)->age;
-            
             $tahunAjaranId = $spmb->tahun_ajaran_id;
             $tahunAjaranString = $spmb->tahunAjaran->tahun_ajaran ?? date('Y') . '/' . (date('Y') + 1);
-            
             $alamatLengkap = $this->buildAlamatLengkap($spmb);
 
             $siswaData = [
                 'spmb_id' => $spmb->id,
-                
                 'nik' => $spmb->nik_anak,
                 'nama_lengkap' => $spmb->nama_lengkap_anak,
                 'nama_panggilan' => $spmb->nama_panggilan_anak,
@@ -1602,18 +1605,29 @@ class SpmbController extends Controller
                 'kelompok' => $kelompokRequested ?? $spmb->kelompok ?? $spmb->kelas ?? null,
                 'tahun_ajaran_id' => $tahunAjaranId,
                 'tahun_ajaran' => $tahunAjaranString,
-                'status_siswa' => 'aktif',
+                'status_siswa' => Siswa::STATUS_AKTIF,
                 'tanggal_masuk' => now(),
                 'jalur_masuk' => $this->mapJalurPendaftaran($spmb->jenis_daftar),
                 'is_active' => true,
             ];
 
-            $siswa = Siswa::create($siswaData);
+            if ($siswa) {
+                Log::info('Updating existing siswa for SPMB ID: ' . $spmb->id);
+                $siswa->update($siswaData);
+            } else {
+                Log::info('Creating new siswa for SPMB ID: ' . $spmb->id);
+                $siswa = Siswa::create($siswaData);
+            }
             
             $spmb->is_aktif = true;
             $spmb->is_converted = true;
             $spmb->siswa_id = $siswa->id;
-            $spmb->nomor_induk_siswa = $this->generateNIS($tahunAjaranId);
+            
+            // Hanya generate NIS jika belum punya
+            if (empty($spmb->nomor_induk_siswa)) {
+                $spmb->nomor_induk_siswa = $this->generateNIS($tahunAjaranId);
+            }
+            
             $spmb->save();
             
             return $siswa;

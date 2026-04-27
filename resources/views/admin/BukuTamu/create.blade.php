@@ -87,7 +87,16 @@
 
                     {{-- Hidden Fields for Timestamp compatibility with controller --}}
                     <input type="hidden" name="jam_kunjungan" value="{{ date('H:i') }}">
-                    <input type="hidden" name="email" value="">
+                    {{-- Email --}}
+                    <div class="space-y-2">
+                        <label class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest" for="email">Email (Opsional)</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-xl">mail</span>
+                            <input type="email" name="email" id="email" value="{{ old('email') }}"
+                                   class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all" 
+                                   placeholder="alamat@email.com">
+                        </div>
+                    </div>
 
                     <div class="space-y-2 md:col-span-2">
                         <label class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest" for="pesan_kesan">Pesan & Kesan <span class="text-red-500 dark:text-red-400">*</span></label>

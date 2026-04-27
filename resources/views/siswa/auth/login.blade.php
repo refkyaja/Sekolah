@@ -40,6 +40,7 @@
                             <span class="material-symbols-outlined text-sm">arrow_back</span>
                             <span>Kembali</span>
                         </a>
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-20 w-auto object-contain mb-8 mx-auto lg:mx-0">
                         <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-2">Login Calon Siswa</h2>
                         <p class="text-slate-500 dark:text-slate-400">Silakan masuk ke akun pendaftaran Anda</p>
                     </div>

@@ -1,9 +1,7 @@
 <aside class="operator-sidebar w-72 flex-shrink-0 bg-sidebar-bg text-white flex flex-col h-full z-40 lg:z-20 transition-all duration-300">
     <div class="p-6 flex items-center justify-between">
         <div class="flex min-w-0 flex-1 items-center gap-3 overflow-hidden">
-            <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-white/20 backdrop-blur-md">
-                <span class="material-symbols-outlined text-white text-2xl">school</span>
-            </div>
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-14 w-14 flex-shrink-0 object-contain">
             <div class="logo-text min-w-0 flex-1 leading-tight text-white">
                 <p class="text-sm font-black uppercase tracking-[0.18em]">TK PGRI</p>
                 <p class="text-[11px] font-semibold uppercase tracking-[0.08em] text-white/80">Harapan Bangsa 1</p>
